@@ -1,0 +1,12 @@
+query {
+  playlists {
+    uid
+    name
+    searchPlaylist
+    creationTime
+    companies {
+      uid
+      name
+    }
+  }
+}
