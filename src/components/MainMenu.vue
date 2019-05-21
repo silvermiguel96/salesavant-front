@@ -1,6 +1,8 @@
 <template>
   <v-toolbar color="primary" dark app dense>
-    <img class="logo" :src="require('../assets/salesavant_header.png')">
+    <router-link to="/">
+      <img class="logo" :src="require('../assets/salesavant_header.png')">
+    </router-link>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat to="/playlists">Playlists</v-btn>
@@ -19,6 +21,6 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  width: 11%;
+  width: 150px;
 }
 </style>
