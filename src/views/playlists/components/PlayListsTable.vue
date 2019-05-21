@@ -7,7 +7,7 @@
       <td>{{ props.item.creationTime }}</td>
       <td>
         <div v-for="(company, index) in props.item.companies" :key="company.uid">
-          <a :key="`link${company.uid}`" :href="`company/${company.uid}`">{{ company.name }}</a>
+          <a :key="`link${company.uid}`" :href="`companies/${company.uid}`">{{ company.name }}</a>
           <span v-if="index+1 < props.item.companies.length">,</span>
         </div>
       </td>
