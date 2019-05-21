@@ -3,9 +3,9 @@
     <img class="logo" :src="require('../assets/salesavant_header.png')">
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat>Link One</v-btn>
-      <v-btn flat>Link Two</v-btn>
-      <v-btn flat>Link Three</v-btn>
+      <v-btn flat>Playlists</v-btn>
+      <v-btn flat>Search</v-btn>
+      <v-btn flat>Search with Signals</v-btn>
     </v-toolbar-items>
     <v-toolbar-side-icon></v-toolbar-side-icon>
   </v-toolbar>
