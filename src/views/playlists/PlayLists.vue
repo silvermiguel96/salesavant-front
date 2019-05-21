@@ -12,7 +12,14 @@
         <div v-else-if="error" class="error apollo">An error occured</div>
 
         <!-- Result -->
-        <div v-else-if="data" class="result apollo">{{ JSON.stringify(data) }}</div>
+        <div v-else-if="data" class="result apollo">
+          <!---<div>{{ JSON.stringify(data) }}</div>-->
+          <play-lists-table
+            v-if="data.playlists.length"
+            :items="data.playlists"
+            class="result apollo"
+          ></play-lists-table>
+        </div>
 
         <!-- No result -->
         <div v-else class="no-result apollo">No result :(</div>
@@ -22,12 +29,18 @@
 </template>
 
 <script>
+/* import PLAYLISTS from "./Playlists.gql"; */
+import PlayListsTable from "./components/PlayListsTable.vue";
 export default {
   data() {
     return {
       items: ["playlists"]
     };
-  }
+  },
+  components: { PlayListsTable }
+  /* apollo: {
+    playlists: PLAYLISTS
+  } */
 };
 </script>
 
