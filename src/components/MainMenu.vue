@@ -1,6 +1,6 @@
 <template>
   <v-toolbar color="primary" dark app dense>
-    <img class="logo" :src="require('../assets/salesavant_header.png')">
+    <img class="logo" :src="require('../assets/salesavant_header.png')" />
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat>Playlists</v-btn>
