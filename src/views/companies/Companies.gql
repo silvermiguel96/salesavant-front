@@ -1,6 +1,17 @@
-query {
-  companies {
+{
+  companies{
     uid
     name
+    signals {
+      id
+    }
+    status
+    description
+    city
+    state
+    country
+    numEmployees
+    momentum
+    url
   }
 }

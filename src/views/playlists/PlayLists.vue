@@ -1,7 +1,7 @@
 <template>
   <div class="apollo-example">
     <v-breadcrumbs :items="items" divider=">"></v-breadcrumbs>
-    <h1>{{items[items.length-1]}}</h1>
+    <h1>{{ items[items.length - 1] }}</h1>
     <!-- Apollo watched Graphql query -->
     <ApolloQuery :query="require('./Playlists.gql')" :variables="null">
       <template slot-scope="{ result: { loading, error, data } }">

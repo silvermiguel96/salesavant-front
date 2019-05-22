@@ -3,6 +3,8 @@ query {
     uid
     name
     creationTime
+    accountId
+    userId
     signals {
       id
       comments

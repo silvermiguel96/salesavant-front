@@ -1,7 +1,7 @@
 <template>
   <v-toolbar color="primary" dark app dense>
     <router-link to="/">
-      <img class="logo" :src="require('../assets/salesavant_header.png')">
+      <img class="logo" :src="require('../assets/salesavant_header.png')" />
     </router-link>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
