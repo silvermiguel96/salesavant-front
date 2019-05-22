@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import ApolloExample from './components/ApolloExample.vue';
 import PlayLists from './views/playlists/PlayLists.vue';
+import Companies from './views/companies/Companies.vue';
+import Company from './views/companies/Company.vue';
 
 Vue.use(Router);
 
@@ -19,6 +21,16 @@ export default new Router({
       path: '/playlists',
       name: 'playlists',
       component: PlayLists
+    },
+    {
+      path: '/companies',
+      name: 'companies',
+      component: Companies
+    },
+    {
+      path: '/companies/:id',
+      name: 'company',
+      component: Company
     },
     {
       path: '/apollo-example',
