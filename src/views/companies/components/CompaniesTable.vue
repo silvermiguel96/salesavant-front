@@ -1,6 +1,5 @@
 <template>
   <v-data-table :headers="headers" :items="items" :loading="!items.length" class="elevation-1">
-    <div>{{JSON.stringify(props)}}</div>
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
       <td>{{ props.item.uid }}</td>
@@ -21,6 +20,7 @@ export default {
   data() {
     return {
       headers: [
+        { text: "uid", value: "uid", align: "left" },
         {
           text: "Name",
           align: "left",

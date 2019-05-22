@@ -4,6 +4,9 @@
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
       <td>{{ props.item.name }}</td>
+      <td>{{ props.item.companies.length }}</td>
+      <td>{{ props.item.signals.length }}</td>
+      <td>contacts coming soon</td>
       <td>{{ props.item.creationTime }}</td>
       <td>
         <div v-for="(company, index) in props.item.companies" :key="company.uid">
@@ -11,6 +14,7 @@
           <span v-if="index+1 < props.item.companies.length">,</span>
         </div>
       </td>
+      <td>another column</td>
     </template>
   </v-data-table>
 </template>
@@ -27,6 +31,9 @@ export default {
           sortable: true,
           value: "name"
         },
+        { text: "Total", value: "companies.length", align: "left" },
+        { text: "Signals", value: "signals.length", align: "left" },
+        { text: "Contacts", align: "left" },
         { text: "Creation Time", value: "creationTime", align: "left" },
         { text: "Companies", value: "companies", align: "left" }
       ]

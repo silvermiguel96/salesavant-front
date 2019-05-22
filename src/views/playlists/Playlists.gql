@@ -3,6 +3,10 @@ query {
     uid
     name
     creationTime
+    signals {
+      id
+      comments
+    }
     companies {
       uid
       name
