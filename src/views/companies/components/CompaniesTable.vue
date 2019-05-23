@@ -41,7 +41,7 @@ export default {
     return {
       headers: [
         {
-          text: "Companies",
+          text: "Company",
           align: "left",
           sortable: true,
           value: "name"
@@ -55,7 +55,7 @@ export default {
         { text: "Emp.", value: "numEmployees", align: "left" },
         { text: "Momentum", value: "momentum", align: "left" },
         { text: "Website", value: "url", align: "left" },
-        { text: "Vertical",  }
+        { text: "Vertical" }
       ]
     };
   },

@@ -2,6 +2,86 @@
   <div class="apollo-example">
     <v-breadcrumbs :items="items" divider=">"></v-breadcrumbs>
     <h1>{{ items[items.length - 1] }}</h1>
+
+    <v-layout>
+      <v-dialog v-model="filter" persistent max-width="600px">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark v-on="on">Filter</v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <v-layout>
+              <v-flex md10>
+                <span class="headline">Company Basic</span>
+              </v-flex>
+              <v-flex md2>
+                <v-btn color="red darken-1" flat @click="filter = false"
+                  >X</v-btn
+                >
+              </v-flex>
+            </v-layout>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field
+                    label="Company"
+                    v-model="company"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field
+                    label="Country"
+                    v-model="country"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field label="City"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-select
+                    :items="['Bay Area', 'Los Angeles', 'San Diego']"
+                    label="Region"
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-select
+                    :items="['Alabama', 'Alaska', 'Arizona']"
+                    label="State"
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-select
+                    :items="['Public', 'Private', 'Acquired']"
+                    label="Company status"
+                  ></v-select>
+                </v-flex>
+                <v-flex xs12 sm12>
+                  <label class="title">Number Employees</label>
+                </v-flex>
+                <v-flex xs12 sm6 md6>
+                  <v-text-field label="Init"></v-text-field>
+                </v-flex>
+                <v-flex sm6 md6>
+                  <v-text-field label="End"></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="save = false"
+              >Search</v-btn
+            >
+            <v-btn color="blue darken-1" flat @click="filter = false"
+              >Clean</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- {{ company }} -->
+    </v-layout>
     <!-- Apollo watched Graphql query -->
     <ApolloQuery :query="require('./Companies.gql')" :variables="null">
       <template slot-scope="{ result: { loading, error, data } }">
@@ -34,13 +114,21 @@ import CompaniesTable from "./components/CompaniesTable.vue";
 export default {
   data() {
     return {
-      items: ["companies"]
+      items: ["Companies"],
+      filter: false,
+      company: ""
     };
   },
   components: { CompaniesTable }
   /* apollo: {
     playlists: PLAYLISTS
   } */
+  // ,
+  // methods: {
+  //   save () {
+  //     console.log(this.$company);
+  //   }
+  // }
 };
 </script>
 
