@@ -1,5 +1,5 @@
 query {
-  playlists {
+  playlists(first: 10) {
     uid
     name
     creationTime

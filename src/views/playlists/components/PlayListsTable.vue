@@ -13,16 +13,6 @@
       <td>{{ props.item.userId }}</td>
       <td>{{ props.item.creationTime }}</td>
       <td>
-        <div v-for="(company, index) in props.item.companies" :key="company.uid">
-          <a :key="`link${company.uid}`" :href="`companies/${company.uid}`">
-            {{
-            company.name
-            }}
-          </a>
-          <span v-if="index + 1 < props.item.companies.length">,</span>
-        </div>
-      </td>
-      <td>
         <a href>Add Coming soon</a>
       </td>
       <td>
@@ -44,13 +34,16 @@ export default {
           sortable: true,
           value: "name"
         },
-        { text: "Total", value: "companies.length", align: "left" },
+        {
+          text: "Number of companies",
+          value: "companies.length",
+          align: "left"
+        },
         { text: "Signals", value: "signals.length", align: "left" },
         { text: "Contacts", align: "left" },
         { text: "Advanced", align: "left" },
         { text: "Owner", value: "userId", align: "left" },
         { text: "Creation Time", value: "creationTime", align: "left" },
-        { text: "Companies", value: "companies", align: "left" },
         { text: "Favorite", align: "left" },
         { text: "Remove", align: "left" }
       ]
