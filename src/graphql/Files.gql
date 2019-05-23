@@ -1,7 +1,7 @@
 query {
-  companies { 
-    uid 
-    name 
-    url 
+  companies {
+    uid
+    name
+    url
   }
 }

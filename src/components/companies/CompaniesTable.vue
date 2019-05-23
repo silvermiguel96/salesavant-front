@@ -1,22 +1,12 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="items"
-    :loading="!items.length"
-    class="elevation-1"
-  >
-    <v-progress-linear
-      v-slot:progress
-      color="blue"
-      indeterminate
-    ></v-progress-linear>
+  <v-data-table :headers="headers" :items="items" :loading="!items.length" class="elevation-1">
+    <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
       <td>
         <a
           :key="`link${props.item.uid}`"
           :href="`companies/${props.item.uid}`"
-          >{{ props.item.name }}</a
-        >
+        >{{ props.item.name }}</a>
       </td>
       <td>{{ props.item.signals.length }}</td>
       <td>{{ props.item.status }}</td>

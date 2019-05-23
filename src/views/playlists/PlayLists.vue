@@ -1,9 +1,15 @@
 <template>
   <div class="apollo-example">
-    <v-breadcrumbs :items="items" divider=">"></v-breadcrumbs>
-    <h1>{{ items[items.length - 1] }}</h1>
+    <v-breadcrumbs
+      :items="[{
+              text: 'Playlists',
+              disabled: true,
+              href: '/playlists'
+            }]"
+      divider=">"
+    ></v-breadcrumbs>
     <!-- Apollo watched Graphql query -->
-    <ApolloQuery :query="require('./Playlists.gql')" :variables="null">
+    <ApolloQuery :query="require('./graphql/Playlists.gql')" :variables="null">
       <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
         <div v-if="loading" class="loading apollo">Loading...</div>

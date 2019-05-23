@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import ApolloExample from "./components/ApolloExample.vue";
 import PlayLists from "./views/playlists/PlayLists.vue";
+import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 
@@ -21,6 +22,11 @@ export default new Router({
       path: "/playlists",
       name: "playlists",
       component: PlayLists
+    },
+    {
+      path: "/playlists/:playlistId/companies",
+      name: "playlist-companies",
+      component: PlayListCompanies
     },
     {
       path: "/companies",

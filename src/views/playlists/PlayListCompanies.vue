@@ -1,20 +1,52 @@
 <template>
-  <div class="apollo-example">
-    <v-breadcrumbs
-      :items="[{
-              text: 'Companies',
-              disabled: true,
-              href: '/companies'
-            }]"
-      divider=">"
-    ></v-breadcrumbs>
+  <ApolloQuery
+    :query="require('./graphql/PlaylistCompanies.gql')"
+    :variables="{ uid: $route.params.playlistId }"
+  >
+    <template slot-scope="{ result: { loading, error, data } }">
+      <div class="apollo-example">
+        <v-breadcrumbs
+          v-if="data && data.playlist"
+          :items="[
+            {
+              text: 'Playlists',
+              disabled: false,
+              href: '/playlists'
+            },
+            {
+              text: data.playlist.name || data.playlist.uid,
+              disabled: true
+            },
+            {
+              text: 'companies',
+              disabled: true
+            }
+          ]"
+          divider=">"
+        ></v-breadcrumbs>
+        <v-breadcrumbs
+          v-else
+          :items="[
+            {
+              text: 'Playlists',
+              disabled: false,
+              href: '/playlists'
+            },
+            {
+              text: $route.params.playlistId,
+              disabled: true
+            },
+            {
+              text: 'companies',
+              disabled: true
+            }
+          ]"
+          divider=">"
+        ></v-breadcrumbs>
 
-    <!-- Filter -->
-    <companies-advanced-filter></companies-advanced-filter>
+        <!-- Filter -->
+        <companies-advanced-filter></companies-advanced-filter>
 
-    <!-- Apollo watched Graphql query -->
-    <ApolloQuery :query="require('./Companies.gql')" :variables="null">
-      <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
         <div v-if="loading" class="loading apollo">Loading...</div>
 
@@ -23,19 +55,19 @@
 
         <!-- Result -->
         <div v-else-if="data" class="result apollo">
-          <!---<div>{{ JSON.stringify(data) }}</div>-->
+          <!-- <pre>{{ JSON.stringify(data) }}</pre> -->
           <companies-table
-            v-if="data.companies.length"
-            :items="data.companies"
+            v-if="data.playlist.companies.length"
+            :items="data.playlist.companies"
             class="result apollo"
           ></companies-table>
         </div>
 
         <!-- No result -->
         <div v-else class="no-result apollo">No result :(</div>
-      </template>
-    </ApolloQuery>
-  </div>
+      </div>
+    </template>
+  </ApolloQuery>
 </template>
 
 <script>
@@ -44,11 +76,7 @@ import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CompaniesAdvancedFilter from "../../components/companies/CompaniesAdvancedFilter.vue";
 export default {
   data() {
-    return {
-      items: ["Companies"],
-      filter: false,
-      company: ""
-    };
+    return {};
   },
   components: { CompaniesTable, CompaniesAdvancedFilter }
   /* apollo: {

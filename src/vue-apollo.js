@@ -31,6 +31,7 @@ const defaultOptions = {
   persisting: false,
   websocketsOnly: false,
   ssr: false,
+  $loadingKey: "loading",
   getAuth: () => `Basic YWxlamFuZHJvQHNhbGVzYXZhbnQuY29tOnF3ZXF3ZQ==`
 };
 

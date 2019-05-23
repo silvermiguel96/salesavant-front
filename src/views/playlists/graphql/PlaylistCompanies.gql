@@ -1,0 +1,28 @@
+query SinglePlaylist($uid: String) {
+  playlist(uid: $uid) {
+    uid
+    name
+    creationTime
+    accountId
+    userId
+    signals {
+      id
+      comments
+    }
+    companies {
+      uid
+      name
+      signals {
+        id
+      }
+      status
+      description
+      city
+      state
+      country
+      numEmployees
+      momentum
+      url
+    }
+  }
+}
