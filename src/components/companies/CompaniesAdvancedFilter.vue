@@ -35,7 +35,11 @@
                 ></v-select>
               </v-flex>
               <v-flex xs12 sm6 md6>
-                <v-select :items="['Alabama', 'Alaska', 'Arizona']" v-model="state" label="State"></v-select>
+                <v-select
+                  :items="['Alabama', 'Alaska', 'Arizona']"
+                  v-model="state"
+                  label="State"
+                ></v-select>
               </v-flex>
               <v-flex xs12 sm6>
                 <v-select
@@ -48,7 +52,10 @@
                 <label class="title">Number Employees</label>
               </v-flex>
               <v-flex xs12 sm6 md6>
-                <v-text-field label="Init" v-model="employeesMin"></v-text-field>
+                <v-text-field
+                  label="Init"
+                  v-model="employeesMin"
+                ></v-text-field>
               </v-flex>
               <v-flex sm6 md6>
                 <v-text-field label="End" v-model="employeesMax"></v-text-field>
@@ -59,7 +66,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="save = false">Search</v-btn>
-          <v-btn color="blue darken-1" flat @click="filter = false">Clean</v-btn>
+          <v-btn color="blue darken-1" flat @click="filter = false"
+            >Clean</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>

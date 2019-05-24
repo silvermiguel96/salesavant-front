@@ -1,10 +1,21 @@
 <template>
-  <v-data-table :headers="headers" :items="items" :loading="!items.length" class="elevation-1">
+  <v-data-table
+    :headers="headers"
+    :items="items"
+    :loading="!items.length"
+    class="elevation-1"
+  >
     <div>{{ JSON.stringify(props) }}</div>
-    <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
+    <v-progress-linear
+      v-slot:progress
+      color="blue"
+      indeterminate
+    ></v-progress-linear>
     <template v-slot:items="props">
       <td>
-        <router-link :to="`playlists/${props.item.uid}/companies`">{{ props.item.name }}</router-link>
+        <router-link :to="`playlists/${props.item.uid}/companies`">{{
+          props.item.name
+        }}</router-link>
       </td>
       <td>{{ props.item.companies.length }}</td>
       <td>{{ props.item.signals.length }}</td>

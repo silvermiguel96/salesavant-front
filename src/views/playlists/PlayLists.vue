@@ -1,11 +1,13 @@
 <template>
   <div class="apollo-example">
     <v-breadcrumbs
-      :items="[{
-              text: 'Playlists',
-              disabled: true,
-              href: '/playlists'
-            }]"
+      :items="[
+        {
+          text: 'Playlists',
+          disabled: true,
+          href: '/playlists'
+        }
+      ]"
       divider=">"
     ></v-breadcrumbs>
     <!-- Apollo watched Graphql query -->

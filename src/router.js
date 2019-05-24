@@ -34,7 +34,7 @@ export default new Router({
       component: Companies
     },
     {
-      path: "/companies/:id",
+      path: "/companies/:companiesUid",
       name: "company",
       component: Company
     },

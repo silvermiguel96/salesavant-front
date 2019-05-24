@@ -1,0 +1,38 @@
+query SelecteCompany($uid: String){
+  company(uid: $uid){
+    creationTime
+    modificationTime
+    uid
+    name
+    description
+    url
+    handle
+    logoUrl
+    city
+    country
+    region
+    state
+    numEmployees
+    momentum
+    vertical
+    industry
+    status
+    dateFounded
+    dateAcquired
+    linkedinHandle
+    stockSymbol
+    naicsCode
+    employees{
+      title
+    }
+    playlists{
+      name
+    }
+    signals{
+      score
+    }
+  	news{
+			title
+    }
+  }
+}

@@ -1,11 +1,13 @@
 <template>
   <div class="apollo-example">
     <v-breadcrumbs
-      :items="[{
-              text: 'Companies',
-              disabled: true,
-              href: '/companies'
-            }]"
+      :items="[
+        {
+          text: 'Companies',
+          disabled: true,
+          href: '/companies'
+        }
+      ]"
       divider=">"
     ></v-breadcrumbs>
 
@@ -13,7 +15,7 @@
     <companies-advanced-filter></companies-advanced-filter>
 
     <!-- Apollo watched Graphql query -->
-    <ApolloQuery :query="require('./Companies.gql')" :variables="null">
+    <ApolloQuery :query="require('./graphql/Companies.gql')" :variables="null">
       <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
         <div v-if="loading" class="loading apollo">Loading...</div>
