@@ -4,23 +4,25 @@
     :items="items"
     :loading="!items.length"
     class="elevation-1"
+    @update:pagination="updatePagination"
+    :total-items="totalItems"
   >
     <div>{{ JSON.stringify(props) }}</div>
-    <v-progress-linear
-      v-slot:progress
-      color="blue"
-      indeterminate
-    ></v-progress-linear>
+    <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
       <td>
-        <router-link :to="`playlists/${props.item.uid}/companies`">{{
+        <router-link :to="`playlists/${props.item.uid}/companies`">
+          {{
           props.item.name
-        }}</router-link>
+          }}
+        </router-link>
       </td>
       <td>{{ props.item.companies.length }}</td>
       <td>{{ props.item.signals.length }}</td>
       <td>contacts coming soon</td>
-      <td>Advanced coming soon</td>
+      <td>
+        <router-link :to="`/advanced/${props.item.uid}`">Advanced</router-link>
+      </td>
       <td>{{ props.item.userId }}</td>
       <td>{{ props.item.creationTime }}</td>
       <td>
@@ -38,6 +40,7 @@
 export default {
   data() {
     return {
+      totalItems: 100000,
       headers: [
         {
           text: "Name",
@@ -51,14 +54,19 @@ export default {
           align: "left"
         },
         { text: "Signals", value: "signals.length", align: "left" },
-        { text: "Contacts", align: "left" },
-        { text: "Advanced", align: "left" },
+        { text: "Contacts", align: "left", value: "contacts" },
+        { text: "Advanced", align: "left", value: "advanced" },
         { text: "Owner", value: "userId", align: "left" },
         { text: "Creation Time", value: "creationTime", align: "left" },
-        { text: "Favorite", align: "left" },
-        { text: "Remove", align: "left" }
+        { text: "Favorite", align: "left", value: "favorite" },
+        { text: "Remove", align: "left", value: "remove" }
       ]
     };
+  },
+  methods: {
+    updatePagination(dataFromEvent = {}) {
+      this.$emit("updatePagination", { dataFromEvent });
+    }
   },
   /* apollo: {
     playlists: PLAYLISTS

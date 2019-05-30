@@ -7,6 +7,9 @@ import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 
+//Calibration
+import Calibration from "./views/playlists/components/Advanced.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -39,9 +42,19 @@ export default new Router({
       component: Company
     },
     {
+      path: "/playlists/:playlistId/companies/:companiesUid",
+      name: "company",
+      component: Company
+    },
+    {
       path: "/apollo-example",
       name: "apollo",
       component: ApolloExample
+    },
+    {
+      path: "/advanced/:playlistId",
+      name: "advanced",
+      component: Calibration
     },
     {
       path: "/about",

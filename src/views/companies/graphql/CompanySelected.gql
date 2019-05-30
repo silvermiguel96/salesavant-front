@@ -1,5 +1,5 @@
-query SelecteCompany($uid: String){
-  company(uid: $uid){
+query SelecteCompany($company: String, $playlist: String){
+  company(uid: $company){
     creationTime
     modificationTime
     uid
@@ -25,14 +25,23 @@ query SelecteCompany($uid: String){
     employees{
       title
     }
-    playlists{
-      name
-    }
     signals{
       score
     }
   	news{
+      company{
+        name
+      }
 			title
+      url
+      publishDate
+      category
     }
+    playlists{
+      name 
+    } 
+  }
+  playlist(uid: $playlist) {
+    name
   }
 }

@@ -1,5 +1,5 @@
-query {
-  playlists(first: 10) {
+query AllPlaylists($first: Int, $offset: Int) {
+  playlists(first: $first, offset: $offset) {
     uid
     name
     creationTime

@@ -1,6 +1,4 @@
 <template>
-  <v-layout row wrap justify-space-around>
-    <v-flex md5>
       <v-card>
         <v-card-title>
           <h1 class="display-1">Profile</h1>
@@ -82,15 +80,6 @@
           </h3>
         </v-card-text>
       </v-card>
-    </v-flex>
-    <v-flex md6>
-      <v-card>
-        <v-card-title>
-          <h1 class="headline">Custom Sales Signals</h1>
-        </v-card-title>
-      </v-card>
-    </v-flex>
-  </v-layout>
 </template>
 
 <script>
