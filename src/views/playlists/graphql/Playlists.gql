@@ -5,13 +5,5 @@ query AllPlaylists($first: Int, $offset: Int) {
     creationTime
     accountId
     userId
-    signals {
-      id
-      comments
-    }
-    companies {
-      uid
-      name
-    }
   }
 }
