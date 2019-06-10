@@ -4,21 +4,18 @@
     :items="items"
     :loading="!items.length"
     class="elevation-1"
+    @update:pagination="updatePagination"
+    :total-items="totalItems"
   >
-    <v-progress-linear
-      v-slot:progress
-      color="blue"
-      indeterminate
-    ></v-progress-linear>
+    <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
       <td>
         <a
           :key="`link${props.item.uid}`"
           :href="`companies/${props.item.uid}`"
-          >{{ props.item.name }}</a
-        >
+        >{{ props.item.name }}</a>
       </td>
-      <td>{{ props.item.signals.length }}</td>
+      <td>not currently working</td>
       <td>{{ props.item.status }}</td>
       <td>
         <p>{{ props.item.description }}</p>
@@ -39,6 +36,7 @@
 export default {
   data() {
     return {
+      totalItems: 10000000,
       headers: [
         {
           text: "Company",
@@ -62,6 +60,11 @@ export default {
   /* apollo: {
     playlists: PLAYLISTS
   } */
+  methods: {
+    updatePagination(dataFromEvent = {}) {
+      this.$emit("updatePagination", { dataFromEvent });
+    }
+  },
   props: {
     items: Array,
     props: []

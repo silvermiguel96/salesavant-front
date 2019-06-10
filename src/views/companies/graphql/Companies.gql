@@ -1,10 +1,7 @@
-{
-  companies {
+query AllCompanies($first: Int, $offset: Int) {
+  companies(first: $first, offset: $offset) {
     uid
     name
-    signals {
-      id
-    }
     status
     description
     city

@@ -15,7 +15,10 @@
     <companies-advanced-filter></companies-advanced-filter>
 
     <!-- Apollo watched Graphql query -->
-    <ApolloQuery :query="require('./graphql/Companies.gql')" :variables="null">
+    <ApolloQuery
+      :query="require('./graphql/Companies.gql')"
+      :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+    >
       <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
         <div v-if="loading" class="loading apollo">Loading...</div>
@@ -30,6 +33,7 @@
             v-if="data.companies.length"
             :items="data.companies"
             class="result apollo"
+            @updatePagination="updatePagination"
           ></companies-table>
         </div>
 
@@ -49,10 +53,32 @@ export default {
     return {
       items: ["Companies"],
       filter: false,
-      company: ""
+      company: "",
+      descending: false,
+      page: 1,
+      rowsPerPage: 5,
+      sortBy: "",
+      totalItems: 5
     };
   },
-  components: { CompaniesTable, CompaniesAdvancedFilter }
+  components: { CompaniesTable, CompaniesAdvancedFilter },
+  methods: {
+    updatePagination({
+      dataFromEvent: {
+        descending = false,
+        page = 1,
+        rowsPerPage = 5,
+        sortBy = "",
+        totalItems = 5
+      }
+    }) {
+      this.descending = descending;
+      this.page = page;
+      this.rowsPerPage = rowsPerPage;
+      this.sortBy = sortBy;
+      this.totalItems = 5;
+    }
+  }
   /* apollo: {
     playlists: PLAYLISTS
   } */
