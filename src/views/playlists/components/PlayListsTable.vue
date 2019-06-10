@@ -17,8 +17,8 @@
           }}
         </router-link>
       </td>
-      <td>{{ props.item.companies.length }}</td>
-      <td>{{ props.item.signals.length }}</td>
+      <td>not currently working</td>
+      <td>not currently working</td>
       <td>contacts coming soon</td>
       <td>
         <router-link :to="`/advanced/${props.item.uid}`">Advanced</router-link>
