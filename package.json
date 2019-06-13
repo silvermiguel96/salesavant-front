@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "rmpublic": "rm -rf ~/salesavant/proxy-server/public && mkdir ~/salesavant/proxy-server/public",
+    "cpdist": "cp -R dist/ ~/salesavant/proxy-server/public/",
+    "build": "vue-cli-service build && npm run rmpublic && npm run cpdist",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
