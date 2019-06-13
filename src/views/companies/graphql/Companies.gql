@@ -11,5 +11,8 @@ query AllCompanies($first: Int, $offset: Int) {
     momentum
     url
     vertical
+    signals {
+      id
+    }
   }
 }

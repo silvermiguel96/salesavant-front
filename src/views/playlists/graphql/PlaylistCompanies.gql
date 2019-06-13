@@ -5,10 +5,6 @@ query SinglePlaylist($uid: String) {
     creationTime
     accountId
     userId
-    signals {
-      id
-      comments
-    }
     companies {
       uid
       name

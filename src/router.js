@@ -8,7 +8,7 @@ import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import Search from "./views/search/Search.vue";
 import SearchWithSignals from "./views/search/SearchWithSignals.vue";
-
+import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 
@@ -17,6 +17,7 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
+  // eslint-disable-next-line no-sparse-arrays
   routes: [
     {
       path: "/",
@@ -76,6 +77,12 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    ,
+    {
+      path: "/new-companies",
+      name: "newcompanies",
+      component: NewCompanies
     }
   ]
 });

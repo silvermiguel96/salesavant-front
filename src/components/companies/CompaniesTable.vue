@@ -15,7 +15,7 @@
           :href="`companies/${props.item.uid}`"
         >{{ props.item.name }}</a>
       </td>
-      <td>not currently working</td>
+      <td>{{ _get(props, "item.signals", []).length }}</td>
       <td>{{ props.item.status }}</td>
       <td>
         <p>{{ props.item.description }}</p>
@@ -33,6 +33,7 @@
 
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
+import _get from "lodash.get";
 export default {
   data() {
     return {
@@ -63,7 +64,8 @@ export default {
   methods: {
     updatePagination(dataFromEvent = {}) {
       this.$emit("updatePagination", { dataFromEvent });
-    }
+    },
+    _get: _get
   },
   props: {
     items: Array,
