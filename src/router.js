@@ -22,12 +22,6 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: {
-        name: "login"
-      }
-    },
-    {
-      path: "/login",
       name: "login",
       meta: {
         public: true
