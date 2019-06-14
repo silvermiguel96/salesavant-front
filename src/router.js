@@ -11,6 +11,7 @@ import SearchWithSignals from "./views/search/SearchWithSignals.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
+import Login from "./views/Login.vue";
 
 Vue.use(Router);
 
@@ -21,6 +22,20 @@ export default new Router({
   routes: [
     {
       path: "/",
+      redirect: {
+        name: "login"
+      }
+    },
+    {
+      path: "/login",
+      name: "login",
+      meta: {
+        public: true
+      },
+      component: Login
+    },
+    {
+      path: "/home",
       name: "home",
       component: Home
     },
