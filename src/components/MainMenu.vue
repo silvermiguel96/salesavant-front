@@ -1,6 +1,6 @@
 <template>
   <v-toolbar color="primary" dark app dense>
-    <router-link to="/">
+    <router-link to="/home">
       <img class="logo" :src="require('../assets/salesavant_header.png')">
     </router-link>
     <v-spacer></v-spacer>

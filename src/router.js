@@ -11,16 +11,24 @@ import SearchWithSignals from "./views/search/SearchWithSignals.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
+import Login from "./views/Login.vue";
+import Callback from "./components/Callback";
+import auth from "./auth/authService";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   // eslint-disable-next-line no-sparse-arrays
   routes: [
     {
       path: "/",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/home",
       name: "home",
       component: Home
     },
@@ -78,11 +86,27 @@ export default new Router({
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
     },
-    ,
     {
       path: "/new-companies",
       name: "newcompanies",
       component: NewCompanies
+    },
+    {
+      path: '/callback',
+      name: 'callback',
+      component: Callback
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.path === "/" || to.path === "/callback" || auth.isAuthenticated()) {
+    return next();
+  }
+
+  // Specify the current path as the customState parameter, meaning it
+  // will be returned to the application after auth
+  auth.login({ target: to.path });
+});
+
+export default router;

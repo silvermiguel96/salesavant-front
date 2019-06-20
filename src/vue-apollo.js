@@ -22,7 +22,6 @@ Vue.prototype.$filesRoot = filesRoot;
 
 // Config
 const defaultOptions = {
-  // You can use `https` for secure connection (recommended in production)
   httpEndpoint,
   wsEndpoint: null,
   tokenName: AUTH_TOKEN,
@@ -30,7 +29,7 @@ const defaultOptions = {
   websocketsOnly: false,
   ssr: false,
   $loadingKey: "loading",
-  getAuth: () => `Basic YWxlamFuZHJvQHNhbGVzYXZhbnQuY29tOnF3ZXF3ZQ==`
+  //getAuth: () => `Bearer YWxlamFuZHJvQHNhbGVzYXZhbnQuY29tOnF3ZXF3ZQ==`
 };
 
 // Call this in the Vue app file

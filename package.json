@@ -13,6 +13,7 @@
     "start": "serve --single"
   },
   "dependencies": {
+    "auth0-js": "^9.10.4",
     "core-js": "^2.6.5",
     "lodash.get": "^4.4.2",
     "serve": "^11.0.1",
