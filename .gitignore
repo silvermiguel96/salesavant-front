@@ -1,7 +1,10 @@
 .DS_Store
 node_modules
-dist
 
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/

@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "rmpublic": "rm -rf ~/salesavant/proxy-server/public && mkdir ~/salesavant/proxy-server/public",
-    "cpdist": "cp -R dist/ ~/salesavant/proxy-server/public/",
-    "build": "vue-cli-service build && npm run rmpublic && npm run cpdist",
+    "cpassets": "cp logo.jpg ./dist/logo.jpg",
+    "build": "vue-cli-service build && npm run cpassets",
+    "deploy": "npm run build && eb deploy proxy-server-development",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
-    "start": "serve --single"
+    "start": "node index.js",
+    "proxy": "NODE_ENV=proxylocal node index.js",
+    "dev": "NODE_ENV=local VUE=true node index.js"
   },
   "dependencies": {
     "auth0-js": "^9.10.4",
@@ -20,7 +22,13 @@
     "vue": "^2.6.10",
     "vue-apollo": "^3.0.0-beta.11",
     "vue-router": "^3.0.3",
-    "vuetify": "^1.5.5"
+    "vuetify": "^1.5.5",
+    "connect-history-api-fallback": "^1.6.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "express-jwt-authz": "^2.3.1",
+    "http-proxy": "^1.17.0",
+    "jwks-rsa": "^1.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
