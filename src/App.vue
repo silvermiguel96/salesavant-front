@@ -1,16 +1,9 @@
 <template>
   <v-app>
-    <template v-if="$route.meta.public === true">
-      <transition>
-        <keep-alive>
-          <router-view :key="$route.fullpath"></router-view>
-        </keep-alive>
-      </transition>
-    </template>
-    <template v-else-if="$route.name">
+    <template>
       <v-content>
-        <main-menu ></main-menu>
-        <router-view @authenticated="setAuthenticated"></router-view>
+        <main-menu v-if="isAuthenticated"></main-menu>
+        <router-view></router-view>
       </v-content>
     </template>
   </v-app>
@@ -26,24 +19,31 @@ export default {
   },
   data() {
     return {
-      authenticated: false,
+      isAuthenticated: false,
       mockAccount: {
         username: "1",
         password: "1"
       }
     };
   },
-  mounted() {
-    if (!this.authenticated) {
-      this.$router.replace({ name: "login" });
+  async created() {
+    try {
+      await this.$auth.renewTokens();
+    } catch (e) {
+      console.log(e);
     }
   },
   methods: {
-    setAuthenticated(status) {
-      this.authenticated = status;
+    login() {
+      this.$auth.login();
     },
     logout() {
-      this.authenticated = false;
+      this.$auth.logOut();
+    },
+    handleLoginEvent(data) {
+      console.log({ data });
+      this.isAuthenticated = !!data.loggedIn;
+      this.profile = data.profile;
     }
   }
 };

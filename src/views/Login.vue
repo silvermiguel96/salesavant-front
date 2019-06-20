@@ -4,9 +4,9 @@
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12">
+            <v-card class="elevation-12" v-if="!isAuthenticated">
               <v-toolbar dark color="primary">
-                <v-toolbar-title >
+                <v-toolbar-title>
                   <img
                     src="/static/salesavant_header.png"
                     alt="SaleSavant"
@@ -20,25 +20,6 @@
                   </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field
-                    prepend-icon="person"
-                    name="login"
-                    v-model="input.username"
-                    label="Login"
-                    type="text"
-                  ></v-text-field>
-                  <v-text-field
-                    prepend-icon="lock"
-                    name="password"
-                    v-model="input.password"
-                    label="Password"
-                    id="password"
-                    type="password"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
               <v-card-actions class="ma-2">
                 <v-btn block color="secondary" v-on:click="login()">Login</v-btn>
               </v-card-actions>
@@ -51,33 +32,16 @@
 </template>
 
 <script>
+import authService from "../auth/authService";
+
 export default {
   name: "login",
   data() {
-    return {
-      input: {
-        username: "1",
-        password: "1"
-      }
-    };
+    return { isAuthenticated: this.$auth.isAuthenticated() };
   },
   methods: {
     login() {
-      if (this.input.username != "" && this.input.password != "") {
-        if (
-          // this.input.username == this.$parent.mockAccount.username &&
-          // this.input.password == this.$parent.mockAccount.password
-          this.input.username != "" &&
-          this.input.password != ""
-        ) {
-          this.$emit("authenticated", true);
-          this.$router.replace({ name: "home" });
-        } else {
-          console.log("The username and / or password is incorrect");
-        }
-      } else {
-        console.log("A username and password must be present");
-      }
+      this.$auth.login();
     }
   }
 };
