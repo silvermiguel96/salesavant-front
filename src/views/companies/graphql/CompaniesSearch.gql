@@ -1,0 +1,17 @@
+query SearchCompanies( $search: String , $first: Int, $offset: Int) {
+  companies( search: $search, first: $first, offset: $offset) {
+    uid
+    name
+    status
+    description
+    city
+    state
+    country
+    numEmployees
+    momentum
+    url
+    vertical
+    signalsTotalScore
+    signalsCount
+     }
+}

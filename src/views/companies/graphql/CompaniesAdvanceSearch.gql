@@ -1,0 +1,50 @@
+query SelecteCompany(
+  $company: String,
+  $country: String,
+  $website: String, 
+  $city: String, 
+  $region: String,
+  $state: String,
+  $status: String,
+  $lessThanEmployees: Int,
+  $moreThanEmployees: Int,
+  $first: Int, 
+  $offset: Int
+){
+  companies (
+    name: $company,
+    country: $country,
+    website: $website,
+    city: $city,
+    region: $region,
+ 		state: $state,
+    status: $status,
+    lessThanEmployees: $lessThanEmployees,
+    moreThanEmployees: $moreThanEmployees,
+    first: $first,
+    offset: $offset
+  ) {
+    creationTime
+    modificationTime
+    uid
+    name
+    description
+    url
+    handle
+    logoUrl
+    city
+    country
+    region
+    state
+    numEmployees
+    momentum
+    vertical
+    industry
+    status
+    dateFounded
+    dateAcquired
+    linkedinHandle
+    stockSymbol
+    naicsCode
+  }
+}

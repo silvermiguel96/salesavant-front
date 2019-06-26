@@ -16,89 +16,151 @@
           </v-layout>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="Company" v-model="name"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="Country" v-model="country"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="City" v-model="city"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-select
-                  :items="['Bay Area', 'Los Angeles', 'San Diego']"
-                  v-model="region"
-                  label="Region"
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-select
-                  :items="['Alabama', 'Alaska', 'Arizona']"
-                  v-model="state"
-                  label="State"
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-select
-                  :items="['Public', 'Private', 'Acquired']"
-                  v-model="status"
-                  label="Company status"
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm12>
-                <label class="title">Number Employees</label>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field
-                  label="Init"
-                  v-model="employeesMin"
-                ></v-text-field>
-              </v-flex>
-              <v-flex sm6 md6>
-                <v-text-field label="End" v-model="employeesMax"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-container>
+          <v-expansion-panel v-model="panel"  expand >
+            <v-expansion-panel-content>
+              <template v-slot:actions>
+                <v-icon color="primary">youtube_searched_for</v-icon>
+              </template>
+              <template v-slot:header>
+                <div class="headline">Search</div>
+              </template>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12>
+                    <v-text-field label="Search" v-model="search"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" flat v-on:click="fnSearch" :loading="loading">Search</v-btn>
+                </v-card-actions>
+              </v-container>
+            </v-expansion-panel-content>
+            <v-expansion-panel-content>            
+              <template v-slot:actions>
+                <v-icon color="primary">filter_list</v-icon>
+              </template>
+              <template v-slot:header>
+                <div class="headline">Advanced search</div>
+              </template>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12 sm6 md6>
+                    <v-text-field label="Company" v-model="searchAdvance.name"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md6>
+                    <v-text-field label="Country" v-model="searchAdvance.country"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md6>
+                    <v-text-field label="City" v-model="searchAdvance.city"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md6>
+                     <v-text-field label="Region" v-model="searchAdvance.region"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md6>
+                     <v-text-field label="State" v-model="searchAdvance.state"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6>
+                     <v-text-field label="Company status" v-model="searchAdvance.status"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm12>
+                    <label class="title">Number Employees</label>
+                  </v-flex>
+                  <v-flex xs12 sm6 md6>
+                    <v-text-field label="More" type="number" v-model="searchAdvance.moreThanEmployees"></v-text-field>
+                  </v-flex>
+                  <v-flex sm6 md6>
+                    <v-text-field label="Less" type="number" v-model="searchAdvance.lessThanEmployees"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    flat
+                    v-on:click="fnSearchAdvance"
+                    :loading="loading">
+                  Search Advanced</v-btn>
+                </v-card-actions>
+              </v-container>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="save = false">Search</v-btn>
-          <v-btn color="blue darken-1" flat @click="filter = false"
-            >Clean</v-btn
-          >
+          <v-btn color="blue darken-1" flat @click="filter = false" >Clean</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- {{ company }} -->
   </v-layout>
 </template>
 
 <script>
+import { parse } from 'path';
 export default {
   data() {
     return {
       filter: false,
-      country: "",
-      name: "",
-      employeesMin: "",
-      employeesMax: "",
-      status: "",
-      region: "",
-      state: "",
-      city: ""
+      typeButton: "",
+      search: "",
+      searchAdvance: {
+        country: "",
+        name: "",
+        lessThanEmployees: 0,
+        moreThanEmployees: 0,
+        status: "",
+        region: "",
+        state: "",
+        city: ""
+      },
+      panel: [true, false],
+      loading: false
     };
+  },
+  methods: {
+    fnSearch() {
+      this.loading = true;
+      setTimeout(() => {
+        this.$emit("changeFieldSerch", this.search);
+        this.$emit("typeBtn", this.typeButton = 1)
+        this.search = "";
+        this.searchAdvance.country = "";
+        this.searchAdvance.name = "";
+        this.searchAdvance.lessThanEmployees = 0;
+        this.searchAdvance.moreThanEmployees = 0;
+        this.searchAdvance.status = "";
+        this.searchAdvance.region = "";
+        this.searchAdvance.state = "";
+        this.searchAdvance.city = "";
+        this.filter = false;
+        this.loading = false;
+      }, 1000);
+    },
+    fnSearchAdvance() {
+      this.loading = true;
+      setTimeout(() => {
+        this.$emit("changeFieldSerchAdvanceName", this.searchAdvance.name);
+        this.$emit("changeFieldSerchAdvanceCountry", this.searchAdvance.country);
+        this.$emit("changeFieldSerchAdvanceLessThanEmployees", this.searchAdvance.lessThanEmployees = Number(this.searchAdvance.lessThanEmployees));
+        this.$emit("changeFieldSerchAdvanceMoreThanEmployees", this.searchAdvance.moreThanEmployees = Number(this.searchAdvance.moreThanEmployees));
+        this.$emit("changeFieldSerchAdvanceStatus", this.searchAdvance.status);
+        this.$emit("changeFieldSerchAdvanceRegion", this.searchAdvance.region);
+        this.$emit("changeFieldSerchAdvanceState", this.searchAdvance.state);
+        this.$emit("changeFieldSerchAdvanceCity", this.searchAdvance.city);
+        this.$emit("typeBtn", this.typeButton = 2)
+        this.searchAdvance.country = "";
+        this.searchAdvance.name = "";
+        this.searchAdvance.lessThanEmployees = 0;
+        this.searchAdvance.moreThanEmployees = 0;
+        this.searchAdvance.status = "";
+        this.searchAdvance.region = "";
+        this.searchAdvance.state = "";
+        this.searchAdvance.city = "";
+        this.search = "";
+        this.filter = false;
+        this.loading = false;
+      }, 1000);
+    }
   }
-  /* apollo: {
-    playlists: PLAYLISTS
-  } */
-  // ,
-  // methods: {
-  //   save () {
-  //     console.log(this.$company);
-  //   }
-  // }
 };
 </script>

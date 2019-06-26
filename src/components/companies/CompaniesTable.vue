@@ -2,7 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :loading="!items.length"
     class="elevation-1"
     @update:pagination="updatePagination"
     :total-items="totalItems"
@@ -59,7 +58,7 @@ export default {
         { text: "Emp.", value: "numEmployees", align: "left" },
         { text: "Momentum", value: "momentum", align: "left" },
         { text: "Website", value: "url", align: "left" },
-        { text: "Vertical" }
+        { text: "Vertical" , value: "vertical", align: "left"}
       ]
     };
   },
