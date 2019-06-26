@@ -53,7 +53,7 @@ export default {
           value: "companies.length",
           align: "left"
         },
-        { text: "Signals", value: "signals.length", align: "left" },
+        { text: "Signals", value: "signalsCount", align: "left" },
         { text: "Contacts", align: "left", value: "contacts" },
         { text: "Advanced", align: "left", value: "advanced" },
         { text: "Owner", value: "userId", align: "left" },

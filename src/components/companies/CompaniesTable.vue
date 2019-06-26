@@ -15,10 +15,10 @@
           :href="`companies/${props.item.uid}`"
         >{{ props.item.name }}</a>
       </td>
-      <td>{{ _get(props, "item.signals", []).length }}</td>
+      <td>{{ props.item.signalsCount || "0" }}</td>
       <td>{{ props.item.status }}</td>
-      <td>
-        <p>{{ props.item.description }}</p>
+      <td class="wrapping-td">
+        <long-paragraph :text="props.item.description"></long-paragraph>
       </td>
       <td>{{ props.item.city }}</td>
       <td>{{ props.item.state }}</td>
@@ -34,6 +34,7 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import _get from "lodash.get";
+import LongParagraph from "./LongParagraph";
 export default {
   data() {
     return {
@@ -45,9 +46,13 @@ export default {
           sortable: true,
           value: "name"
         },
-        { text: "Signals", value: "signals.length" },
+        { text: "Signals", value: "signalsCount" },
         { text: "Status", value: "status", align: "left" },
-        { text: "Description", value: "description", align: "left" },
+        {
+          text: "Description",
+          value: "description",
+          align: "left"
+        },
         { text: "City", value: "city", align: "left" },
         { text: "State", value: "state", align: "left" },
         { text: "Country", value: "country", align: "left" },
@@ -65,11 +70,23 @@ export default {
     updatePagination(dataFromEvent = {}) {
       this.$emit("updatePagination", { dataFromEvent });
     },
-    _get: _get
+    _get: _get,
+    trimText(text = "") {
+      return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
+    }
   },
   props: {
     items: Array,
     props: []
+  },
+  components: {
+    LongParagraph
   }
 };
 </script>
+<style scoped>
+.wrapping-td {
+  white-space: normal;
+}
+</style>
+

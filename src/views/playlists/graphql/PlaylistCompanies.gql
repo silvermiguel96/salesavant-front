@@ -8,9 +8,7 @@ query SinglePlaylist($uid: String) {
     companies {
       uid
       name
-      signals {
-        id
-      }
+      signalsCount
       status
       description
       city

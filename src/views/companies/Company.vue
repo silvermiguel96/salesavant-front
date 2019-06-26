@@ -1,6 +1,6 @@
 <template>
   <ApolloQuery
-    :query="require('./graphql/CompanySelected.gql')"
+    :query="$route.params.playlistId ? require('./graphql/CompanyWithPlayList.gql') : require('./graphql/CompanySelected.gql')"
     :variables="{ company: $route.params.companiesUid, playlist: $route.params.playlistId || '' }"
   >
     <template slot-scope="{ result: { loading, error, data } }">

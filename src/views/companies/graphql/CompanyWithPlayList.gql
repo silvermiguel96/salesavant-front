@@ -1,4 +1,4 @@
-query SelecteCompany($company: String){
+query SelecteCompany($company: String, $playlist: String){
   company(uid: $company){
     creationTime
     modificationTime
@@ -40,5 +40,8 @@ query SelecteCompany($company: String){
     playlists{
       name 
     } 
+  }
+  playlist(uid: $playlist) {
+    name
   }
 }
