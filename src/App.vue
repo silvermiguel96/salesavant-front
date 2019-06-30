@@ -2,8 +2,8 @@
   <v-app>
     <template>
       <v-content>
-        <main-menu v-if="isAuthenticated"></main-menu>
-        <full-screen-search v-if="isAuthenticated" :show="showSearch"></full-screen-search>
+        <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
+        <full-screen-search v-if="isAuthenticated" :show="showSearch" @toggle="toggleSearch"></full-screen-search>
         <router-view></router-view>
       </v-content>
     </template>
@@ -55,6 +55,9 @@ export default {
         this.$router.push("/");
       }
       this.profile = data.profile;
+    },
+    toggleSearch(data) {
+      this.showSearch = data.show;
     }
   }
 };
