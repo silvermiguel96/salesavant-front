@@ -1,15 +1,15 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
-          <v-btn icon dark @click="dialog = false">
+          <v-btn icon dark @click="show = false">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Settings</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark flat @click="dialog = false">Save</v-btn>
+            <v-btn dark flat @click="show = false">Save</v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-list three-line subheader>
@@ -67,11 +67,13 @@
 export default {
   data() {
     return {
-      dialog: false,
       notifications: false,
       sound: true,
       widgets: false
     };
+  },
+  props: {
+    show: { type: Boolean, default: false }
   }
 };
 </script>
