@@ -3,13 +3,13 @@
     <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
-          <v-btn icon dark @click="show = false">
+          <v-btn icon dark @click="toggle">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Settings</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark flat @click="show = false">Save</v-btn>
+            <v-btn dark flat @click="toggle">Save</v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-list three-line subheader>
@@ -74,6 +74,11 @@ export default {
   },
   props: {
     show: { type: Boolean, default: false }
+  },
+  methods: {
+    toggle() {
+      this.$emit("toggle", { show: !this.$props.show });
+    }
   }
 };
 </script>
