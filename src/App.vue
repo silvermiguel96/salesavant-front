@@ -4,7 +4,7 @@
       <v-content>
         <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
         <full-screen-search v-if="isAuthenticated" :show="showSearch" @toggle="toggleSearch"></full-screen-search>
-        <router-view></router-view>
+        <router-view :showSearch="showSearch" @toggleSearch="toggleSearch"></router-view>
       </v-content>
     </template>
   </v-app>

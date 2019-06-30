@@ -11,6 +11,8 @@
       divider=">"
     ></v-breadcrumbs>
 
+    <v-btn @click="toggleSearch">click here to search</v-btn>
+
     <!-- Filter -->
     <companies-advanced-filter
       @changeFieldSerch="changeFieldSerch"
@@ -200,7 +202,13 @@ export default {
     },
     typeBtn(newValue) {
       this.typeButton = newValue;
+    },
+    toggleSearch() {
+      this.$emit("toggleSearch", { show: !this.$props.showSearch });
     }
+  },
+  props: {
+    showSearch: { type: Boolean, default: false }
   }
 };
 </script>
