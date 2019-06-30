@@ -3,6 +3,7 @@
     <template>
       <v-content>
         <main-menu v-if="isAuthenticated"></main-menu>
+        <full-screen-search v-if="isAuthenticated" :show="showSearch"></full-screen-search>
         <router-view></router-view>
       </v-content>
     </template>
@@ -11,11 +12,13 @@
 
 <script>
 import MainMenu from "./components/MainMenu.vue";
+import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
 
 export default {
   name: "App",
   components: {
-    MainMenu
+    MainMenu,
+    FullScreenSearch
   },
   data() {
     return {
@@ -23,7 +26,8 @@ export default {
       mockAccount: {
         username: "1",
         password: "1"
-      }
+      },
+      showSearch: false
     };
   },
   async created() {
