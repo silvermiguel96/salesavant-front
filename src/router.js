@@ -92,8 +92,8 @@ const router = new Router({
       component: NewCompanies
     },
     {
-      path: '/callback',
-      name: 'callback',
+      path: "/callback",
+      name: "callback",
       component: Callback
     }
   ]
