@@ -69,7 +69,8 @@
           moreThanEmployees: searchAdvance.moreThanEmployees,
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
-          }">
+          }"
+      >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
           <div v-if="loading" class="loading apollo">Loading...</div>
@@ -93,7 +94,7 @@
         </template>
       </ApolloQuery>
     </template>
-    <template v-else >
+    <template v-else>
       <ApolloQuery
         :query="require('./graphql/Companies.gql')"
         :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
@@ -179,22 +180,22 @@ export default {
     changeFieldSerchAdvanceCountry(newValue) {
       this.searchAdvance.country = newValue;
     },
-    changeFieldSerchAdvanceLessThanEmployees(newValue){
+    changeFieldSerchAdvanceLessThanEmployees(newValue) {
       this.searchAdvance.lessThanEmployees = newValue;
     },
-    changeFieldSerchAdvanceMoreThanEmployees(newValue){
+    changeFieldSerchAdvanceMoreThanEmployees(newValue) {
       this.searchAdvance.moreThanEmployees = newValue;
     },
-    changeFieldSerchAdvanceStatus(newValue){
+    changeFieldSerchAdvanceStatus(newValue) {
       this.searchAdvance.status = newValue;
     },
-    changeFieldSerchAdvanceRegion(newValue){
+    changeFieldSerchAdvanceRegion(newValue) {
       this.searchAdvance.region = newValue;
     },
-    changeFieldSerchAdvanceState(newValue){
+    changeFieldSerchAdvanceState(newValue) {
       this.searchAdvance.state = newValue;
     },
-    changeFieldSerchAdvanceCity(newValue){
+    changeFieldSerchAdvanceCity(newValue) {
       this.searchAdvance.city = newValue;
     },
     typeBtn(newValue) {
