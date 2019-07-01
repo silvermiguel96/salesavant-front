@@ -37,7 +37,7 @@ import authService from "../auth/authService";
 export default {
   name: "login",
   data() {
-    return { isAuthenticated: this.$auth.isAuthenticated() };
+    return { isAuthenticated: false };
   },
   methods: {
     login() {

@@ -48,11 +48,9 @@ export default {
       console.log({ data });
       console.log("this.$auth.isAuthenticated()", this.$auth.isAuthenticated());
       if (this.$auth.isAuthenticated()) {
-        this.$router.push("/home");
         this.isAuthenticated = this.$auth.isAuthenticated();
       } else {
         this.isAuthenticated = false;
-        this.$router.push("/");
       }
       this.profile = data.profile;
     },

@@ -100,7 +100,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/" || to.path === "/callback" || auth.isAuthenticated()) {
+  if (to.path === "/callback" || auth.isAuthenticated()) {
     return next();
   }
 
