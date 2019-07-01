@@ -11,7 +11,7 @@
                     src="/static/salesavant_header.png"
                     alt="SaleSavant"
                     style="width: 240px; max-width: 80%; margin: 1em;"
-                  >
+                  />
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -42,6 +42,11 @@ export default {
   methods: {
     login() {
       this.$auth.login();
+    }
+  },
+  created() {
+    if (this.$auth.isAuthenticated()) {
+      this.$router.push("/home");
     }
   }
 };
