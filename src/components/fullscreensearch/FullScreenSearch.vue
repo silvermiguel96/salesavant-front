@@ -6,27 +6,16 @@
           <v-btn icon dark @click="toggle">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-toolbar-title>Search</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark flat @click="toggle">Save</v-btn>
+            <v-btn @click="search">
+              <v-icon>search</v-icon>
+              {{" Search"}}
+            </v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <v-list three-line subheader>
-          <v-subheader>User Controls</v-subheader>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Content filtering</v-list-tile-title>
-              <v-list-tile-sub-title>Set the content filtering level to restrict apps that can be downloaded</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Password</v-list-tile-title>
-              <v-list-tile-sub-title>Require password for purchase or use password to restrict purchase</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
+        <simple-search @change="changeSimpleSearch" @toggle="toggle" />
         <v-divider></v-divider>
         <v-list three-line subheader>
           <v-subheader>General</v-subheader>
@@ -64,20 +53,59 @@
 </template>
 
 <script>
+import SimpleSearch from "./SimpleSearch.vue";
+
+const defaultCompanySearchObject = {
+  name: "",
+  description: "",
+  uid: ""
+};
+
 export default {
   data() {
     return {
       notifications: false,
       sound: true,
-      widgets: false
+      widgets: false,
+      simpleSearch: "",
+      companySearchObject: { ...defaultCompanySearchObject }
     };
   },
   props: {
     show: { type: Boolean, default: false }
   },
+  components: {
+    SimpleSearch
+  },
   methods: {
     toggle() {
       this.$emit("toggle", { show: !this.$props.show });
+    },
+    search() {
+      this.toggle();
+      if (!!this.simpleSearch) {
+        this.onSimpleSearch();
+      } else {
+        this.onCompanySearch();
+      }
+    },
+    changeSimpleSearch(data) {
+      this.companySearchObject = { ...defaultCompanySearchObject };
+      this.simpleSearch = data.simpleSearch || "";
+    },
+    onSimpleSearch() {
+      if (!!this.simpleSearch) {
+        this.$router.push({
+          path: "/companies/search",
+          query: { simpleSearch: this.simpleSearch, searchType: "simple" }
+        });
+      }
+    },
+    onCompanySearch() {
+      this.$router.push({
+        path: "/companies/search",
+        query: { ...this.companySearchObject, searchType: "company" }
+      });
     }
   }
 };

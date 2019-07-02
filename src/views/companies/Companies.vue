@@ -11,21 +11,7 @@
       divider=">"
     ></v-breadcrumbs>
 
-    <v-btn @click="toggleSearch">click here to search</v-btn>
-
-    <!-- Filter -->
-    <companies-advanced-filter
-      @changeFieldSerch="changeFieldSerch"
-      @changeFieldSerchAdvanceName="changeFieldSerchAdvanceName"
-      @changeFieldSerchAdvanceCountry="changeFieldSerchAdvanceCountry"
-      @changeFieldSerchAdvanceLessThanEmployees="changeFieldSerchAdvanceLessThanEmployees"
-      @changeFieldSerchAdvanceMoreThanEmployees="changeFieldSerchAdvanceMoreThanEmployees"
-      @changeFieldSerchAdvanceStatus="changeFieldSerchAdvanceStatus"
-      @changeFieldSerchAdvanceRegion="changeFieldSerchAdvanceRegion"
-      @changeFieldSerchAdvanceState="changeFieldSerchAdvanceState"
-      @changeFieldSerchAdvanceCity="changeFieldSerchAdvanceCity"
-      @typeBtn="typeBtn"
-    ></companies-advanced-filter>
+    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
 
     <!-- Apollo watched Graphql query -->
     <template v-if="typeButton == 1 ">
@@ -135,7 +121,7 @@ export default {
   data() {
     return {
       items: ["Companies"],
-      filter: false,
+
       company: "",
       descending: false,
       page: 1,
@@ -209,6 +195,22 @@ export default {
   },
   props: {
     showSearch: { type: Boolean, default: false }
+  },
+  beforeCreate() {
+    console.log("beforeCreate", "this.$router", this.$router);
+    console.log("beforeCreate", "this.$route", this.$route);
+  },
+  created() {
+    console.log("created", "this.$router", this.$router);
+    console.log("created", "this.$route", this.$route);
+  },
+  beforeUpdate() {
+    console.log("beforeUpdate", "this.$router", this.$router);
+    console.log("beforeUpdate", "this.$route", this.$route);
+  },
+  updated() {
+    console.log("updated", "this.$router", this.$router);
+    console.log("updated", "this.$route", this.$route);
   }
 };
 </script>
