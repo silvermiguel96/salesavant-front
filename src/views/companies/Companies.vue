@@ -14,10 +14,12 @@
     <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
 
     <!-- Apollo watched Graphql query -->
-    <template v-if="typeButton == 1 ">
+    <template
+      v-if="this.$route.path === '/companies/search' && !!this.$route.query && !!this.$route.query.simpleSearch"
+    >
       <ApolloQuery
-        :query="require('./graphql/CompaniesSearch.gql')"
-        :variables="{ search: searchField , first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+        :query="require('./graphql/CompaniesSimpleSearch.gql')"
+        :variables="{ search: this.$route.query.simpleSearch, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
