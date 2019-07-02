@@ -9,6 +9,7 @@ import Company from "./views/companies/Company.vue";
 import Search from "./views/search/Search.vue";
 import SearchWithSignals from "./views/search/SearchWithSignals.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
+import News from './views/news/News.vue';
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
@@ -46,6 +47,11 @@ const router = new Router({
       path: "/companies",
       name: "companies",
       component: Companies
+    },
+    {
+      path: "/news",
+      name: "news",
+      component: News
     },
     {
       path: "/companies/:companiesUid",
