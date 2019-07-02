@@ -14,7 +14,9 @@
     <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
 
     <!-- Apollo watched Graphql query -->
-    <template v-if="!!this.$route.query && !!this.$route.query.simpleSearch">
+    <template
+      v-if="!!this.$route.query && !!this.$route.query.searchType && !!this.$route.query.searchType==='simple' && !!this.$route.query.simpleSearch"
+    >
       <ApolloQuery
         :query="require('./graphql/CompaniesSimpleSearch.gql')"
         :variables="{ search: this.$route.query.simpleSearch, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"

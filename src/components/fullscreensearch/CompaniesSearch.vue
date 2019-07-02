@@ -8,10 +8,13 @@
             <v-container grid-list-md text-xs-center>
               <v-layout row wrap>
                 <v-flex>
+                  <v-text-field name="name" v-model="company.name" label="name" @input="changeData"></v-text-field>
+                </v-flex>
+                <v-flex>
                   <v-text-field
-                    name="simpleSearch"
-                    v-model="simpleSearch"
-                    label="name or description"
+                    name="description"
+                    v-model="company.description"
+                    label="description"
                     @input="changeData"
                   ></v-text-field>
                 </v-flex>
@@ -34,12 +37,15 @@
 export default {
   data() {
     return {
-      simpleSearch: ""
+      company: {
+        name: "",
+        description: ""
+      }
     };
   },
   methods: {
-    changeData(data) {
-      this.$emit("change", { simpleSearch: data });
+    changeData() {
+      this.$emit("change", { ...this.company });
     },
     toggle() {
       this.$emit("toggle");

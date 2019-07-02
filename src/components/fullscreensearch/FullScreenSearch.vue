@@ -17,7 +17,7 @@
         </v-toolbar>
         <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
         <v-divider></v-divider>
-        <companies-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
+        <companies-search @change="changeCompanySearchObject" @toggle="toggle" @search="search" />
         <v-list three-line subheader>
           <v-subheader>General</v-subheader>
           <v-list-tile avatar>
@@ -59,8 +59,7 @@ import CompaniesSearch from "./CompaniesSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
-  description: "",
-  uid: ""
+  description: ""
 };
 
 export default {
@@ -70,7 +69,8 @@ export default {
       sound: true,
       widgets: false,
       simpleSearch: "",
-      companySearchObject: { ...defaultCompanySearchObject }
+      companySearchObject: { ...defaultCompanySearchObject },
+      searchType: null
     };
   },
   props: {
@@ -85,29 +85,38 @@ export default {
       this.$emit("toggle", { show: !this.$props.show });
     },
     search() {
-      this.toggle();
-      if (!!this.simpleSearch) {
-        this.onSimpleSearch();
-      } else {
-        this.onCompanySearch();
+      switch (this.searchType) {
+        case "simple":
+          this.toggle();
+          this.onSimpleSearch();
+          break;
+        case "company":
+          this.toggle();
+          this.onCompanySearch();
+          break;
       }
     },
     changeSimpleSearch(data) {
-      this.companySearchObject = { ...defaultCompanySearchObject };
+      this.searchType = "simple";
       this.simpleSearch = data.simpleSearch || "";
     },
+    changeCompanySearchObject(data) {
+      this.searchType = "company";
+      this.companySearchObject = { ...data };
+    },
     onSimpleSearch() {
-      if (!!this.simpleSearch) {
-        this.$router.push({
-          path: "/companies",
-          query: { simpleSearch: this.simpleSearch, searchType: "simple" }
-        });
-      }
+      this.$router.push({
+        path: "/companies",
+        query: {
+          simpleSearch: this.simpleSearch,
+          searchType: this.searchType
+        }
+      });
     },
     onCompanySearch() {
       this.$router.push({
         path: "/companies",
-        query: { ...this.companySearchObject, searchType: "company" }
+        query: { ...this.companySearchObject, searchType: this.searchType }
       });
     }
   }
