@@ -1,7 +1,7 @@
 <template>
   <v-toolbar color="primary" dark app dense>
     <router-link to="/home">
-      <img class="logo" :src="require('../assets/salesavant_header.png')">
+      <img class="logo" :src="require('../assets/salesavant_header.png')" />
     </router-link>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down" v-for="link in links" :key="link.text">
@@ -21,11 +21,6 @@ export default {
         { icon: "find_replace", text: "Playlists", router: "/playlists" },
         { icon: "assessment", text: "Companies", router: "/companies" },
         { icon: "search", text: "Search", click: this.toggleSearch },
-        {
-          icon: "search",
-          text: "Search with Signals",
-          router: "/search-with-signals"
-        },
         { icon: "assessment", text: "New Companies", router: "/new-companies" }
       ]
     };
