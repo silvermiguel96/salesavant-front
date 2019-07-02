@@ -48,11 +48,6 @@ const router = new Router({
       component: Companies
     },
     {
-      path: "/companies/search",
-      name: "companies",
-      component: Companies
-    },
-    {
       path: "/companies/:companiesUid",
       name: "company",
       component: Company

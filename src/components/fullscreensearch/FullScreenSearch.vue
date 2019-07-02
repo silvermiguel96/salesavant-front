@@ -15,7 +15,7 @@
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <simple-search @change="changeSimpleSearch" @toggle="toggle" />
+        <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
         <v-divider></v-divider>
         <v-list three-line subheader>
           <v-subheader>General</v-subheader>
@@ -96,14 +96,14 @@ export default {
     onSimpleSearch() {
       if (!!this.simpleSearch) {
         this.$router.push({
-          path: "/companies/search",
+          path: "/companies",
           query: { simpleSearch: this.simpleSearch, searchType: "simple" }
         });
       }
     },
     onCompanySearch() {
       this.$router.push({
-        path: "/companies/search",
+        path: "/companies",
         query: { ...this.companySearchObject, searchType: "company" }
       });
     }
