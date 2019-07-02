@@ -15,9 +15,15 @@
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
+        <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="onSimpleSearch" />
         <v-divider></v-divider>
-        <companies-search @change="changeCompanySearchObject" @toggle="toggle" @search="search" />
+        <companies-search
+          @change="changeCompanySearchObject"
+          @toggle="toggle"
+          @search="onCompanySearch"
+        />
+        <v-divider></v-divider>
+        <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
       </v-card>
     </v-dialog>
   </v-layout>
@@ -26,6 +32,7 @@
 <script>
 import SimpleSearch from "./SimpleSearch.vue";
 import CompaniesSearch from "./CompaniesSearch.vue";
+import NewsSearch from "./NewsSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
@@ -47,7 +54,8 @@ export default {
       widgets: false,
       simpleSearch: "",
       companySearchObject: { ...defaultCompanySearchObject },
-      searchType: null
+      searchType: null,
+      news: ""
     };
   },
   props: {
@@ -55,7 +63,8 @@ export default {
   },
   components: {
     SimpleSearch,
-    CompaniesSearch
+    CompaniesSearch,
+    NewsSearch
   },
   methods: {
     toggle() {
@@ -64,12 +73,13 @@ export default {
     search() {
       switch (this.searchType) {
         case "simple":
-          this.toggle();
           this.onSimpleSearch();
           break;
         case "company":
-          this.toggle();
           this.onCompanySearch();
+          break;
+        case "news":
+          this.onNewsSearch();
           break;
       }
     },
@@ -81,19 +91,32 @@ export default {
       this.searchType = "company";
       this.companySearchObject = { ...data };
     },
+    changeNews(data) {
+      this.searchType = "news";
+      this.news = data.news;
+    },
     onSimpleSearch() {
+      this.toggle();
       this.$router.push({
         path: "/companies",
         query: {
           simpleSearch: this.simpleSearch,
-          searchType: this.searchType
+          searchType: "simple"
         }
       });
     },
     onCompanySearch() {
+      this.toggle();
       this.$router.push({
         path: "/companies",
-        query: { ...this.companySearchObject, searchType: this.searchType }
+        query: { ...this.companySearchObject, searchType: "company" }
+      });
+    },
+    onNewsSearch() {
+      this.toggle();
+      this.$router.push({
+        path: "/news",
+        query: { news: this.news, searchType: "news" }
       });
     }
   }

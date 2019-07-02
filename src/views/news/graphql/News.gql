@@ -1,0 +1,15 @@
+query AllNews($first: Int, $offset: Int) {
+  news(first: $first, offset: $offset) {
+    id
+    url
+    title
+    company {
+      uid
+      name
+    }
+    category
+    searchNews
+    publishDate
+    creationTime
+  }
+}
