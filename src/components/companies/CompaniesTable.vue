@@ -15,7 +15,6 @@
         >{{ props.item.name }}</a>
       </td>
       <td>{{ props.item.signalsCount || "0" }}</td>
-      <td>{{ props.item.status }}</td>
       <td class="wrapping-td">
         <long-paragraph :text="props.item.description"></long-paragraph>
       </td>
@@ -46,7 +45,6 @@ export default {
           value: "name"
         },
         { text: "Signals", value: "signalsCount" },
-        { text: "Status", value: "status", align: "left" },
         {
           text: "Description",
           value: "description",
@@ -58,7 +56,7 @@ export default {
         { text: "Emp.", value: "numEmployees", align: "left" },
         { text: "Momentum", value: "momentum", align: "left" },
         { text: "Website", value: "url", align: "left" },
-        { text: "Vertical" , value: "vertical", align: "left"}
+        { text: "Vertical", value: "vertical", align: "left" }
       ]
     };
   },

@@ -1,42 +1,68 @@
 <template>
   <div class="apollo-example">
     <v-breadcrumbs
+      v-if="!!this.$route.query && !!this.$route.query.searchType"
       :items="[
         {
           text: 'Companies',
+          disabled: false,
+          href: '/companies'
+        },
+        {
+          text: `${this.$route.query.searchType} search`,
           disabled: true,
           href: '/companies'
         }
       ]"
       divider=">"
     ></v-breadcrumbs>
+    <v-breadcrumbs
+      v-else
+      :items="[
+        {
+          text: 'Companies',
+          disabled: false,
+          href: '/companies'
+        }
+      ]"
+      divider=">"
+    ></v-breadcrumbs>
+    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
+    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+      <li
+        v-if="this.$route.query.simpleSearch"
+      >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
+      <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
+      <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
+      <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
+      <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
+      <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
+      <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
+      <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
+      <li
+        v-if="this.$route.query.lessThanEmployees"
+      >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
+      <li
+        v-if="this.$route.query.moreThanEmployees"
+      >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
+    </ul>
 
-    <!-- Filter -->
-    <companies-advanced-filter
-      @changeFieldSerch="changeFieldSerch"
-      @changeFieldSerchAdvanceName="changeFieldSerchAdvanceName"
-      @changeFieldSerchAdvanceCountry="changeFieldSerchAdvanceCountry"
-      @changeFieldSerchAdvanceLessThanEmployees="changeFieldSerchAdvanceLessThanEmployees"
-      @changeFieldSerchAdvanceMoreThanEmployees="changeFieldSerchAdvanceMoreThanEmployees"
-      @changeFieldSerchAdvanceStatus="changeFieldSerchAdvanceStatus"
-      @changeFieldSerchAdvanceRegion="changeFieldSerchAdvanceRegion"
-      @changeFieldSerchAdvanceState="changeFieldSerchAdvanceState"
-      @changeFieldSerchAdvanceCity="changeFieldSerchAdvanceCity"
-      @typeBtn="typeBtn"
-    ></companies-advanced-filter>
+    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
 
     <!-- Apollo watched Graphql query -->
-    <template v-if="typeButton == 1 ">
+    <template
+      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='simple' && !!this.$route.query.simpleSearch"
+    >
       <ApolloQuery
-        :query="require('./graphql/CompaniesSearch.gql')"
-        :variables="{ search: searchField , first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+        :query="require('./graphql/CompaniesSimpleSearch.gql')"
+        :variables="{ search: this.$route.query.simpleSearch, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
           <div v-if="loading" class="loading apollo">Loading...</div>
 
           <!-- Error -->
-          <div v-else-if="error" class="error apollo">An error occured</div>
+          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
           <!-- Result -->
           <div v-else-if="data" class="result apollo">
@@ -54,28 +80,31 @@
         </template>
       </ApolloQuery>
     </template>
-    <template v-else-if="typeButton == 2 ">
+    <template
+      v-else-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
+    >
       <ApolloQuery
-        :query="require('./graphql/CompaniesAdvanceSearch.gql')"
+        :query="require('./graphql/CompaniesAdvancedSearch.gql')"
         :variables="{ 
-          company: searchAdvance.name,
-          country: searchAdvance.country,
-          website: searchAdvance.website,
-          city: searchAdvance.city,
-          region: searchAdvance.region,
-          state: searchAdvance.state,
-          status: searchAdvance.status,
-          lessThanEmployees: searchAdvance.lessThanEmployees,
-          moreThanEmployees: searchAdvance.moreThanEmployees,
+          name: this.$route.query.name || '',
+          country: this.$route.query.country || '',
+          website: this.$route.query.website || '',
+          city: this.$route.query.city || '',
+          region: this.$route.query.region || '',
+          state: this.$route.query.state || '',
+          status: this.$route.query.status || '',
+          lessThanEmployees: this.$route.query.lessThanEmployees || '0',
+          moreThanEmployees: this.$route.query.moreThanEmployees || '0',
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
-          }">
+          }"
+      >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
           <div v-if="loading" class="loading apollo">Loading...</div>
 
           <!-- Error -->
-          <div v-else-if="error" class="error apollo">An error occured</div>
+          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
           <!-- Result -->
           <div v-else-if="data" class="result apollo">
@@ -93,7 +122,7 @@
         </template>
       </ApolloQuery>
     </template>
-    <template v-else >
+    <template v-else>
       <ApolloQuery
         :query="require('./graphql/Companies.gql')"
         :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
@@ -103,7 +132,7 @@
           <div v-if="loading" class="loading apollo">Loading...</div>
 
           <!-- Error -->
-          <div v-else-if="error" class="error apollo">An error occured</div>
+          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
           <!-- Result -->
           <div v-else-if="data" class="result apollo">
@@ -132,7 +161,7 @@ export default {
   data() {
     return {
       items: ["Companies"],
-      filter: false,
+
       company: "",
       descending: false,
       page: 1,
@@ -179,27 +208,49 @@ export default {
     changeFieldSerchAdvanceCountry(newValue) {
       this.searchAdvance.country = newValue;
     },
-    changeFieldSerchAdvanceLessThanEmployees(newValue){
+    changeFieldSerchAdvanceLessThanEmployees(newValue) {
       this.searchAdvance.lessThanEmployees = newValue;
     },
-    changeFieldSerchAdvanceMoreThanEmployees(newValue){
+    changeFieldSerchAdvanceMoreThanEmployees(newValue) {
       this.searchAdvance.moreThanEmployees = newValue;
     },
-    changeFieldSerchAdvanceStatus(newValue){
+    changeFieldSerchAdvanceStatus(newValue) {
       this.searchAdvance.status = newValue;
     },
-    changeFieldSerchAdvanceRegion(newValue){
+    changeFieldSerchAdvanceRegion(newValue) {
       this.searchAdvance.region = newValue;
     },
-    changeFieldSerchAdvanceState(newValue){
+    changeFieldSerchAdvanceState(newValue) {
       this.searchAdvance.state = newValue;
     },
-    changeFieldSerchAdvanceCity(newValue){
+    changeFieldSerchAdvanceCity(newValue) {
       this.searchAdvance.city = newValue;
     },
     typeBtn(newValue) {
       this.typeButton = newValue;
+    },
+    toggleSearch() {
+      this.$emit("toggleSearch", { show: !this.$props.showSearch });
     }
+  },
+  props: {
+    showSearch: { type: Boolean, default: false }
+  },
+  beforeCreate() {
+    console.log("beforeCreate", "this.$router", this.$router);
+    console.log("beforeCreate", "this.$route", this.$route);
+  },
+  created() {
+    console.log("created", "this.$router", this.$router);
+    console.log("created", "this.$route", this.$route);
+  },
+  beforeUpdate() {
+    console.log("beforeUpdate", "this.$router", this.$router);
+    console.log("beforeUpdate", "this.$route", this.$route);
+  },
+  updated() {
+    console.log("updated", "this.$router", this.$router);
+    console.log("updated", "this.$route", this.$route);
   }
 };
 </script>

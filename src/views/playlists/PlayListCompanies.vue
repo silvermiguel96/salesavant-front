@@ -51,7 +51,7 @@
         <div v-if="loading" class="loading apollo">Loading...</div>
 
         <!-- Error -->
-        <div v-else-if="error" class="error apollo">An error occured</div>
+        <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
         <!-- Result -->
         <div v-else-if="data" class="result apollo">

@@ -11,7 +11,7 @@
                     src="/static/salesavant_header.png"
                     alt="SaleSavant"
                     style="width: 240px; max-width: 80%; margin: 1em;"
-                  >
+                  />
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -37,11 +37,16 @@ import authService from "../auth/authService";
 export default {
   name: "login",
   data() {
-    return { isAuthenticated: this.$auth.isAuthenticated() };
+    return { isAuthenticated: false };
   },
   methods: {
     login() {
       this.$auth.login();
+    }
+  },
+  created() {
+    if (this.$auth.isAuthenticated()) {
+      this.$router.push("/home");
     }
   }
 };

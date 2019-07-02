@@ -2,8 +2,9 @@
   <v-app>
     <template>
       <v-content>
-        <main-menu v-if="isAuthenticated"></main-menu>
-        <router-view></router-view>
+        <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
+        <full-screen-search v-if="isAuthenticated" :show="showSearch" @toggle="toggleSearch"></full-screen-search>
+        <router-view :showSearch="showSearch" @toggleSearch="toggleSearch"></router-view>
       </v-content>
     </template>
   </v-app>
@@ -11,11 +12,13 @@
 
 <script>
 import MainMenu from "./components/MainMenu.vue";
+import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
 
 export default {
   name: "App",
   components: {
-    MainMenu
+    MainMenu,
+    FullScreenSearch
   },
   data() {
     return {
@@ -23,7 +26,8 @@ export default {
       mockAccount: {
         username: "1",
         password: "1"
-      }
+      },
+      showSearch: false
     };
   },
   async created() {
@@ -42,8 +46,16 @@ export default {
     },
     handleLoginEvent(data) {
       console.log({ data });
-      this.isAuthenticated = !!data.loggedIn;
+      console.log("this.$auth.isAuthenticated()", this.$auth.isAuthenticated());
+      if (this.$auth.isAuthenticated()) {
+        this.isAuthenticated = this.$auth.isAuthenticated();
+      } else {
+        this.isAuthenticated = false;
+      }
       this.profile = data.profile;
+    },
+    toggleSearch(data) {
+      this.showSearch = data.show;
     }
   }
 };

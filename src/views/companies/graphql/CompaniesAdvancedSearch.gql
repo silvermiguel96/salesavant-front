@@ -1,5 +1,5 @@
-query SelecteCompany(
-  $company: String,
+query CompaniesAdvancedSearch(
+  $name: String,
   $country: String,
   $website: String, 
   $city: String, 
@@ -12,7 +12,7 @@ query SelecteCompany(
   $offset: Int
 ){
   companies (
-    name: $company,
+    name: $name,
     country: $country,
     website: $website,
     city: $city,
