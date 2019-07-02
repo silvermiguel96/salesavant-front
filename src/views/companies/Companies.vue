@@ -1,21 +1,57 @@
 <template>
   <div class="apollo-example">
     <v-breadcrumbs
+      v-if="!!this.$route.query && !!this.$route.query.searchType"
       :items="[
         {
           text: 'Companies',
+          disabled: false,
+          href: '/companies'
+        },
+        {
+          text: `${this.$route.query.searchType} search`,
           disabled: true,
           href: '/companies'
         }
       ]"
       divider=">"
     ></v-breadcrumbs>
+    <v-breadcrumbs
+      v-else
+      :items="[
+        {
+          text: 'Companies',
+          disabled: false,
+          href: '/companies'
+        }
+      ]"
+      divider=">"
+    ></v-breadcrumbs>
+    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
+    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+      <li
+        v-if="this.$route.query.simpleSearch"
+      >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
+      <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
+      <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
+      <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
+      <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
+      <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
+      <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
+      <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
+      <li
+        v-if="this.$route.query.lessThanEmployees"
+      >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
+      <li
+        v-if="this.$route.query.moreThanEmployees"
+      >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
+    </ul>
 
     <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
 
     <!-- Apollo watched Graphql query -->
     <template
-      v-if="!!this.$route.query && !!this.$route.query.searchType && !!this.$route.query.searchType==='simple' && !!this.$route.query.simpleSearch"
+      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='simple' && !!this.$route.query.simpleSearch"
     >
       <ApolloQuery
         :query="require('./graphql/CompaniesSimpleSearch.gql')"
@@ -44,19 +80,21 @@
         </template>
       </ApolloQuery>
     </template>
-    <template v-else-if="typeButton == 2 ">
+    <template
+      v-else-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
+    >
       <ApolloQuery
-        :query="require('./graphql/CompaniesAdvanceSearch.gql')"
+        :query="require('./graphql/CompaniesAdvancedSearch.gql')"
         :variables="{ 
-          company: searchAdvance.name,
-          country: searchAdvance.country,
-          website: searchAdvance.website,
-          city: searchAdvance.city,
-          region: searchAdvance.region,
-          state: searchAdvance.state,
-          status: searchAdvance.status,
-          lessThanEmployees: searchAdvance.lessThanEmployees,
-          moreThanEmployees: searchAdvance.moreThanEmployees,
+          name: this.$route.query.name || '',
+          country: this.$route.query.country || '',
+          website: this.$route.query.website || '',
+          city: this.$route.query.city || '',
+          region: this.$route.query.region || '',
+          state: this.$route.query.state || '',
+          status: this.$route.query.status || '',
+          lessThanEmployees: this.$route.query.lessThanEmployees || '0',
+          moreThanEmployees: this.$route.query.moreThanEmployees || '0',
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
           }"
