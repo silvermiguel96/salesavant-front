@@ -29,6 +29,24 @@
     ></v-breadcrumbs>
     <h1 class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
     <ul  class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">
+    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
+    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+      <li
+        v-if="this.$route.query.simpleSearch"
+      >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
+      <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
+      <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
+      <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
+      <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
+      <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
+      <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
+      <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
+      <li
+        v-if="this.$route.query.lessThanEmployees"
+      >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
+      <li
+        v-if="this.$route.query.moreThanEmployees"
+      >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
       <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
     </ul>
 
