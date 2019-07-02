@@ -2,14 +2,14 @@
   <v-layout row justify-center>
     <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark>
           <v-btn icon dark @click="toggle">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn @click="search">
+            <v-btn @click="search" color="primary">
               <v-icon>search</v-icon>
               {{" Search"}}
             </v-btn>
