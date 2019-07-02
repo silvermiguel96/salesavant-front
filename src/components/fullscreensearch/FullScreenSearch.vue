@@ -17,6 +17,7 @@
         </v-toolbar>
         <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
         <v-divider></v-divider>
+        <companies-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
         <v-list three-line subheader>
           <v-subheader>General</v-subheader>
           <v-list-tile avatar>
@@ -54,6 +55,7 @@
 
 <script>
 import SimpleSearch from "./SimpleSearch.vue";
+import CompaniesSearch from "./CompaniesSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
@@ -75,7 +77,8 @@ export default {
     show: { type: Boolean, default: false }
   },
   components: {
-    SimpleSearch
+    SimpleSearch,
+    CompaniesSearch
   },
   methods: {
     toggle() {

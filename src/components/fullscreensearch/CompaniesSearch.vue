@@ -1,6 +1,6 @@
 <template>
   <v-list three-line subheader>
-    <v-subheader>Simple Search</v-subheader>
+    <v-subheader>Companies Search</v-subheader>
     <v-list-tile avatar>
       <v-list-tile-content>
         <v-list-tile-sub-title>
