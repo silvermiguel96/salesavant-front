@@ -18,36 +18,6 @@
         <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="search" />
         <v-divider></v-divider>
         <companies-search @change="changeCompanySearchObject" @toggle="toggle" @search="search" />
-        <v-list three-line subheader>
-          <v-subheader>General</v-subheader>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="notifications"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Notifications</v-list-tile-title>
-              <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="sound"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Sound</v-list-tile-title>
-              <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-action>
-              <v-checkbox v-model="widgets"></v-checkbox>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Auto-add widgets</v-list-tile-title>
-              <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
       </v-card>
     </v-dialog>
   </v-layout>

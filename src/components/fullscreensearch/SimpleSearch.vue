@@ -18,7 +18,7 @@
                 <v-flex>
                   <v-btn @click="search" type="submit" color="primary">
                     <v-icon>search</v-icon>
-                    {{" Search"}}
+                    {{" Do a simple Search"}}
                   </v-btn>
                 </v-flex>
               </v-layout>
