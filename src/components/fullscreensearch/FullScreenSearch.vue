@@ -29,7 +29,14 @@ import CompaniesSearch from "./CompaniesSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
-  description: ""
+  country: "",
+  website: "",
+  city: "",
+  region: "",
+  state: "",
+  status: "",
+  lessThanEmployees: "",
+  moreThanEmployees: ""
 };
 
 export default {
