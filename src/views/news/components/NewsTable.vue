@@ -3,6 +3,8 @@
     :headers="headers"
     :items="items"
     class="elevation-1"
+    :pagination.sync="pagination"
+    :rows-per-page-items="pagination.rowsPerPageItems"
     @update:pagination="updatePagination"
     :total-items="totalItems"
   >
@@ -40,6 +42,11 @@ import LongParagraph from "../../../components/companies/LongParagraph.vue";
 export default {
   data() {
     return {
+      pagination: {
+        page: 1,
+        rowsPerPage: 25,
+        rowsPerPageItems: [25, 50, 100]
+      },
       totalItems: 10000000,
       headers: [
         {

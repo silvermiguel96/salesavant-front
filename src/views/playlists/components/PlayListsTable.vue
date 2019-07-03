@@ -3,6 +3,8 @@
     :headers="headers"
     :items="items"
     :loading="!items.length"
+    :pagination.sync="pagination"
+    :rows-per-page-items="pagination.rowsPerPageItems"
     class="elevation-1"
     @update:pagination="updatePagination"
     :total-items="totalItems"
@@ -40,6 +42,11 @@
 export default {
   data() {
     return {
+      pagination: {
+        page: 1,
+        rowsPerPage: 25,
+        rowsPerPageItems: [25, 50, 100]
+      },
       totalItems: 100000,
       headers: [
         {
