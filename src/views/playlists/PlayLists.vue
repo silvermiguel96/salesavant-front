@@ -17,13 +17,13 @@
     >
       <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
-        <div v-if="loading" class="loading apollo">Loading...</div>
+        <!-- <div v-if="loading" class="loading apollo">Loading...</div> -->
 
         <!-- Error -->
         <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
         <!-- Result -->
-        <div v-else-if="data" class="result apollo">
+        <div v-if="data" class="result apollo">
           <!---<div>{{ JSON.stringify(data) }}</div>-->
           <play-lists-table
             v-if="data.playlists.length"
@@ -34,7 +34,7 @@
         </div>
 
         <!-- No result -->
-        <div v-else class="no-result apollo">No result :(</div>
+        <div v-else class="no-result apollo">Loading...</div>
       </template>
     </ApolloQuery>
   </div>
