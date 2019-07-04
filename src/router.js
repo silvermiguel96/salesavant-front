@@ -1,13 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Dashboard.vue";
-import ApolloExample from "./components/ApolloExample.vue";
 import PlayLists from "./views/playlists/PlayLists.vue";
 import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
-import Search from "./views/search/Search.vue";
-import SearchWithSignals from "./views/search/SearchWithSignals.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from './views/news/News.vue';
 //Calibration
@@ -64,33 +61,9 @@ const router = new Router({
       component: Company
     },
     {
-      path: "/apollo-example",
-      name: "apollo",
-      component: ApolloExample
-    },
-    {
       path: "/advanced/:playlistId",
       name: "advanced",
       component: Calibration
-    },
-    {
-      path: "/search",
-      name: "search",
-      component: Search
-    },
-    {
-      path: "/search-with-signals",
-      name: "searchwithsignals",
-      component: SearchWithSignals
-    },
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
     },
     {
       path: "/new-companies",
