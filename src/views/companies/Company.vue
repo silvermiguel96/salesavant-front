@@ -61,13 +61,13 @@
         ></v-breadcrumbs>
       </div>
       <!-- Loading -->
-      <!-- <div v-if="loading" class="loading apollo">Loading...</div> -->
+      <div v-if="loading" class="loading apollo">Loading...</div> 
 
       <!-- Error -->
       <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
       <!-- Result -->
-      <div v-if="data" class="result apollo">
+      <div v-else-if="data" class="result apollo">
         <!-- {{ JSON.stringify(data.company) }} -->
         <v-tabs grow color="grey lighten-5">
           <!-- Tab Home -->
