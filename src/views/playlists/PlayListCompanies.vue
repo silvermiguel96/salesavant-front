@@ -73,12 +73,11 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import CompaniesAdvancedFilter from "../../components/companies/CompaniesAdvancedFilter.vue";
 export default {
   data() {
     return {};
   },
-  components: { CompaniesTable, CompaniesAdvancedFilter }
+  components: { CompaniesTable }
   /* apollo: {
     playlists: PLAYLISTS
   } */
