@@ -64,7 +64,7 @@
         </div>
 
         <!-- No result -->
-        <div v-else class="no-result apollo">No result :(</div>
+        <div v-else class="no-result apollo">Loading...</div>
       </div>
     </template>
   </ApolloQuery>

@@ -13,7 +13,7 @@
         <div v-else-if="data" class="result apollo">{{ JSON.stringify(data) }}</div>
 
         <!-- No result -->
-        <div v-else class="no-result apollo">No result :(</div>
+        <div v-else class="no-result apollo">Loading...</div>
       </template>
     </ApolloQuery>
   </div>
