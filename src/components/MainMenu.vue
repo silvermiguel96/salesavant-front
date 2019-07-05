@@ -26,7 +26,8 @@ export default {
           icon: "developer_board",
           text: "New Companies",
           router: "/new-companies"
-        }
+        },
+        { icon: "search", text: "Signals", router: "/signals" }
       ]
     };
   },

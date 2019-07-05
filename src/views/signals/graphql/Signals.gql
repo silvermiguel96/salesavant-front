@@ -1,0 +1,20 @@
+query AllSignals($first: Int, $offset: Int) {
+  signals(first: $first offset: $offset) {
+    id
+    name
+  	user {
+  	  id
+  	}
+    group
+    userId
+    account {
+      id
+    }
+    category
+    accountId
+    description
+    creationTime
+    defaultScore
+    modificationTime
+  }
+}

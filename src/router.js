@@ -6,12 +6,14 @@ import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
-import News from './views/news/News.vue';
+import News from "./views/news/News.vue";
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
 import Callback from "./components/Callback";
 import auth from "./auth/authService";
+import Signals from "./views/signals/Signals.vue";
+import Signal from "./views/signals/components/Signal.vue";
 
 Vue.use(Router);
 
@@ -74,6 +76,21 @@ const router = new Router({
       path: "/callback",
       name: "callback",
       component: Callback
+    },
+    {
+      path: "/signals",
+      name: "signals",
+      component: Signals
+    },
+    {
+      path: "/signals/create",
+      name: "signal-create",
+      component: Signal
+    },
+    {
+      path: "/signals/:signalId",
+      name: "signal",
+      component: Signal
     }
   ]
 });
