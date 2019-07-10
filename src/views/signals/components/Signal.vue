@@ -67,6 +67,10 @@ export default {
     errorMessage: "",
     showError: false
   }),
+  props: {
+    score: { type: Number, default: 0 },
+    name: { type: String, default: "" }
+  },
   methods: {
     async getSignal() {
       let signal = { ...defaultSignal };
@@ -115,6 +119,12 @@ export default {
           }, 5000);
           console.log("error trying to query signal", error);
         }
+      } else {
+        this.signal = {
+          ...signal,
+          name: this.$props.name,
+          defaultScore: this.$props.score
+        };
       }
     },
     async save() {

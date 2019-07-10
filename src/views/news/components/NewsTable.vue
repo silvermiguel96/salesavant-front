@@ -80,7 +80,9 @@ export default {
     },
     _get: _get,
     trimText(text = "") {
-      return `${text.substring(0, 50)}${text.length > 50 ? "..." : ""}`;
+      if (!!text) {
+        return `${text.substring(0, 50)}${text.length > 50 ? "..." : ""}`;
+      }
     }
   },
   props: {

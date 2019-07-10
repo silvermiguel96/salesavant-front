@@ -20,23 +20,29 @@ export default {
       links: [
         { icon: "find_replace", text: "Playlists", router: "/playlists" },
         { icon: "assessment", text: "Companies", router: "/companies" },
-        { icon: "search", text: "Search", click: this.toggleSearch },
         { icon: "assessment", text: "News", router: "/news" },
         {
           icon: "developer_board",
           text: "New Companies",
           router: "/new-companies"
         },
-        { icon: "search", text: "Signals", router: "/signals" }
+        { icon: "search", text: "Signals", router: "/signals" },
+        { icon: "search", text: "Search", click: this.toggleSearch },
+        { icon: "search", text: "Jobs Queue", click: this.toggleJobsQueuve },
+
       ]
     };
   },
   props: {
-    showSearch: { type: Boolean, default: false }
+    showSearch: { type: Boolean, default: false },
+    showJobsQueue: { type: Boolean, default: false },
   },
   methods: {
     toggleSearch() {
       this.$emit("toggleSearch", { show: !this.$props.showSearch });
+    },
+    toggleJobsQueuve() {
+      this.$emit("toggleJobsQueuve", { show: !this.$props.showJobsQueue});
     }
   }
 };

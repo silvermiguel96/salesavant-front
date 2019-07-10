@@ -2,10 +2,10 @@
   <div class="min-width-description">
     {{showMore ? text : trimText(text)}}
     <a
-      v-show="!showMore && text.length > 30"
+      v-show="!showMore && !!text &&text.length > 30"
       @click.prevent="toggle"
     >+</a>
-    <a v-show="showMore && text.length > 30" @click.prevent="toggle">-</a>
+    <a v-show="showMore && !!text && text.length > 30" @click.prevent="toggle">-</a>
   </div>
 </template>
 
@@ -21,7 +21,9 @@ export default {
   },
   methods: {
     trimText(text = "") {
-      return `${text.substring(0, 30)}${text.length > 30 ? "..." : ""}`;
+      if (!!text) {
+        return `${text.substring(0, 30)}${text.length > 30 ? "..." : ""}`;
+      }
     },
     toggle() {
       this.showMore = !this.showMore;

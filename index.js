@@ -51,6 +51,10 @@ function requireHTTPS(req, res, next) {
 
 if (environment !== "local") {
   if (environment !== "proxylocal") app.use(requireHTTPS);
+  app.get("/jobs/:entityId", checkJwt, (req, res) => {
+    delete req.headers.authorization;
+    proxy.web(req, res, graphqlOptions);
+  });
   app.use(express.static("dist"));
   app.use(
     history({
@@ -58,20 +62,35 @@ if (environment !== "local") {
     })
   );
   app.use(express.static("dist"));
-  app.all("/:api(graphql|login)", checkJwt, (req, res) => {
+  app.post("/jobs", checkJwt, (req, res) => {
+    delete req.headers.authorization;
+    proxy.web(req, res, graphqlOptions);
+  });
+  app.all("/login", checkJwt, (req, res) => {
+    delete req.headers.authorization;
+    proxy.web(req, res, graphqlOptions);
+  });
+  app.all("/graphql", checkJwt, (req, res) => {
     delete req.headers.authorization;
     proxy.web(req, res, graphqlOptions);
   });
 } else if (!!process.env.VUE) {
-  app.all("/:api(graphql|login)", checkJwt, (req, res) => {
+  app.get("/jobs/:entityId", checkJwt, (req, res) => {
     delete req.headers.authorization;
     proxy.web(req, res, graphqlOptions);
   });
-  /* app.get("/*", (req, res) => {
-    proxy.web(req, res, {
-      target: "http://localhost:8080"
-    });
-  }); */
+  app.post("/jobs", checkJwt, (req, res) => {
+    delete req.headers.authorization;
+    proxy.web(req, res, graphqlOptions);
+  });
+  app.all("/login", checkJwt, (req, res) => {
+    delete req.headers.authorization;
+    proxy.web(req, res, graphqlOptions);
+  });
+  app.all("/graphql", checkJwt, (req, res) => {
+    delete req.headers.authorization;
+    proxy.web(req, res, graphqlOptions);
+  });
 } else {
   app.get("/", (req, res) =>
     res.status(200).json({ message: "everything ok" })

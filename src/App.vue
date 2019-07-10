@@ -2,8 +2,19 @@
   <v-app>
     <template>
       <v-content>
-        <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
+        <main-menu
+          v-if="isAuthenticated"
+          :showSearch="showSearch"
+          @toggleSearch="toggleSearch"
+          :showJobsQueue="showJobsQueue"
+          @toggleJobsQueuve="toggleJobsQueuve"
+        ></main-menu>
         <full-screen-search v-if="isAuthenticated" :show="showSearch" @toggle="toggleSearch"></full-screen-search>
+        <jobs-queue
+          v-if="isAuthenticated && !!showJobsQueue"
+          :show="showJobsQueue"
+          @toggle="toggleJobsQueuve"
+        ></jobs-queue>
         <router-view :showSearch="showSearch" @toggleSearch="toggleSearch"></router-view>
       </v-content>
     </template>
@@ -13,12 +24,14 @@
 <script>
 import MainMenu from "./components/MainMenu.vue";
 import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
+import JobsQueue from "./components/jobsqueue/JobsQueue.vue";
 
 export default {
   name: "App",
   components: {
     MainMenu,
-    FullScreenSearch
+    FullScreenSearch,
+    JobsQueue
   },
   data() {
     return {
@@ -27,7 +40,8 @@ export default {
         username: "1",
         password: "1"
       },
-      showSearch: false
+      showSearch: false,
+      showJobsQueue: false
     };
   },
   async created() {
@@ -56,6 +70,9 @@ export default {
     },
     toggleSearch(data) {
       this.showSearch = data.show;
+    },
+    toggleJobsQueuve(data) {
+      this.showJobsQueue = data.show;
     }
   }
 };
