@@ -5,10 +5,10 @@
     <v-form ref="simpleSearchForm" @submit.prevent>
       <v-container grid-list-xs text-xs-center>
         <v-layout row wrap>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field name="name" v-model="company.name" label="name" @input="changeData"></v-text-field>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field
               name="country"
               v-model="company.country"
@@ -16,13 +16,13 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field name="city" v-model="company.city" label="city" @input="changeData"></v-text-field>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field
               name="website"
               v-model="company.website"
@@ -30,15 +30,15 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field name="status" v-model="company.status" label="status" @input="changeData"></v-text-field>
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs6>
             <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs2>
+          <v-flex xs6>
             <v-text-field
               name="moreThanEmployees"
               v-model="company.moreThanEmployees"
@@ -46,7 +46,7 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
-          <v-flex xs2>
+          <v-flex xs6>
             <v-text-field
               name="lessThanEmployees"
               v-model="company.lessThanEmployees"
@@ -54,27 +54,12 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
-          <v-flex xs4 />
-          <v-flex xs4>
-            <v-btn @click="search" type="submit" color="primary">
-              <v-icon>search</v-icon>
-              {{" Do a companies Search"}}
-            </v-btn>
-          </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs8>
-            <v-text-field
-              v-if="showNewPlaylistName"
-              name="newPlaylistName"
-              v-model="newPlaylistName"
-              label="New Playlist Name"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs4>
-            <v-btn @click="save" color="success">
-              <v-icon>save</v-icon>
-              {{" Save Companies search results as playlist"}}
+          <v-flex xs6>
+            <v-btn @click="search" type="submit" color="primary">
+              <v-icon>search</v-icon>
+              {{" Companies Search"}}
             </v-btn>
           </v-flex>
         </v-layout>

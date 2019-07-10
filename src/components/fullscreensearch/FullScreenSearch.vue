@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="show" max-width="500" hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark>
           <v-btn icon dark @click="toggle">
@@ -15,8 +15,6 @@
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <simple-search @change="changeSimpleSearch" @toggle="toggle" @search="onSimpleSearch" />
-        <v-divider></v-divider>
         <companies-search
           @change="changeCompanySearchObject"
           @toggle="toggle"
@@ -122,3 +120,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.v-dialog__content {
+  justify-content: flex-end;
+  height: unset;
+}
+</style>

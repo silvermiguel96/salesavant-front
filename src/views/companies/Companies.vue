@@ -1,7 +1,7 @@
 <template>
   <div class="apollo-example">
     <v-breadcrumbs
-      v-if="!!this.$route.query && !!this.$route.query.searchType"
+      v-if="!!isFiltered"
       :items="[
         {
           text: 'Companies',
@@ -27,8 +27,9 @@
       ]"
       divider=">"
     ></v-breadcrumbs>
-    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
-    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+    <v-alert v-show="showError" type="error">{{errorMessage}}</v-alert>
+    <h1 v-if="!!isFiltered">You're currently filtering by</h1>
+    <ul v-if="!!isFiltered">
       <li
         v-if="this.$route.query.simpleSearch"
       >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
@@ -46,9 +47,11 @@
         v-if="this.$route.query.moreThanEmployees"
       >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
     </ul>
-
-    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
-
+    <div class="calltoactions">
+      <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
+      <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
+      <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
+    </div>
     <!-- Apollo watched Graphql query -->
     <template
       v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='simple' && !!this.$route.query.simpleSearch"
@@ -101,7 +104,7 @@
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div> 
+          <div v-if="loading" class="loading apollo">Loading...</div>
 
           <!-- Error -->
           <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
@@ -129,7 +132,7 @@
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div> 
+          <div v-if="loading" class="loading apollo">Loading...</div>
 
           <!-- Error -->
           <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
@@ -154,13 +157,15 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
+import gql from "graphql-tag";
+import _get from "lodash.get";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
+import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
+import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
 export default {
   data() {
     return {
       items: ["Companies"],
-
       company: "",
       descending: false,
       page: 1,
@@ -178,10 +183,16 @@ export default {
         state: "",
         city: ""
       },
-      typeButton: ""
+      isFiltered: false,
+      errorMessage: "",
+      showError: false
     };
   },
-  components: { CompaniesTable },
+  components: {
+    CompaniesTable,
+    CreatePlaylistFromResults,
+    CreateSignalFromResults
+  },
   methods: {
     updatePagination({
       dataFromEvent: {
@@ -198,58 +209,259 @@ export default {
       this.sortBy = sortBy;
       this.totalItems = 5;
     },
-    changeFieldSerch(newValue) {
-      this.searchField = newValue;
-    },
-    changeFieldSerchAdvanceName(newValue) {
-      this.searchAdvance.name = newValue;
-    },
-    changeFieldSerchAdvanceCountry(newValue) {
-      this.searchAdvance.country = newValue;
-    },
-    changeFieldSerchAdvanceLessThanEmployees(newValue) {
-      this.searchAdvance.lessThanEmployees = newValue;
-    },
-    changeFieldSerchAdvanceMoreThanEmployees(newValue) {
-      this.searchAdvance.moreThanEmployees = newValue;
-    },
-    changeFieldSerchAdvanceStatus(newValue) {
-      this.searchAdvance.status = newValue;
-    },
-    changeFieldSerchAdvanceRegion(newValue) {
-      this.searchAdvance.region = newValue;
-    },
-    changeFieldSerchAdvanceState(newValue) {
-      this.searchAdvance.state = newValue;
-    },
-    changeFieldSerchAdvanceCity(newValue) {
-      this.searchAdvance.city = newValue;
-    },
-    typeBtn(newValue) {
-      this.typeButton = newValue;
-    },
     toggleSearch() {
       this.$emit("toggleSearch", { show: !this.$props.showSearch });
+    },
+    checkIfIsFiltered() {
+      let result = false;
+      for (let key in this.$route.query) {
+        console.log("key", key);
+        if (!!this.$route.query[key] && key !== "searchType") {
+          result = true;
+          break;
+        }
+      }
+      return result;
+    },
+    async saveResultsAsPlaylist(newPlaylistName = null) {
+      console.log(
+        "companies ",
+        "saveResultsAsPlaylist ",
+        "newPlaylistName =",
+        newPlaylistName
+      );
+      if (!this.checkIfIsFiltered()) {
+        this.errorMessage =
+          "At least one company field search criteria is not empty!";
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 5000);
+        return;
+      }
+      if (!newPlaylistName) {
+        this.errorMessage = "New Playlist Name can not be empty!";
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 5000);
+        return;
+      }
+      if (this.checkIfIsFiltered() && !!newPlaylistName) {
+        try {
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation(
+                $name: String
+                $city: String
+                $state: String
+                $region: String
+                $country: String
+                $status: String
+                $lessThanEmployees: Int
+                $moreThanEmployees: Int
+                $playlistName: String!
+              ) {
+                createPlaylistFromSearch(
+                  companySearch: {
+                    name: $name
+                    city: $city
+                    state: $state
+                    region: $region
+                    country: $country
+                    status: $status
+                    lessThanEmployees: $lessThanEmployees
+                    moreThanEmployees: $moreThanEmployees
+                  }
+                  playlistData: { name: $playlistName }
+                ) {
+                  playlist {
+                    uid
+                    name
+                  }
+                }
+              }
+            `,
+            // Parameters
+            variables: {
+              name: _get(this.$route.query, "name", ""),
+              country: _get(this.$route.query, "country", ""),
+              website: _get(this.$route.query, "website", ""),
+              city: _get(this.$route.query, "city", ""),
+              region: _get(this.$route.query, "region", ""),
+              state: _get(this.$route.query, "state", ""),
+              status: _get(this.$route.query, "status", ""),
+              lessThanEmployees: _get(
+                this.$route.query,
+                "lessThanEmployees",
+                "0"
+              ),
+              moreThanEmployees: _get(
+                this.$route.query,
+                "moreThanEmployees",
+                "0"
+              ),
+              playlistName: newPlaylistName
+            }
+          });
+          console.log("saving results as playlist success", result);
+          const playlist = _get(
+            result,
+            "data.createPlaylistFromSearch.playlist",
+            null
+          );
+          if (!playlist) {
+            this.errorMessage =
+              "it seems that we created your playlist but couldn't check it, please check manually";
+            this.showError = true;
+            return;
+          }
+          this.$router.push({
+            path: `/playlists/${playlist.uid}/companies`
+          });
+        } catch (error) {
+          this.errorMessage = "oops we did something wrong!";
+          this.showError = true;
+          console.log("error saving simple search as a play list", error);
+        }
+      }
+    },
+    async saveResultsAsSignal(signal = null) {
+      if (!this.checkIfIsFiltered()) {
+        this.errorMessage =
+          "At least one company field search criteria is not empty!";
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 5000);
+        return;
+      }
+      if (!signal) {
+        this.errorMessage = "Please fill the signal form!";
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 5000);
+        return;
+      }
+      console.log("signal", signal);
+      if (this.checkIfIsFiltered() && !!signal) {
+        const signalName = _get(signal, "name", "");
+        const signalDescription = _get(signal, "description", "");
+        const signalGroup = _get(signal, "group", "");
+        const signalDefaultScore = parseFloat(
+          _get(signal, "defaultScore", "0")
+        );
+        console.log("signal after if", {
+          signalName,
+          signalDescription,
+          signalGroup,
+          signalDefaultScore
+        });
+        try {
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation(
+                $name: String
+                $city: String
+                $state: String
+                $region: String
+                $country: String
+                $status: String
+                $website: String
+                $lessThanEmployees: Int
+                $moreThanEmployees: Int
+                $signalName: String
+                $signalDescription: String
+                $signalGroup: String
+                $signalDefaultScore: Float
+              ) {
+                createSignalFromSearch(
+                  companySearch: {
+                    name: $name
+                    city: $city
+                    state: $state
+                    region: $region
+                    country: $country
+                    status: $status
+                    lessThanEmployees: $lessThanEmployees
+                    moreThanEmployees: $moreThanEmployees
+                    website: $website
+                  }
+                  signalData: {
+                    name: $signalName
+                    description: $signalDescription
+                    defaultScore: $signalDefaultScore
+                    group: $signalGroup
+                  }
+                ) {
+                  signal {
+                    id
+                    name
+                  }
+                }
+              }
+            `,
+            // Parameters
+            variables: {
+              name: _get(this.$route.query, "name", ""),
+              country: _get(this.$route.query, "country", ""),
+              website: _get(this.$route.query, "website", ""),
+              city: _get(this.$route.query, "city", ""),
+              region: _get(this.$route.query, "region", ""),
+              state: _get(this.$route.query, "state", ""),
+              status: _get(this.$route.query, "status", ""),
+              lessThanEmployees: _get(
+                this.$route.query,
+                "lessThanEmployees",
+                "0"
+              ),
+              moreThanEmployees: _get(
+                this.$route.query,
+                "moreThanEmployees",
+                "0"
+              ),
+              signalName: signalName,
+              signalDescription: signalDescription,
+              signalGroup: signalGroup,
+              signalDefaultScore: signalDefaultScore
+            }
+          });
+          console.log("saving results as signal success", result);
+          const signal = _get(
+            result,
+            "data.createSignalFromSearch.signal",
+            null
+          );
+          if (!signal) {
+            this.errorMessage =
+              "it seems that we created your signal but couldn't check it, please check manually";
+            this.showError = true;
+            return;
+          }
+          console.log("finish");
+          this.$router.push({
+            path: `/signals/${signal.id}`
+          });
+        } catch (error) {
+          this.errorMessage = "oops we did something wrong!";
+          this.showError = true;
+          console.log("error saving search results as signal", error);
+        }
+      }
     }
   },
   props: {
     showSearch: { type: Boolean, default: false }
   },
-  beforeCreate() {
-    console.log("beforeCreate", "this.$router", this.$router);
-    console.log("beforeCreate", "this.$route", this.$route);
-  },
-  created() {
-    console.log("created", "this.$router", this.$router);
-    console.log("created", "this.$route", this.$route);
+  beforeMount() {
+    this.isFiltered = this.checkIfIsFiltered();
   },
   beforeUpdate() {
-    console.log("beforeUpdate", "this.$router", this.$router);
-    console.log("beforeUpdate", "this.$route", this.$route);
+    this.isFiltered = this.checkIfIsFiltered();
   },
   updated() {
-    console.log("updated", "this.$router", this.$router);
-    console.log("updated", "this.$route", this.$route);
+    this.isFiltered = this.checkIfIsFiltered();
   }
 };
 </script>
@@ -300,5 +512,14 @@ label {
 
 .image-input {
   margin: 20px;
+}
+
+.calltoactions {
+  display: flex;
+  flex-direction: row;
+}
+
+.calltoactions .layout {
+  flex: unset;
 }
 </style>

@@ -2,7 +2,7 @@
   <v-card-text>
     <v-layout row wrap>
       <v-flex v-for="content in btnexports" :key="content.text">
-        <v-btn color="success">{{ content.text }}</v-btn>
+        <v-btn color="success" :to="content.to" :disabled="content.disabled">{{ content.text }}</v-btn>
       </v-flex>
     </v-layout>
   </v-card-text>
@@ -12,14 +12,14 @@ export default {
   data() {
     return {
       btnexports: [
-        { text: "Manage Groups" },
-        { text: "Manage Signals" },
-        { text: "Update Signals" },
-        { text: "Recent Dialogues" },
-        { text: "My Dialogues" },
-        { text: "All Dialogues" },
-        { text: "Vertical Signals" },
-        { text: "Target Roles And Titles " },
+        { text: "Manage Groups", to: "", disabled: true },
+        { text: "Manage Signals", to: "/signals", disabled: false },
+        { text: "Update Signals", to: "", disabled: true },
+        { text: "Recent Dialogues", to: "", disabled: true },
+        { text: "My Dialogues", to: "", disabled: true },
+        { text: "All Dialogues", to: "", disabled: true },
+        { text: "Vertical Signals", to: "", disabled: true },
+        { text: "Target Roles And Titles", to: "", disabled: true }
       ]
     };
   }

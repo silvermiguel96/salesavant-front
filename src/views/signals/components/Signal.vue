@@ -1,9 +1,10 @@
 <template>
-  <v-card class="apollo-example">
-    <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
-    <v-breadcrumbs
-      v-if="!!this.$route.params.signalId"
-      :items="[
+  <div>
+    <v-card class="apollo-example">
+      <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
+      <v-breadcrumbs
+        v-if="!!this.$route.params.signalId"
+        :items="[
         {
           text: 'Signals',
           disabled: false,
@@ -15,32 +16,53 @@
           href: `/signals/${this.$route.params.signalId}`
         }
       ]"
-      divider=">"
-    ></v-breadcrumbs>
-    <v-form @submit.prevent>
+        divider=">"
+      ></v-breadcrumbs>
+      <v-form @submit.prevent>
+        <v-container>
+          <v-subheader>Signal details</v-subheader>
+          <v-layout>
+            <v-flex xs12 md4>
+              <v-text-field v-model="signal.name" label="Name" required></v-text-field>
+            </v-flex>
+            <v-flex xs12 md4>
+              <v-text-field v-model="signal.description" label="Description" required></v-text-field>
+            </v-flex>
+            <v-flex xs12 md4>
+              <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
+            </v-flex>
+            <v-flex xs12 md4>
+              <v-text-field v-model="signal.group" label="Group" required></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs12 md4>
+              <v-btn
+                type="submit"
+                color="primary"
+                :disabled="!!signal.id"
+                @click="save"
+              >{{!!signal.id ? "Update (coming soon)" : "save"}}</v-btn>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-form>
+    </v-card>
+    <v-card>
+      <v-card-title>Related companies</v-card-title>
       <v-container>
-        <v-layout>
-          <v-flex xs12 md4>
-            <v-text-field v-model="signal.name" label="Name" required></v-text-field>
-          </v-flex>
-          <v-flex xs12 md4>
-            <v-text-field v-model="signal.description" label="Description" required></v-text-field>
-          </v-flex>
-          <v-flex xs12 md4>
-            <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
-          </v-flex>
-          <v-flex xs12 md4>
-            <v-text-field v-model="signal.group" label="Group" required></v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs12 md4>
-            <v-btn type="submit" color="primary" @click="save">Save</v-btn>
-          </v-flex>
-        </v-layout>
+        <v-data-table :headers="headers" :items="signal.companies" class="elevation-1">
+          <template v-slot:items="props">
+            <td>
+              <router-link
+                :to="`/companies/${props.item.company.uid}`"
+              >{{ props.item.company.name || "--" }}</router-link>
+            </td>
+          </template>
+        </v-data-table>
       </v-container>
-    </v-form>
-  </v-card>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -65,7 +87,14 @@ export default {
   data: () => ({
     signal: { ...defaultSignal },
     errorMessage: "",
-    showError: false
+    showError: false,
+    headers: [
+      {
+        text: "Company name",
+        sortable: false,
+        value: "name"
+      }
+    ]
   }),
   props: {
     score: { type: Number, default: 0 },
@@ -91,6 +120,12 @@ export default {
                   creationTime
                   defaultScore
                   modificationTime
+                  companies {
+                    company {
+                      uid
+                      name
+                    }
+                  }
                 }
               }
             `,
