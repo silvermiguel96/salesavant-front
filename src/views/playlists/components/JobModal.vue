@@ -6,6 +6,9 @@
         <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
         <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
         <v-card-text>
+          <div class="text-xs-center">
+            <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
+          </div>
           <v-data-table
             v-if="!!job && job.status === 'finished' && !!results.length"
             :headers="headers"
@@ -38,7 +41,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <!--<v-btn color="success" flat @click="getPlaylistKeyWords">Start process</v-btn>-->
-          <h1 v-show="loading">Loading...</h1>
+          <!-- <h1 >Loading...</h1> -->
           <v-btn color="green" flat @click="createNewJob">Create new keyword results (process again)</v-btn>
           <v-btn v-show="!results.length" color="green" flat @click="refreshJob">Refresh results</v-btn>
           <v-btn color="error" flat @click="onClose">Close</v-btn>
@@ -126,3 +129,9 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus" scoped>
+.v-progress-circular {
+  margin: 1rem;
+}
+</style>
