@@ -173,7 +173,11 @@ export default {
         console.log("updatedJob", updatedJob);
         localStorage[jobId] = JSON.stringify(updatedJob);
         this.verifyJobs();
+        if (updatedJob.status === "finished") {
+          this.loadingModal = false;
+        }
       } catch (error) {
+        this.loadingModal = false;
         this.showError = true;
         this.errorMessage = "Oops! we did something wrong!";
         setTimeout(() => {
@@ -181,7 +185,6 @@ export default {
         }, 5000);
         console.log("error refreshing job", error);
       }
-      this.loadingModal = false;
     },
     async createKeywordsJob() {
       this.isLoading = true;
