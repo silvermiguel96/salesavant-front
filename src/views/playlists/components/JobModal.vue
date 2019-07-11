@@ -9,6 +9,14 @@
           <div class="text-xs-center">
             <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
           </div>
+          <div>
+            <ul>
+              <li>Job: {{job.jobUid || ""}}</li>
+              <li>Status: {{job.status}}</li>
+              <li>Type: {{job.type}}</li>
+              <li>Progress: {{job.progress}}%</li>
+            </ul>
+          </div>
           <v-data-table
             v-if="!!job && job.status === 'finished' && !!results.length"
             :headers="headers"
@@ -18,7 +26,7 @@
           >
             <template v-slot:items="props">
               <td v-show="!props.item.showSave">{{ props.item.name || ""}}</td>
-              <td v-show="!props.item.showSave">{{ props.item.score || "" }}</td>
+              <td v-show="!props.item.showSave">{{ props.item.total || "" }}</td>
               <td>
                 <table>
                   <tr>
@@ -30,7 +38,7 @@
                       >exit_to_app</v-icon>
                     </td>
                     <td v-if="props.item.showSave">
-                      <signal :score="props.item.score || ''" :name="props.item.name || ''" />
+                      <signal :score="props.item.total || ''" :name="props.item.name || ''" />
                     </td>
                   </tr>
                 </table>
@@ -68,7 +76,7 @@ export default {
           align: "left",
           sortable: false
         },
-        { text: "Score", align: "left", sortable: false },
+        { text: "Total", align: "left", sortable: false },
         { text: "Actions", align: "left", sortable: false }
       ],
       results: []
@@ -100,10 +108,10 @@ export default {
     },
     getResults() {
       const results = _get(this.$props.job, "results", []);
-      this.results = results.map(i => ({
+      this.results = results.map(item => ({
         showSave: false,
-        name: Object.keys(i)[0] || "",
-        score: i[Object.keys(i)[0]] || "0"
+        name: item[0] || "",
+        total: item[1] || "0"
       }));
     },
     toggleSave(resultIndex) {
