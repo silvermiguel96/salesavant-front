@@ -22,7 +22,7 @@
         <router-link v-if="props.item.id" :to="`/signals/${props.item.id}`">
           <v-icon>edit</v-icon>
         </router-link>
-        <v-icon>delete</v-icon>
+        <v-icon @click="deleteSignal(props.item.id)">delete</v-icon>
       </td>
     </template>
   </v-data-table>
@@ -30,6 +30,7 @@
 
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
+import gql from "graphql-tag";
 import _get from "lodash.get";
 export default {
   data() {
@@ -71,6 +72,9 @@ export default {
       if (!!text) {
         return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
       }
+    },
+    deleteSignal(signalId) {
+      this.$emit("deleteSignal", signalId);
     }
   },
   props: {

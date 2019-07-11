@@ -51,82 +51,11 @@
     <v-btn color="success" dark to="/signals/create">Create new signal</v-btn>
 
     <!-- Apollo watched Graphql query -->
-    <template
-      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='simple' && !!this.$route.query.simpleSearch"
-    >
-      <ApolloQuery
-        :query="require('./graphql/Signals.gql')"
-        :variables="{ search: this.$route.query.simpleSearch, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
-      >
-        <template slot-scope="{ result: { loading, error, data } }">
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
-
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
-
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!---<div>{{ JSON.stringify(data) }}</div>-->
-            <signals-table
-              v-if="data.companies"
-              :items="data.companies"
-              class="result apollo"
-              @updatePagination="updatePagination"
-            ></signals-table>
-          </div>
-
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </template>
-      </ApolloQuery>
-    </template>
-    <template
-      v-else-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
-    >
-      <ApolloQuery
-        :query="require('./graphql/Signals.gql')"
-        :variables="{ 
-          name: this.$route.query.name || '',
-          country: this.$route.query.country || '',
-          website: this.$route.query.website || '',
-          city: this.$route.query.city || '',
-          region: this.$route.query.region || '',
-          state: this.$route.query.state || '',
-          status: this.$route.query.status || '',
-          lessThanEmployees: this.$route.query.lessThanEmployees || '0',
-          moreThanEmployees: this.$route.query.moreThanEmployees || '0',
-          first: rowsPerPage,
-          offset: (rowsPerPage * page) - rowsPerPage
-          }"
-      >
-        <template slot-scope="{ result: { loading, error, data } }">
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
-
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
-
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!---<div>{{ JSON.stringify(data) }}</div>-->
-            <signals-table
-              v-if="data.companies"
-              :items="data.companies"
-              class="result apollo"
-              @updatePagination="updatePagination"
-            ></signals-table>
-          </div>
-
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </template>
-      </ApolloQuery>
-    </template>
-    <template v-else>
+    <template>
       <ApolloQuery
         :query="require('./graphql/Signals.gql')"
         :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+        :deep="true"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
@@ -140,6 +69,8 @@
             <!---<div>{{ JSON.stringify(data) }}</div>-->
             <signals-table
               v-if="data.signals"
+              @deleteSignal="deleteSignal"
+              :signalId="signalId"
               :items="data.signals"
               class="result apollo"
               @updatePagination="updatePagination"
@@ -157,11 +88,13 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import SignalsTable from "./components/SignalsTable.vue";
+import gql from "graphql-tag";
+
 export default {
   data() {
     return {
+      showTable: true,
       items: ["Companies"],
-
       company: "",
       descending: false,
       page: 1,
@@ -179,7 +112,8 @@ export default {
         state: "",
         city: ""
       },
-      typeButton: ""
+      typeButton: "",
+      signalId: ""
     };
   },
   components: { SignalsTable },
@@ -198,6 +132,39 @@ export default {
       this.rowsPerPage = rowsPerPage;
       this.sortBy = sortBy;
       this.totalItems = 5;
+    },
+    async deleteSignal(signalId) {
+      // const signalId = this.signalId
+      console.log("Delete Id", signalId);
+      try {
+        let result = null;
+        result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($signalId: Int!) {
+              deleteSignal(signalId: $signalId) {
+                signal {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            signalId: signalId
+          }
+        });
+        console.log("Result", result);
+        this.$router.go(this.$router.currentRoute);
+        console.log(this.$apollo.queries);
+        //this.$apollo.queries.AllSignals.skip = false;
+        //this.$apollo.queries.AllSignals.refetch();
+        return;
+      } catch (error) {
+        this.errorMessage = "oops we did something wrong!";
+        this.showError = true;
+        console.log("error saving signal", error);
+      } finally {
+        this.showTable = true;
+      }
     },
     changeFieldSerch(newValue) {
       this.searchField = newValue;
