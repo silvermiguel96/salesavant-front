@@ -212,6 +212,7 @@ export default {
       const data = {
         job_name: "extract_keywords",
         playlist_uid: playlistId
+        //TODO mandar max_keywords = 300
       };
 
       try {

@@ -23,6 +23,8 @@
             <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
+            <!-- TODO cambiar el label de 'website' por 'website keywords' 
+            y verificar desde graphiQL si si está haciendo busquedas con ese campo-->
             <v-text-field
               name="website"
               v-model="company.website"
@@ -69,6 +71,7 @@
 </template>
 
 <script>
+// TODO agregar a la busqueda company description
 import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";

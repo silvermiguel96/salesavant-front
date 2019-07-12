@@ -13,9 +13,12 @@
       <td>{{props.item.id || ""}}</td>
       <td>{{props.item.name || ""}}</td>
       <td>{{props.item.description || ""}}</td>
-      <td>{{props.item.group || ""}}</td>
+      <td>{{props.item.group || "---"}}</td>
+      <!-- TODO Al dar click al group el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
+      <!--tener en cuenta que siempre se debe enviar a la mutation el objeto signal completo-->
       <td>{{props.item.category || ""}}</td>
-      <td>{{props.item.defaultScore || ""}}</td>
+      <td>{{props.item.defaultScore || "---"}}</td>
+      <!-- TODO Al dar click al defaultScore el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
       <td>{{props.item.creationTime || ""}}</td>
       <td>{{props.item.modificationTime || ""}}</td>
       <td>

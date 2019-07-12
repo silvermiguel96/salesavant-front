@@ -43,6 +43,7 @@
                 :disabled="!!signal.id"
                 @click="save"
               >{{!!signal.id ? "Update (coming soon)" : "save"}}</v-btn>
+              <!--TODO que funcione el update-->
             </v-flex>
           </v-layout>
         </v-container>

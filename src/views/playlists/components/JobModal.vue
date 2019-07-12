@@ -112,6 +112,7 @@ export default {
         showSave: false,
         name: item[0] || "",
         total: item[1] || "0"
+        //TODO poner el score y mostrarlo en la tabla
       }));
     },
     toggleSave(resultIndex) {
