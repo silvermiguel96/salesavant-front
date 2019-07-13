@@ -243,6 +243,7 @@ export default {
       this.snackText = "Canceled";
     },
     open() {
+      this.signal = {};
       this.snack = true;
       this.snackColor = "info";
       this.snackText = "You're editing a signal";
