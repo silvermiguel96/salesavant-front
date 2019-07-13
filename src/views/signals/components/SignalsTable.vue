@@ -45,8 +45,6 @@
             </template>
           </v-edit-dialog>
         </td>
-        <!-- TODO Al dar click al group el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
-        <!--tener en cuenta que siempre se debe enviar a la mutation el objeto signal completo-->
         <td>{{props.item.category || ""}}</td>
         <td>
           <v-edit-dialog
@@ -75,7 +73,6 @@
             </template>
           </v-edit-dialog>
         </td>
-        <!-- TODO Al dar click al defaultScore el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
         <td>{{props.item.creationTime || ""}}</td>
         <td>{{props.item.modificationTime || ""}}</td>
         <td>
@@ -240,6 +237,7 @@ export default {
       }
     },
     cancel() {
+      this.signal = {};
       this.snack = true;
       this.snackColor = "error";
       this.snackText = "Canceled";

@@ -17,7 +17,12 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs12>
-            <v-textarea name="description" label="Description" value="description is comming Soon" disabled></v-textarea>
+            <v-textarea
+              name="description"
+              label="Description"
+              value="description is comming Soon"
+              disabled
+            ></v-textarea>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="city" v-model="company.city" label="city" @input="changeData"></v-text-field>
@@ -26,8 +31,7 @@
             <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <!-- TODO cambiar el label de 'website' por 'website keywords' 
-            y verificar desde graphiQL si si está haciendo busquedas con ese campo-->
+            <!-- TODO verificar desde graphiQL si si está haciendo busquedas con ese campo-->
             <v-text-field
               name="website"
               v-model="company.website"
