@@ -16,6 +16,9 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
+          <v-flex xs12>
+            <v-textarea name="description" label="Description" value="description is comming Soon" disabled></v-textarea>
+          </v-flex>
           <v-flex xs6>
             <v-text-field name="city" v-model="company.city" label="city" @input="changeData"></v-text-field>
           </v-flex>
@@ -28,15 +31,12 @@
             <v-text-field
               name="website"
               v-model="company.website"
-              label="website"
+              label="website keywords"
               @input="changeData"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="status" v-model="company.status" label="status" @input="changeData"></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -58,6 +58,9 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
+          <v-flex xs6>
+            <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
+          </v-flex>
           <v-flex xs6>
             <v-btn @click="search" type="submit" color="primary">
               <v-icon>search</v-icon>

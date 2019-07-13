@@ -28,6 +28,7 @@ query CompaniesAdvancedSearch(
     modificationTime
     uid
     name
+    website
     description
     url
     handle
