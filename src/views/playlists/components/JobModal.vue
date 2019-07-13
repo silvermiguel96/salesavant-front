@@ -27,6 +27,7 @@
             <template v-slot:items="props">
               <td v-show="!props.item.showSave">{{ props.item.name || ""}}</td>
               <td v-show="!props.item.showSave">{{ props.item.total || "" }}</td>
+              <td v-show="!props.item.showSave">{{ props.item.score || "" }}</td>
               <td>
                 <table>
                   <tr>
@@ -48,8 +49,6 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <!--<v-btn color="success" flat @click="getPlaylistKeyWords">Start process</v-btn>-->
-          <!-- <h1 >Loading...</h1> -->
           <v-btn color="green" flat @click="createNewJob">Create new keyword results (process again)</v-btn>
           <v-btn v-show="!results.length" color="green" flat @click="refreshJob">Refresh results</v-btn>
           <v-btn color="error" flat @click="onClose">Close</v-btn>
@@ -77,6 +76,7 @@ export default {
           sortable: false
         },
         { text: "Total", align: "left", sortable: false },
+        { text: "Score", align: "left", sortable: false },
         { text: "Actions", align: "left", sortable: false }
       ],
       results: []
@@ -111,8 +111,8 @@ export default {
       this.results = results.map(item => ({
         showSave: false,
         name: item[0] || "",
-        total: item[1] || "0"
-        //TODO poner el score y mostrarlo en la tabla
+        total: item[1] || "--",
+        score: item[2] || "--"
       }));
     },
     toggleSave(resultIndex) {

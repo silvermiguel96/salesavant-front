@@ -211,8 +211,8 @@ export default {
       const url = "/jobs";
       const data = {
         job_name: "extract_keywords",
-        playlist_uid: playlistId
-        //TODO mandar max_keywords = 300
+        playlist_uid: playlistId,
+        max_keywords: 300
       };
 
       try {

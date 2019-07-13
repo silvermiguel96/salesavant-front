@@ -2,6 +2,7 @@
   <div>
     <v-card class="apollo-example">
       <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
+      <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
       <v-breadcrumbs
         v-if="!!this.$route.params.signalId"
         :items="[
@@ -40,10 +41,8 @@
               <v-btn
                 type="submit"
                 color="primary"
-                :disabled="!!signal.id"
                 @click="save"
-              >{{!!signal.id ? "Update (coming soon)" : "save"}}</v-btn>
-              <!--TODO que funcione el update-->
+              >{{!!signal.id ? "Update" : "Created"}}</v-btn>
             </v-flex>
           </v-layout>
         </v-container>
@@ -89,6 +88,8 @@ export default {
     signal: { ...defaultSignal },
     errorMessage: "",
     showError: false,
+    showSuccess: false,
+    successMessage: "",
     headers: [
       {
         text: "Company name",
@@ -239,6 +240,12 @@ export default {
               score: this.signal.defaultScore
             }
           });
+          this.successMessage = "The signals are updated successfully!";
+          this.showSuccess = true;
+          setTimeout(() => {
+            this.showSuccess = false;
+          }, 5000);
+          console.log("Update signal success", result);
         } else {
           //create signal
           result = await this.$apollo.mutate({
@@ -283,9 +290,13 @@ export default {
               score: this.signal.defaultScore
             }
           });
+          this.successMessage = "The signals are saving successfully!";
+          this.showSuccess = true;
+          setTimeout(() => {
+            this.showSuccess = false;
+          }, 5000);
+          console.log("saving signal success", result);
         }
-
-        console.log("saving signal success", result);
         const signal =
           _get(result, "data.createSignal.signal", null) ||
           _get(result, "data.updateSignal.signal", null);
@@ -299,6 +310,7 @@ export default {
         this.$router.push({
           path: `/signals/${signal.id}`
         });
+        this.getSignal();
       } catch (error) {
         this.errorMessage = "oops we did something wrong!";
         this.showError = true;

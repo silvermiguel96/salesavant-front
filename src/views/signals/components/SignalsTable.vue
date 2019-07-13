@@ -62,7 +62,7 @@ export default {
         { text: "Default Score", value: "defaultScore", align: "left" },
         { text: "Creation Time", value: "creationTime", align: "left" },
         { text: "Modification Time", value: "modificationTime", align: "left" },
-        { text: "-", align: "left" }
+        { text: "-", value: "icon", align: "left", sortable: false }
       ]
     };
   },

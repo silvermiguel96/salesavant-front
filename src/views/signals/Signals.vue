@@ -89,6 +89,7 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import SignalsTable from "./components/SignalsTable.vue";
 import gql from "graphql-tag";
+import { setTimeout } from "timers";
 
 export default {
   data() {
@@ -160,8 +161,10 @@ export default {
         return;
       } catch (error) {
         this.errorMessage = "oops we did something wrong!";
-        this.showError = true;
-        console.log("error saving signal", error);
+        setTimeout(() => {
+          this.showError = true;
+        }, 5000);
+        console.log("error delete signal", error);
       } finally {
         this.showTable = true;
       }
