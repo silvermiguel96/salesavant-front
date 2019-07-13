@@ -1,34 +1,92 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="items"
-    class="elevation-1"
-    :pagination.sync="pagination"
-    :rows-per-page-items="pagination.rowsPerPageItems"
-    @update:pagination="updatePagination"
-    :total-items="totalItems"
-  >
-    <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-    <template v-slot:items="props">
-      <td>{{props.item.id || ""}}</td>
-      <td>{{props.item.name || ""}}</td>
-      <td>{{props.item.description || ""}}</td>
-      <td>{{props.item.group || "---"}}</td>
-      <!-- TODO Al dar click al group el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
-      <!--tener en cuenta que siempre se debe enviar a la mutation el objeto signal completo-->
-      <td>{{props.item.category || ""}}</td>
-      <td>{{props.item.defaultScore || "---"}}</td>
-      <!-- TODO Al dar click al defaultScore el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
-      <td>{{props.item.creationTime || ""}}</td>
-      <td>{{props.item.modificationTime || ""}}</td>
-      <td>
-        <router-link v-if="props.item.id" :to="`/signals/${props.item.id}`">
-          <v-icon>edit</v-icon>
-        </router-link>
-        <v-icon @click="deleteSignal(props.item.id)">delete</v-icon>
-      </td>
-    </template>
-  </v-data-table>
+  <div>
+    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn flat @click="snack = false">Close</v-btn>
+    </v-snackbar>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      class="elevation-1"
+      :pagination.sync="pagination"
+      :rows-per-page-items="pagination.rowsPerPageItems"
+      @update:pagination="updatePagination"
+      :total-items="totalItems"
+    >
+      <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
+      <template v-slot:items="props">
+        <td>{{props.item.id || ""}}</td>
+        <td>{{props.item.name || ""}}</td>
+        <td>{{props.item.description || ""}}</td>
+        <td>
+          <v-edit-dialog
+            :return-value.sync="props.item.group"
+            large
+            lazy
+            persistent
+            @save="save"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          >
+            <div>{{ props.item.group || "--" }}</div>
+            <template v-slot:input>
+              <div class="mt-3 title">Update group</div>
+            </template>
+            <template v-slot:input>
+              <v-text-field
+                v-model="props.item.group"
+                label="Edit group"
+                single-line
+                counter
+                autofocus
+                @input="changeData({...props.item})"
+              ></v-text-field>
+            </template>
+          </v-edit-dialog>
+        </td>
+        <!-- TODO Al dar click al group el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
+        <!--tener en cuenta que siempre se debe enviar a la mutation el objeto signal completo-->
+        <td>{{props.item.category || ""}}</td>
+        <td>
+          <v-edit-dialog
+            :return-value.sync="props.item.defaultScore"
+            large
+            lazy
+            persistent
+            @save="save"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          >
+            <div>{{ props.item.defaultScore || "--" }}</div>
+            <template v-slot:input>
+              <div class="mt-3 title">Update Score</div>
+            </template>
+            <template v-slot:input>
+              <v-text-field
+                v-model="props.item.defaultScore"
+                label="Edit score"
+                single-line
+                counter
+                autofocus
+                @input="changeData({...props.item})"
+              ></v-text-field>
+            </template>
+          </v-edit-dialog>
+        </td>
+        <!-- TODO Al dar click al defaultScore el valor debe aparecer en una caja de texto con un botón de guardar para modificarlo-->
+        <td>{{props.item.creationTime || ""}}</td>
+        <td>{{props.item.modificationTime || ""}}</td>
+        <td>
+          <router-link v-if="props.item.id" :to="`/signals/${props.item.id}`">
+            <v-icon>edit</v-icon>
+          </router-link>
+          <v-icon @click="deleteSignal(props.item.id)">delete</v-icon>
+        </td>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
@@ -63,7 +121,11 @@ export default {
         { text: "Creation Time", value: "creationTime", align: "left" },
         { text: "Modification Time", value: "modificationTime", align: "left" },
         { text: "-", value: "icon", align: "left", sortable: false }
-      ]
+      ],
+      snack: false,
+      snackColor: "",
+      snackText: "",
+      signal: {}
     };
   },
   methods: {
@@ -78,6 +140,120 @@ export default {
     },
     deleteSignal(signalId) {
       this.$emit("deleteSignal", signalId);
+    },
+    async save() {
+      if (!this.signal) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "There's something wrong with the signal saving!";
+        return;
+      }
+      if (!this.signal.name) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Name can not be empty!";
+        return;
+      }
+      if (!this.signal.description) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Description can not be empty!";
+        return;
+      }
+      if (!this.signal.defaultScore) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Score can not be empty!";
+        return;
+      }
+      if (!this.signal.group) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Group can not be empty!";
+        return;
+      }
+      try {
+        console.log("here");
+        const result = await this.$apollo.mutate({
+          //////////////////
+          mutation: gql`
+            mutation(
+              $signalId: Int!
+              $name: String
+              $description: String
+              $group: String
+              $category: String
+              $score: Float
+            ) {
+              updateSignal(
+                signalData: {
+                  name: $name
+                  description: $description
+                  group: $group
+                  category: $category
+                  defaultScore: $score
+                }
+                signalId: $signalId
+              ) {
+                signal {
+                  id
+                  name
+                  group
+                  userId
+                  category
+                  accountId
+                  description
+                  creationTime
+                  defaultScore
+                  modificationTime
+                }
+              }
+            }
+          `,
+          // Parameters
+          variables: {
+            signalId: this.signal.id,
+            name: this.signal.name,
+            description: this.signal.description,
+            group: this.signal.group,
+            category: this.signal.category,
+            score: this.signal.defaultScore
+          }
+        });
+        const signal = _get(result, "data.updateSignal.signal", null);
+        if (!signal) {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText =
+            "it seems that we created/updated the signal but couldn't check it, please check manually";
+          return;
+        }
+        this.signal = signal;
+        this.snack = true;
+        this.snackColor = "success";
+        this.snackText = "Signal successfully updated";
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "oops we did something wrong!";
+        console.log("error saving signal", error);
+      }
+    },
+    cancel() {
+      this.snack = true;
+      this.snackColor = "error";
+      this.snackText = "Canceled";
+    },
+    open() {
+      this.snack = true;
+      this.snackColor = "info";
+      this.snackText = "You're editing a signal";
+    },
+    close(closeInput) {
+      console.log({ closeInput });
+    },
+    changeData(signal = {}) {
+      this.signal = signal;
     }
   },
   props: {
