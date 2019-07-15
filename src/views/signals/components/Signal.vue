@@ -24,7 +24,12 @@
           <v-subheader>Signal details</v-subheader>
           <v-layout>
             <v-flex xs12 md4>
-              <v-text-field v-model="signal.name" label="Name" required></v-text-field>
+              <v-text-field
+                v-model="signal.name"
+                label="Name"
+                required
+                :disabled="!canModifySignalName"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12 md4>
               <v-text-field v-model="signal.description" label="Description" required></v-text-field>
@@ -39,16 +44,23 @@
           <v-layout>
             <v-flex xs12 md4>
               <v-btn
+                v-if="canModifySignalName"
                 type="submit"
                 color="primary"
                 @click="save"
-              >{{!!signal.id ? "Update" : "Created"}}</v-btn>
+              >{{!!signal.id ? "Update" : "Create"}}</v-btn>
+              <v-btn
+                v-else
+                type="submit"
+                color="primary"
+                @click="saveKeyWordsAsSignal"
+              >Save from playlist keywords</v-btn>
             </v-flex>
           </v-layout>
         </v-container>
       </v-form>
     </v-card>
-    <v-card>
+    <v-card v-if="canModifySignalName">
       <v-card-title>Related companies</v-card-title>
       <v-container>
         <v-data-table :headers="headers" :items="signal.companies" class="elevation-1">
@@ -68,7 +80,7 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import { setTimeout } from "timers";
+import { setTimeout, setInterval } from "timers";
 
 const defaultSignal = {
   id: "",
@@ -100,7 +112,9 @@ export default {
   }),
   props: {
     score: { type: Number, default: 0 },
-    name: { type: String, default: "" }
+    name: { type: String, default: "" },
+    jobUid: { type: String, default: "" },
+    canModifySignalName: { type: Boolean, default: true }
   },
   methods: {
     async getSignal() {
@@ -300,6 +314,98 @@ export default {
         const signal =
           _get(result, "data.createSignal.signal", null) ||
           _get(result, "data.updateSignal.signal", null);
+        if (!signal) {
+          this.errorMessage =
+            "it seems that we created/updated the signal but couldn't check it, please check manually";
+          this.showError = true;
+          return;
+        }
+        this.signal = signal;
+        this.$router.push({
+          path: `/signals/${signal.id}`
+        });
+        this.getSignal();
+      } catch (error) {
+        this.errorMessage = "oops we did something wrong!";
+        this.showError = true;
+        console.log("error saving signal", error);
+      }
+    },
+    async saveKeyWordsAsSignal() {
+      if (!this.signal) {
+        this.errorMessage = "There's something wrong with the signal saving!";
+        this.showError = true;
+        return;
+      }
+      if (!this.signal.name) {
+        this.errorMessage = "Name can not be empty!";
+        this.showError = true;
+        return;
+      }
+      if (!this.signal.description) {
+        this.errorMessage = "Description can not be empty!";
+        this.showError = true;
+        return;
+      }
+      if (!this.signal.defaultScore) {
+        this.errorMessage = "Score can not be empty!";
+        this.showError = true;
+        return;
+      }
+      if (!this.signal.group) {
+        this.errorMessage = "Group can not be empty!";
+        this.showError = true;
+        return;
+      }
+      if (!this.$props.jobUid) {
+        this.errorMessage = "JobUid can not be empty!";
+        this.showError = true;
+        return;
+      }
+      try {
+        console.log("here");
+        const result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($jobUid: String!, $keyword: String!) {
+              createSignalFromPlaylistKeyword(
+                jobUid: $jobUid
+                keyword: $keyword
+              ) {
+                signal {
+                  id
+                  name
+                  group
+                  userId
+                  category
+                  accountId
+                  description
+                  creationTime
+                  defaultScore
+                  modificationTime
+                }
+              }
+            }
+          `,
+          // Parameters
+          variables: {
+            keyword: this.signal.name,
+            jobUid: this.$props.jobUid
+          }
+        });
+        this.successMessage = "The signals are saving successfully!";
+        this.showSuccess = true;
+        setTimeout(() => {
+          this.showSuccess = false;
+        }, 5000);
+        console.log("saving signal success", result);
+
+        const signal = _get(
+          result,
+          "data.createSignalFromPlaylistKeyword.signal",
+          null
+        );
+
+        console.log("signal", signal);
         if (!signal) {
           this.errorMessage =
             "it seems that we created/updated the signal but couldn't check it, please check manually";
