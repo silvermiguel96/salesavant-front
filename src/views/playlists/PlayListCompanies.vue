@@ -60,6 +60,7 @@
             :dialog="showJobModal"
             @onClose="closeJobModal"
             @createKeywordsJob="createKeywordsJob"
+            :canModifySignalName="false"
           />
 
           <!-- Loading -->

@@ -39,7 +39,12 @@
                       >exit_to_app</v-icon>
                     </td>
                     <td v-if="props.item.showSave">
-                      <signal :score="props.item.total || ''" :name="props.item.name || ''" />
+                      <signal
+                        :score="props.item.total || ''"
+                        :name="props.item.name || ''"
+                        :canModifySignalName="false"
+                        :jobUid="job.jobUid || ''"
+                      />
                     </td>
                   </tr>
                 </table>
@@ -85,7 +90,8 @@ export default {
   props: {
     job: { type: Object, required: true },
     loading: { type: Boolean, default: false },
-    dialog: { type: Boolean, default: false }
+    dialog: { type: Boolean, default: false },
+    canModifySignalName: { type: Boolean, default: false }
   },
   components: { Signal },
   methods: {
