@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-subheader>Companies Search</v-subheader>
+    <!--TODO: cambiar v-aler por v-snackbar -->
     <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
     <v-form ref="simpleSearchForm" @submit.prevent>
       <v-container grid-list-xs text-xs-center>
@@ -31,7 +32,7 @@
             <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <!-- TODO verificar desde graphiQL si si está haciendo busquedas con ese campo-->
+            <!-- TODO PENDIENTE verificar desde graphiQL si si está haciendo busquedas con ese campo-->
             <v-text-field
               name="website"
               v-model="company.website"
@@ -78,7 +79,7 @@
 </template>
 
 <script>
-// TODO agregar a la busqueda company description
+// TODO PENDIENTE agregar a la busqueda company description
 import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";

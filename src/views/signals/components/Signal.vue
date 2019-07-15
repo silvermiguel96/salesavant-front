@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-card class="apollo-example">
+      <!--TODO: cambiar v-alert por v-snackbar -->
       <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
       <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
       <v-breadcrumbs
@@ -365,6 +366,7 @@ export default {
       try {
         console.log("here");
         const result = await this.$apollo.mutate({
+          //TODO enviar el score en esta mutación
           mutation: gql`
             mutation($jobUid: String!, $keyword: String!) {
               createSignalFromPlaylistKeyword(

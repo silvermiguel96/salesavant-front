@@ -27,6 +27,7 @@
       ]"
       divider=">"
     ></v-breadcrumbs>
+    <!--TODO: cambiar v-alert por v-snackbar -->
     <v-alert v-show="showError" type="error">{{errorMessage}}</v-alert>
     <h1 v-if="!!isFiltered">You're currently filtering by</h1>
     <ul v-if="!!isFiltered">

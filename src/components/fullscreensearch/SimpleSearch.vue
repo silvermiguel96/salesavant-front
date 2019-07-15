@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-subheader>Simple Search</v-subheader>
-
+    <!--TODO: cambiar v-aler por v-snackbar -->
     <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
 
     <v-form ref="simpleSearchForm" @submit.prevent>

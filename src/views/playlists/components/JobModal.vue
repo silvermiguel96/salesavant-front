@@ -3,6 +3,7 @@
     <v-dialog v-model="dialog" persistent max-width="1000">
       <v-card>
         <v-card-title class="headline">Keywords Job</v-card-title>
+        <!--TODO: cambiar v-alert por v-snackbar -->
         <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
         <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
         <v-card-text>

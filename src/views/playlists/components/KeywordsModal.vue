@@ -6,6 +6,7 @@
       </template>
       <v-card>
         <v-card-title class="headline">Get playlist kewords?</v-card-title>
+        <!--TODO: cambiar v-alert por v-snackbar -->
         <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
         <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
         <v-card-text v-show="loading">

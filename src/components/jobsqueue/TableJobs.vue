@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-card-text>
+      <!--TODO: cambiar v-aler por v-snackbar -->
       <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
       <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
       <template>
