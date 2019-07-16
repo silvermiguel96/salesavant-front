@@ -27,8 +27,11 @@
       ]"
       divider=">"
     ></v-breadcrumbs>
-    <!--TODO: cambiar v-alert por v-snackbar -->
-    <v-alert v-show="showError" type="error">{{errorMessage}}</v-alert>
+    <!--TODOLISTO: cambiar v-alert por v-snackbar -->
+    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn flat @click="snack = false">Close</v-btn>
+    </v-snackbar>
     <h1 v-if="!!isFiltered">You're currently filtering by</h1>
     <ul v-if="!!isFiltered">
       <li
@@ -185,8 +188,9 @@ export default {
         city: ""
       },
       isFiltered: false,
-      errorMessage: "",
-      showError: false
+      snack: false,
+      snackColor: "",
+      snackText: ""
     };
   },
   components: {
@@ -232,20 +236,16 @@ export default {
         newPlaylistName
       );
       if (!this.checkIfIsFiltered()) {
-        this.errorMessage =
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText =
           "At least one company field search criteria is not empty!";
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
         return;
       }
       if (!newPlaylistName) {
-        this.errorMessage = "New Playlist Name can not be empty!";
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "New Playlist Name can not be empty!";
         return;
       }
       if (this.checkIfIsFiltered() && !!newPlaylistName) {
@@ -312,37 +312,34 @@ export default {
             null
           );
           if (!playlist) {
-            this.errorMessage =
-              "it seems that we created your playlist but couldn't check it, please check manually";
-            this.showError = true;
+            this.snack = true;
+            this.snackColor = "error";
+            this.snackText = "it seems that we created your playlist but couldn't check it, please check manually";
             return;
           }
           this.$router.push({
             path: `/playlists/${playlist.uid}/companies`
           });
         } catch (error) {
-          this.errorMessage = "oops we did something wrong!";
-          this.showError = true;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "oops we did something wrong!";
           console.log("error saving simple search as a play list", error);
         }
       }
     },
     async saveResultsAsSignal(signal = null) {
       if (!this.checkIfIsFiltered()) {
-        this.errorMessage =
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText =
           "At least one company field search criteria is not empty!";
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
         return;
       }
       if (!signal) {
-        this.errorMessage = "Please fill the signal form!";
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Please fill the signal form!";
         return;
       }
       console.log("signal", signal);
@@ -435,9 +432,9 @@ export default {
             null
           );
           if (!signal) {
-            this.errorMessage =
-              "it seems that we created your signal but couldn't check it, please check manually";
-            this.showError = true;
+            this.snack = true;
+            this.snackColor = "error";
+            this.snackText = "it seems that we created your signal but couldn't check it, please check manually";
             return;
           }
           console.log("finish");
@@ -445,8 +442,9 @@ export default {
             path: `/signals/${signal.id}`
           });
         } catch (error) {
-          this.errorMessage = "oops we did something wrong!";
-          this.showError = true;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "oops we did something wrong!";
           console.log("error saving search results as signal", error);
         }
       }

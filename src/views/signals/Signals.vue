@@ -1,5 +1,9 @@
 <template>
   <div class="apollo-example">
+    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn flat @click="snack = false">Close</v-btn>
+    </v-snackbar>
     <v-breadcrumbs
       v-if="!!this.$route.query && !!this.$route.query.searchType"
       :items="[
@@ -94,6 +98,9 @@ import { setTimeout } from "timers";
 export default {
   data() {
     return {
+      snack: false,
+      snackColor: "",
+      snackText: "",
       showTable: true,
       items: ["Companies"],
       company: "",
@@ -160,10 +167,9 @@ export default {
         //this.$apollo.queries.AllSignals.refetch();
         return;
       } catch (error) {
-        this.errorMessage = "oops we did something wrong!";
-        setTimeout(() => {
-          this.showError = true;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "oops we did something wrong!";
         console.log("error delete signal", error);
       } finally {
         this.showTable = true;

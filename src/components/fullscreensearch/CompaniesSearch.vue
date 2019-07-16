@@ -1,8 +1,11 @@
 <template>
   <div>
     <v-subheader>Companies Search</v-subheader>
-    <!--TODO: cambiar v-aler por v-snackbar -->
-    <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
+    <!--TODOLISTO: cambiar v-aler por v-snackbar -->
+    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn flat @click="snack = false">Close</v-btn>
+    </v-snackbar>
     <v-form ref="simpleSearchForm" @submit.prevent>
       <v-container grid-list-xs text-xs-center>
         <v-layout row wrap>
@@ -97,9 +100,10 @@ export default {
         lessThanEmployees: 0,
         moreThanEmployees: 0
       },
-      showError: false,
+      snack: false,
+      snackColor: "",
+      snackText: "",
       newPlaylistName: "",
-      errorMessage: "",
       showNewPlaylistName: false
     };
   },
@@ -116,12 +120,10 @@ export default {
     },
     async save() {
       if (!this.atLeastOneCompanyFieldIsNotEmpty()) {
-        this.errorMessage =
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText =
           "At least one company field search criteria is not empty!";
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
         return;
       }
       if (!this.showNewPlaylistName) {
@@ -129,11 +131,9 @@ export default {
         return;
       }
       if (!this.newPlaylistName) {
-        this.errorMessage = "New Playlist Name can not be empty!";
-        this.showError = true;
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "New Playlist Name can not be empty!";
         return;
       }
       if (this.atLeastOneCompanyFieldIsNotEmpty() && !!this.newPlaylistName) {
@@ -192,9 +192,10 @@ export default {
             null
           );
           if (!playlist) {
-            this.errorMessage =
+            this.snack = true;
+            this.snackColor = "error";
+            this.snackText =
               "it seems that we created your playlist but couldn't check it, please check manually";
-            this.showError = true;
             return;
           }
           this.toggle();
@@ -202,8 +203,9 @@ export default {
             path: `/playlists/${playlist.uid}/companies`
           });
         } catch (error) {
-          this.errorMessage = "oops we did something wrong!";
-          this.showError = true;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "oops we did something wrong!";
           console.log("error saving simple search as a play list", error);
         }
       }

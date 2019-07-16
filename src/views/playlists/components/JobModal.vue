@@ -3,9 +3,7 @@
     <v-dialog v-model="dialog" persistent max-width="1000">
       <v-card>
         <v-card-title class="headline">Keywords Job</v-card-title>
-        <!--TODO: cambiar v-alert por v-snackbar -->
-        <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
-        <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
+        <!--TODOLISTO: cambiar v-alert por v-snackbar -->
         <v-card-text>
           <div class="text-xs-center">
             <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
@@ -41,7 +39,7 @@
                     </td>
                     <td v-if="props.item.showSave">
                       <signal
-                        :score="props.item.total || ''"
+                        :score="props.item.score || ''"
                         :name="props.item.name || ''"
                         :canModifySignalName="false"
                         :jobUid="job.jobUid || ''"
@@ -71,10 +69,6 @@ import Signal from "../../signals/components/Signal.vue";
 export default {
   data() {
     return {
-      showError: false,
-      errorMessage: "",
-      showSuccess: false,
-      successMessage: "",
       headers: [
         {
           text: "Keyword",

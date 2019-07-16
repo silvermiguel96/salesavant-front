@@ -2,8 +2,10 @@
   <div>
     <v-card class="apollo-example">
       <!--TODO: cambiar v-alert por v-snackbar -->
-      <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
-      <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
+      <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+        {{ snackText }}
+        <v-btn flat @click="snack = false">Close</v-btn>
+      </v-snackbar>
       <v-breadcrumbs
         v-if="!!this.$route.params.signalId"
         :items="[
@@ -98,11 +100,10 @@ const defaultSignal = {
 
 export default {
   data: () => ({
+    snack: false,
+    snackColor: "",
+    snackText: "",
     signal: { ...defaultSignal },
-    errorMessage: "",
-    showError: false,
-    showSuccess: false,
-    successMessage: "",
     headers: [
       {
         text: "Company name",
@@ -154,21 +155,18 @@ export default {
           console.log("signal result", result);
           signal = _get(result, "data.signal", null);
           if (!signal) {
-            this.errorMessage =
+            this.snack = true;
+            this.snackColor = "error";
+            this.snackText =
               "oops we did something wrong when trying to get the signal from the database";
-            this.showError = true;
-            setTimeout(() => {
-              this.showError = false;
-            }, 5000);
+
             return;
           }
           this.signal = { ...signal };
         } catch (error) {
-          this.errorMessage = "oops we did something wrong!!";
-          this.showError = true;
-          setTimeout(() => {
-            this.showError = false;
-          }, 5000);
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "oops we did something wrong!!";
           console.log("error trying to query signal", error);
         }
       } else {
@@ -181,28 +179,33 @@ export default {
     },
     async save() {
       if (!this.signal) {
-        this.errorMessage = "There's something wrong with the signal saving!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "There's something wrong with the signal saving!";
         return;
       }
       if (!this.signal.name) {
-        this.errorMessage = "Name can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Name can not be empty!";
         return;
       }
       if (!this.signal.description) {
-        this.errorMessage = "Description can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Description can not be empty!";
         return;
       }
       if (!this.signal.defaultScore) {
-        this.errorMessage = "Score can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Score can not be empty!";
         return;
       }
       if (!this.signal.group) {
-        this.errorMessage = "Group can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Group can not be empty!";
         return;
       }
       try {
@@ -255,11 +258,9 @@ export default {
               score: this.signal.defaultScore
             }
           });
-          this.successMessage = "The signals are updated successfully!";
-          this.showSuccess = true;
-          setTimeout(() => {
-            this.showSuccess = false;
-          }, 5000);
+          this.snack = true;
+          this.snackColor = "success";
+          this.snackText = "The signals are updated successfully!";
           console.log("Update signal success", result);
         } else {
           //create signal
@@ -305,20 +306,19 @@ export default {
               score: this.signal.defaultScore
             }
           });
-          this.successMessage = "The signals are saving successfully!";
-          this.showSuccess = true;
-          setTimeout(() => {
-            this.showSuccess = false;
-          }, 5000);
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "The signals are saving successfully!";
           console.log("saving signal success", result);
         }
         const signal =
           _get(result, "data.createSignal.signal", null) ||
           _get(result, "data.updateSignal.signal", null);
         if (!signal) {
-          this.errorMessage =
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText =
             "it seems that we created/updated the signal but couldn't check it, please check manually";
-          this.showError = true;
           return;
         }
         this.signal = signal;
@@ -327,51 +327,59 @@ export default {
         });
         this.getSignal();
       } catch (error) {
-        this.errorMessage = "oops we did something wrong!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "oops we did something wrong!";
         console.log("error saving signal", error);
       }
     },
     async saveKeyWordsAsSignal() {
       if (!this.signal) {
-        this.errorMessage = "There's something wrong with the signal saving!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "There's something wrong with the signal saving!";
         return;
       }
       if (!this.signal.name) {
-        this.errorMessage = "Name can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Name can not be empty!";
         return;
       }
       if (!this.signal.description) {
-        this.errorMessage = "Description can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Description can not be empty!";
         return;
       }
       if (!this.signal.defaultScore) {
-        this.errorMessage = "Score can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Score can not be empty!";
         return;
       }
       if (!this.signal.group) {
-        this.errorMessage = "Group can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Group can not be empty!";
         return;
       }
       if (!this.$props.jobUid) {
-        this.errorMessage = "JobUid can not be empty!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "JobUid can not be empty!";
         return;
       }
       try {
         console.log("here");
         const result = await this.$apollo.mutate({
-          //TODO enviar el score en esta mutación
+          //TODOLISTO enviar el score en esta mutación
           mutation: gql`
-            mutation($jobUid: String!, $keyword: String!) {
+            mutation($jobUid: String!, $keyword: String!, $defaultScore: Int) {
               createSignalFromPlaylistKeyword(
                 jobUid: $jobUid
                 keyword: $keyword
+                defaultScore: $defaultScore
               ) {
                 signal {
                   id
@@ -391,14 +399,13 @@ export default {
           // Parameters
           variables: {
             keyword: this.signal.name,
-            jobUid: this.$props.jobUid
+            jobUid: this.$props.jobUid,
+            defaultScore: this.signal.defaultScore
           }
         });
-        this.successMessage = "The signals are saving successfully!";
-        this.showSuccess = true;
-        setTimeout(() => {
-          this.showSuccess = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "success";
+        this.snackText = "The signals are saving successfully!";
         console.log("saving signal success", result);
 
         const signal = _get(
@@ -409,9 +416,10 @@ export default {
 
         console.log("signal", signal);
         if (!signal) {
-          this.errorMessage =
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText =
             "it seems that we created/updated the signal but couldn't check it, please check manually";
-          this.showError = true;
           return;
         }
         this.signal = signal;
@@ -420,8 +428,9 @@ export default {
         });
         this.getSignal();
       } catch (error) {
-        this.errorMessage = "oops we did something wrong!";
-        this.showError = true;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "oops we did something wrong!";
         console.log("error saving signal", error);
       }
     }

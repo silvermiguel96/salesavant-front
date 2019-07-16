@@ -1,5 +1,10 @@
 <template>
   <v-card>
+    <!--TODOLISTO: cambiar v-aler por v-snackbar -->
+    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn flat @click="snack = false">Close</v-btn>
+    </v-snackbar>
     <ApolloQuery
       :query="require('./graphql/PlaylistCompanies.gql')"
       :variables="{ uid: $route.params.playlistId }"
@@ -99,7 +104,10 @@ export default {
       job: null,
       loadingModal: false,
       isLoading: false,
-      showJobModal: false
+      showJobModal: false,
+      snack: false,
+      snackColor: "",
+      snackText: ""
     };
   },
   components: { CompaniesTable, KeyWordsModal, JobModal },
@@ -129,11 +137,9 @@ export default {
       this.loadingModal = true;
       console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
       if (!jobId) {
-        this.showError = true;
-        this.errorMessage = "Oops! I can't read this job id";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops! I can't read this job id";
         return;
       }
       try {
@@ -178,12 +184,9 @@ export default {
           this.loadingModal = false;
         }
       } catch (error) {
-        this.loadingModal = false;
-        this.showError = true;
-        this.errorMessage = "Oops! we did something wrong!";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops! we did something wrong!";
         console.log("error refreshing job", error);
       }
     },
@@ -193,20 +196,16 @@ export default {
       const playlistId = _get(this.$route, "params.playlistId", null);
       if (!playlistId || playlistId === "undefined") {
         this.isLoading = false;
-        this.showError = true;
-        this.errorMessage = "Couldn't find the playlist Id, please try later!";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Couldn't find the playlist Id, please try later!";
         return;
       }
       if (!!this.isThereAJobForTheSamePlaylist()) {
         this.isLoading = false;
-        this.showError = true;
-        this.errorMessage = "There's already a job for this playlist!";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "There's already a job for this playlist!";
         return;
       }
       const url = "/jobs";
@@ -233,11 +232,9 @@ export default {
         console.log("jobUid", jobUid);
         if (!jobUid) {
           this.isLoading = false;
-          this.showError = true;
-          this.errorMessage = "Couldn't get a job id, please try later!";
-          setTimeout(() => {
-            this.showError = false;
-          }, 5000);
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Couldn't get a job id, please try later!";
           return;
         }
         const newJob = {
@@ -257,25 +254,19 @@ export default {
           localStorage.setItem(jobUid, JSON.stringify(newJob));
         } else {
           this.isLoading = false;
-          this.showError = true;
-          this.errorMessage = "This Job already exists!";
-          setTimeout(() => {
-            this.showError = false;
-          }, 5000);
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "This Job already exists!";
           return;
         }
         this.isLoading = false;
-        this.showSucess = false;
-        this.showError = false;
         this.dialog = false;
         console.log("finish");
         this.verifyJobs();
       } catch (error) {
-        this.showError = true;
-        this.errorMessage = "Oops we did something wrong!";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops we did something wrong!";
         console.log("error creating job to get playlist keywords", error);
       }
     },

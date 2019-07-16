@@ -6,9 +6,7 @@
       </template>
       <v-card>
         <v-card-title class="headline">Get playlist kewords?</v-card-title>
-        <!--TODO: cambiar v-alert por v-snackbar -->
-        <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
-        <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
+        <!--TODOLISTO: cambiar v-alert por v-snackbar -->
         <v-card-text v-show="loading">
           We're currently creating the job for extracting the keywords
           <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
@@ -31,10 +29,6 @@ export default {
   data() {
     return {
       dialog: false,
-      showError: false,
-      errorMessage: "",
-      showSuccess: false,
-      successMessage: ""
     };
   },
   props: {

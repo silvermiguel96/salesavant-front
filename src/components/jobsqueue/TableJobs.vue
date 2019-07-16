@@ -1,9 +1,11 @@
 <template>
   <v-card>
     <v-card-text>
-      <!--TODO: cambiar v-aler por v-snackbar -->
-      <v-alert :value="showError" dismissible type="error">{{errorMessage}}</v-alert>
-      <v-alert :value="showSuccess" dismissible type="success">{{successMessage}}</v-alert>
+      <!--TODOLISTO: cambiar v-aler por v-snackbar -->
+      <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+        {{ snackText }}
+        <v-btn flat @click="snack = false">Close</v-btn>
+      </v-snackbar>
       <template>
         <v-btn class="warning" @click.prevent="clearAll">
           Clear all
@@ -52,10 +54,9 @@ export default {
         { text: "View", value: "view", sortable: false }
       ],
       jobs: [],
-      showError: false,
-      showSuccess: false,
-      errorMessage: "",
-      successMessage: ""
+      snack: false,
+      snackColor: "",
+      snackText: "",
     };
   },
   methods: {
@@ -70,11 +71,9 @@ export default {
     },
     async verifyJobStatus(jobId = null) {
       if (!jobId) {
-        this.showError = true;
-        this.errorMessage = "Oops! I can't read this job id";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true
+        this.snackColor = "error";
+        this.snackText = "Oops! I can't read this job id";
         return;
       }
       try {
@@ -98,11 +97,9 @@ export default {
         localStorage[jobId] = JSON.stringify(updatedJob);
         this.loadJobs();
       } catch (error) {
-        this.showError = true;
-        this.errorMessage = "Oops! we did something wrong!";
-        setTimeout(() => {
-          this.showError = false;
-        }, 5000);
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops! we did something wrong!";
         console.log("error refreshing job", error);
       }
     },
