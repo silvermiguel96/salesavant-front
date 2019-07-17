@@ -9,7 +9,12 @@
           :showJobsQueue="showJobsQueue"
           @toggleJobsQueuve="toggleJobsQueuve"
         ></main-menu>
-        <full-screen-search v-if="isAuthenticated" :show="showSearch" @toggle="toggleSearch"></full-screen-search>
+        <full-screen-search
+          v-if="isAuthenticated"
+          :show="showSearch"
+          @toggle="toggleSearch"
+          :expand="expand"
+        ></full-screen-search>
         <jobs-queue
           v-if="isAuthenticated && !!showJobsQueue"
           :show="showJobsQueue"
@@ -41,7 +46,8 @@ export default {
         password: "1"
       },
       showSearch: false,
-      showJobsQueue: false
+      showJobsQueue: false,
+      expand: "companies"
     };
   },
   async created() {
@@ -70,6 +76,7 @@ export default {
     },
     toggleSearch(data) {
       this.showSearch = data.show;
+      this.expand = data.expand || "companies";
     },
     toggleJobsQueuve(data) {
       this.showJobsQueue = data.show;

@@ -37,7 +37,10 @@ export default {
   },
   methods: {
     toggleSearch() {
-      this.$emit("toggleSearch", { show: !this.$props.showSearch });
+      this.$emit("toggleSearch", {
+        show: !this.$props.showSearch,
+        expand: "companies"
+      });
     },
     toggleJobsQueuve() {
       this.$emit("toggleJobsQueuve", { show: !this.$props.showJobsQueue });

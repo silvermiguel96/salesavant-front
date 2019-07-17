@@ -27,8 +27,8 @@
       ]"
       divider=">"
     ></v-breadcrumbs>
-    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
-    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+    <h1 class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
+    <ul  class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">
       <li
         v-if="this.$route.query.simpleSearch"
       >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
@@ -187,7 +187,10 @@ export default {
       this.typeButton = newValue;
     },
     toggleSearch() {
-      this.$emit("toggleSearch", { show: !this.$props.showSearch });
+      this.$emit("toggleSearch", {
+        show: !this.$props.showSearch,
+        expand: "news"
+      });
     }
   },
   props: {

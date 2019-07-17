@@ -10,33 +10,71 @@
       ]"
       divider=">"
     ></v-breadcrumbs>
-    <!-- Apollo watched Graphql query -->
-    <ApolloQuery
-      :query="require('./graphql/Playlists.gql')"
-      :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+    <h1 class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
+    <ul class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">
+      <li v-if="this.$route.query.search">Searching playlist with "{{this.$route.query.search}}"</li>
+    </ul>
+    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
+    <template
+      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' &&
+      !!this.$route.query.search"
     >
-      <template slot-scope="{ result: { loading, error, data } }">
-        <!-- Loading -->
-         <div v-if="loading" class="loading apollo">Loading...</div>
+      <ApolloQuery
+        :query="require('./graphql/PlaylistSearch.gql')"
+        :variables="{ search: this.$route.query.search, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+      >
+        <template slot-scope="{ result: { loading, error, data } }">
+          <!-- Loading -->
+          <div v-if="loading" class="loading apollo">Loading...</div>
 
-        <!-- Error -->
-        <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+          <!-- Error -->
+          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-        <!-- Result -->
-        <div v-else-if="data" class="result apollo">
-          <!---<div>{{ JSON.stringify(data) }}</div>-->
-          <play-lists-table
-            v-if="data.playlists.length"
-            :items="data.playlists"
-            class="result apollo"
-            @updatePagination="updatePagination"
-          ></play-lists-table>
-        </div>
+          <!-- Result -->
+          <div v-else-if="data" class="result apollo">
+            <!---<div>{{ JSON.stringify(data) }}</div>-->
+            <play-lists-table
+              v-if="data.playlists.length"
+              :items="data.playlists"
+              class="result apollo"
+              @updatePagination="updatePagination"
+            ></play-lists-table>
+          </div>
 
-        <!-- No result -->
-        <div v-else class="no-result apollo">Loading...</div>
-      </template>
-    </ApolloQuery>
+          <!-- No result -->
+          <div v-else class="no-result apollo">Loading...</div>
+        </template>
+      </ApolloQuery>
+    </template>
+    <template v-else>
+      <!-- Apollo watched Graphql query -->
+      <ApolloQuery
+        :query="require('./graphql/Playlists.gql')"
+        :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+      >
+        <template slot-scope="{ result: { loading, error, data } }">
+          <!-- Loading -->
+          <div v-if="loading" class="loading apollo">Loading...</div>
+
+          <!-- Error -->
+          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+
+          <!-- Result -->
+          <div v-else-if="data" class="result apollo">
+            <!---<div>{{ JSON.stringify(data) }}</div>-->
+            <play-lists-table
+              v-if="data.playlists.length"
+              :items="data.playlists"
+              class="result apollo"
+              @updatePagination="updatePagination"
+            ></play-lists-table>
+          </div>
+
+          <!-- No result -->
+          <div v-else class="no-result apollo">Loading...</div>
+        </template>
+      </ApolloQuery>
+    </template>
   </div>
 </template>
 
@@ -51,8 +89,12 @@ export default {
       page: 1,
       rowsPerPage: 5,
       sortBy: "",
-      totalItems: 5
+      totalItems: 5,
+      isFiltered: false
     };
+  },
+  props: {
+    showSearch: { type: Boolean, default: false }
   },
   components: { PlayListsTable },
   methods: {
@@ -70,59 +112,13 @@ export default {
       this.rowsPerPage = rowsPerPage;
       this.sortBy = sortBy;
       this.totalItems = 5;
+    },
+    toggleSearch() {
+      this.$emit("toggleSearch", {
+        show: !this.$props.showSearch,
+        expand: "playlists"
+      });
     }
   }
-  /* apollo: {
-    playlists: PLAYLISTS
-  } */
 };
 </script>
-
-<style scoped>
-.form,
-.input,
-.apollo,
-.message {
-  padding: 12px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.input {
-  font-family: inherit;
-  font-size: inherit;
-  border: solid 2px #ccc;
-  border-radius: 3px;
-}
-
-.error {
-  color: red;
-}
-
-.images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
-  grid-gap: 10px;
-}
-
-.image-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  border-radius: 8px;
-}
-
-.image {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.image-input {
-  margin: 20px;
-}
-</style>

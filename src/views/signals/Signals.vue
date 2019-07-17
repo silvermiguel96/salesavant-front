@@ -206,7 +206,10 @@ export default {
       this.typeButton = newValue;
     },
     toggleSearch() {
-      this.$emit("toggleSearch", { show: !this.$props.showSearch });
+      this.$emit("toggleSearch", {
+        show: !this.$props.showSearch,
+        expand: "signals"
+      });
     }
   },
   props: {

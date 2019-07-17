@@ -32,8 +32,8 @@
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>
     </v-snackbar>
-    <h1 v-if="!!isFiltered">You're currently filtering by</h1>
-    <ul v-if="!!isFiltered">
+    <h1 class="ml-2" v-if="!!isFiltered">You're currently filtering by</h1>
+    <ul class="ml-2" v-if="!!isFiltered">
       <li
         v-if="this.$route.query.simpleSearch"
       >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
@@ -215,7 +215,10 @@ export default {
       this.totalItems = 5;
     },
     toggleSearch() {
-      this.$emit("toggleSearch", { show: !this.$props.showSearch });
+      this.$emit("toggleSearch", {
+        show: !this.$props.showSearch,
+        expand: "companies"
+      });
     },
     checkIfIsFiltered() {
       let result = false;
@@ -314,7 +317,8 @@ export default {
           if (!playlist) {
             this.snack = true;
             this.snackColor = "error";
-            this.snackText = "it seems that we created your playlist but couldn't check it, please check manually";
+            this.snackText =
+              "it seems that we created your playlist but couldn't check it, please check manually";
             return;
           }
           this.$router.push({
@@ -434,7 +438,8 @@ export default {
           if (!signal) {
             this.snack = true;
             this.snackColor = "error";
-            this.snackText = "it seems that we created your signal but couldn't check it, please check manually";
+            this.snackText =
+              "it seems that we created your signal but couldn't check it, please check manually";
             return;
           }
           console.log("finish");

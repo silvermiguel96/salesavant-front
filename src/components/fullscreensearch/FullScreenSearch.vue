@@ -1,6 +1,12 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" max-width="500" hide-overlay transition="dialog-bottom-transition">
+    <v-dialog
+      v-model="show"
+      max-width="500"
+      hide-overlay
+      transition="dialog-bottom-transition"
+      persistent
+    >
       <v-card>
         <v-toolbar dark>
           <v-btn icon dark @click="toggle">
@@ -15,22 +21,49 @@
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <companies-search
-          @change="changeCompanySearchObject"
-          @toggle="toggle"
-          @search="onCompanySearch"
-        />
-        <v-divider></v-divider>
-        <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
+        <v-expansion-panel>
+          <v-expansion-panel-content :value="expand==='companies'">
+            <template v-slot:header>
+              <div>Companies</div>
+            </template>
+            <v-card>
+              <companies-search
+                @change="changeCompanySearchObject"
+                @toggle="toggle"
+                @search="onCompanySearch"
+              />
+            </v-card>
+          </v-expansion-panel-content>
+          <v-expansion-panel-content :value="expand==='news'">
+            <template v-slot:header>
+              <div>News</div>
+            </template>
+            <v-card>
+              <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
+            </v-card>
+          </v-expansion-panel-content>
+          <v-expansion-panel-content :value="expand==='playlists'">
+            <template v-slot:header>
+              <div>Playlists</div>
+            </template>
+            <v-card>
+              <playlist-search
+                @change="changePlaylists"
+                @toggle="toggle"
+                @search="onPlaylistsSearch"
+              />
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-card>
     </v-dialog>
   </v-layout>
 </template>
 
 <script>
-import SimpleSearch from "./SimpleSearch.vue";
 import CompaniesSearch from "./CompaniesSearch.vue";
 import NewsSearch from "./NewsSearch.vue";
+import PlaylistSearch from "./PlaylistSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
@@ -53,16 +86,18 @@ export default {
       simpleSearch: "",
       companySearchObject: { ...defaultCompanySearchObject },
       searchType: null,
-      news: ""
+      news: "",
+      playlistsSearch: ""
     };
   },
   props: {
-    show: { type: Boolean, default: false }
+    show: { type: Boolean, default: false },
+    expand: { type: String, default: "companies" }
   },
   components: {
-    SimpleSearch,
     CompaniesSearch,
-    NewsSearch
+    NewsSearch,
+    PlaylistSearch
   },
   methods: {
     toggle() {
@@ -79,6 +114,9 @@ export default {
         case "news":
           this.onNewsSearch();
           break;
+        case "playlists":
+          this.onPlaylistsSearch();
+          break;
       }
     },
     changeSimpleSearch(data) {
@@ -92,6 +130,10 @@ export default {
     changeNews(data) {
       this.searchType = "news";
       this.news = data.news;
+    },
+    changePlaylists(data) {
+      this.searchType = "playlists";
+      this.playlistsSearch = data.playlistsSearch;
     },
     onSimpleSearch() {
       this.toggle();
@@ -115,6 +157,13 @@ export default {
       this.$router.push({
         path: "/news",
         query: { news: this.news, searchType: "news" }
+      });
+    },
+    onPlaylistsSearch() {
+      this.toggle();
+      this.$router.push({
+        path: "/playlists",
+        query: { search: this.playlistsSearch, searchType: "playlists" }
       });
     }
   }
