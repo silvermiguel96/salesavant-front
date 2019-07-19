@@ -16,7 +16,9 @@
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:items="props">
         <td>{{props.item.id || ""}}</td>
+        <!--TODO: implementar longparagraph en name -->
         <td>{{props.item.name || ""}}</td>
+        <!--TODO: implementar longparagraph en description -->
         <td>{{props.item.description || ""}}</td>
         <td>
           <v-edit-dialog

@@ -54,6 +54,14 @@
               />
             </v-card>
           </v-expansion-panel-content>
+          <v-expansion-panel-content :value="expand==='signals'">
+            <template v-slot:header>
+              <div>Signals</div>
+            </template>
+            <v-card>
+              <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
+            </v-card>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-card>
     </v-dialog>
@@ -64,6 +72,7 @@
 import CompaniesSearch from "./CompaniesSearch.vue";
 import NewsSearch from "./NewsSearch.vue";
 import PlaylistSearch from "./PlaylistSearch.vue";
+import SignalsSearch from "./SignalsSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
@@ -77,6 +86,12 @@ const defaultCompanySearchObject = {
   moreThanEmployees: ""
 };
 
+const defaultSignalsSearchObject = {
+  search: "",
+  group: "",
+  category: ""
+};
+
 export default {
   data() {
     return {
@@ -85,6 +100,7 @@ export default {
       widgets: false,
       simpleSearch: "",
       companySearchObject: { ...defaultCompanySearchObject },
+      signalsSearchObject: { ...defaultSignalsSearchObject},
       searchType: null,
       news: "",
       playlistsSearch: ""
@@ -97,7 +113,8 @@ export default {
   components: {
     CompaniesSearch,
     NewsSearch,
-    PlaylistSearch
+    PlaylistSearch,
+    SignalsSearch
   },
   methods: {
     toggle() {
@@ -117,6 +134,9 @@ export default {
         case "playlists":
           this.onPlaylistsSearch();
           break;
+        case "signals":
+          this.onSignalsSearch();
+          break;
       }
     },
     changeSimpleSearch(data) {
@@ -135,6 +155,10 @@ export default {
       this.searchType = "playlists";
       this.playlistsSearch = data.playlistsSearch;
     },
+    changeSignals(data) {
+      this.searchType = "signals";
+      this.signalsSearchObject = { ...data};
+    }, 
     onSimpleSearch() {
       this.toggle();
       this.$router.push({
@@ -164,6 +188,13 @@ export default {
       this.$router.push({
         path: "/playlists",
         query: { search: this.playlistsSearch, searchType: "playlists" }
+      });
+    },
+  onSignalsSearch() {
+      this.toggle();
+      this.$router.push({
+        path: "/signals",
+        query: { ...this.signalsSearchObject, searchType: "signals" }
       });
     }
   }
