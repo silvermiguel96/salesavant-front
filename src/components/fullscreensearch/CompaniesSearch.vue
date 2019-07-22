@@ -24,8 +24,8 @@
             <v-textarea
               name="description"
               label="Description"
-              value="description is comming Soon"
-              disabled
+              v-model="company.description"
+              @input="changeData"
             ></v-textarea>
           </v-flex>
           <v-flex xs6>
@@ -91,6 +91,7 @@ export default {
     return {
       company: {
         name: "",
+        description: "",
         country: "",
         website: "",
         city: "",
@@ -143,6 +144,7 @@ export default {
               mutation(
                 $name: String
                 $city: String
+                $description: String
                 $state: String
                 $region: String
                 $country: String
@@ -155,6 +157,7 @@ export default {
                   companySearch: {
                     name: $name
                     city: $city
+                    description: $description
                     state: $state
                     region: $region
                     country: $country
@@ -175,6 +178,7 @@ export default {
             variables: {
               name: _get(this.company, "name", ""),
               country: _get(this.company, "country", ""),
+              description: _get(this.company, "description", ""),
               website: _get(this.company, "website", ""),
               city: _get(this.company, "city", ""),
               region: _get(this.company, "region", ""),

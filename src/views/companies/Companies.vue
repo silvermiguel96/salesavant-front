@@ -28,7 +28,7 @@
       divider=">"
     ></v-breadcrumbs>
     <!--TODOLISTO: cambiar v-alert por v-snackbar -->
-    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>
     </v-snackbar>
@@ -38,8 +38,11 @@
         v-if="this.$route.query.simpleSearch"
       >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
       <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
+      <li
+        v-if="this.$route.query.description"
+      >Company description: {{this.$route.query.description}}</li>
       <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
-      <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
+      <li v-if="this.$route.query.website">Company url: {{this.$route.query.website}}</li>
       <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
       <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
       <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
@@ -94,6 +97,7 @@
         :query="require('./graphql/CompaniesAdvancedSearch.gql')"
         :variables="{ 
           name: this.$route.query.name || '',
+          description: this.$route.query.description || '',
           country: this.$route.query.country || '',
           website: this.$route.query.website || '',
           city: this.$route.query.city || '',
@@ -180,6 +184,7 @@ export default {
       searchAdvance: {
         country: "",
         name: "",
+        description: "",
         lessThanEmployees: 0,
         moreThanEmployees: 0,
         status: "",
@@ -258,6 +263,7 @@ export default {
               mutation(
                 $name: String
                 $city: String
+                $description: String
                 $state: String
                 $region: String
                 $country: String
@@ -270,6 +276,7 @@ export default {
                   companySearch: {
                     name: $name
                     city: $city
+                    description: $description
                     state: $state
                     region: $region
                     country: $country
@@ -289,6 +296,7 @@ export default {
             // Parameters
             variables: {
               name: _get(this.$route.query, "name", ""),
+              description: _get(this.$route.query, "description", ""),
               country: _get(this.$route.query, "country", ""),
               website: _get(this.$route.query, "website", ""),
               city: _get(this.$route.query, "city", ""),
@@ -365,6 +373,7 @@ export default {
             mutation: gql`
               mutation(
                 $name: String
+                $description: String
                 $city: String
                 $state: String
                 $region: String
@@ -381,6 +390,7 @@ export default {
                 createSignalFromSearch(
                   companySearch: {
                     name: $name
+                    description: $description
                     city: $city
                     state: $state
                     region: $region
@@ -407,6 +417,7 @@ export default {
             // Parameters
             variables: {
               name: _get(this.$route.query, "name", ""),
+              description: _get(this.$route.query, "description", ""),
               country: _get(this.$route.query, "country", ""),
               website: _get(this.$route.query, "website", ""),
               city: _get(this.$route.query, "city", ""),

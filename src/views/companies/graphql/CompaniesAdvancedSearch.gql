@@ -1,7 +1,8 @@
 query CompaniesAdvancedSearch(
   $name: String,
-  $country: String,
   $website: String, 
+  $description: String
+  $country: String,
   $city: String, 
   $region: String,
   $state: String,
@@ -12,9 +13,10 @@ query CompaniesAdvancedSearch(
   $offset: Int
 ){
   companies (
-    name: $name,
+    searchName: $name,
+    searchWebsite: $website,
+    searchDescription: $description
     country: $country,
-    website: $website,
     city: $city,
     region: $region,
  		state: $state,

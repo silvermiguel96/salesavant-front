@@ -76,6 +76,7 @@ import SignalsSearch from "./SignalsSearch.vue";
 
 const defaultCompanySearchObject = {
   name: "",
+  description: "",
   country: "",
   website: "",
   city: "",
