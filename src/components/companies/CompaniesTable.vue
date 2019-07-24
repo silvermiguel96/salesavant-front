@@ -25,6 +25,9 @@
       <td>{{ props.item.country }}</td>
       <td>{{ props.item.numEmployees }}</td>
       <td>{{ props.item.momentum }}</td>
+      <td class="wrapping-td">
+        <long-paragraph :text="props.item.website"></long-paragraph>
+      </td>
       <td>{{ props.item.url }}</td>
       <td>{{ props.item.vertical }}</td>
     </template>
@@ -62,7 +65,8 @@ export default {
         { text: "Country", value: "country", align: "left" },
         { text: "Emp.", value: "numEmployees", align: "left" },
         { text: "Momentum", value: "momentum", align: "left" },
-        { text: "Website", value: "url", align: "left" },
+        { text: "Website", value: "website", align: "left" },
+        { text: "Url", value: "url", align: "left" },
         { text: "Vertical", value: "vertical", align: "left" }
       ]
     };
