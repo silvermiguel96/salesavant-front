@@ -2,6 +2,7 @@
   <div>
     <v-card class="apollo-example">
       <!--TODO: cambiar v-alert por v-snackbar -->
+      <!--TODO: al crear nueva signal aparece snack de error y debe aparecer snack success  -->
       <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
         {{ snackText }}
         <v-btn flat @click="snack = false">Close</v-btn>
@@ -63,18 +64,38 @@
         </v-container>
       </v-form>
     </v-card>
+    <!-- TODO: convertir esta tabla en componente companysignalsTable reusar paginación de los ejemplos de componentes de otras vistas -->
     <v-card v-if="canModifySignalName">
       <v-card-title>Related companies</v-card-title>
       <v-container>
-        <v-data-table :headers="headers" :items="signal.companies" class="elevation-1">
-          <template v-slot:items="props">
-            <td>
-              <router-link
-                :to="`/companies/${props.item.company.uid}`"
-              >{{ props.item.company.name || "--" }}</router-link>
-            </td>
-          </template>
-        </v-data-table>
+        <template v-if="!!this.$route.params.signalId && this.$route.params.signalId!=='create' ">
+          <ApolloQuery
+            :query="require('../graphql/SearchsCompanySignal.gql')"
+            :variables="{signalId: parseInt(this.$route.params.signalId), first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+          >
+            <template slot-scope="{ result: { loading, error, data } }">
+              <!-- Loading -->
+              <div v-if="loading" class="loading apollo">Loading...</div>
+
+              <!-- Error -->
+              <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+
+              <!-- Result -->
+              <div v-else-if="data" class="result apollo">
+                <!---<div>{{ JSON.stringify(data) }}</div>-->
+                <company-signals
+                  v-if="data.companySignals"
+                  :items="data.companySignals"
+                  class="result apollo"
+                  @updatePagination="updatePagination"
+                ></company-signals>
+              </div>
+
+              <!-- No result -->
+              <div v-else class="no-result apollo">Loading...</div>
+            </template>
+          </ApolloQuery>
+        </template>
       </v-container>
     </v-card>
   </div>
@@ -83,7 +104,7 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import { setTimeout, setInterval } from "timers";
+import companySignals from "./SignalCompanyTable.vue";
 
 const defaultSignal = {
   id: "",
@@ -99,83 +120,67 @@ const defaultSignal = {
 };
 
 export default {
-  data: () => ({
-    snack: false,
-    snackColor: "",
-    snackText: "",
-    signal: { ...defaultSignal },
-    headers: [
-      {
-        text: "Company name",
-        sortable: false,
-        value: "name"
-      }
-    ]
-  }),
+  data() {
+    return {
+      snack: false,
+      snackColor: "",
+      snackText: "",
+      descending: false,
+      page: 1,
+      rowsPerPage: 5,
+      sortBy: "",
+      totalItems: 10,
+      signal: { ...defaultSignal },
+      companySignals: []
+    };
+  },
+  components: {
+    companySignals
+  },
   props: {
     score: { type: Number, default: 0 },
     name: { type: String, default: "" },
     jobUid: { type: String, default: "" },
     canModifySignalName: { type: Boolean, default: true }
   },
-  methods: {
-    async getSignal() {
-      let signal = { ...defaultSignal };
-      const signalId = _get(this, "$route.params.signalId", null);
-      if (!!signalId) {
-        try {
-          const result = await this.$apollo.query({
-            query: gql`
-              query($id: Int) {
-                signal(id: $id) {
-                  id
-                  name
-                  group
-                  userId
-                  category
-                  accountId
-                  description
-                  creationTime
-                  defaultScore
-                  modificationTime
-                  companies {
-                    company {
-                      uid
-                      name
-                    }
-                  }
-                }
-              }
-            `,
-            // Parameters
-            variables: {
-              id: signalId
-            }
-          });
-          console.log("signal result", result);
-          signal = _get(result, "data.signal", null);
-          if (!signal) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "oops we did something wrong when trying to get the signal from the database";
-
-            return;
+  apollo: {
+    // Query with parameters
+    signal: {
+      // gql query
+      query: gql`
+        query getSignalsById($signalId: Int) {
+          signal(id: $signalId) {
+            id
+            name
+            description
+            group
+            defaultScore
           }
-          this.signal = { ...signal };
-        } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "oops we did something wrong!!";
-          console.log("error trying to query signal", error);
         }
-      } else {
-        this.signal = {
-          ...signal,
-          name: this.$props.name,
-          defaultScore: this.$props.score
+      `,
+      variables() {
+        return {
+          signalId: this.$route.params.signalId
         };
+      },
+      fetchPolicy: "cache-and-network"
+    }
+  },
+  methods: {
+    updatePagination({
+      dataFromEvent: {
+        descending = false,
+        page = 1,
+        rowsPerPage = 5,
+        sortBy = "",
+        totalItems = 10
       }
+    }) {
+      this.descending = descending;
+      this.page = page;
+      this.rowsPerPage = rowsPerPage;
+      this.sortBy = sortBy;
+      this.totalItems = 5;
     },
     async save() {
       if (!this.signal) {
@@ -307,7 +312,7 @@ export default {
             }
           });
           this.snack = true;
-          this.snackColor = "error";
+          this.snackColor = "success";
           this.snackText = "The signals are saving successfully!";
           console.log("saving signal success", result);
         }
@@ -325,7 +330,8 @@ export default {
         this.$router.push({
           path: `/signals/${signal.id}`
         });
-        this.getSignal();
+        this.$apollo.queries.signal;
+        this.$apollo.queries.companySignals;
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
@@ -426,17 +432,27 @@ export default {
         this.$router.push({
           path: `/signals/${signal.id}`
         });
-        this.getSignal();
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
         this.snackText = "oops we did something wrong!";
         console.log("error saving signal", error);
       }
+    },
+    _get: _get
+  },
+  beforeCreate() {
+    if (
+      this.$route.params.signalId !== "create" &&
+      Number.isInteger(this.$route.params.signalId)
+    ) {
+      this.$apollo.queries.signal;
     }
   },
-  beforeMount() {
-    this.getSignal();
+  beforeUpdate() {
+    if (!this.signal && this.$route.params.signalId !== "create") {
+      this.signal = { ...defaultSignal };
+    }
   }
 };
 </script>

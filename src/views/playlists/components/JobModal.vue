@@ -65,7 +65,7 @@
 <script>
 import _get from "lodash.get";
 import { setTimeout } from "timers";
-import Signal from "../../signals/components/Signal.vue";
+import Signal from "./PlaylistSignalTable.vue";
 export default {
   data() {
     return {

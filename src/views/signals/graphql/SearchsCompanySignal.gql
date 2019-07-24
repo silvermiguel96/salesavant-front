@@ -1,0 +1,8 @@
+query getSignalsById($signalId: Int, $first: Int, $offset: Int) {
+  companySignals(signalId: $signalId, first:$first , offset: $offset) {
+    company {
+      uid
+      name
+    }
+  }
+}

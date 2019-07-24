@@ -16,10 +16,14 @@
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:items="props">
         <td>{{props.item.id || ""}}</td>
-        <!--TODO: implementar longparagraph en name -->
-        <td>{{props.item.name || ""}}</td>
-        <!--TODO: implementar longparagraph en description -->
-        <td>{{props.item.description || ""}}</td>
+        <!--TODOLISTO: implementar longparagraph en name -->
+        <td>
+          <long-paragraph class="wrapping-td" :text="props.item.name"></long-paragraph>
+        </td>
+        <!--TODOLISTO: implementar longparagraph en description -->
+        <td>
+          <long-paragraph class="wrapping-td" :text="props.item.description"></long-paragraph>
+        </td>
         <td>
           <v-edit-dialog
             :return-value.sync="props.item.group"
@@ -92,6 +96,8 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import LongParagraph from "../../../components/companies/LongParagraph";
+
 export default {
   data() {
     return {
@@ -126,6 +132,9 @@ export default {
       snackText: "",
       signal: {}
     };
+  },
+  components: {
+    LongParagraph
   },
   methods: {
     updatePagination(dataFromEvent = {}) {
