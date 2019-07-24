@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-card class="apollo-example">
-      <!--TODO: cambiar v-alert por v-snackbar -->
-      <!--TODO: al crear nueva signal aparece snack de error y debe aparecer snack success  -->
-      <v-snackbar top v-model="snack" :timeout="6000" :color="snackColor">
+      <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
         <v-btn flat @click="snack = false">Close</v-btn>
       </v-snackbar>

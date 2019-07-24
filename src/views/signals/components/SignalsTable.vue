@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>
     </v-snackbar>
@@ -16,11 +16,9 @@
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:items="props">
         <td>{{props.item.id || ""}}</td>
-        <!--TODOLISTO: implementar longparagraph en name -->
         <td>
           <long-paragraph class="wrapping-td" :text="props.item.name"></long-paragraph>
         </td>
-        <!--TODOLISTO: implementar longparagraph en description -->
         <td>
           <long-paragraph class="wrapping-td" :text="props.item.description"></long-paragraph>
         </td>
@@ -97,7 +95,6 @@
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import LongParagraph from "../../../components/companies/LongParagraph";
-
 export default {
   data() {
     return {

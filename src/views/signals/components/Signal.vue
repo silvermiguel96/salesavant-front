@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-card class="apollo-example">
-      <!--TODO: cambiar v-alert por v-snackbar -->
-      <!--TODO: al crear nueva signal aparece snack de error y debe aparecer snack success  -->
-      <v-snackbar top v-model="snack" :timeout="3000" :color="snackColor">
+      <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
         <v-btn flat @click="snack = false">Close</v-btn>
       </v-snackbar>
@@ -379,7 +377,6 @@ export default {
       try {
         console.log("here");
         const result = await this.$apollo.mutate({
-          //TODOLISTO enviar el score en esta mutación
           mutation: gql`
             mutation($jobUid: String!, $keyword: String!, $defaultScore: Int) {
               createSignalFromPlaylistKeyword(

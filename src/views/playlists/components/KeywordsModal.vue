@@ -6,7 +6,6 @@
       </template>
       <v-card>
         <v-card-title class="headline">Get playlist kewords?</v-card-title>
-        <!--TODOLISTO: cambiar v-alert por v-snackbar -->
         <v-card-text v-show="loading">
           We're currently creating the job for extracting the keywords
           <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>

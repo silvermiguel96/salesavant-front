@@ -3,7 +3,6 @@
     <v-dialog v-model="dialog" persistent max-width="1000">
       <v-card>
         <v-card-title class="headline">Keywords Job</v-card-title>
-        <!--TODOLISTO: cambiar v-alert por v-snackbar -->
         <v-card-text>
           <div class="text-xs-center">
             <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
