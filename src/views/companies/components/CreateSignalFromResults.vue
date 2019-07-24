@@ -16,12 +16,7 @@
                   <v-text-field v-model="signal.name" label="Name" required :rules="requiredRules"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
-                    v-model="signal.description"
-                    label="Description"
-                    required
-                    :rules="requiredRules"
-                  ></v-text-field>
+                  <v-text-field v-model="signal.description" label="Description"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
@@ -32,12 +27,7 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field
-                    v-model="signal.group"
-                    label="Group"
-                    required
-                    :rules="requiredRules"
-                  ></v-text-field>
+                  <v-text-field v-model="signal.group" label="Group"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
