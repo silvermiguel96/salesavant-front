@@ -103,8 +103,8 @@
           region: this.$route.query.region || '',
           state: this.$route.query.state || '',
           status: this.$route.query.status || '',
-          lessThanEmployees: this.$route.query.lessThanEmployees || '0',
-          moreThanEmployees: this.$route.query.moreThanEmployees || '0',
+          //lessThanEmployees: this.$route.query.lessThanEmployees || '0',
+          //moreThanEmployees: this.$route.query.moreThanEmployees || '0',
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
           }"

@@ -52,6 +52,7 @@
               v-model="company.moreThanEmployees"
               label="More than y employees"
               @input="changeData"
+              :disabled="true"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
@@ -60,6 +61,7 @@
               v-model="company.lessThanEmployees"
               label="Less than x employees"
               @input="changeData"
+              :disabled="true"
             ></v-text-field>
           </v-flex>
         </v-layout>

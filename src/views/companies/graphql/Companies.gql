@@ -11,6 +11,6 @@ query AllCompanies($first: Int, $offset: Int) {
     momentum
     url
     vertical
-    signalsCount
+    totalScore
   }
 }

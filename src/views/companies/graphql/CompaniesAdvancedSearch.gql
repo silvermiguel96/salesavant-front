@@ -7,8 +7,8 @@ query CompaniesAdvancedSearch(
   $region: String,
   $state: String,
   $status: String,
-  $lessThanEmployees: Int,
-  $moreThanEmployees: Int,
+  #$lessThanEmployees: Int,
+  #$moreThanEmployees: Int,
   $first: Int, 
   $offset: Int
 ){
@@ -21,8 +21,8 @@ query CompaniesAdvancedSearch(
     region: $region,
  		state: $state,
     status: $status,
-    lessThanEmployees: $lessThanEmployees,
-    moreThanEmployees: $moreThanEmployees,
+    #lessThanEmployees: $lessThanEmployees,
+    # moreThanEmployees: $moreThanEmployees,
     first: $first,
     offset: $offset
   ) {

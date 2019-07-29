@@ -1,22 +1,19 @@
 query SinglePlaylist($uid: String) {
-  playlist(uid: $uid) {
-    uid
-    name
-    creationTime
-    accountId
-    userId
-    companies {
+  playlistCompanies(playlistUid: $uid){
+    companiesList{
       uid
       name
-      signalsCount
-      status
       description
       city
       state
       country
-      numEmployees
       momentum
+      numEmployees
+      website
       url
+      vertical
+      totalScore
+      totalSignals
     }
   }
 }

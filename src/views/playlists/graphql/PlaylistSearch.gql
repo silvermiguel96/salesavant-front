@@ -14,8 +14,8 @@ query SearchPlaylist($search: String, $first: Int, $offset: Int) {
     user {
       id
     }
-    companiesCount
-    signalsCount
-    signalsTotalScore
+    totalSignals
+    totalCompanies
+    totalScore
   }
 }

@@ -77,8 +77,8 @@
           <div v-else-if="data" class="result apollo">
             <!-- <pre>{{ JSON.stringify(data) }}</pre> -->
             <companies-table
-              v-if="data.playlist.companies.length"
-              :items="data.playlist.companies"
+              v-if="data.playlistCompanies.companiesList.length"
+              :items="data.playlistCompanies.companiesList"
               class="result apollo"
             ></companies-table>
           </div>

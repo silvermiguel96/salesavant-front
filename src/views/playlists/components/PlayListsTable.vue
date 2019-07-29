@@ -19,7 +19,7 @@
           }}
         </router-link>
       </td>
-      <td>{{ props.item.companiesCount }}</td>
+      <td>{{ props.item.totalCompanies }}</td>
       <td>not currently working</td>
       <td>contacts coming soon</td>
       <td>
