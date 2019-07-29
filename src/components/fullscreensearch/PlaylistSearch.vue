@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--TODO agregar moreThanCompanies lessThanCompanies -->
     <v-subheader>Playlist Search</v-subheader>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
