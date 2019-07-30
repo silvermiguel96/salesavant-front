@@ -12,7 +12,7 @@
     <div>{{ JSON.stringify(props) }}</div>
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
-      <td>
+      <td> 
         <router-link :to="`playlists/${props.item.uid}/companies`">
           {{
           props.item.name
@@ -20,7 +20,8 @@
         </router-link>
       </td>
       <td>{{ props.item.totalCompanies }}</td>
-      <td>not currently working</td>
+      <td>{{ props.item.totalSignals || "--"}}</td>
+      <td>{{ props.item.totalScore || "--"}}</td>
       <td>contacts coming soon</td>
       <td>
         <router-link :to="`/advanced/${props.item.uid}`">Advanced</router-link>
@@ -61,6 +62,7 @@ export default {
           align: "left"
         },
         { text: "Signals", value: "signalsCount", align: "left" },
+        { text: "Score", value: "scoreCount", align: "left" },
         { text: "Contacts", align: "left", value: "contacts" },
         { text: "Advanced", align: "left", value: "advanced" },
         { text: "Owner", value: "userId", align: "left" },

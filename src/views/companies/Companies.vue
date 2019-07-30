@@ -1,6 +1,5 @@
 <template>
   <div class="apollo-example">
-    <!-- TODO agregar en la tabla totalScore, totalSignals -->
     <v-breadcrumbs
       v-if="!!isFiltered"
       :items="[

@@ -82,7 +82,6 @@ export default {
       try {
         console.log("here");
         const result = await this.$apollo.mutate({
-          //TODOLISTO enviar el score en esta mutación
           mutation: gql`
             mutation(
               $jobUid: String!

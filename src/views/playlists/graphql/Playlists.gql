@@ -5,6 +5,8 @@ query AllPlaylists($first: Int, $offset: Int) {
     creationTime
     accountId
     userId
+    totalSignals
     totalCompanies
+    totalScore
   }
 }

@@ -12,5 +12,6 @@ query AllCompanies($first: Int, $offset: Int) {
     url
     vertical
     totalScore
+    totalSignals
   }
 }
