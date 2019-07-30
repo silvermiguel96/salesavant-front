@@ -1,4 +1,7 @@
 <template>
+  <!--TODO: habilitar nuevamente morethan y lessthan employeess-->
+  <!-- TODO: agregar filtros lessThanScore moreThanScore -->
+  <!-- TODO: agregar filtros por playlist CAMILO -->
   <div>
     <v-subheader>Companies Search</v-subheader>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
