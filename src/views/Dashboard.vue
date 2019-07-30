@@ -101,6 +101,8 @@
         }
       }-->
       <v-data-table :headers="headers" class="elevation-1" :items="items">
+        <!--TODO: el nombre de cada grupo debe de ser un router link que lleve a 
+        http://localhost:8080/signals?search=&group={nombre del grupo}&category=&searchType=signals-->
         <template v-slot:items="props"></template>
       </v-data-table>
     </v-card-text>
@@ -121,6 +123,7 @@
           totalCompanies
       }-->
       <v-data-table :headers="headersSignals" class="elevation-1" :items="items">
+        <!-- TODO: el nombre de cada signal debe ser un router link que lleve a la signal-->
         <template v-slot:items="props"></template>
       </v-data-table>
     </v-card-text>
