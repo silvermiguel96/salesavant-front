@@ -85,59 +85,56 @@
     </v-layout>
     <!-- Buttons Dashboard  -->
     <buttons-dashboard></buttons-dashboard>
-    <!-- Custom Vertical Groups -->
-    <v-card-text>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Custom Vertical Groups</v-toolbar-title>
-      </v-toolbar>
-      <v-data-table
-        :headers="headers"
-        class="elevation-1"
-        :items="items"
-      >
-      <template v-slot:items="props">
-      </template>
-      </v-data-table>
-    </v-card-text>
     <!-- Custom Signal Groups -->
+    <!--TODO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
     <v-card-text>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Custom Sales Signals</v-toolbar-title>
+        <v-toolbar-title>Custom Signal Groups</v-toolbar-title>
       </v-toolbar>
-      <v-data-table
-        :headers="headers"
-        class="elevation-1"
-        :items="items"
-      >
-      <template v-slot:items="props">
-      </template>
+      <!-- TODO: query para popular esta tabla es:
+        signalsGroupAggs {
+          id
+          group
+          creationTime
+          totalCompanies
+          modificationTime
+        }
+      }-->
+      <v-data-table :headers="headers" class="elevation-1" :items="items">
+        <template v-slot:items="props"></template>
       </v-data-table>
     </v-card-text>
     <!-- Custom Sales Signals -->
+    <!--TODO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
     <v-card-text>
       <v-toolbar flat color="white">
         <v-toolbar-title>Custom Sales Signals</v-toolbar-title>
       </v-toolbar>
-      <v-data-table
-        :headers="headersSignals"
-        class="elevation-1"
-        :items="items"
-      >
-      <template v-slot:items="props">
-      </template>
+      <!-- TODO: query para popular esta tabla es:
+        signalsAggs {
+          signal {
+            id
+            name
+            defaultScore
+            group
+          }
+          totalCompanies
+      }-->
+      <v-data-table :headers="headersSignals" class="elevation-1" :items="items">
+        <template v-slot:items="props"></template>
       </v-data-table>
     </v-card-text>
     <v-card-text>
       <v-toolbar flat color="white">
         <v-toolbar-title>Signal Search</v-toolbar-title>
       </v-toolbar>
-        <p class="subheading ml-2">Unbelievable. No entries here so far</p>
+      <p class="subheading ml-2">Unbelievable. No entries here so far</p>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import ButtonsDashboard from '../components/Dashboard/ButtonsDashboard.vue'
+import ButtonsDashboard from "../components/Dashboard/ButtonsDashboard.vue";
 export default {
   components: {
     ButtonsDashboard
@@ -147,15 +144,15 @@ export default {
       items: [],
       value: [423, 446, 675, 510, 590, 610, 760],
       headers: [
-        { text: 'Groups (All)', value: 'groups'},
-        { text: 'All', value: 'all'},
-        { text: 'Count', value: 'count'}
+        { text: "Groups (All)", value: "groups" },
+        { text: "All", value: "all" },
+        { text: "Count", value: "count" }
       ],
       headersSignals: [
-        { text: 'Custom Signal', value: 'customsignal'},
-        { text: 'Count', value: 'count'},
-        { text: 'Score', value: 'score'},
-        { text: 'Group', value: 'signalgropup'}
+        { text: "Custom Signal", value: "customsignal" },
+        { text: "Count", value: "count" },
+        { text: "Score", value: "score" },
+        { text: "Group", value: "signalgropup" }
       ]
     };
   }
