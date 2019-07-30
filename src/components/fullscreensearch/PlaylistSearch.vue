@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!--TODO agregar moreThanCompanies lessThanCompanies -->
     <v-subheader>Playlist Search</v-subheader>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
@@ -12,8 +11,26 @@
           <v-flex>
             <v-text-field
               name="playlistsSearch"
-              v-model="playlistsSearch"
+              v-model="playlist.playlistsSearch"
               label="playlist name or description"
+              @input="changeData"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xl6 xs6>
+            <v-text-field
+              name="moreThanCompanies"
+              v-model="playlist.moreThanCompanies"
+              label="More than companies"
+              @input="changeData"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xl6 xs6>
+            <v-text-field
+              name="lessThanCompanies"
+              v-model="playlist.lessThanCompanies"
+              label="Less than companies"
               @input="changeData"
             ></v-text-field>
           </v-flex>
@@ -37,7 +54,11 @@ import _get from "lodash.get";
 export default {
   data() {
     return {
-      playlistsSearch: "",
+      playlist: {
+        lessThanCompanies: 0,
+        moreThanCompanies: 0,
+        playlistsSearch: ""
+      },
       snack: false,
       snackColor: "",
       snackText: ""
@@ -45,7 +66,7 @@ export default {
   },
   methods: {
     changeData(data) {
-      this.$emit("change", { playlistsSearch: data });
+      this.$emit("change", { ...this.playlist });
     },
     toggle() {
       this.$emit("toggle");

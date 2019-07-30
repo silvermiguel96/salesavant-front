@@ -1,5 +1,7 @@
 query SinglePlaylist($uid: String) {
   playlistCompanies(playlistUid: $uid){
+    name
+    uid
     companiesList{
       uid
       name

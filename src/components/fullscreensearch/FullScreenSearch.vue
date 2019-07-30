@@ -1,4 +1,5 @@
 <template>
+  <!--TODO: corregir cuando mando lessThan moreThan vacíos-->
   <v-layout row justify-center>
     <v-dialog
       v-model="show"
@@ -93,6 +94,12 @@ const defaultSignalsSearchObject = {
   category: ""
 };
 
+const defaultplaylistsSearchObject = {
+  lessThanCompanies: "",
+  moreThanCompanies: "",
+  playlistsSearch: ""
+};
+
 export default {
   data() {
     return {
@@ -101,10 +108,12 @@ export default {
       widgets: false,
       simpleSearch: "",
       companySearchObject: { ...defaultCompanySearchObject },
-      signalsSearchObject: { ...defaultSignalsSearchObject},
+      signalsSearchObject: { ...defaultSignalsSearchObject },
       searchType: null,
       news: "",
-      playlistsSearch: ""
+      playlistsSearchObject: {
+        defaultplaylistsSearchObject
+      }
     };
   },
   props: {
@@ -154,12 +163,12 @@ export default {
     },
     changePlaylists(data) {
       this.searchType = "playlists";
-      this.playlistsSearch = data.playlistsSearch;
+      this.playlistsSearchObject = { ...data };
     },
     changeSignals(data) {
       this.searchType = "signals";
-      this.signalsSearchObject = { ...data};
-    }, 
+      this.signalsSearchObject = { ...data };
+    },
     onSimpleSearch() {
       this.toggle();
       this.$router.push({
@@ -188,10 +197,10 @@ export default {
       this.toggle();
       this.$router.push({
         path: "/playlists",
-        query: { search: this.playlistsSearch, searchType: "playlists" }
+        query: { ...this.playlistsSearchObject, searchType: "playlists" }
       });
     },
-  onSignalsSearch() {
+    onSignalsSearch() {
       this.toggle();
       this.$router.push({
         path: "/signals",

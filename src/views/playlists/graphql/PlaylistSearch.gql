@@ -1,5 +1,5 @@
-query SearchPlaylist($search: String, $first: Int, $offset: Int) {
-  playlists(search: $search, first: $first, offset: $offset){
+query SearchPlaylist($search: String, $lessThanCompanies: Int, $moreThanCompanies: Int, $first: Int, $offset: Int) {
+  playlists(search: $search, lessThanCompanies: $lessThanCompanies, moreThanCompanies: $moreThanCompanies first: $first, offset: $offset) {
     creationTime
     modificationTime
     uid

@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO el breadcrumb no está mostrando el nombre de la playlist-->
   <v-card>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
@@ -12,7 +11,7 @@
       <template slot-scope="{ result: { loading, error, data } }">
         <div class="apollo-example">
           <v-breadcrumbs
-            v-if="data && data.playlist"
+            v-if="data && data.playlistCompanies"
             :items="[
             {
               text: 'Playlists',
@@ -20,7 +19,7 @@
               href: '/playlists'
             },
             {
-              text: data.playlist.name || data.playlist.uid,
+              text: data.playlistCompanies.name || data.playlistCompanies.uid,
               disabled: true
             },
             {

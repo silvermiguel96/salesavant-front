@@ -15,16 +15,24 @@
       v-if="!!this.$route.query && !!this.$route.query.searchType"
     >You're currently filtering by</h1>
     <ul class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">
-      <li v-if="this.$route.query.search">Searching playlist with "{{this.$route.query.search}}"</li>
+      <li
+        v-if="this.$route.query.playlistsSearch"
+      >Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
+      <li
+        v-if="this.$route.query.lessThanCompanies"
+      >Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
+      <li
+        v-if="this.$route.query.moreThanCompanies"
+      >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
     </ul>
     <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
     <template
       v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' &&
-      !!this.$route.query.search"
+      !!this.$route.query.playlistsSearch"
     >
       <ApolloQuery
         :query="require('./graphql/PlaylistSearch.gql')"
-        :variables="{ search: this.$route.query.search, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+        :variables="{ search: this.$route.query.playlistsSearch,lessThanCompanies: this.$route.query.lessThanCompanies , moreThanCompanies: this.$route.query.moreThanCompanies ,first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading-->
@@ -49,7 +57,6 @@
         </template>
       </ApolloQuery>
     </template>
-
     <template v-else>
       <!-- Apollo watched Graphql query -->
       <ApolloQuery

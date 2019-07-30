@@ -62,7 +62,6 @@
         </v-container>
       </v-form>
     </v-card>
-    <!-- TODO: convertir esta tabla en componente companysignalsTable reusar paginación de los ejemplos de componentes de otras vistas -->
     <v-card v-if="canModifySignalName">
       <v-card-title>Related companies</v-card-title>
       <v-container>
