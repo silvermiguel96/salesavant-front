@@ -58,6 +58,7 @@
       <li
         v-if="this.$route.query.lessThanScore"
       >Companies with score less than {{this.$route.query.lessThanScore}}</li>
+      <li v-if="this.$route.query.playlistUid">Playlist Id: {{this.$route.query.playlistUid}}</li>
     </ul>
     <div class="calltoactions">
       <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
@@ -113,9 +114,10 @@
           moreThanEmployees: this.$route.query.moreThanEmployees || '0',
           moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '0'),
           lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
+          playlistUid: this.$route.query.playlistUid || '',
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
-          }"
+        }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
