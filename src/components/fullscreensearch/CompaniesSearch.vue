@@ -86,6 +86,11 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
+          <v-flex xs12>
+            <autocomplete />
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap>
           <v-flex xs6>
             <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
           </v-flex>
@@ -105,6 +110,7 @@
 import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import Autocomplete from "../playlists/Autocomplete.vue";
 export default {
   data() {
     return {
@@ -128,6 +134,9 @@ export default {
       newPlaylistName: "",
       showNewPlaylistName: false
     };
+  },
+  components: {
+    Autocomplete
   },
   methods: {
     changeData() {
