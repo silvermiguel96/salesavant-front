@@ -87,7 +87,7 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs12>
-            <autocomplete />
+            <autocomplete @change="onPlaylistAutocompleteChange" />
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -126,7 +126,8 @@ export default {
         lessThanEmployees: 0,
         moreThanEmployees: 0,
         moreThanScore: 0,
-        lessThanScore: 0
+        lessThanScore: 0,
+        playlistUid: ""
       },
       snack: false,
       snackColor: "",
@@ -148,6 +149,10 @@ export default {
     search() {
       this.toggle();
       this.$emit("search");
+    },
+    onPlaylistAutocompleteChange(value) {
+      this.company = { ...this.company, ...value };
+      this.changeData();
     },
     async save() {
       if (!this.atLeastOneCompanyFieldIsNotEmpty()) {

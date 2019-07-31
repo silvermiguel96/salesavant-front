@@ -87,7 +87,8 @@ const defaultCompanySearchObject = {
   lessThanEmployees: 0,
   moreThanEmployees: 0,
   moreThanScore: 0,
-  lessThanScore: 0
+  lessThanScore: 0,
+  playlistUid: ""
 };
 
 const defaultSignalsSearchObject = {

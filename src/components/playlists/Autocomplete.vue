@@ -12,6 +12,7 @@
       hide-no-data
       hide-details
       label="Belongs to playlist"
+      @change="change"
     ></v-autocomplete>
   </div>
 </template>
@@ -61,6 +62,9 @@ export default {
           this.loading = false;
         }, 300);
       }, 500);
+    },
+    change(v = "") {
+      this.$emit("change", { playlistUid: v });
     }
   }
 };
