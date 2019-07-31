@@ -16,11 +16,9 @@
           :href="`companies/${props.item.uid}`"
         >{{ props.item.name }}</a>
       </td>
-      <!--TODO: remover comentarios-->
-      <!--<td>{{ props.item.signalsCount || "0" }}</td>
-      <td>{{ props.item.scoreCount || "0" }}</td>-->
-      <td>{{ props.item.totalSignals || "--"}}</td>
-      <td>{{ props.item.totalScore || "--"}}</td>
+      <!--TODOLISTO: remover comentarios-->
+      <td>{{ props.item.totalSignals || "0"}}</td>
+      <td>{{ props.item.totalScore || "0"}}</td>
       <td class="wrapping-td">
         <long-paragraph :text="props.item.description"></long-paragraph>
       </td>
@@ -58,9 +56,9 @@ export default {
           sortable: true,
           value: "name"
         },
-        //TODO: poner los respectivos campos
-        { text: "Signals", value: "signalsCount" },
-        { text: "Score", value: "scoreCount" },
+        //TODOLISTO: poner los respectivos campos
+        { text: "Signals", value: "totalSignals" },
+        { text: "Score", value: "totalScore" },
         {
           text: "Description",
           value: "description",
