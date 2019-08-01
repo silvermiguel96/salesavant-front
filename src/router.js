@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Dashboard.vue";
+import Home from "./views/dashboard/Dashboard.vue";
 import PlayLists from "./views/playlists/PlayLists.vue";
 import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";

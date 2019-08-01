@@ -86,27 +86,20 @@
     <!-- Buttons Dashboard  -->
     <buttons-dashboard></buttons-dashboard>
     <!-- Custom Signal Groups -->
-    <!--TODO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
-    <v-card-text>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Custom Signal Groups</v-toolbar-title>
-      </v-toolbar>
-      <!-- TODO: query para popular esta tabla es:
+
+    <!--TODOLISTO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
+    <!--TODOLISTO: el nombre de cada grupo debe de ser un router link que lleve a 
+    http://localhost:8080/signals?search=&group={nombre del grupo}&category=&searchType=signals-->
+    <custom-signal-groups></custom-signal-groups>
+    <!-- TODOLISTO: query para popular esta tabla es:
         signalsGroupAggs {
           id
           group
           creationTime
           totalCompanies
           modificationTime
-        }
-      }-->
-      <v-data-table :headers="headers" class="elevation-1" :items="items">
-        <!--TODO: el nombre de cada grupo debe de ser un router link que lleve a 
-        http://localhost:8080/signals?search=&group={nombre del grupo}&category=&searchType=signals-->
-        <template v-slot:items="props"></template>
-      </v-data-table>
-    </v-card-text>
-    <!-- Custom Sales Signals -->
+        }-->
+    <!-- Custom Sales Signals-->
     <!--TODO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
     <v-card-text>
       <v-toolbar flat color="white">
@@ -137,10 +130,12 @@
 </template>
 
 <script>
-import ButtonsDashboard from "../components/Dashboard/ButtonsDashboard.vue";
+import ButtonsDashboard from "../../components/Dashboard/ButtonsDashboard.vue";
+import CustomSignalGroups from "./components/CustomSignalGroups.vue";
 export default {
   components: {
-    ButtonsDashboard
+    ButtonsDashboard,
+    CustomSignalGroups
   },
   data() {
     return {

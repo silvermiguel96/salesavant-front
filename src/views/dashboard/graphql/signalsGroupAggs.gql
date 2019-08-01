@@ -1,0 +1,9 @@
+query signalsGroupAgg($first: Int, $offset: Int) {
+  signalsGroupAggs(first: $first, offset: $offset) {
+    id
+    group
+    creationTime
+    totalCompanies
+    modificationTime
+  }
+}
