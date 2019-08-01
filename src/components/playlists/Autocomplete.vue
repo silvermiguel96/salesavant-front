@@ -13,6 +13,7 @@
       hide-details
       label="Belongs to playlist"
       @change="change"
+      clearable
     ></v-autocomplete>
   </div>
 </template>
