@@ -20,8 +20,8 @@
         </router-link>
       </td>
       <td>{{ props.item.totalCompanies }}</td>
-      <td>{{ props.item.totalSignals || "0"}}</td>
-      <td>{{ props.item.totalScore || "0"}}</td>
+      <td>{{ props.item.totalSignals || "0" }}</td>
+      <td>{{ props.item.totalScore || "0" }}</td>
       <td>contacts coming soon</td>
       <td>
         <router-link :to="`/advanced/${props.item.uid}`">Advanced</router-link>
