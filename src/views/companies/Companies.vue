@@ -58,6 +58,7 @@
       <li
         v-if="this.$route.query.lessThanScore"
       >Companies with score less than {{this.$route.query.lessThanScore}}</li>
+      <li v-if="this.$route.query.playlistUid">Playlist Id: {{this.$route.query.playlistUid}}</li>
     </ul>
     <div class="calltoactions">
       <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
@@ -113,9 +114,10 @@
           moreThanEmployees: this.$route.query.moreThanEmployees || '0',
           moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '0'),
           lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
+          playlistUid: this.$route.query.playlistUid || '',
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
-          }"
+        }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
@@ -280,18 +282,20 @@ export default {
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $playlistName: String!
+                $playlistUid: String
               ) {
                 createPlaylistFromSearch(
                   companySearch: {
-                    name: $name
+                    searchName: $name
                     city: $city
-                    description: $description
+                    searchDescription: $description
                     state: $state
                     region: $region
                     country: $country
                     status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
+                    playlistUid: $playlistUid
                   }
                   playlistData: { name: $playlistName }
                 ) {
@@ -322,7 +326,8 @@ export default {
                 "moreThanEmployees",
                 "0"
               ),
-              playlistName: newPlaylistName
+              playlistName: newPlaylistName,
+              playlistUid: _get(this.$route.query, "playlistUid", "")
             }
           });
           console.log("saving results as playlist success", result);
@@ -395,11 +400,12 @@ export default {
                 $signalDescription: String
                 $signalGroup: String
                 $signalDefaultScore: Float
+                $playlistUid: String
               ) {
                 createSignalFromSearch(
                   companySearch: {
-                    name: $name
-                    description: $description
+                    searchName: $name
+                    searchDescription: $description
                     city: $city
                     state: $state
                     region: $region
@@ -407,7 +413,8 @@ export default {
                     status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
-                    website: $website
+                    searchWebsite: $website
+                    playlistUid: $playlistUid
                   }
                   signalData: {
                     name: $signalName
@@ -446,7 +453,8 @@ export default {
               signalName: signalName,
               signalDescription: signalDescription,
               signalGroup: signalGroup,
-              signalDefaultScore: signalDefaultScore
+              signalDefaultScore: signalDefaultScore,
+              playlistUid: _get(this.$route.query, "playlistUid", "")
             }
           });
           console.log("saving results as signal success", result);

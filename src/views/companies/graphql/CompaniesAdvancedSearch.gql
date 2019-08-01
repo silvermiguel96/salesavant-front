@@ -12,6 +12,7 @@ query CompaniesAdvancedSearch(
   $moreThanScore: Float
   $lessThanScore: Float
   $first: Int
+  $playlistUid: String,
   $offset: Int
 ) {
   companies(
@@ -28,6 +29,7 @@ query CompaniesAdvancedSearch(
     moreThanScore: $moreThanScore
     lessThanScore: $lessThanScore
     first: $first
+    playlistUid: $playlistUid
     offset: $offset
   ) {
     creationTime
