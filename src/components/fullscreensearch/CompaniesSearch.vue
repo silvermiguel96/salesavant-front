@@ -1,5 +1,4 @@
 <template>
-  <!--TODO: habilitar nuevamente morethan y lessthan employeess-->
   <!-- TODO: agregar filtros lessThanScore moreThanScore -->
   <!-- TODO: agregar filtros por playlist CAMILO -->
   <div>
@@ -55,7 +54,7 @@
               v-model="company.moreThanEmployees"
               label="More than y employees"
               @input="changeData"
-              :disabled="true"
+              :disabled="false"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
@@ -64,7 +63,7 @@
               v-model="company.lessThanEmployees"
               label="Less than x employees"
               @input="changeData"
-              :disabled="true"
+              :disabled="false"
             ></v-text-field>
           </v-flex>
         </v-layout>
