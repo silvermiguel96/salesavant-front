@@ -1,5 +1,7 @@
 <template>
   <!-- TODO: agregar filtros lessThanScore moreThanScore -->
+  <!--TODO: habilitar nuevamente morethan y lessthan employeess-->
+  <!-- TODO: agregar filtros lessThanScore moreThanScore -->
   <!-- TODO: agregar filtros por playlist CAMILO -->
   <div>
     <v-subheader>Companies Search</v-subheader>
@@ -35,6 +37,24 @@
           <v-flex xs6>
             <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
           </v-flex>
+          <v-layout row wrap>
+            <v-flex xs6>
+              <v-text-field
+                name="moreThanScore"
+                v-model="company.moreThanScore"
+                label="More than score"
+                @input="changeData"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                name="lessThanScore"
+                v-model="company.lessThanScore"
+                label="Less than score"
+                @input="changeData"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
           <v-flex xs6>
             <v-text-field
               name="website"
@@ -54,7 +74,7 @@
               v-model="company.moreThanEmployees"
               label="More than y employees"
               @input="changeData"
-              :disabled="false"
+              :disabled="true"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
@@ -100,7 +120,9 @@ export default {
         state: "",
         status: "",
         lessThanEmployees: 0,
-        moreThanEmployees: 0
+        moreThanEmployees: 0,
+        moreThanScore: 0,
+        lessThanScore: 0
       },
       snack: false,
       snackColor: "",
@@ -152,6 +174,8 @@ export default {
                 $status: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
+                $moreThanScore: Int
+                $lessThanScore: Int
                 $playlistName: String!
               ) {
                 createPlaylistFromSearch(
@@ -165,6 +189,8 @@ export default {
                     status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
+                    moreThanScore: $moreThanScore
+                    lessThanScore: $lessThanScore
                   }
                   playlistData: { name: $playlistName }
                 ) {
@@ -187,6 +213,8 @@ export default {
               status: _get(this.company, "status", ""),
               lessThanEmployees: _get(this.company, "lessThanEmployees", "0"),
               moreThanEmployees: _get(this.company, "moreThanEmployees", "0"),
+              moreThanScore: _get(this.company, "moreThanScore", "0"),
+              lessThanScore: _get(this.company, "lessThanScore", "0"),
               playlistName: this.newPlaylistName
             }
           });

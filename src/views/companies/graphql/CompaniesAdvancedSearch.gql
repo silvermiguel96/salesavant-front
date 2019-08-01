@@ -1,29 +1,33 @@
 query CompaniesAdvancedSearch(
-  $name: String,
-  $website: String, 
+  $name: String
+  $website: String
   $description: String
-  $country: String,
-  $city: String, 
-  $region: String,
-  $state: String,
-  $status: String,
+  $country: String
+  $city: String
+  $region: String
+  $state: String
+  $status: String
   #$lessThanEmployees: Int,
   #$moreThanEmployees: Int,
-  $first: Int, 
+  $moreThanScore: Float
+  $lessThanScore: Float
+  $first: Int
   $offset: Int
-){
-  companies (
-    searchName: $name,
-    searchWebsite: $website,
+) {
+  companies(
+    searchName: $name
+    searchWebsite: $website
     searchDescription: $description
-    country: $country,
-    city: $city,
-    region: $region,
- 		state: $state,
-    status: $status,
+    country: $country
+    city: $city
+    region: $region
+    state: $state
+    status: $status
     #lessThanEmployees: $lessThanEmployees,
     # moreThanEmployees: $moreThanEmployees,
-    first: $first,
+    moreThanScore: $moreThanScore
+    lessThanScore: $lessThanScore
+    first: $first
     offset: $offset
   ) {
     creationTime
@@ -49,5 +53,7 @@ query CompaniesAdvancedSearch(
     linkedinHandle
     stockSymbol
     naicsCode
+    totalScore
+    totalSignals
   }
 }

@@ -52,6 +52,12 @@
       <li
         v-if="this.$route.query.moreThanEmployees"
       >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
+            <li
+        v-if="this.$route.query.moreThanScore"
+      >Companies with score more than {{this.$route.query.moreThanScore}}</li>
+      <li
+        v-if="this.$route.query.lessThanScore"
+      >Companies with score less than {{this.$route.query.lessThanScore}} </li>
     </ul>
     <div class="calltoactions">
       <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
@@ -105,6 +111,8 @@
           status: this.$route.query.status || '',
           //lessThanEmployees: this.$route.query.lessThanEmployees || '0',
           //moreThanEmployees: this.$route.query.moreThanEmployees || '0',
+          moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '0'),
+          lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
           }"
@@ -186,6 +194,8 @@ export default {
         description: "",
         lessThanEmployees: 0,
         moreThanEmployees: 0,
+        moreThanScore: 0,
+        lessThanScore: 0,
         status: "",
         region: "",
         state: "",

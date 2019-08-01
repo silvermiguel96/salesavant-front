@@ -84,8 +84,10 @@ const defaultCompanySearchObject = {
   region: "",
   state: "",
   status: "",
-  lessThanEmployees: "",
-  moreThanEmployees: ""
+  lessThanEmployees: 0,
+  moreThanEmployees: 0,
+  moreThanScore: 0,
+  lessThanScore: 0
 };
 
 const defaultSignalsSearchObject = {
@@ -95,8 +97,8 @@ const defaultSignalsSearchObject = {
 };
 
 const defaultplaylistsSearchObject = {
-  lessThanCompanies: "",
-  moreThanCompanies: "",
+  lessThanCompanies: 0,
+  moreThanCompanies: 0,
   playlistsSearch: ""
 };
 

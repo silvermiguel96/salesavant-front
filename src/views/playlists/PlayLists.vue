@@ -32,7 +32,7 @@
     >
       <ApolloQuery
         :query="require('./graphql/PlaylistSearch.gql')"
-        :variables="{ search: this.$route.query.playlistsSearch,lessThanCompanies: this.$route.query.lessThanCompanies , moreThanCompanies: this.$route.query.moreThanCompanies ,first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+        :variables="{ search: this.$route.query.playlistsSearch,lessThanCompanies: this.$route.query.lessThanCompanies || 0 , moreThanCompanies: this.$route.query.moreThanCompanies || 0 ,first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading-->
@@ -86,8 +86,6 @@
         </template>
       </ApolloQuery>
     </template>
-  </div>
-</template>
   </div>
 </template>
 

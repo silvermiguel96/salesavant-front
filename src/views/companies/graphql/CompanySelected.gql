@@ -22,6 +22,8 @@ query SelecteCompany($company: String){
     linkedinHandle
     stockSymbol
     naicsCode
+    totalScore
+    totalSignals
     employees{
       title
     }
