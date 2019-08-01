@@ -1,0 +1,11 @@
+query signalsAggs ($first: Int, $offset: Int) {
+    signalsAggs (first: $first, offset: $offset) {
+        signal {
+            id
+            name
+            defaultScore
+            group
+        }
+        totalCompanies
+    }
+}
