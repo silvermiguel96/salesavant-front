@@ -7,6 +7,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
       persistent
+      scrollable
     >
       <v-card>
         <v-toolbar dark>
@@ -27,13 +28,12 @@
             <template v-slot:header>
               <div>Companies</div>
             </template>
-            <v-card>
-              <companies-search
-                @change="changeCompanySearchObject"
-                @toggle="toggle"
-                @search="onCompanySearch"
-              />
-            </v-card>
+
+            <companies-search
+              @change="changeCompanySearchObject"
+              @toggle="toggle"
+              @search="onCompanySearch"
+            />
           </v-expansion-panel-content>
           <v-expansion-panel-content :value="expand==='news'">
             <template v-slot:header>
@@ -88,7 +88,8 @@ const defaultCompanySearchObject = {
   moreThanEmployees: 0,
   moreThanScore: 0,
   lessThanScore: 0,
-  playlistUid: ""
+  playlistUid: "",
+  signalId: 0
 };
 
 const defaultSignalsSearchObject = {

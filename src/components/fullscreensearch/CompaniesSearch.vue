@@ -1,10 +1,8 @@
 <template>
-  <!-- TODO: agregar filtros lessThanScore moreThanScore -->
-  <!--TODO: habilitar nuevamente morethan y lessthan employeess-->
-  <!-- TODO: agregar filtros lessThanScore moreThanScore -->
-  <!-- TODO: agregar filtros por playlist CAMILO -->
+  <!--TODOLISTO: habilitar nuevamente morethan y lessthan employeess-->
+  <!-- TODOLISTO: agregar filtros lessThanScore moreThanScore -->
+  <!-- TODOLISTO: agregar filtros por playlist CAMILO -->
   <div>
-    <v-subheader>Companies Search</v-subheader>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>
@@ -23,19 +21,22 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12>
-            <v-textarea
+          <v-flex xs6>
+            <v-text-field
               name="description"
               label="Description"
               v-model="company.description"
               @input="changeData"
-            ></v-textarea>
+            ></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="city" v-model="company.city" label="city" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
+          </v-flex>
+          <v-flex xs6>
+            <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
           </v-flex>
           <v-layout row wrap>
             <v-flex xs6>
@@ -86,13 +87,16 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-flex xs12>
-            <autocomplete @change="onPlaylistAutocompleteChange" />
+          <v-flex xs6>
+            <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
+          </v-flex>
+          <v-flex xs6>
+            <signals-autocomplete @change="onSignalsAutocompleteChange" />
           </v-flex>
         </v-layout>
         <v-layout row wrap>
           <v-flex xs6>
-            <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
+            <signals-groups-autocomplete @change="onSignalsGroupAutocompleteChange" />
           </v-flex>
           <v-flex xs6>
             <v-btn @click="search" type="submit" color="primary">
@@ -110,7 +114,9 @@
 import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import Autocomplete from "../playlists/Autocomplete.vue";
+import PlaylistsAutocomplete from "../playlists/Autocomplete.vue";
+import SignalsAutocomplete from "../signals/Autocomplete.vue";
+import SignalsGroupsAutocomplete from "../signals/GroupsAutocomplete.vue";
 export default {
   data() {
     return {
@@ -127,7 +133,9 @@ export default {
         moreThanEmployees: 0,
         moreThanScore: 0,
         lessThanScore: 0,
-        playlistUid: ""
+        playlistUid: "",
+        signalId: 0,
+        signalGroup: ""
       },
       snack: false,
       snackColor: "",
@@ -137,7 +145,9 @@ export default {
     };
   },
   components: {
-    Autocomplete
+    PlaylistsAutocomplete,
+    SignalsAutocomplete,
+    SignalsGroupsAutocomplete
   },
   methods: {
     changeData() {
@@ -151,6 +161,14 @@ export default {
       this.$emit("search");
     },
     onPlaylistAutocompleteChange(value) {
+      this.company = { ...this.company, ...value };
+      this.changeData();
+    },
+    onSignalsAutocompleteChange(value) {
+      this.company = { ...this.company, ...value };
+      this.changeData();
+    },
+    onSignalsGroupAutocompleteChange(value) {
       this.company = { ...this.company, ...value };
       this.changeData();
     },

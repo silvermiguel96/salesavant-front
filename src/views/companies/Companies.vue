@@ -47,18 +47,22 @@
       <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
       <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
       <li
-        v-if="this.$route.query.lessThanEmployees"
+        v-if="!!this.$route.query.lessThanEmployees && this.$route.query.lessThanEmployees != 0"
       >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
       <li
-        v-if="this.$route.query.moreThanEmployees"
+        v-if="!!this.$route.query.moreThanEmployees && this.$route.query.moreThanEmployees != 0"
       >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
       <li
-        v-if="this.$route.query.moreThanScore"
+        v-if="!!this.$route.query.moreThanScore && this.$route.query.moreThanScore != 0"
       >Companies with score more than {{this.$route.query.moreThanScore}}</li>
       <li
-        v-if="this.$route.query.lessThanScore"
+        v-if="!!this.$route.query.lessThanScore && this.$route.query.lessThanScore != 0"
       >Companies with score less than {{this.$route.query.lessThanScore}}</li>
       <li v-if="this.$route.query.playlistUid">Playlist Id: {{this.$route.query.playlistUid}}</li>
+      <li
+        v-if="!!this.$route.query.signalId && this.$route.query.signalId != 0"
+      >Signal Id: {{this.$route.query.signalId}}</li>
+      <li v-if="this.$route.query.signalGroup">Signal group name: {{this.$route.query.signalGroup}}</li>
     </ul>
     <div class="calltoactions">
       <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
@@ -115,6 +119,8 @@
           moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '0'),
           lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
           playlistUid: this.$route.query.playlistUid || '',
+          signalId: this.$route.query.signalId || 0,
+          signalGroup: this.$route.query.signalGroup || '',
           first: rowsPerPage,
           offset: (rowsPerPage * page) - rowsPerPage
         }"
@@ -279,16 +285,20 @@ export default {
                 $region: String
                 $country: String
                 $status: String
+                $website: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $playlistName: String!
                 $playlistUid: String
+                $signalId: Int
+                $signalGroup: String
               ) {
                 createPlaylistFromSearch(
                   companySearch: {
                     searchName: $name
                     city: $city
                     searchDescription: $description
+                    searchWebsite: $website
                     state: $state
                     region: $region
                     country: $country
@@ -296,6 +306,8 @@ export default {
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
                     playlistUid: $playlistUid
+                    signalId: $signalId
+                    signalGroup: $signalGroup
                   }
                   playlistData: { name: $playlistName }
                 ) {
@@ -327,7 +339,9 @@ export default {
                 "0"
               ),
               playlistName: newPlaylistName,
-              playlistUid: _get(this.$route.query, "playlistUid", "")
+              playlistUid: _get(this.$route.query, "playlistUid", ""),
+              signalId: _get(this.$route.query, "signalId", 0),
+              signalGroup: _get(this.$route.query, "signalGroup", "")
             }
           });
           console.log("saving results as playlist success", result);
@@ -401,6 +415,8 @@ export default {
                 $signalGroup: String
                 $signalDefaultScore: Float
                 $playlistUid: String
+                $signalIdFilter: Int
+                $signalGroupFilter: String
               ) {
                 createSignalFromSearch(
                   companySearch: {
@@ -415,6 +431,8 @@ export default {
                     moreThanEmployees: $moreThanEmployees
                     searchWebsite: $website
                     playlistUid: $playlistUid
+                    signalId: $signalIdFilter
+                    signalGroup: $signalGroupFilter
                   }
                   signalData: {
                     name: $signalName
@@ -454,7 +472,9 @@ export default {
               signalDescription: signalDescription,
               signalGroup: signalGroup,
               signalDefaultScore: signalDefaultScore,
-              playlistUid: _get(this.$route.query, "playlistUid", "")
+              playlistUid: _get(this.$route.query, "playlistUid", ""),
+              signalIdFilter: parseInt(_get(this.$route.query, "signalId", 0)),
+              signalGroupFilter: _get(this.$route.query, "signalGroup", "")
             }
           });
           console.log("saving results as signal success", result);
