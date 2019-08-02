@@ -6,12 +6,12 @@
     </v-snackbar>
     <ApolloQuery
       :query="require('./graphql/PlaylistCompanies.gql')"
-      :variables="{ uid: $route.params.playlistId }"
+      :variables="{ uid: $route.params.playlistId, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
     >
       <template slot-scope="{ result: { loading, error, data } }">
         <div class="apollo-example">
           <v-breadcrumbs
-            v-if="data && data.playlistCompanies"
+            v-if="data"
             :items="[
             {
               text: 'Playlists',
@@ -19,7 +19,7 @@
               href: '/playlists'
             },
             {
-              text: data.playlistCompanies.name || data.playlistCompanies.uid,
+              text: playlist.name || $route.params.playlistId,
               disabled: true
             },
             {
@@ -48,25 +48,34 @@
           ]"
             divider=">"
           ></v-breadcrumbs>
-
-          <key-words-modal v-if="!job" :loading="isLoading" @createKeywordsJob="createKeywordsJob" />
-          <v-btn
-            dark
-            v-if="!!job"
-            @click="showJobModal = !showJobModal"
-            color="purple"
-          >View keywords</v-btn>
-          <job-modal
-            v-if="!!showJobModal"
-            :job="job"
-            @refreshJob="refreshJob"
-            :loading="loadingModal"
-            :dialog="showJobModal"
-            @onClose="closeJobModal"
-            @createKeywordsJob="createKeywordsJob"
-            :canModifySignalName="false"
-          />
-
+          <v-layout align-center justify-start row fill-height>
+            <v-flex xs2 md2>
+              <key-words-modal
+                v-if="!job"
+                :loading="isLoading"
+                @createKeywordsJob="createKeywordsJob"
+              />
+              <v-btn
+                dark
+                v-if="!!job"
+                @click="showJobModal = !showJobModal"
+                color="purple"
+              >View keywords</v-btn>
+              <job-modal
+                v-if="!!showJobModal"
+                :job="job"
+                @refreshJob="refreshJob"
+                :loading="loadingModal"
+                :dialog="showJobModal"
+                @onClose="closeJobModal"
+                @createKeywordsJob="createKeywordsJob"
+                :canModifySignalName="false"
+              />
+            </v-flex>
+            <v-flex xs1 md1>
+              <playlists-merge :playlist="playlist" />
+            </v-flex>
+          </v-layout>
           <!-- Loading -->
           <div v-if="loading" class="loading apollo">Loading...</div>
 
@@ -75,10 +84,11 @@
 
           <!-- Result -->
           <div v-else-if="data" class="result apollo">
-            <!-- <pre>{{ JSON.stringify(data) }}</pre> -->
+            <!--<pre>{{ JSON.stringify(data) }}</pre>-->
             <companies-table
-              v-if="data.playlistCompanies.companiesList.length"
-              :items="data.playlistCompanies.companiesList"
+              v-if="data.companies"
+              :items="data.companies"
+              @updatePagination="updatePagination"
               class="result apollo"
             ></companies-table>
           </div>
@@ -95,22 +105,70 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import KeyWordsModal from "./components/KeywordsModal.vue";
+import PlaylistsMerge from "./components/PlaylistMerge.vue";
 import JobModal from "./components/JobModal.vue";
 import _get from "lodash.get";
+import gql from "graphql-tag";
 export default {
   data() {
     return {
+      descending: false,
+      page: 1,
+      rowsPerPage: 25,
+      sortBy: "",
+      totalItems: 10,
       job: null,
       loadingModal: false,
       isLoading: false,
       showJobModal: false,
       snack: false,
       snackColor: "",
-      snackText: ""
+      snackText: "",
+      playlist: {
+        uid: "",
+        name: "",
+        totalScore: 0,
+        description: null
+      }
     };
   },
-  components: { CompaniesTable, KeyWordsModal, JobModal },
+  apollo: {
+    playlist: {
+      query: gql`
+        query getPlaylist($uid: String) {
+          playlist(uid: $uid) {
+            uid
+            name
+            totalScore
+            description
+          }
+        }
+      `,
+      variables() {
+        return {
+          uid: this.$route.params.playlistId
+        };
+      },
+      fetchPolicy: "cache-and-network"
+    }
+  },
+  components: { CompaniesTable, KeyWordsModal, JobModal, PlaylistsMerge },
   methods: {
+    updatePagination({
+      dataFromEvent: {
+        descending = false,
+        page = 1,
+        rowsPerPage = 5,
+        sortBy = "",
+        totalItems = 10
+      }
+    }) {
+      this.descending = descending;
+      this.page = page;
+      this.rowsPerPage = rowsPerPage;
+      this.sortBy = sortBy;
+      this.totalItems = 5;
+    },
     closeJobModal() {
       this.showJobModal = false;
     },
@@ -285,6 +343,9 @@ export default {
   },
   beforeMount() {
     this.verifyJobs();
+  },
+  beforeCreate() {
+    this.$apollo.query.playlist;
   }
 };
 </script>

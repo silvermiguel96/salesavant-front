@@ -30,9 +30,7 @@ export default {
     };
   },
   apollo: {
-    // Query with parameters
     playlists: {
-      // gql query
       query: gql`
         query getFilteredPlaylists($search: String) {
           playlists(first: 25, search: $search) {

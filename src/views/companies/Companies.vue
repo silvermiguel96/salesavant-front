@@ -186,7 +186,7 @@ export default {
       company: "",
       descending: false,
       page: 1,
-      rowsPerPage: 5,
+      rowsPerPage: 25,
       sortBy: "",
       totalItems: 10,
       searchField: "",
