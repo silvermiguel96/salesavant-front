@@ -1,7 +1,4 @@
 <template>
-  <!--TODOLISTO: habilitar nuevamente morethan y lessthan employeess-->
-  <!-- TODOLISTO: agregar filtros lessThanScore moreThanScore -->
-  <!-- TODOLISTO: agregar filtros por playlist CAMILO -->
   <div>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}

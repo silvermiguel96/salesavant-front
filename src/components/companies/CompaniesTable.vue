@@ -16,7 +16,6 @@
           :href="`companies/${props.item.uid}`"
         >{{ props.item.name }}</a>
       </td>
-      <!--TODOLISTO: remover comentarios-->
       <td>{{ props.item.totalSignals || "0"}}</td>
       <td>{{ props.item.totalScore || "0"}}</td>
       <td class="wrapping-td">
@@ -56,7 +55,6 @@ export default {
           sortable: true,
           value: "name"
         },
-        //TODOLISTO: poner los respectivos campos
         { text: "Signals", value: "totalSignals" },
         { text: "Score", value: "totalScore" },
         {

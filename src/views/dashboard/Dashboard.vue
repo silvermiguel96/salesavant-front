@@ -86,39 +86,9 @@
     <!-- Buttons Dashboard  -->
     <buttons-dashboard></buttons-dashboard>
     <!-- Custom Signal Groups -->
-
-    <!--TODOLISTO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
-    <!--TODOLISTO: el nombre de cada grupo debe de ser un router link que lleve a 
-    http://localhost:8080/signals?search=&group={nombre del grupo}&category=&searchType=signals-->
-    <custom-signal-groups></custom-signal-groups>
-    <!-- TODOLISTO: query para popular esta tabla es:
-        signalsGroupAggs {
-          id
-          group
-          creationTime
-          totalCompanies
-          modificationTime
-        }
-      }-->      
-        <!--TODO: el nombre de cada grupo debe de ser un router link que lleve a 
-        http://localhost:8080/signals?search=&group={nombre del grupo}&category=&searchType=signals-->
-        
+    <custom-signal-groups />
     <!-- Custom Sales Signals -->
-    <!--TODOLISTO: crear como componente dentro de una carpeta nueva que se llame Dashboard-->
-    <table-custom-sales-signals></table-custom-sales-signals>
-      <!-- TODOLISTO: query para popular esta tabla es:
-        signalsAggs {
-          signal {
-            id
-            name
-            defaultScore
-            group
-          }
-          totalCompanies
-      }-->
-      
-        <!-- TODOLISTO: el nombre de cada signal debe ser un router link que lleve a la signal-->
-       
+    <table-custom-sales-signals />
     <v-card-text>
       <v-toolbar flat color="white">
         <v-toolbar-title>Signal Search</v-toolbar-title>
