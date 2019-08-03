@@ -1,5 +1,9 @@
 <template>
-  <v-card>
+  <v-card v-if="company">
+    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
+      {{ snackText }}
+      <v-btn flat @click="snack = false">Close</v-btn>
+    </v-snackbar>
     <v-card-title>
       <h1 class="display-1">Custom Sales Signals</h1>
     </v-card-title>
@@ -7,80 +11,67 @@
     <v-card-actions default>
       <v-icon large color="blue">info</v-icon>
       <h2 class="headline font-weight-bold">Custome Score:</h2>
-      <p class="headline">New score comming soon</p>
+      <p class="headline">{{company.totalScore || '--'}}</p>
     </v-card-actions>
     <v-card-text>
       <!-- The first table -->
-      <v-data-table 
-      :headers="headers2"
-      :items="desserts2"
-      class="elevation-1"
-      hide-actions>
-        <template v-slot:items="props">
-          <td >{{ props.item.group }}</td>
-          <td >{{ props.item.total }}</td>
-          <td class="text-xs-right">{{ props.item.score }}</td>
-        </template>
-      </v-data-table>
-      <v-divider></v-divider>
-      <!-- Second Table -->
       <v-data-table
-        :headers="headers"
-        :items="desserts"
+        v-if="company.signalGroupAggs"
+        :headers="headersTable1"
+        :items="company.signalGroupAggs"
         class="elevation-1"
         hide-actions
       >
-      <template v-slot:items="props">
-        <td>{{ props.item.group }}</td>
-        <td>{{ props.item.signal }}</td>
-        <td>{{ props.item.score }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon
-            small
-            @click="deleteItem(props.item)"
-          >
-            delete
-          </v-icon>
-        </td>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template>
-    </v-data-table>
+        <template v-slot:items="props">
+          <td>{{ props.item.groupName || '[empty group name]' }}</td>
+          <td>{{ props.item.count }}</td>
+          <td class="text-xs-right">{{ props.item.score }}</td>
+        </template>
+      </v-data-table>
+
+      <!-- Second Table -->
+      <v-divider />
+
+      <v-data-table
+        v-if="companySignals"
+        :headers="headers"
+        :items="companySignals"
+        class="elevation-1 mt-5"
+        hide-actions
+      >
+        <template v-slot:items="props">
+          <td>{{ props.item.signal.group || '[empty group name]' }}</td>
+          <td>{{ props.item.signal.name || '[empty signal name]' }}</td>
+          <td>{{ props.item.score || '--' }}</td>
+          <td class="justify-center layout px-0">
+            <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+          </td>
+        </template>
+        <template v-slot:no-data>
+          <v-btn color="primary" @click="initialize">Reset</v-btn>
+        </template>
+      </v-data-table>
     </v-card-text>
     <!-- Add Signal -->
     <v-card-text>
       <v-layout row>
         <v-flex md9 lg10>
-          <v-text-field
-            label="Add a signal">
-          </v-text-field>
+          <signals-autocomplete
+            :placeholder="'Add signal'"
+            @change="onSignalAutoCompleteChange"
+            @onSearch="onSignalAutoCompleteSearch"
+          />
         </v-flex>
         <v-flex sm3 lg2>
-          <v-btn>
-            <v-icon left >add</v-icon>
-            Add
+          <v-btn @click="addSignalToCompany" :disabled="!signalId && !currentSignalSearch">
+            <v-icon left>add</v-icon>Add
           </v-btn>
         </v-flex>
-      </v-layout>
-      <v-layout row v-for="signal in listsignal" :key="signal.id">
-          <v-flex sm4>
-            <h4> {{ signal.name }}</h4>
-          </v-flex>
-          <v-flex sm3>
-            <v-btn small>
-              <v-icon samll left >add</v-icon>
-              Add
-            </v-btn>
-          </v-flex>
       </v-layout>
     </v-card-text>
     <!-- List singal -->
     <v-card-text>
-      <v-data-table
-        :headers="Hkeywords"
-        hide-actions>
-      </v-data-table>
+      <v-data-table :headers="Hkeywords" hide-actions></v-data-table>
       <template>
         <td></td>
       </template>
@@ -88,80 +79,344 @@
   </v-card>
 </template>
 <script>
-  export default {
-    data: () => ({
-        headers2: [
-          {
-            text: 'Group',
-            value: 'group'
-          },
-          { text: 'Total', value: 'total' },
-          { text: 'Score', value: 'score', align: 'right',},
-        ],
-        desserts2: [
-          {
-            group: 'Group is CS',
-            total: 'total 2',
-            score: 'Score is CS',
-          },
-          {
-            group: 'Group is CS',
-            total: 'total 3',
-            score: 'Score is CS',
-          }
-        ],
+import gql from "graphql-tag";
+import SignalsAutocomplete from "../../../../components/signals/Autocomplete.vue";
+import _get from "lodash.get";
+export default {
+  data() {
+    return {
+      signalId: null,
+      currentSignalSearch: null,
+      company: null,
+      companySignals: null,
+      snack: false,
+      snackColor: "",
+      snackText: "",
+      headersTable1: [
+        {
+          text: "Group",
+          value: "groupName",
+          sortable: true
+        },
+        {
+          text: "Total",
+          value: "count",
+          sortable: true
+        },
+        {
+          text: "Score",
+          value: "score",
+          sortable: true
+        }
+      ],
       headers: [
         {
-          text: 'Group',
-          align: 'left',
-          value: 'group'
+          text: "Group",
+          value: "signal.group",
+          sortable: true
         },
-        { text: 'Signal', value: 'signal' },
-        { text: 'Score', value: 'score' },
-        { text: 'Actions', value: 'name', sortable: false }
+        {
+          text: "Signal",
+          value: "signal.name",
+          sortable: true
+        },
+        {
+          text: "Score",
+          value: "score",
+          sortable: true
+        },
+        {
+          text: "Actions",
+          value: "name",
+          sortable: false
+        }
       ],
       desserts: [],
-      listsignal: [
-        { name: "Customer"},
-        { name: "High Momentum "},
-        { name: "Crossborder Acquisition Prospect"},
-        { name: "Marketo Customers 2"}
-      ]
-      ,
       Hkeywords: [
         {
-        text: 'Keywords',value: 'ketwords'
+          text: "Keywords",
+          value: "ketwords"
         },
         {
-          text: 'Score', value: 'score'
+          text: "Score",
+          value: "score"
         }
       ]
-    }),
-    created () {
-      this.initialize()
+    };
+  },
+  apollo: {
+    company: {
+      query: gql`
+        query getSingleCompany($uid: String) {
+          company(uid: $uid) {
+            uid
+            name
+            totalScore
+            totalSignals
+            signalGroupAggs {
+              count
+              score
+              groupName
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          uid: this.$route.params.companiesUid
+        };
+      },
+      fetchPolicy: "no-cache"
     },
-
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            group: 'None',
-            signal: 'High Momentum',
-            score: 1,
-          },
-          {
-            group: 'None',
-            signal: 'High Momentum',
-            score: 2,
-          },
-        ]
+    companySignals: {
+      query: gql`
+        query getSignalsForSingleCompany($companyUid: String) {
+          companySignals(companyUid: $companyUid, first: 10000) {
+            signal {
+              id
+              name
+              category
+              group
+            }
+            score
+          }
+        }
+      `,
+      variables() {
+        return {
+          companyUid: this.$route.params.companiesUid
+        };
       },
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      },
+      fetchPolicy: "no-cache"
     }
+  },
+  components: {
+    SignalsAutocomplete
+  },
+  created() {
+    this.initialize();
+  },
+  methods: {
+    initialize() {
+      this.desserts = [
+        {
+          group: "None",
+          signal: "High Momentum",
+          score: 1
+        },
+        {
+          group: "None",
+          signal: "High Momentum",
+          score: 2
+        }
+      ];
+    },
+    deleteItem(item) {
+      const index = this.desserts.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.desserts.splice(index, 1);
+    },
+    onSignalAutoCompleteChange(signalResults) {
+      this.signalId = _get(signalResults, "signalId", null);
+      this.currentSignalSearch = _get(
+        signalResults,
+        "currentSignalSearch",
+        null
+      );
+    },
+    onSignalAutoCompleteSearch(signalResults) {
+      this.currentSignalSearch = _get(
+        signalResults,
+        "currentSignalSearch",
+        null
+      );
+    },
+    refreshData() {
+      this.$apollo.queries.company.refresh();
+      this.$apollo.queries.companySignals.refresh();
+    },
+    async addSignalToCompany() {
+      console.log("hola");
+      try {
+        console.log("hola2");
+        if (!!this.signalId || !!this.currentSignalSearch) {
+          console.log("hola3");
+          if (!!this.signalId) {
+            const result = await this.$apollo.mutate({
+              mutation: gql`
+                mutation($score: Float, $signalId: Int!, $companyUid: String!) {
+                  createCompanySignal(
+                    companySignalData: {
+                      score: $score
+                      signalId: $signalId
+                      companyUid: $companyUid
+                    }
+                  ) {
+                    companySignal {
+                      company {
+                        name
+                        uid
+                      }
+                      signal {
+                        id
+                        name
+                      }
+                      id
+                    }
+                  }
+                }
+              `,
+              // Parameters
+              variables: {
+                score: 1,
+                signalId: this.signalId,
+                companyUid: this.$route.params.companiesUid
+              }
+            });
+            console.log("result", result);
+            const newSignalId = _get(
+              result,
+              "data.createCompanySignal.companySignal.signal.id",
+              null
+            );
+            console.log("newSignalId", newSignalId);
+            if (!newSignalId) {
+              this.snack = true;
+              this.snackColor = "error";
+              this.snackText =
+                "Oops!! we did something wrong when saving the company - signal, please try again!!";
+              return;
+            }
+            this.refreshData();
+            this.snack = true;
+            this.snackColor = "success";
+            this.snackText = `New signal successfully created!!`;
+            return;
+          } else {
+            const result = await this.$apollo.mutate({
+              mutation: gql`
+                mutation(
+                  $name: String
+                  $description: String
+                  $group: String
+                  $category: String
+                  $score: Float
+                ) {
+                  createSignal(
+                    signalData: {
+                      name: $name
+                      description: $description
+                      group: $group
+                      category: $category
+                      defaultScore: $score
+                    }
+                  ) {
+                    signal {
+                      id
+                      name
+                      group
+                      userId
+                      category
+                      accountId
+                      description
+                      creationTime
+                      defaultScore
+                      modificationTime
+                    }
+                  }
+                }
+              `,
+              // Parameters
+              variables: {
+                name: this.currentSignalSearch,
+                description: "",
+                group: "",
+                category: "",
+                score: 1
+              }
+            });
+            console.log("result", result);
+            const newSignal = _get(result, "data.createSignal.signal", null);
+            if (!newSignal) {
+              console.log("hola5");
+              this.snack = true;
+              this.snackColor = "error";
+              this.snackText =
+                "Oops!! we did something wrong when creating a new signal!!!";
+              return;
+            }
+            console.log("newSignal", newSignal);
+            const newCompanySignalMutation = await this.$apollo.mutate({
+              mutation: gql`
+                mutation($score: Float, $signalId: Int!, $companyUid: String!) {
+                  createCompanySignal(
+                    companySignalData: {
+                      score: $score
+                      signalId: $signalId
+                      companyUid: $companyUid
+                    }
+                  ) {
+                    companySignal {
+                      company {
+                        name
+                        uid
+                      }
+                      signal {
+                        id
+                        name
+                      }
+                      id
+                    }
+                  }
+                }
+              `,
+              // Parameters
+              variables: {
+                score: 1,
+                signalId: newSignal.id,
+                companyUid: this.$route.params.companiesUid
+              }
+            });
+            console.log("newCompanySignalMutation", newCompanySignalMutation);
+            const newCompanySignal = _get(
+              newCompanySignalMutation,
+              "data.createCompanySignal.companySignal",
+              null
+            );
+            if (!newCompanySignal) {
+              this.snack = true;
+              this.snackColor = "error";
+              this.snackText =
+                "Oops!! we did something wrong when creating the new CompanySignal, please try again!!";
+              return;
+            }
+            this.refreshData();
+            this.snack = true;
+            this.snackColor = "success";
+            this.snackText = `New signal successfully created!!`;
+            return;
+          }
+        } else {
+          console.log("hola5");
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Select a signal first";
+          return;
+        }
+      } catch (error) {
+        console.log("hola4");
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops we did something wrong!!";
+        console.log("error adding signal to company", error);
+      }
+    }
+  },
+  beforeCreate() {
+    this.$apollo.queries.company;
+    this.$apollo.queries.companySignals;
   }
+};
 </script>
 <style scoped>
 .v-card__actions {

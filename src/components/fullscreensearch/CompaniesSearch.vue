@@ -162,7 +162,7 @@ export default {
       this.changeData();
     },
     onSignalsAutocompleteChange(value) {
-      this.company = { ...this.company, ...value };
+      this.company = { ...this.company, signalId: _get(value, "signalId", "") };
       this.changeData();
     },
     onSignalsGroupAutocompleteChange(value) {

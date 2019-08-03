@@ -75,10 +75,10 @@
           <v-tab-item lazy>
             <v-layout row wrap justify-space-around class="mt-3">
               <v-flex md5>
-                <company-profile v-if="data.company" :items="data.company" class="result apollo"></company-profile>
+                <company-profile />
               </v-flex>
               <v-flex md6>
-                <custom-sales-signals></custom-sales-signals>
+                <custom-sales-signals />
               </v-flex>
             </v-layout>
           </v-tab-item>

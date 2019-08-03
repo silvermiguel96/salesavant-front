@@ -11,7 +11,7 @@
       flat
       hide-no-data
       hide-details
-      label="Exists in signal"
+      :label="placeholder"
       @change="change"
       clearable
     ></v-autocomplete>
@@ -28,6 +28,9 @@ export default {
       select: { id: "", name: "" },
       signals: []
     };
+  },
+  props: {
+    placeholder: { type: String, default: "Is in signal" }
   },
   apollo: {
     signals: {
@@ -50,6 +53,9 @@ export default {
   watch: {
     search(val) {
       val && val !== this.select && this.querySignals();
+      this.$emit("onSearch", {
+        currentSignalSearch: val
+      });
     }
   },
   methods: {
