@@ -89,12 +89,6 @@
     <custom-signal-groups />
     <!-- Custom Sales Signals -->
     <table-custom-sales-signals />
-    <v-card-text>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Signal Search</v-toolbar-title>
-      </v-toolbar>
-      <p class="subheading ml-2">Unbelievable. No entries here so far</p>
-    </v-card-text>
   </v-card>
 </template>
 
