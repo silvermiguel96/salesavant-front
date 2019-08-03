@@ -61,7 +61,7 @@
         ></v-breadcrumbs>
       </div>
       <!-- Loading -->
-      <div v-if="loading" class="loading apollo">Loading...</div> 
+      <div v-if="loading" class="loading apollo">Loading...</div>
 
       <!-- Error -->
       <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
@@ -83,6 +83,8 @@
             </v-layout>
           </v-tab-item>
           <!-- Tab new signals -->
+          <!-- TODO: dividir news signals en una pestaña NEWS y otra SIGNALS -->
+          <!-- TODO: todos los tabs deben ser lazy -->
           <v-tab>News Signals</v-tab>
           <v-tab-item>
             <news-signals v-if="data.company.news" :items="data.company.news" class="result apollo"></news-signals>

@@ -27,20 +27,5 @@ query SelecteCompany($company: String){
     employees{
       title
     }
-    signals{
-      score
-    }
-  	news{
-      company{
-        name
-      }
-			title
-      url
-      publishDate
-      category
-    }
-    playlists{
-      name 
-    } 
   }
 }
