@@ -7,6 +7,7 @@ import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from "./views/news/News.vue";
+import OneNews from "./views/news/components/Onenews.vue"
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
@@ -51,6 +52,11 @@ const router = new Router({
       path: "/news",
       name: "news",
       component: News
+    },
+    {
+      path: "/news/:newsId",
+      name: "oneNews",
+      component: OneNews
     },
     {
       path: "/companies/:companiesUid",

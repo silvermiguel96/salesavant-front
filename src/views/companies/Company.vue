@@ -72,7 +72,7 @@
         <v-tabs grow color="grey lighten-5">
           <!-- Tab Home -->
           <v-tab>Home</v-tab>
-          <v-tab-item>
+          <v-tab-item lazy>
             <v-layout row wrap justify-space-around class="mt-3">
               <v-flex md5>
                 <company-profile v-if="data.company" :items="data.company" class="result apollo"></company-profile>
@@ -84,30 +84,34 @@
           </v-tab-item>
           <!-- Tab new signals -->
           <!-- TODO: dividir news signals en una pestaña NEWS y otra SIGNALS -->
-          <!-- TODO: todos los tabs deben ser lazy -->
-          <v-tab>News Signals</v-tab>
-          <v-tab-item>
-            <news-signals v-if="data.company.news" :items="data.company.news" class="result apollo"></news-signals>
+          <!-- TODOLISTO: todos los tabs deben ser lazy -->
+          <v-tab>News</v-tab>
+          <v-tab-item lazy>
+            <news />
+          </v-tab-item>
+          <v-tab>Signals</v-tab>
+          <v-tab-item lazy>
+            <signals />
           </v-tab-item>
           <!-- Tab contact -->
           <v-tab>Contact</v-tab>
-          <v-tab-item>
+          <v-tab-item lazy>
             <contact></contact>
           </v-tab-item>
           <!-- Executive Tracker -->
           <v-tab>Executive tracker</v-tab>
-          <v-tab-item>
+          <v-tab-item lazy>
             <executive-tracker></executive-tracker>
           </v-tab-item>
           <!-- Tab Analytics -->
           <v-tab>Analytics</v-tab>
-          <v-tab-item>
+          <v-tab-item lazy>
             <analytics></analytics>
           </v-tab-item>
           <!-- Tab add to playlist -->
           <v-tab>Add to playlist</v-tab>
           <!-- {{ JSON.stringify(data.company.playlists)}} -->
-          <v-tab-item>
+          <v-tab-item lazy>
             <add-to-playlist
               v-if="data.company.playlists"
               :items="data.company.playlists"
@@ -127,8 +131,10 @@
 // Home
 import CompanyProfile from "./components/Home/CompanyProfile.vue";
 import CustomSalesSignals from "./components/Home/CustomSalesSignals.vue";
-// NewsSignals
-import NewsSignals from "./components/News-signals/NewsSignals.vue";
+// News
+import News from "./components/News/News.vue";
+// Signals
+import Signals from "./components/Signals/Signals.vue";
 // Contacts
 import Contact from "./components/Contact/Contact.vue";
 // Executive Tracker
@@ -144,7 +150,8 @@ export default {
   components: {
     CompanyProfile,
     CustomSalesSignals,
-    NewsSignals,
+    News,
+    Signals,
     Contact,
     ExecutiveTracker,
     Analytics,

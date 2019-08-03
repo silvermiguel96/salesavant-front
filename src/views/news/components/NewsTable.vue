@@ -13,7 +13,7 @@
       <td>
         <a
           :key="`news-link${props.item.id || ''}`"
-          :href="`news/${props.item.id || ''}`"
+          :href="`news/${props.item.title || ''}`"
         >{{ trimText(_get(props, "item.title", ""))}}</a>
       </td>
       <td>

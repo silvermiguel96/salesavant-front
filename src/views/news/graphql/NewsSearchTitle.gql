@@ -1,0 +1,15 @@
+query NewsSearch($title: String) {
+  news(title: $title) {
+    id
+    url
+    title
+    company {
+      uid
+      name
+    }
+    category
+    searchNews
+    publishDate
+    creationTime
+  }
+}
