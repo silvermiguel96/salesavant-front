@@ -27,12 +27,12 @@
     </ul>
     <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
     <template
-      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' &&
-      !!this.$route.query.playlistsSearch"
+      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
+      !!this.$route.query.playlistsSearch || !!this.$route.query.moreThanCompanies || !!this.$route.query.lessThanCompanies"
     >
       <ApolloQuery
         :query="require('./graphql/PlaylistSearch.gql')"
-        :variables="{ search: this.$route.query.playlistsSearch,lessThanCompanies: this.$route.query.lessThanCompanies || 0 , moreThanCompanies: this.$route.query.moreThanCompanies || 0 ,first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+        :variables="{ search: this.$route.query.playlistsSearch,lessThanCompanies: Number.parseInt(this.$route.query.lessThanCompanies || 0) , moreThanCompanies: Number.parseInt(this.$route.query.moreThanCompanies) || 0 ,first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading-->
