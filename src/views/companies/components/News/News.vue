@@ -15,10 +15,19 @@
         @update:pagination="updatePagination"
       >
         <template v-slot:items="props">
-          <td>{{ props.item.company.name }}</td>       
-          <router-link :to="`/news/${props.item.title}`">
-          <long-paragraph :text="props.item.title"></long-paragraph>
-          </router-link>
+          <td>{{ props.item.company.name }}</td>
+          <td>
+            <router-link :to="`/news/${props.item.title}`">
+              <long-paragraph :text="props.item.title"></long-paragraph>
+            </router-link>
+          </td>
+          <td>
+            <a
+              :key="`news-external-link${props.item.id || ''}`"
+              :href="props.item.url || ''"
+              target="_blank"
+            >visit source</a>
+          </td>
           <td>{{ props.item.publishDate }}</td>
           <td>{{ props.item.category || "--"}}</td>
         </template>
@@ -45,6 +54,7 @@ export default {
       headers: [
         { text: "Company", value: "company.name" },
         { text: "Title", value: "title" },
+        { text: "Url", value: "props.item.url"},
         { text: "Publish date", value: "publishDate" },
         { text: "Category", value: "category" }
       ]
@@ -82,6 +92,7 @@ export default {
             title
             publishDate
             category
+            url
           }
         }
       `,
