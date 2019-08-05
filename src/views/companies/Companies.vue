@@ -58,7 +58,9 @@
       <li
         v-if="!!this.$route.query.lessThanScore && this.$route.query.lessThanScore != 0"
       >Companies with score less than {{this.$route.query.lessThanScore}}</li>
+      <!--TODO: poner esto en un componente que use apollo para traer el nombre de la playlist -->
       <li v-if="this.$route.query.playlistUid">Playlist Id: {{this.$route.query.playlistUid}}</li>
+      <!--TODO: poner esto en un componente que use apollo para traer el nombre de la signal -->
       <li
         v-if="!!this.$route.query.signalId && this.$route.query.signalId != 0"
       >Signal Id: {{this.$route.query.signalId}}</li>
