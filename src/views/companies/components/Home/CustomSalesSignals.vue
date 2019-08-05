@@ -16,7 +16,7 @@
     <v-card-text>
       <!-- The first table -->
       <v-data-table
-        v-if="company.signalGroupAggs"
+        v-if="company && company.signalGroupAggs"
         :headers="headersTable1"
         :items="company.signalGroupAggs"
         class="elevation-1"
@@ -44,7 +44,10 @@
           <td>{{ props.item.signal.name || '[empty signal name]' }}</td>
           <td>{{ props.item.score || '--' }}</td>
           <td class="justify-center layout px-0">
-            <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+            <v-icon
+              small
+              @click="deleteItem({item: props.item, signalId:props.item.signal.id})"
+            >delete</v-icon>
           </td>
         </template>
         <template v-slot:no-data>
@@ -211,10 +214,56 @@ export default {
         }
       ];
     },
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
+    async deleteItem({ item = null, signalId = null }) {
+      try {
+        console.log({ item, signalId });
+        const index = this.companySignals.indexOf(item);
+        const isConfirmed = confirm(
+          "Are you sure you want to delete this item?"
+        );
+        if (isConfirmed) {
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation($signalId: Int!, $companyUid: String!) {
+                deleteCompanySignal(
+                  companyUid: $companyUid
+                  signalId: $signalId
+                ) {
+                  companySignal {
+                    id
+                  }
+                }
+              }
+            `,
+            // Parameters
+            variables: {
+              signalId,
+              companyUid: this.$route.params.companiesUid
+            }
+          });
+          console.log("result", result);
+          const companySignalId = _get(
+            result,
+            "data.deleteCompanySignal.companySignal.id",
+            null
+          );
+          if (!companySignalId) {
+            this.snack = true;
+            this.snackColor = "error";
+            this.snackText =
+              "Oops!! something happened when trying to remove the company - signal, please review manually or try again!!";
+            return;
+          }
+          this.companySignals.splice(index, 1);
+          this.refreshData();
+        }
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText =
+          "Oops!! we did something wrong when removing the company - signal, please try again!!";
+        return;
+      }
     },
     onSignalAutoCompleteChange(signalResults) {
       this.signalId = _get(signalResults, "signalId", null);
