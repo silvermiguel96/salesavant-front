@@ -1,5 +1,6 @@
 <template>
   <div class="apollo-example">
+    <!-- TODO: cuando cambio el número de registros por página no hace nada -->
     <v-breadcrumbs
       :items="[
         {
