@@ -2,15 +2,15 @@
   <v-layout row>
     <v-dialog v-model="dialog" persistent max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark v-on="on">Get keywords</v-btn>
+        <v-btn color="success" dark v-on="on">ORB Refresh</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Get keywords?</v-card-title>
+        <v-card-title class="headline">Get orb?</v-card-title>
         <v-card-text v-show="loading">
           We're currently creating the job for extracting the keywords for this playlist
           <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
         </v-card-text>
-        <v-card-text>You're about to start a process to get this playlist keywords, this process can have several time depending on the data amount or the already queued processes.</v-card-text>
+        <v-card-text>You're about to start a process to get this playlist orb, this process can have several time depending on the data amount or the already queued processes.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="success" flat @click="createKeywordsJob">Start process</v-btn>

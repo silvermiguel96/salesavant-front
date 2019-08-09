@@ -50,20 +50,42 @@
             divider=">"
           ></v-breadcrumbs>
           <v-layout align-center justify-start row fill-height>
-            <v-flex xs2 md2>
+            <v-flex xs3 md2>
+              <orb-key-words-modal
+                v-if="!job"
+                :loading="isLoading"
+                @createKeywordsJob="createKeywordsJobOrb"
+              />
+              <v-btn
+                dark
+                v-if="!!job"
+                @click="showJobModalOrb = !showJobModalOrb"
+                color="purple"
+              >View results</v-btn>
+              <orb-job-modal
+                v-if="!!showJobModalOrb"
+                :job="job"
+                @refreshJob="refreshJob"
+                :loading="loadingModal"
+                :dialog="showJobModal"
+                @onClose="closeJobModal"
+                @createKeywordsJob="createKeywordsJobOrb"
+                :canModifySignalName="false"
+              />
+            </v-flex>
+            <v-flex xs3 md2>
               <key-words-modal
                 v-if="!job"
                 :loading="isLoading"
                 @createKeywordsJob="createKeywordsJob"
               />
-              <!-- TODO: Crear el modal de ORB Refresh -->
               <v-btn
                 dark
                 v-if="!!job"
                 @click="showJobModal = !showJobModal"
                 color="purple"
-              >View results</v-btn>
-              <orb-job-modal
+              >View keywords</v-btn>
+              <job-modal
                 v-if="!!showJobModal"
                 :job="job"
                 @refreshJob="refreshJob"
@@ -73,22 +95,6 @@
                 @createKeywordsJob="createKeywordsJob"
                 :canModifySignalName="false"
               />
-              <!-- <v-btn
-                dark
-                v-if="!!job"
-                @click="showJobModal = !showJobModal"
-                color="purple"
-              >View keywords</v-btn>-->
-              <!-- <job-modal
-                v-if="!!showJobModal"
-                :job="job"
-                @refreshJob="refreshJob"
-                :loading="loadingModal"
-                :dialog="showJobModal"
-                @onClose="closeJobModal"
-                @createKeywordsJob="createKeywordsJob"
-                :canModifySignalName="false"
-              />-->
             </v-flex>
             <v-flex xs1 md1>
               <playlists-merge :playlist="playlist" />
@@ -123,8 +129,9 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import KeyWordsModal from "./components/KeywordsModal.vue";
+import OrbKeyWordsModal from "./components/OrbKeywordsModal.vue";
 import PlaylistsMerge from "./components/PlaylistMerge.vue";
-// import JobModal from "./components/JobModal.vue";
+import JobModal from "./components/JobModal.vue";
 import OrbJobModal from "./components/OrbJobModal.vue";
 
 import _get from "lodash.get";
@@ -138,8 +145,10 @@ export default {
       sortBy: "",
       totalItems: 10,
       job: null,
+      jobOrb: null,
       loadingModal: false,
       isLoading: false,
+      showJobModalOrb: false,
       showJobModal: false,
       snack: false,
       snackColor: "",
@@ -175,8 +184,9 @@ export default {
   components: {
     CompaniesTable,
     KeyWordsModal,
-    // JobModal,
+    JobModal,
     OrbJobModal,
+    OrbKeyWordsModal,
     PlaylistsMerge
   },
   methods: {
@@ -197,6 +207,25 @@ export default {
     },
     closeJobModal() {
       this.showJobModal = false;
+    },
+    verifyJobsOrb() {
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      const jobsOrb = Object.keys(localStorage)
+        .filter(key => key.indexOf("job") > -1)
+        .map(key => JSON.parse(localStorage[key]));
+
+      console.log("jobs", jobsOrb);
+
+      const existingJob = jobsOrb.find(
+        element => element.entityId === playlistId
+      );
+
+      console.log("existingJob", existingJob);
+      if (existingJob) {
+        this.jobsOrb = existingJob;
+      } else {
+        this.jobsOrb = null;
+      }
     },
     verifyJobs() {
       const playlistId = _get(this.$route, "params.playlistId", null);
@@ -292,11 +321,82 @@ export default {
         return;
       }
       const url = "/jobs";
-      // const data = {
-      //   job_name: "extract_keywords",
-      //   playlist_uid: playlistId,
-      //   max_keywords: 300
-      // };
+      const data = {
+        job_name: "extract_keywords",
+        playlist_uid: playlistId,
+        max_keywords: 300
+      };
+      try {
+        const result = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage["apollo-token"]}`
+          }
+        });
+        const jsonResult = await result.json();
+        console.log("jsonResult", jsonResult);
+        const jobUid = _get(jsonResult, "job_uid", null);
+        console.log("jobUid", jobUid);
+        if (!jobUid) {
+          this.isLoading = false;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Couldn't get a job id, please try later!";
+          return;
+        }
+        const newJob = {
+          jobUid,
+          type: "playlistKeywords",
+          entityId: playlistId,
+          progress: 0,
+          status: "created",
+          results: [],
+          date: new Date()
+        };
+        console.log("newJob", newJob);
+        let job = localStorage.getItem(jobUid);
+        console.log("job", job);
+        if (!job) {
+          localStorage.setItem(jobUid, JSON.stringify(newJob));
+        } else {
+          this.isLoading = false;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "This Job already exists!";
+          return;
+        }
+        this.isLoading = false;
+        this.dialog = false;
+        console.log("finish");
+        this.verifyJobs();
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops we did something wrong!";
+        console.log("error creating job to get playlist keywords", error);
+      }
+    },
+    async createKeywordsJobOrb() {
+      this.isLoading = true;
+      console.log("this.$route.params", this.$route.params);
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      if (!playlistId || playlistId === "undefined") {
+        this.isLoading = false;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Couldn't find the playlist Id, please try later!";
+        return;
+      }
+      if (!!this.isThereAJobForTheSamePlaylistObs()) {
+        this.isLoading = false;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "There's already a job for this playlist!";
+        return;
+      }
+      const url = "/jobs";
       const data = {
         job_name: "refresh_orb",
         playlist_uid: playlistId
@@ -349,7 +449,7 @@ export default {
         this.isLoading = false;
         this.dialog = false;
         console.log("finish");
-        this.verifyJobs();
+        this.verifyJobsOrb();
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
@@ -366,6 +466,19 @@ export default {
       console.log("jobs", jobs);
 
       const existingJob = jobs.find(element => element.entityId === playlistId);
+
+      console.log("existingJob", existingJob);
+      return existingJob;
+    },
+    isThereAJobForTheSamePlaylistObs() {
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      const jobsObs = Object.keys(localStorage)
+        .filter(key => key.indexOf("job") > -1)
+        .map(key => JSON.parse(localStorage[key]));
+
+      console.log("jobs", jobs);
+
+      const existingJob = jobsObs.find(element => element.entityId === playlistId);
 
       console.log("existingJob", existingJob);
       return existingJob;
