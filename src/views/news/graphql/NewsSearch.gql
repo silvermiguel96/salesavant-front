@@ -1,5 +1,5 @@
 query NewsSearch($first: Int, $offset: Int, $title: String) {
-  news(first: $first, offset: $offset, title: $title) {
+  news(first: $first, offset: $offset, searchTitle: $title) {
     id
     url
     title
