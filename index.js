@@ -29,7 +29,7 @@ const checkJwt = jwt({
 });
 
 const graphqlOptions = {
-  target: "http://salesavant-1235521355.us-east-1.elb.amazonaws.com",
+  target: "http://salesavant-1235521355.us-east-1.elb.amazonaws.com",//
   auth: "alejandro@salesavant.com:qweqwe"
 };
 
