@@ -17,7 +17,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.company.name }}</td>
           <td>
-            <router-link :to="`/news/${props.item.title}`">
+            <router-link :to="`/news/${props.item.id}`">
               <long-paragraph :text="props.item.title"></long-paragraph>
             </router-link>
           </td>
