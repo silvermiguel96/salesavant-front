@@ -56,13 +56,14 @@
                 :loading="isLoading"
                 @createKeywordsJob="createKeywordsJob"
               />
+              <!-- TODO: Crear el modal de ORB Refresh -->
               <v-btn
                 dark
                 v-if="!!job"
                 @click="showJobModal = !showJobModal"
                 color="purple"
-              >View keywords</v-btn>
-              <job-modal
+              >View results</v-btn>
+              <orb-job-modal
                 v-if="!!showJobModal"
                 :job="job"
                 @refreshJob="refreshJob"
@@ -72,6 +73,22 @@
                 @createKeywordsJob="createKeywordsJob"
                 :canModifySignalName="false"
               />
+              <!-- <v-btn
+                dark
+                v-if="!!job"
+                @click="showJobModal = !showJobModal"
+                color="purple"
+              >View keywords</v-btn>-->
+              <!-- <job-modal
+                v-if="!!showJobModal"
+                :job="job"
+                @refreshJob="refreshJob"
+                :loading="loadingModal"
+                :dialog="showJobModal"
+                @onClose="closeJobModal"
+                @createKeywordsJob="createKeywordsJob"
+                :canModifySignalName="false"
+              />-->
             </v-flex>
             <v-flex xs1 md1>
               <playlists-merge :playlist="playlist" />
@@ -107,7 +124,9 @@
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import KeyWordsModal from "./components/KeywordsModal.vue";
 import PlaylistsMerge from "./components/PlaylistMerge.vue";
-import JobModal from "./components/JobModal.vue";
+// import JobModal from "./components/JobModal.vue";
+import OrbJobModal from "./components/OrbJobModal.vue";
+
 import _get from "lodash.get";
 import gql from "graphql-tag";
 export default {
@@ -153,7 +172,13 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  components: { CompaniesTable, KeyWordsModal, JobModal, PlaylistsMerge },
+  components: {
+    CompaniesTable,
+    KeyWordsModal,
+    // JobModal,
+    OrbJobModal,
+    PlaylistsMerge
+  },
   methods: {
     updatePagination({
       dataFromEvent: {
@@ -267,10 +292,14 @@ export default {
         return;
       }
       const url = "/jobs";
+      // const data = {
+      //   job_name: "extract_keywords",
+      //   playlist_uid: playlistId,
+      //   max_keywords: 300
+      // };
       const data = {
-        job_name: "extract_keywords",
-        playlist_uid: playlistId,
-        max_keywords: 300
+        job_name: "refresh_orb",
+        playlist_uid: playlistId
       };
 
       try {
@@ -297,7 +326,7 @@ export default {
         }
         const newJob = {
           jobUid,
-          type: "playlistKeywords",
+          type: "refreshOrb",
           entityId: playlistId,
           progress: 0,
           status: "created",
