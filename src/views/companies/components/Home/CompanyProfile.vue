@@ -110,7 +110,19 @@
     <v-card-text>
       <h3 class="subheading font-weight-bold">
         NAICS code :
-        <span class="subheading">{{ company.naicsCode || '--' }}</span>
+        <span class="subheading">{{ company.naics.code || '--' }}</span>
+      </h3>
+    </v-card-text>
+    <v-card-text>
+      <h3 class="subheading font-weight-bold">
+        NAICS description :
+        <span class="subheading">{{ company.naics.description || '--' }}</span>
+      </h3>
+    </v-card-text>
+    <v-card-text>
+      <h3 class="subheading font-weight-bold">
+        NAICS search :
+        <span class="subheading">{{ company.naics.search || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
@@ -151,6 +163,11 @@ export default {
             industry
             naicsCode
             website
+            naics {
+              search
+              description
+              code
+            }
           }
         }
       `,
