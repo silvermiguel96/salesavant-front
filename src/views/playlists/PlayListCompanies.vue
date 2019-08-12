@@ -67,8 +67,8 @@
                 :job="job"
                 @refreshJob="refreshJob"
                 :loading="loadingModal"
-                :dialog="showJobModal"
-                @onClose="closeJobModal"
+                :dialog="showJobModalOrb"
+                @onClose="closeOrbJobModal"
                 @createOrbRefreshJob="createOrbRefreshJob"
                 :canModifySignalName="false"
               />
@@ -208,19 +208,22 @@ export default {
     closeJobModal() {
       this.showJobModal = false;
     },
+    closeOrbJobModal() {
+      this.showJobModalOrb = false;
+    },
     verifyJobsOrb() {
       const playlistId = _get(this.$route, "params.playlistId", null);
-      const jobsOrb = Object.keys(localStorage)
+      const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
         .map(key => JSON.parse(localStorage[key]));
 
-      console.log("jobs", jobsOrb);
+      console.log("jobsOrb", jobs);
 
-      const existingJob = jobsOrb.find(
+      const existingJob = jobs.find(
         element => element.entityId === playlistId
       );
 
-      console.log("existingJob", existingJob);
+      console.log("existingJobForOrb", existingJob);
       if (existingJob) {
         this.jobsOrb = existingJob;
       } else {
@@ -313,7 +316,7 @@ export default {
         this.snackText = "Couldn't find the playlist Id, please try later!";
         return;
       }
-      if (!!this.isThereAJobForTheSamePlaylist()) {
+      if (!!this.isThereAJobForTheSamePlaylist("extract_keywords")) {
         this.isLoading = false;
         this.snack = true;
         this.snackColor = "error";
@@ -389,7 +392,7 @@ export default {
         this.snackText = "Couldn't find the playlist Id, please try later!";
         return;
       }
-      if (!!this.isThereAJobForTheSamePlaylistObs()) {
+      if (!!this.isThereAJobForTheSamePlaylistObs("refresh_orb")) {
         this.isLoading = false;
         this.snack = true;
         this.snackColor = "error";
@@ -457,7 +460,7 @@ export default {
         console.log("error creating job to get playlist keywords", error);
       }
     },
-    isThereAJobForTheSamePlaylist() {
+    isThereAJobForTheSamePlaylist(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
@@ -465,12 +468,14 @@ export default {
 
       console.log("jobs", jobs);
 
-      const existingJob = jobs.find(element => element.entityId === playlistId);
+      const existingJob = jobs.find(element => {
+        return element.entityId === playlistId && element.type === type
+        });
 
       console.log("existingJob", existingJob);
       return existingJob;
     },
-    isThereAJobForTheSamePlaylistObs() {
+    isThereAJobForTheSamePlaylistObs(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
@@ -478,7 +483,9 @@ export default {
 
       console.log("jobs", jobs);
 
-      const existingJob = jobs.find(element => element.entityId === playlistId);
+      const existingJob = jobs.find(element => {
+         return element.entityId === playlistId  && element.type === type
+      });
 
       console.log("existingJob", existingJob);
       return existingJob;
@@ -486,6 +493,7 @@ export default {
   },
   beforeMount() {
     this.verifyJobs();
+    this.verifyJobsOrb();
   },
   beforeCreate() {
     this.$apollo.query.playlist;

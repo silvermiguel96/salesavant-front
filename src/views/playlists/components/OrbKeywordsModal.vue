@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-dialog v-model="dialog" persistent max-width="500">
+    <v-dialog v-model="dialogOrb" persistent max-width="500">
       <template v-slot:activator="{ on }">
         <v-btn color="success" dark v-on="on">ORB Refresh</v-btn>
       </template>
@@ -14,7 +14,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="success" flat @click="createOrbRefreshJob">Start process</v-btn>
-          <v-btn color="error" flat @click="dialog = false">Cancel, I will do it in other time</v-btn>
+          <v-btn color="error" flat @click="dialogOrb = false">Cancel, I will do it in other time</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -27,7 +27,7 @@ import { setTimeout } from "timers";
 export default {
   data() {
     return {
-      dialog: false
+      dialogOrb: false
     };
   },
   props: {
