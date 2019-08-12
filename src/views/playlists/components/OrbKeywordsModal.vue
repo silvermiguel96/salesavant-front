@@ -13,7 +13,7 @@
         <v-card-text>You're about to start a process to get this playlist orb, this process can have several time depending on the data amount or the already queued processes.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" flat @click="createKeywordsJob">Start process</v-btn>
+          <v-btn color="success" flat @click="createOrbRefreshJob">Start process</v-btn>
           <v-btn color="error" flat @click="dialog = false">Cancel, I will do it in other time</v-btn>
         </v-card-actions>
       </v-card>
@@ -34,8 +34,8 @@ export default {
     loading: { type: Boolean, default: false }
   },
   methods: {
-    createKeywordsJob() {
-      this.$emit("createKeywordsJob");
+    createOrbRefreshJob() {
+      this.$emit("createOrbRefreshJob");
     }
   }
 };

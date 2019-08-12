@@ -54,7 +54,7 @@
               <orb-key-words-modal
                 v-if="!job"
                 :loading="isLoading"
-                @createKeywordsJob="createKeywordsJobOrb"
+                @createOrbRefreshJob="createOrbRefreshJob"
               />
               <v-btn
                 dark
@@ -69,7 +69,7 @@
                 :loading="loadingModal"
                 :dialog="showJobModal"
                 @onClose="closeJobModal"
-                @createKeywordsJob="createKeywordsJobOrb"
+                @createOrbRefreshJob="createOrbRefreshJob"
                 :canModifySignalName="false"
               />
             </v-flex>
@@ -378,7 +378,7 @@ export default {
         console.log("error creating job to get playlist keywords", error);
       }
     },
-    async createKeywordsJobOrb() {
+    async createOrbRefreshJob() {
       this.isLoading = true;
       console.log("this.$route.params", this.$route.params);
       const playlistId = _get(this.$route, "params.playlistId", null);
@@ -472,13 +472,13 @@ export default {
     },
     isThereAJobForTheSamePlaylistObs() {
       const playlistId = _get(this.$route, "params.playlistId", null);
-      const jobsObs = Object.keys(localStorage)
+      const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
         .map(key => JSON.parse(localStorage[key]));
 
       console.log("jobs", jobs);
 
-      const existingJob = jobsObs.find(element => element.entityId === playlistId);
+      const existingJob = jobs.find(element => element.entityId === playlistId);
 
       console.log("existingJob", existingJob);
       return existingJob;
