@@ -19,7 +19,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green" flat @click="createNewJob">Create new ORB</v-btn>
-          <v-btn v-show="!results.length" color="green" flat @click="refreshJob">Refresh results</v-btn>
+          <v-btn color="green" flat @click="refreshJobOrb">Refresh results</v-btn>
           <v-btn color="error" flat @click="onClose">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -30,7 +30,6 @@
 <script>
 import _get from "lodash.get";
 import { setTimeout } from "timers";
-import Signal from "./PlaylistSignalTable.vue";
 export default {
   data() {
     return {
@@ -44,16 +43,13 @@ export default {
         { text: "Score", align: "left", sortable: false },
         { text: "Actions", align: "left", sortable: false }
       ],
-      results: []
     };
   },
   props: {
     job: { type: Object, required: true },
     loading: { type: Boolean, default: false },
     dialog: { type: Boolean, default: false },
-    canModifySignalName: { type: Boolean, default: false }
   },
-  components: { Signal },
   methods: {
     onClose() {
       this.$emit("onClose");
@@ -72,35 +68,17 @@ export default {
       console.log("existingJob", existingJob);
       return existingJob;
     },
-    getResults() {
-      const results = _get(this.$props.job, "results", []);
-      this.results = results.map(item => ({
-        showSave: false,
-        name: item[0] || "",
-        total: item[1] || "--",
-        score: item[2] || "--"
-      }));
-    },
-    toggleSave(resultIndex) {
-      if (!!this.results[resultIndex]) {
-        this.results[resultIndex].showSave = !this.results[resultIndex]
-          .showSave;
-      }
-    },
-    refreshJob() {
-      this.$emit("refreshJob", this.$props.job.jobUid);
+    refreshJobOrb() {
+      this.$emit("refreshJobOrb", this.$props.job.jobUid);
     },
     createNewJob() {
       localStorage.removeItem(this.$props.job.jobUid);
-      this.$emit("createKeywordsJob");
+      this.$emit("createOrbRefreshJob");
       this.onClose();
     }
   },
-  beforeUpdate() {
-    this.getResults();
-  },
   beforeMount() {
-    this.refreshJob();
+    this.refreshJobOrb();
   }
 };
 </script>
