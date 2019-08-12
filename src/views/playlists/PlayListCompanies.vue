@@ -52,19 +52,19 @@
           <v-layout align-center justify-start row fill-height>
             <v-flex xs3 md2>
               <orb-key-words-modal
-                v-if="!job"
+                v-if="!jobObs"
                 :loading="isLoading"
                 @createOrbRefreshJob="createOrbRefreshJob"
               />
               <v-btn
                 dark
-                v-if="!!job"
+                v-if="!!jobObs"
                 @click="showJobModalOrb = !showJobModalOrb"
                 color="purple"
               >View results</v-btn>
               <orb-job-modal
                 v-if="!!showJobModalOrb"
-                :job="job"
+                :job="jobObs"
                 @refreshJob="refreshJob"
                 :loading="loadingModal"
                 :dialog="showJobModalOrb"
@@ -211,7 +211,7 @@ export default {
     closeOrbJobModal() {
       this.showJobModalOrb = false;
     },
-    verifyJobsOrb() {
+    verifyJobsOrb(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
@@ -219,18 +219,16 @@ export default {
 
       console.log("jobsOrb", jobs);
 
-      const existingJob = jobs.find(
-        element => element.entityId === playlistId
-      );
+      const existingJob = jobs.find(element => element.entityId === playlistId);
 
       console.log("existingJobForOrb", existingJob);
       if (existingJob) {
-        this.jobsOrb = existingJob;
+        this.jobObs = existingJob;
       } else {
-        this.jobsOrb = null;
+        this.jobObs = null;
       }
     },
-    verifyJobs() {
+    verifyJobs(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
@@ -238,7 +236,7 @@ export default {
 
       console.log("jobs", jobs);
 
-      const existingJob = jobs.find(element => element.entityId === playlistId);
+      const existingJob = jobs.find(element => element.entityId === playlistId );
 
       console.log("existingJob", existingJob);
       if (existingJob) {
@@ -294,7 +292,7 @@ export default {
 
         console.log("updatedJob", updatedJob);
         localStorage[jobId] = JSON.stringify(updatedJob);
-        this.verifyJobs();
+        this.verifyJobs("playlistKeywords");
         if (updatedJob.status === "finished") {
           this.loadingModal = false;
         }
@@ -351,7 +349,7 @@ export default {
         }
         const newJob = {
           jobUid,
-          type: "playlistKeywords",
+          type: "extract_keywords",
           entityId: playlistId,
           progress: 0,
           status: "created",
@@ -429,7 +427,7 @@ export default {
         }
         const newJob = {
           jobUid,
-          type: "refreshOrb",
+          type: "refresh_orb",
           entityId: playlistId,
           progress: 0,
           status: "created",
@@ -450,9 +448,10 @@ export default {
           return;
         }
         this.isLoading = false;
-        this.dialog = false;
+        this.dialogOrb = false;
+        console.log("dialogOrb", this.dialogOrb);
         console.log("finish");
-        this.verifyJobsOrb();
+        this.verifyJobsOrb("refreshOrb");
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
