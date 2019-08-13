@@ -118,7 +118,7 @@
           status: this.$route.query.status || '',
           lessThanEmployees: this.$route.query.lessThanEmployees || '0',
           moreThanEmployees: this.$route.query.moreThanEmployees || '0',
-          moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '0'),
+          moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '-1'),
           lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
           playlistUid: this.$route.query.playlistUid || '',
           signalId: this.$route.query.signalId || 0,
@@ -519,61 +519,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.form,
-.input,
-.apollo,
-.message {
-  padding: 12px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.input {
-  font-family: inherit;
-  font-size: inherit;
-  border: solid 2px #ccc;
-  border-radius: 3px;
-}
-
-.error {
-  color: red;
-}
-
-.images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
-  grid-gap: 10px;
-}
-
-.image-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  border-radius: 8px;
-}
-
-.image {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.image-input {
-  margin: 20px;
-}
-
-.calltoactions {
-  display: flex;
-  flex-direction: row;
-}
-
-.calltoactions .layout {
-  flex: unset;
-}
-</style>
