@@ -84,16 +84,16 @@ export default {
       dataFromEvent: {
         descending = false,
         page = 1,
-        rowsPerPage = 25,
+        rowsPerPage = 5,
         sortBy = "",
-        totalItems = 10000000
+        totalItems = 10
       }
     }) {
       this.descending = descending;
       this.pagination.page = page;
       this.pagination.rowsPerPage = rowsPerPage;
       this.sortBy = sortBy;
-      this.totalItems = totalItems;
+      this.totalItems = 5;
     }
   },
   components: {

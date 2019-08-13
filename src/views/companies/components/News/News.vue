@@ -56,7 +56,7 @@ export default {
       headers: [
         { text: "Company", value: "company.name" },
         { text: "Title", value: "title" },
-        { text: "Url", value: "props.item.url"},
+        { text: "Url", value: "props.item.url" },
         { text: "Publish date", value: "publishDate" },
         { text: "Category", value: "category" }
       ]
@@ -67,16 +67,16 @@ export default {
       dataFromEvent: {
         descending = false,
         page = 1,
-        rowsPerPage = 25,
+        rowsPerPage = 5,
         sortBy = "",
-        totalItems = 10000000
+        totalItems = 10
       }
     }) {
       this.descending = descending;
       this.pagination.page = page;
       this.pagination.rowsPerPage = rowsPerPage;
       this.sortBy = sortBy;
-      this.totalItems = totalItems;
+      this.totalItems = 5;
     }
   },
   components: {
@@ -92,7 +92,12 @@ export default {
           $offset: Int
           $notCategorized: Boolean
         ) {
-          companyNews(companyUid: $companyUid, first: $first, offset: $offset, notCategorized: $notCategorized) {
+          companyNews(
+            companyUid: $companyUid
+            first: $first
+            offset: $offset
+            notCategorized: $notCategorized
+          ) {
             company {
               name
             }
