@@ -107,22 +107,16 @@
         <span class="subheading">{{ company.status || '--' }}</span>
       </h3>
     </v-card-text>
-    <v-card-text>
+    <v-card-text >
       <h3 class="subheading font-weight-bold">
         NAICS code :
-        <span class="subheading">{{ company.naics.code || '--' }}</span>
+        <span class="subheading" v-if="company.naics">{{ company.naics.code || '--' }}</span>
       </h3>
     </v-card-text>
-    <v-card-text>
+    <v-card-text  >
       <h3 class="subheading font-weight-bold">
         NAICS description :
-        <span class="subheading">{{ company.naics.description || '--' }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subheading font-weight-bold">
-        NAICS search :
-        <span class="subheading">{{ company.naics.search || '--' }}</span>
+        <span class="subheading" v-if="company.naics">{{ company.naics.description || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
