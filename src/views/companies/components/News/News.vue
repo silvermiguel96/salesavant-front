@@ -3,8 +3,8 @@
     <v-card-title>
       <h1 class="display-1">News</h1>
     </v-card-title>
-    <v-divider></v-divider>
     <v-card-text>
+      <h2>Categorized</h2>
       <v-data-table
         :headers="headers"
         :items="companyNews"
@@ -17,7 +17,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.company.name }}</td>
           <td>
-            <router-link :to="`/news/${props.item.title}`">
+            <router-link :to="`/news/${props.item.id}`">
               <long-paragraph :text="props.item.title"></long-paragraph>
             </router-link>
           </td>
@@ -33,11 +33,13 @@
         </template>
       </v-data-table>
     </v-card-text>
+    <news-table-false></news-table-false>
   </v-card>
 </template>
 
 <script>
 import LongParagraph from "./LongParagraph.vue";
+import NewsTableFalse from "./NewsTableFalse.vue";
 import gql from "graphql-tag";
 export default {
   data() {
@@ -47,14 +49,14 @@ export default {
         rowsPerPage: 25,
         rowsPerPageItems: [25, 50, 100]
       },
-      newsCompany: [],
       descending: false,
+      notCategorized: true,
       sortBy: "",
       totalItems: 10000000,
       headers: [
         { text: "Company", value: "company.name" },
         { text: "Title", value: "title" },
-        { text: "Url", value: "props.item.url"},
+        { text: "Url", value: "props.item.url" },
         { text: "Publish date", value: "publishDate" },
         { text: "Category", value: "category" }
       ]
@@ -65,26 +67,37 @@ export default {
       dataFromEvent: {
         descending = false,
         page = 1,
-        rowsPerPage = 25,
+        rowsPerPage = 5,
         sortBy = "",
-        totalItems = 10000000
+        totalItems = 10
       }
     }) {
       this.descending = descending;
       this.pagination.page = page;
       this.pagination.rowsPerPage = rowsPerPage;
       this.sortBy = sortBy;
-      this.totalItems = totalItems;
+      this.totalItems = 5;
     }
   },
   components: {
-    LongParagraph
+    LongParagraph,
+    NewsTableFalse
   },
   apollo: {
     companyNews: {
       query: gql`
-        query searchCompanyNew($companyUid: String, $first: Int, $offset: Int) {
-          companyNews(companyUid: $companyUid, first: $first, offset: $offset) {
+        query searchCompanyNewTrue(
+          $companyUid: String
+          $first: Int
+          $offset: Int
+          $notCategorized: Boolean
+        ) {
+          companyNews(
+            companyUid: $companyUid
+            first: $first
+            offset: $offset
+            notCategorized: $notCategorized
+          ) {
             company {
               name
             }
@@ -102,7 +115,8 @@ export default {
           first: this.pagination.rowsPerPage,
           offset:
             this.pagination.rowsPerPage * this.pagination.page -
-            this.pagination.rowsPerPage
+            this.pagination.rowsPerPage,
+          notCategorized: this.notCategorized
         };
       },
       fetchPolicy: "cache-and-network"

@@ -1,7 +1,7 @@
 <template>
   <ApolloQuery
     :query="require('../graphql/NewsSearchTitle.gql') "
-    :variables="{ title: $route.params.newsId }"
+    :variables="{ id: $route.params.newsId }"
   >
     <template slot-scope="{ result: { loading, error, data } }">
       <div class="apollo-example">
@@ -38,37 +38,37 @@
             <v-card-text>
               <h5 class="subheading font-weight-bold">
                 Id:
-                <span class="body-1">{{ data.news[0].id }}</span>
+                <span class="body-1">{{ data.newsArticle.id }}</span>
               </h5>
             </v-card-text>
             <v-card-text>
               <h3 class="subheading font-weight-bold">
                 Title:
-                <span class="subheading">{{ data.news[0].title || "--"}}</span>
+                <span class="subheading">{{ data.newsArticle.title || "--"}}</span>
               </h3>
             </v-card-text>
             <v-card-text>
               <h3 class="subheading font-weight-bold">
                 Category:
-                <span class="subheading">{{ data.news[0].category || "--"}}</span>
+                <span class="subheading">{{ data.newsArticle.category || "--"}}</span>
               </h3>
             </v-card-text>
             <v-card-text>
               <h3 class="subheading font-weight-bold">
                 Search News:
-                <span class="subheading">{{ data.news[0].searchNews }}</span>
+                <span class="subheading">{{ data.newsArticle.searchNews }}</span>
               </h3>
             </v-card-text>
             <v-card-text>
               <h3 class="subheading font-weight-bold">
                 Publish date:
-                <span class="subheading">{{ data.news[0].publishDate }}</span>
+                <span class="subheading">{{ data.newsArticle.publishDate }}</span>
               </h3>
             </v-card-text>
             <v-card-text>
               <h3 class="subheading font-weight-bold">
                 Creation dime:
-                <span class="subheading">{{ data.news[0].creationTime }}</span>
+                <span class="subheading">{{ data.newsArticle.creationTime }}</span>
               </h3>
             </v-card-text>
             <v-card-text>
@@ -77,13 +77,13 @@
                 <v-btn
                   class="subheading green"
                   target="_black"
-                  :href="`${ data.news[0].url}`"
+                  :href="`${ data.newsArticle.url}`"
                   dark
                 >view url</v-btn>
               </h3>
             </v-card-text>
           </v-card>
-        </v-container>
+        </v-container> 
       </div>
 
       <!-- No result  -->

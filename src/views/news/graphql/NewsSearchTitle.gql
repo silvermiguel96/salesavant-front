@@ -1,5 +1,5 @@
-query NewsSearch($title: String) {
-  news(title: $title) {
+query SearchNewsId($id: Int){
+  newsArticle(newsArticleId: $id){
     id
     url
     title
