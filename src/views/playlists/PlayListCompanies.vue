@@ -50,7 +50,29 @@
             divider=">"
           ></v-breadcrumbs>
           <v-layout align-center justify-start row fill-height>
-            <v-flex xs2 md2>
+            <v-flex xs3 md2>
+              <create-orb-modal 
+                v-if="!jobObs"
+                :loading="isLoading"
+                @createOrbRefreshJob="createOrbRefreshJob"
+              />
+              <v-btn
+                dark
+                v-if="!!jobObs"
+                @click="showJobModalOrb = !showJobModalOrb"
+                color="purple"
+              >View results</v-btn>
+              <orb-job-modal
+                v-if="!!showJobModalOrb"
+                :job="jobObs"
+                @refreshJobOrb="refreshJobOrb"
+                :loading="loadingModalOrb"
+                :dialog="showJobModalOrb"
+                @onClose="closeOrbJobModal"
+                @createOrbRefreshJob="createOrbRefreshJob"
+              />
+            </v-flex>
+            <v-flex xs3 md2>
               <key-words-modal
                 v-if="!job"
                 :loading="isLoading"
@@ -106,8 +128,11 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import KeyWordsModal from "./components/KeywordsModal.vue";
+import CreateOrbModal from "./components/CreateOrbModal.vue";
 import PlaylistsMerge from "./components/PlaylistMerge.vue";
 import JobModal from "./components/JobModal.vue";
+import OrbJobModal from "./components/OrbJobModal.vue";
+
 import _get from "lodash.get";
 import gql from "graphql-tag";
 export default {
@@ -119,8 +144,11 @@ export default {
       sortBy: "",
       totalItems: 10,
       job: null,
+      jobObs: null,
       loadingModal: false,
+      loadingModalOrb: false,
       isLoading: false,
+      showJobModalOrb: false,
       showJobModal: false,
       snack: false,
       snackColor: "",
@@ -153,7 +181,14 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  components: { CompaniesTable, KeyWordsModal, JobModal, PlaylistsMerge },
+  components: {
+    CompaniesTable,
+    KeyWordsModal,
+    JobModal,
+    OrbJobModal,
+    CreateOrbModal,
+    PlaylistsMerge
+  },
   methods: {
     updatePagination({
       dataFromEvent: {
@@ -173,21 +208,97 @@ export default {
     closeJobModal() {
       this.showJobModal = false;
     },
-    verifyJobs() {
+    closeOrbJobModal() {
+      this.showJobModalOrb = false;
+    },
+    verifyJobsOrb(type) {
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      const jobs = Object.keys(localStorage)
+        .filter(key => key.indexOf("job") > -1)
+        .map(key => JSON.parse(localStorage[key]));
+
+      console.log("jobsOrb", jobs);
+      console.log("type", type);
+      const existingJob = jobs.find(element => {
+         return element.entityId === playlistId && element.type === type;
+      });
+
+      console.log("existingJobForOrb", existingJob);
+      if (existingJob) {
+        this.jobObs = existingJob;
+      } else {
+        this.jobObs = null;
+      }
+      console.log("jobObs", this.jobObs);
+    },
+    verifyJobs(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
         .map(key => JSON.parse(localStorage[key]));
 
       console.log("jobs", jobs);
-
-      const existingJob = jobs.find(element => element.entityId === playlistId);
+      const existingJob = jobs.find(element => {
+        return element.entityId === playlistId  && element.type === type;
+      });
 
       console.log("existingJob", existingJob);
       if (existingJob) {
         this.job = existingJob;
       } else {
         this.job = null;
+      }
+    },
+    async refreshJobOrb(jobId = null) {
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      this.loadingModalOrb = true;
+      console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
+      if (!jobId) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops! I can't read this job id";
+        return;
+      }
+      try {
+        const result = await fetch(`/jobs/${jobId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage["apollo-token"]}`
+          }
+        });
+        console.log("result.status", result.status);
+        const jsonResult = await result.json();
+        console.log("jsonResultObs", jsonResult);
+        let updatedJob = {};
+        if (localStorage[jobId]) {
+          updatedJob = JSON.parse(localStorage[jobId]);
+          updatedJob = {
+            ...updatedJob,
+            status: _get(jsonResult, "status", null),
+            progress: _get(jsonResult, "progressPercentage", null),
+            date: new Date(),
+          };
+        } else {
+          updatedJob = {
+            entityId: playlistId,
+            type: "refresh_orb",
+            status: _get(jsonResult, "status", null),
+            progress: _get(jsonResult, "progressPercentage", null),
+            date: new Date(),
+          };
+        }
+
+        console.log("updatedJob", updatedJob);
+        localStorage[jobId] = JSON.stringify(updatedJob);
+        this.verifyJobsOrb("refresh_orb");
+        if (updatedJob.status === "finished") {
+          this.loadingModalOrb = false;
+        }
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops! we did something wrong!";
+        console.log("error refreshing job", error);
       }
     },
     async refreshJob(jobId = null) {
@@ -222,22 +333,22 @@ export default {
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
             results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
+            date: new Date(),
           };
         } else {
           updatedJob = {
             entityId: playlistId,
-            type: "playlistKeywords",
+            type: "extract_keywords",
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
             results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
+            date: new Date(),
           };
         }
 
         console.log("updatedJob", updatedJob);
         localStorage[jobId] = JSON.stringify(updatedJob);
-        this.verifyJobs();
+        this.verifyJobs("extract_keywords");
         if (updatedJob.status === "finished") {
           this.loadingModal = false;
         }
@@ -259,7 +370,7 @@ export default {
         this.snackText = "Couldn't find the playlist Id, please try later!";
         return;
       }
-      if (!!this.isThereAJobForTheSamePlaylist()) {
+      if (!!this.isThereAJobForTheSamePlaylist("extract_keywords")) {
         this.isLoading = false;
         this.snack = true;
         this.snackColor = "error";
@@ -270,7 +381,82 @@ export default {
       const data = {
         job_name: "extract_keywords",
         playlist_uid: playlistId,
-        max_keywords: 300
+        max_keywords: 300,
+      };
+      try {
+        const result = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage["apollo-token"]}`
+          }
+        });
+        const jsonResult = await result.json();
+        console.log("jsonResult", jsonResult);
+        const jobUid = _get(jsonResult, "job_uid", null);
+        console.log("jobUid", jobUid);
+        if (!jobUid) {
+          this.isLoading = false;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Couldn't get a job id, please try later!";
+          return;
+        }
+        const newJob = {
+          jobUid,
+          type: "extract_keywords",
+          entityId: playlistId,
+          progress: 0,
+          status: "created",
+          results: [],
+          date: new Date(),
+        };
+        console.log("newJob", newJob);
+        let job = localStorage.getItem(jobUid);
+        console.log("job", job);
+        if (!job) {
+          localStorage.setItem(jobUid, JSON.stringify(newJob));
+        } else {
+          this.isLoading = false;
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "This Job already exists!";
+          return;
+        }
+        this.isLoading = false;
+        this.dialog = false;
+        console.log("finish");
+        this.verifyJobs("extract_keywords");
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops we did something wrong!";
+        console.log("error creating job to get playlist keywords", error);
+      }
+    },
+    async createOrbRefreshJob() {
+      this.isLoading = true;
+      console.log("this.$route.params", this.$route.params);
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      if (!playlistId || playlistId === "undefined") {
+        this.isLoading = false;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Couldn't find the playlist Id, please try later!";
+        return;
+      }
+      if (!!this.isThereAJobForTheSamePlaylistObs("refresh_orb")) {
+        this.isLoading = false;
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "There's already a job for this playlist!";
+        return;
+      }
+      const url = "/jobs";
+      const data = {
+        job_name: "refresh_orb",
+        playlist_uid: playlistId,
       };
 
       try {
@@ -297,12 +483,11 @@ export default {
         }
         const newJob = {
           jobUid,
-          type: "playlistKeywords",
+          type: "refresh_orb",
           entityId: playlistId,
           progress: 0,
           status: "created",
-          results: [],
-          date: new Date()
+          date: new Date(),
         };
         console.log("newJob", newJob);
 
@@ -318,9 +503,10 @@ export default {
           return;
         }
         this.isLoading = false;
-        this.dialog = false;
+        this.dialogOrb = false;
+        console.log("dialogOrb", this.dialogOrb);
         console.log("finish");
-        this.verifyJobs();
+        this.verifyJobsOrb("refresh_orb");
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
@@ -328,7 +514,7 @@ export default {
         console.log("error creating job to get playlist keywords", error);
       }
     },
-    isThereAJobForTheSamePlaylist() {
+    isThereAJobForTheSamePlaylist(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
@@ -336,66 +522,35 @@ export default {
 
       console.log("jobs", jobs);
 
-      const existingJob = jobs.find(element => element.entityId === playlistId);
+      const existingJob = jobs.find(element => {
+        return element.entityId === playlistId && element.type === type;
+        });
+
+      console.log("existingJob", existingJob);
+      return existingJob;
+    },
+    isThereAJobForTheSamePlaylistObs(type) {
+      const playlistId = _get(this.$route, "params.playlistId", null);
+      const jobs = Object.keys(localStorage)
+        .filter(key => key.indexOf("job") > -1)
+        .map(key => JSON.parse(localStorage[key]));
+
+      console.log("jobs", jobs);
+
+      const existingJob = jobs.find(element => {
+         return element.entityId === playlistId  && element.type === type;
+      });
 
       console.log("existingJob", existingJob);
       return existingJob;
     }
   },
   beforeMount() {
-    this.verifyJobs();
+    this.verifyJobs("extract_keywords");
+    this.verifyJobsOrb("refresh_orb");
   },
   beforeCreate() {
     this.$apollo.query.playlist;
   }
 };
 </script>
-
-<style scoped>
-.form,
-.input,
-.apollo,
-.message {
-  padding: 12px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.input {
-  font-family: inherit;
-  font-size: inherit;
-  border: solid 2px #ccc;
-  border-radius: 3px;
-}
-
-.error {
-  color: red;
-}
-
-.images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
-  grid-gap: 10px;
-}
-
-.image-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  border-radius: 8px;
-}
-
-.image {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.image-input {
-  margin: 20px;
-}
-</style>
