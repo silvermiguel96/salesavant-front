@@ -51,7 +51,7 @@
           ></v-breadcrumbs>
           <v-layout align-center justify-start row fill-height>
             <v-flex xs3 md2>
-              <orb-key-words-modal
+              <create-orb-modal 
                 v-if="!jobObs"
                 :loading="isLoading"
                 @createOrbRefreshJob="createOrbRefreshJob"
@@ -128,7 +128,7 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import KeyWordsModal from "./components/KeywordsModal.vue";
-import OrbKeyWordsModal from "./components/OrbKeywordsModal.vue";
+import CreateOrbModal from "./components/CreateOrbModal.vue";
 import PlaylistsMerge from "./components/PlaylistMerge.vue";
 import JobModal from "./components/JobModal.vue";
 import OrbJobModal from "./components/OrbJobModal.vue";
@@ -186,7 +186,7 @@ export default {
     KeyWordsModal,
     JobModal,
     OrbJobModal,
-    OrbKeyWordsModal,
+    CreateOrbModal,
     PlaylistsMerge
   },
   methods: {
@@ -220,7 +220,7 @@ export default {
       console.log("jobsOrb", jobs);
       console.log("type", type);
       const existingJob = jobs.find(element => {
-         return element.entityId === playlistId && element.type === type 
+         return element.entityId === playlistId && element.type === type;
       });
 
       console.log("existingJobForOrb", existingJob);
@@ -229,7 +229,7 @@ export default {
       } else {
         this.jobObs = null;
       }
-      console.log("jobObs", this.jobObs)
+      console.log("jobObs", this.jobObs);
     },
     verifyJobs(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
@@ -238,9 +238,8 @@ export default {
         .map(key => JSON.parse(localStorage[key]));
 
       console.log("jobs", jobs);
-      console.log("type", type)
       const existingJob = jobs.find(element => {
-        return element.entityId === playlistId  && element.type === type
+        return element.entityId === playlistId  && element.type === type;
       });
 
       console.log("existingJob", existingJob);
@@ -277,8 +276,7 @@ export default {
             ...updatedJob,
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
-            // results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
+            date: new Date(),
           };
         } else {
           updatedJob = {
@@ -286,8 +284,7 @@ export default {
             type: "refresh_orb",
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
-            // results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
+            date: new Date(),
           };
         }
 
@@ -336,7 +333,7 @@ export default {
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
             results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
+            date: new Date(),
           };
         } else {
           updatedJob = {
@@ -345,7 +342,7 @@ export default {
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
             results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
+            date: new Date(),
           };
         }
 
@@ -384,7 +381,7 @@ export default {
       const data = {
         job_name: "extract_keywords",
         playlist_uid: playlistId,
-        max_keywords: 300
+        max_keywords: 300,
       };
       try {
         const result = await fetch(url, {
@@ -413,7 +410,7 @@ export default {
           progress: 0,
           status: "created",
           results: [],
-          date: new Date()
+          date: new Date(),
         };
         console.log("newJob", newJob);
         let job = localStorage.getItem(jobUid);
@@ -459,7 +456,7 @@ export default {
       const url = "/jobs";
       const data = {
         job_name: "refresh_orb",
-        playlist_uid: playlistId
+        playlist_uid: playlistId,
       };
 
       try {
@@ -490,8 +487,7 @@ export default {
           entityId: playlistId,
           progress: 0,
           status: "created",
-          // results: [],
-          date: new Date()
+          date: new Date(),
         };
         console.log("newJob", newJob);
 
@@ -527,7 +523,7 @@ export default {
       console.log("jobs", jobs);
 
       const existingJob = jobs.find(element => {
-        return element.entityId === playlistId && element.type === type
+        return element.entityId === playlistId && element.type === type;
         });
 
       console.log("existingJob", existingJob);
@@ -542,7 +538,7 @@ export default {
       console.log("jobs", jobs);
 
       const existingJob = jobs.find(element => {
-         return element.entityId === playlistId  && element.type === type
+         return element.entityId === playlistId  && element.type === type;
       });
 
       console.log("existingJob", existingJob);
@@ -558,52 +554,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.form,
-.input,
-.apollo,
-.message {
-  padding: 12px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.input {
-  font-family: inherit;
-  font-size: inherit;
-  border: solid 2px #ccc;
-  border-radius: 3px;
-}
-
-.error {
-  color: red;
-}
-
-.images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
-  grid-gap: 10px;
-}
-
-.image-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  border-radius: 8px;
-}
-
-.image {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.image-input {
-  margin: 20px;
-}
-</style>
