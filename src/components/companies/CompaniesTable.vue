@@ -11,10 +11,7 @@
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
       <td>
-        <a
-          :key="`link${props.item.uid}`"
-          :href="`companies/${props.item.uid}`"
-        >{{ props.item.name }}</a>
+        <router-link :to="`/companies/${props.item.uid}`">{{ props.item.name }}</router-link>
       </td>
       <td>{{ props.item.totalSignals || "0"}}</td>
       <td>{{ props.item.totalScore || "0"}}</td>
