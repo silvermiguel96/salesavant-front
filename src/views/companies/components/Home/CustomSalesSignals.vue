@@ -90,7 +90,8 @@ export default {
     return {
       signalId: null,
       currentSignalSearch: null,
-      company: null,
+      company: [],
+      signalGroupAggs: null,
       companySignals: null,
       snack: false,
       snackColor: "",
