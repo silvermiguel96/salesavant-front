@@ -145,6 +145,9 @@ export default {
         null
       );
     },
+    refreshData() {
+      this.$apollo.queries.companyPlaylists.refresh();
+    },
     async addPlaylistToCompany() {
       console.log("Ingreso a la funcion");
       try {
@@ -184,8 +187,8 @@ export default {
           }
             this.snack = true;
             this.snackColor = "success";
-            this.snackText =
-              "The playlist is add to company";
+            this.snackText = "The playlist is add to company";
+            this.refreshData();
             return;
         } else {
           console.log("hola5");
