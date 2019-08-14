@@ -519,3 +519,12 @@ export default {
   }
 };
 </script>
+<style>
+.calltoactions {	
+  display: flex;	
+  flex-direction: row;	
+}	
+ .calltoactions .layout {	
+  flex: unset;	
+}
+</style>
