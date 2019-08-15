@@ -38,7 +38,7 @@
             <router-link :to="`/playlists/${props.item.uid}/companies`">{{ props.item.name || "--"}}</router-link>
           </td>
           <td>
-            <v-icon>delete</v-icon>
+            <v-icon @click="deleteCompanyPlaylist(props.item.uid)">delete</v-icon>
           </td>
         </template>
       </v-data-table>
@@ -156,15 +156,18 @@ export default {
           console.log("hola3");
           const result = await this.$apollo.mutate({
             mutation: gql`
-                mutation( $companyUid: String!, $playlistUid: String!) {
-                  addCompanyToPlaylist( playlistUid: $playlistUid companyUid: $companyUid ) {
-                    playlist{
-                      uid
-                      name
-                      }
-                    }
+              mutation($companyUid: String!, $playlistUid: String!) {
+                addCompanyToPlaylist(
+                  playlistUid: $playlistUid
+                  companyUid: $companyUid
+                ) {
+                  playlist {
+                    uid
+                    name
                   }
-              `,
+                }
+              }
+            `,
             // Parameters
             variables: {
               playlistUid: this.playlistUid,
@@ -172,7 +175,7 @@ export default {
             }
           });
           console.log("result", result);
-          const  newPlaylistId = _get(
+          const newPlaylistId = _get(
             result,
             "data.addCompanyToPlaylist.playlist.uid",
             null
@@ -185,11 +188,11 @@ export default {
               "Oops!! we did something wrong when saving the company - playlist, please try again!!";
             return;
           }
-            this.snack = true;
-            this.snackColor = "success";
-            this.snackText = "The playlist is add to company";
-            this.refreshData();
-            return;
+          this.snack = true;
+          this.snackColor = "success";
+          this.snackText = "The playlist is add to company";
+          this.refreshData();
+          return;
         } else {
           console.log("hola5");
           this.snack = true;
@@ -204,9 +207,65 @@ export default {
         this.snackText = "Oops we did something wrong!!";
         console.log("error adding playlist to company", error);
       }
+    },
+    async deleteCompanyPlaylist(playlistUid) {
+      console.log("playlistUid", playlistUid);
+      try {
+        console.log("Ingreso en el try");
+        if (!playlistUid) {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Select a playlist to delete!!";
+          console.log("Error in delete playlist to company");
+          return;
+        }
+        const result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($companyUid: String!, $playlistUid: String!) {
+              deleteCompanyFromPlaylist(
+                playlistUid: $playlistUid
+                companyUid: $companyUid
+              ) {
+                playlist {
+                  uid
+                  name
+                }
+              }
+            }
+          `,
+          // Parameters
+          variables: {
+            playlistUid: playlistUid,
+            companyUid: this.$route.params.companiesUid
+          }
+        });
+        console.log("result", result);
+        // const newPlaylistId = _get(
+        //   result,
+        //   "data.addCompanyToPlaylist.playlist.uid",
+        //   null
+        // );
+        // console.log("newPlaylistId", newPlaylistId);
+        // if (!newPlaylistId) {
+        //   this.snack = true;
+        //   this.snackColor = "error";
+        //   this.snackText =
+        //     "Oops!! we did something wrong when saving the company - playlist, please try again!!";
+        //   return;
+        // }
+        this.snack = true;
+        this.snackColor = "success";
+        this.snackText = "The playlist is delete to company";
+        this.refreshData();
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = "Oops we did something wrong!!";
+        console.log("Error in delete playlist to company");
+      }
     }
   },
-  beforeUpdate() {
+  beforeCreate() {
     this.$apollo.queries.companyPlaylists;
   }
 };
