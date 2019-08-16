@@ -35,24 +35,6 @@
           <v-flex xs6>
             <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
           </v-flex>
-          <v-layout row wrap>
-            <v-flex xs6>
-              <v-text-field
-                name="moreThanScore"
-                v-model="company.moreThanScore"
-                label="More than score"
-                @input="changeData"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field
-                name="lessThanScore"
-                v-model="company.lessThanScore"
-                label="Less than score"
-                @input="changeData"
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
           <v-flex xs6>
             <v-text-field
               name="website"
@@ -82,10 +64,28 @@
               @input="changeData"
             ></v-text-field>
           </v-flex>
+          <v-layout row wrap>
+            <v-flex xs6>
+              <v-text-field
+                name="moreThanScore"
+                v-model="company.moreThanScore"
+                label="More than score"
+                @input="changeData"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                name="lessThanScore"
+                v-model="company.lessThanScore"
+                label="Less than score"
+                @input="changeData"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
         </v-layout>
         <v-layout row wrap>
           <v-flex xs6>
-            <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
+            <signals-groups-autocomplete @change="onSignalsGroupAutocompleteChange" />
           </v-flex>
           <v-flex xs6>
             <signals-autocomplete @change="onSignalsAutocompleteChange" />
@@ -93,7 +93,7 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex xs6>
-            <signals-groups-autocomplete @change="onSignalsGroupAutocompleteChange" />
+            <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
           </v-flex>
           <v-flex xs6>
             <v-btn @click="search" type="submit" color="primary">
