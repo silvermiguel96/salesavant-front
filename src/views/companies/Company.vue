@@ -112,11 +112,7 @@
           <v-tab>Add to playlist</v-tab>
           <!-- {{ JSON.stringify(data.company.playlists)}} -->
           <v-tab-item lazy>
-            <add-to-playlist
-              v-if="data.company.playlists"
-              :items="data.company.playlists"
-              class="result apollo"
-            ></add-to-playlist>
+            <add-to-playlist></add-to-playlist>
           </v-tab-item>
         </v-tabs>
       </div>

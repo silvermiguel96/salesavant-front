@@ -12,7 +12,7 @@
         :pagination.sync="pagination"
         :rows-per-page-items="pagination.rowsPerPageItems"
         :total-items="totalItems"
-        @update:pagination="updatePagination"
+        @updatepagination="updatePagination"
       >
         <template v-slot:items="props">
           <td>{{ props.item.company.name }}</td>

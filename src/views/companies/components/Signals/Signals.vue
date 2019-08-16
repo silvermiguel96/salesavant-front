@@ -12,7 +12,7 @@
         :pagination.sync="pagination"
         :rows-per-page-items="pagination.rowsPerPageItems"
         :total-items="totalItems"
-        @update:pagination="updatePagination"
+        @updatepagination="updatePagination"
       >
         <template v-slot:items="props">
           <router-link :to="`/signals/${props.item.signal.id}`">{{ props.item.signal.name || "--"}}</router-link>
