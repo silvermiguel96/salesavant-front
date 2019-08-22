@@ -6,34 +6,10 @@ const proxy = httpProxy.createProxyServer({});
 const environment = process.env.NODE_ENV || "local";
 const history = require("connect-history-api-fallback");
 
-// const jwt = require("express-jwt");
-// const jwtAuthz = require("express-jwt-authz");
-// const jwksRsa = require("jwks-rsa");
-
-// const checkJwt = jwt({
-  // Dynamically provide a signing key
-  // based on the kid in the header and
-  // the signing keys provided by the JWKS endpoint.
-  // secret: jwksRsa.expressJwtSecret({
-  //   cache: true,
-  //   rateLimit: true,
-  //   jwksRequestsPerMinute: 5,
-  //   jwksUri: `https://salesavant-dev.auth0.com/.well-known/jwks.json`
-  // }),
-
-  // Validate the audience and the issuer.
-  //audience: "https://develop.mysalesavant.com",
-//   audience: "http://localhost:4000",
-//   issuer: `https://salesavant-dev.auth0.com/`,
-//   algorithms: ["RS256"]
-// });
-
 const graphqlOptions = {
   target: "http://salesavant-1235521355.us-east-1.elb.amazonaws.com",
   auth: "alejandro@salesavant.com:qweqwe"
 };
-
-// const canGraphQl = jwtAuthz(["read:graphql"]);
 
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 console.log("process.env.VUE", process.env.VUE);

@@ -8,11 +8,9 @@ import Company from "./views/companies/Company.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from "./views/news/News.vue";
 import SingleNews from "./views/news/components/SingleNews.vue"
-//Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
 // import Callback from "./components/Callback";
-// import auth from "./auth/authService";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 
@@ -21,7 +19,6 @@ Vue.use(Router);
 const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
-  // eslint-disable-next-line no-sparse-arrays
   routes: [
     {
       path: "/login",

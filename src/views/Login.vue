@@ -21,9 +21,9 @@
                 </v-toolbar-items>
               </v-toolbar>
               <v-card-text>
-                <v-text-field label="Email"></v-text-field>
+                <v-text-field v-model="userlogin.email" label="Email"></v-text-field>
                 <v-text-field
-                  v-model="password"
+                  v-model="userlogin.password"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
@@ -42,22 +42,29 @@
 </template>
 
 <script>
-import authService from "../auth/authService";
+// import authService from "../auth/authService";
 
 export default {
   name: "login",
   data() {
-    return { isAuthenticated: false, show1: false };
+    return {
+      userlogin: {
+        email: "",
+        password: ""
+      },
+      isAuthenticated: false,
+      show1: false
+    };
   },
   methods: {
     login() {
-      this.$auth.login();
+      // this.$auth.login();
     }
   },
   created() {
-    if (this.$auth.isAuthenticated()) {
-      this.$router.push("/home");
-    }
+    // if (this.$auth.isAuthenticated()) {
+    //   this.$router.push("/home");
+    // }
   }
 };
 </script>
