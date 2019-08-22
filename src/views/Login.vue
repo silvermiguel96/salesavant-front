@@ -20,6 +20,16 @@
                   </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
+              <v-card-text>
+                <v-text-field label="Email"></v-text-field>
+                <v-text-field
+                  v-model="password"
+                  :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                  :type="show1 ? 'text' : 'password'"
+                  label="Password"
+                  @click:append="show1 = !show1"
+                ></v-text-field>
+              </v-card-text>
               <v-card-actions class="ma-2">
                 <v-btn block color="secondary" v-on:click="login()">Login</v-btn>
               </v-card-actions>
@@ -37,7 +47,7 @@ import authService from "../auth/authService";
 export default {
   name: "login",
   data() {
-    return { isAuthenticated: false };
+    return { isAuthenticated: false, show1: false };
   },
   methods: {
     login() {

@@ -11,8 +11,8 @@ import SingleNews from "./views/news/components/SingleNews.vue"
 //Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
-import Callback from "./components/Callback";
-import auth from "./auth/authService";
+// import Callback from "./components/Callback";
+// import auth from "./auth/authService";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 
@@ -24,7 +24,7 @@ const router = new Router({
   // eslint-disable-next-line no-sparse-arrays
   routes: [
     {
-      path: "/",
+      path: "/login",
       name: "login",
       component: Login
     },
@@ -78,11 +78,11 @@ const router = new Router({
       name: "newcompanies",
       component: NewCompanies
     },
-    {
-      path: "/callback",
-      name: "callback",
-      component: Callback
-    },
+    // {
+    //   path: "/callback",
+    //   name: "callback",
+    //   component: Callback
+    // },
     {
       path: "/signals",
       name: "signals",
@@ -101,14 +101,14 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.path === "/callback" || auth.isAuthenticated()) {
-    return next();
-  }
+// router.beforeEach((to, from, next) => {
+//   // if (to.path === "/callback") {
+//   //   return next();
+//   // }
 
-  // Specify the current path as the customState parameter, meaning it
-  // will be returned to the application after auth
-  auth.login({ target: to.path });
-});
+//   // Specify the current path as the customState parameter, meaning it
+//   // will be returned to the application after auth
+//   auth.login({ target: to.path });
+// });
 
 export default router;

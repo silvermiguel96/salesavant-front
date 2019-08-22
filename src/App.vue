@@ -2,21 +2,21 @@
   <v-app>
     <template>
       <v-content>
+          <!-- v-if="isAuthenticated" -->
         <main-menu
-          v-if="isAuthenticated"
           :showSearch="showSearch"
           @toggleSearch="toggleSearch"
           :showJobsQueue="showJobsQueue"
           @toggleJobsQueuve="toggleJobsQueuve"
         ></main-menu>
+          <!-- v-if="isAuthenticated" -->
         <full-screen-search
-          v-if="isAuthenticated"
           :show="showSearch"
           @toggle="toggleSearch"
           :expand="expand"
         ></full-screen-search>
+          <!-- v-if="isAuthenticated && !!showJobsQueue" -->
         <jobs-queue
-          v-if="isAuthenticated && !!showJobsQueue"
           :show="showJobsQueue"
           @toggle="toggleJobsQueuve"
         ></jobs-queue>
