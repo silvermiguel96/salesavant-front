@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/dashboard/Dashboard.vue";
@@ -21,6 +22,10 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: "*",
+      redirect: "/login"
+    },
+    {
       path: "/login",
       name: "login",
       component: Login
@@ -28,52 +33,82 @@ const router = new Router({
     {
       path: "/home",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/playlists",
       name: "playlists",
-      component: PlayLists
+      component: PlayLists,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/playlists/:playlistId/companies",
       name: "playlist-companies",
-      component: PlayListCompanies
+      component: PlayListCompanies,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/companies",
       name: "companies",
-      component: Companies
+      component: Companies,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/news",
       name: "news",
-      component: News
+      component: News,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/news/:newsId",
       name: "oneNews",
-      component: SingleNews
+      component: SingleNews,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/companies/:companiesUid",
       name: "company",
-      component: Company
+      component: Company,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/playlists/:playlistId/companies/:companiesUid",
       name: "playlist-company",
-      component: Company
+      component: Company,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/advanced/:playlistId",
       name: "advanced",
-      component: Calibration
+      component: Calibration,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/new-companies",
       name: "newcompanies",
-      component: NewCompanies
+      component: NewCompanies,
+      meta: {
+        requiresAuth: true
+      }
     },
     // {
     //   path: "/callback",
@@ -83,29 +118,42 @@ const router = new Router({
     {
       path: "/signals",
       name: "signals",
-      component: Signals
+      component: Signals,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/signals/create",
       name: "signal-create",
-      component: Signal
+      component: Signal,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/signals/:signalId",
       name: "signal",
-      component: Signal
+      component: Signal,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });
 
-// router.beforeEach((to, from, next) => {
-//   // if (to.path === "/callback") {
-//   //   return next();
-//   // }
-
-//   // Specify the current path as the customState parameter, meaning it
-//   // will be returned to the application after auth
-//   auth.login({ target: to.path });
-// });
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.getItem("token")) {
+      next({
+        path: "/login"
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+})
 
 export default router;

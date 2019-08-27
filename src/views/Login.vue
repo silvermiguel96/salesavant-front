@@ -21,7 +21,7 @@
                 </v-toolbar-items>
               </v-toolbar>
               <v-card-text>
-                <v-text-field v-model="userlogin.email" label="Email"></v-text-field>
+                <v-text-field v-model="userlogin.username" label="Email"></v-text-field>
                 <v-text-field
                   v-model="userlogin.password"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
@@ -49,22 +49,40 @@ export default {
   data() {
     return {
       userlogin: {
-        email: "",
+        username: "",
         password: ""
       },
       isAuthenticated: false,
       show1: false
     };
   },
-  methods: {
-    login() {
-      // this.$auth.login();
+   methods: {
+    async login() {
+      const dataUser = this.userlogin;
+      const Body = JSON.stringify(dataUser);
+      console.log("Body", Body);
+      const fecthDetails = {
+        method: "POST",
+        body: Body,
+        headers: new Headers({
+          "Content-Type": "application/json"
+        })
+      };
+      const result = await fetch("http://localhost:4001/auth", fecthDetails)
+        .then(res => res.json())
+        .catch(error => console.error("Error:", error))
+      console.log('token', result)
+
+      if(!!result.access_token){
+        localStorage.setItem("token", result.access_token)
+        this.$router.go("/home")
+      }
     }
   },
   created() {
-    // if (this.$auth.isAuthenticated()) {
-    //   this.$router.push("/home");
-    // }
+    if (!!localStorage.getItem("token")) {
+      this.$router.push("/home");
+    }
   }
 };
 </script>
