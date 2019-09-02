@@ -10,7 +10,7 @@
           Clear all
           <v-icon right>clear_all</v-icon>
         </v-btn>
-        <v-data-table :headers="headers" :items="jobs" class="elevation-1">
+        <v-data-table :headers="headers" :items="jobs" class="elevation-2 mt-2">
           <template v-slot:items="props">
             <td>{{ props.item.jobUid }}</td>
             <td>{{ props.item.type }}</td>
@@ -27,7 +27,7 @@
             </td>
           </template>
           <template v-slot:no-data>
-            <v-btn color="primary" @click="loadJobs">Reload Jobs</v-btn>
+            <v-btn color="primary ma-3" @click="loadJobs">Reload Jobs<v-icon right small>settings_backup_restore</v-icon></v-btn>
           </template>
         </v-data-table>
       </template>
