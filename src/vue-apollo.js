@@ -9,10 +9,10 @@ import {
 Vue.use(VueApollo);
 
 // Name of the localStorage item
-const AUTH_TOKEN = "apollo-token";
+export const AUTH_TOKEN = "apollo-token";
 
 // Http endpoint
-const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || "/graphql";
+const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4001/api";
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||
@@ -29,7 +29,11 @@ const defaultOptions = {
   websocketsOnly: false,
   ssr: false,
   $loadingKey: "loading",
-  //getAuth: () => `Bearer YWxlamFuZHJvQHNhbGVzYXZhbnQuY29tOnF3ZXF3ZQ==`
+  getAuth: () => {
+    // AuthToken
+    let token = localStorage.getItem(AUTH_TOKEN);
+    return `JWT ${token}`;
+  }
 };
 
 // Call this in the Vue app file

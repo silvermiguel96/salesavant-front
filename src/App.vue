@@ -30,6 +30,8 @@
 import MainMenu from "./components/MainMenu.vue";
 import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
 import JobsQueue from "./components/jobsqueue/JobsQueue.vue";
+import { json } from "body-parser";
+import { AUTH_TOKEN } from './vue-apollo';
 
 export default {
   name: "App",
@@ -41,39 +43,18 @@ export default {
   data() {
     return {
       isAuthenticated: false,
-      mockAccount: {
-        username: "1",
-        password: "1"
-      },
       showSearch: false,
       showJobsQueue: false,
       expand: "companies"
     };
   },
-  async created() {
-    try {
-      await this.$auth.renewTokens();
-    } catch (e) {
-      console.log(e);
+  created() {
+    if (!!localStorage.getItem(AUTH_TOKEN)) {
+      this.isAuthenticated = true;
+      console.log('AUTH_TOKEN', AUTH_TOKEN);
     }
   },
   methods: {
-    login() {
-      this.$auth.login();
-    },
-    logout() {
-      this.$auth.logOut();
-    },
-    handleLoginEvent(data) {
-      console.log({ data });
-      console.log("this.$auth.isAuthenticated()", this.$auth.isAuthenticated());
-      if (this.$auth.isAuthenticated()) {
-        this.isAuthenticated = this.$auth.isAuthenticated();
-      } else {
-        this.isAuthenticated = false;
-      }
-      this.profile = data.profile;
-    },
     toggleSearch(data) {
       this.showSearch = data.show;
       this.expand = data.expand || "companies";

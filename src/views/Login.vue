@@ -20,6 +20,16 @@
                   </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
+              <v-card-text>
+                <v-text-field v-model="userlogin.username" label="Email"></v-text-field>
+                <v-text-field
+                  v-model="userlogin.password"
+                  :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                  :type="show1 ? 'text' : 'password'"
+                  label="Password"
+                  @click:append="show1 = !show1"
+                ></v-text-field>
+              </v-card-text>
               <v-card-actions class="ma-2">
                 <v-btn block color="secondary" v-on:click="login()">Login</v-btn>
               </v-card-actions>
@@ -32,20 +42,45 @@
 </template>
 
 <script>
-import authService from "../auth/authService";
-
+// import authService from "../auth/authService";
+import { AUTH_TOKEN } from '../vue-apollo';
 export default {
   name: "login",
   data() {
-    return { isAuthenticated: false };
+    return {
+      userlogin: {
+        username: "",
+        password: ""
+      },
+      isAuthenticated: false,
+      show1: false
+    };
   },
-  methods: {
-    login() {
-      this.$auth.login();
+   methods: {
+    async login() {
+      const dataUser = this.userlogin;
+      const Body = JSON.stringify(dataUser);
+      console.log("Body", Body);
+      const fecthDetails = {
+        method: "POST",
+        body: Body,
+        headers: new Headers({
+          "Content-Type": "application/json"
+        })
+      };
+      const result = await fetch("http://localhost:4001/auth", fecthDetails)
+        .then(res => res.json())
+        .catch(error => console.error("Error:", error))
+      console.log('token', result)
+
+      if(!!result.access_token){
+        localStorage.setItem(AUTH_TOKEN, result.access_token)
+        this.$router.go("/home")
+      }
     }
   },
   created() {
-    if (this.$auth.isAuthenticated()) {
+    if (!!localStorage.getItem(AUTH_TOKEN)) {
       this.$router.push("/home");
     }
   }

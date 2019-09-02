@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/dashboard/Dashboard.vue";
@@ -8,107 +9,152 @@ import Company from "./views/companies/Company.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from "./views/news/News.vue";
 import SingleNews from "./views/news/components/SingleNews.vue"
-//Calibration
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
-import Callback from "./components/Callback";
-import auth from "./auth/authService";
+// import Callback from "./components/Callback";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
+import { AUTH_TOKEN } from "./vue-apollo";
 
 Vue.use(Router);
 
 const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
-  // eslint-disable-next-line no-sparse-arrays
   routes: [
     {
-      path: "/",
+      path: "*",
+      redirect: "/login"
+    },
+    {
+      path: "/login",
       name: "login",
       component: Login
     },
     {
       path: "/home",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/playlists",
       name: "playlists",
-      component: PlayLists
+      component: PlayLists,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/playlists/:playlistId/companies",
       name: "playlist-companies",
-      component: PlayListCompanies
+      component: PlayListCompanies,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/companies",
       name: "companies",
-      component: Companies
+      component: Companies,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/news",
       name: "news",
-      component: News
+      component: News,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/news/:newsId",
       name: "oneNews",
-      component: SingleNews
+      component: SingleNews,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/companies/:companiesUid",
       name: "company",
-      component: Company
+      component: Company,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/playlists/:playlistId/companies/:companiesUid",
       name: "playlist-company",
-      component: Company
+      component: Company,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/advanced/:playlistId",
       name: "advanced",
-      component: Calibration
+      component: Calibration,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/new-companies",
       name: "newcompanies",
-      component: NewCompanies
+      component: NewCompanies,
+      meta: {
+        requiresAuth: true
+      }
     },
-    {
-      path: "/callback",
-      name: "callback",
-      component: Callback
-    },
+    // {
+    //   path: "/callback",
+    //   name: "callback",
+    //   component: Callback
+    // },
     {
       path: "/signals",
       name: "signals",
-      component: Signals
+      component: Signals,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/signals/create",
       name: "signal-create",
-      component: Signal
+      component: Signal,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/signals/:signalId",
       name: "signal",
-      component: Signal
+      component: Signal,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/callback" || auth.isAuthenticated()) {
-    return next();
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.getItem(AUTH_TOKEN)) {
+      next({
+        path: "/login"
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
   }
-
-  // Specify the current path as the customState parameter, meaning it
-  // will be returned to the application after auth
-  auth.login({ target: to.path });
-});
+})
 
 export default router;
