@@ -1,7 +1,7 @@
 <template>
+  <div>   
   <!-- Apollo watched Graphql query -->
-  <v-card-text>
-  <h2>Not categorized</h2>
+  <h2 class="display-1 ma-3">Not categorized</h2>
     <ApolloQuery
       :query="require('./graphql/NewsNotCategorized.gql')"
       :variables="{ companyUid: this.$route.params.companiesUid, first: pagination.rowsPerPage, offset: (pagination.rowsPerPage * pagination.page) - pagination.rowsPerPage, notCategorized: notCategorized}"
@@ -51,7 +51,7 @@
         <div v-else class="no-result apollo">Loading...</div>
       </template>
     </ApolloQuery>
-  </v-card-text>
+  </div>
 </template>
 
 <script>
