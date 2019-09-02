@@ -50,7 +50,7 @@
       <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
     </ul>
 
-    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
+    <v-btn color="primary" dark @click="toggleSearch">search<v-icon right small>search</v-icon></v-btn>
 
     <!-- Apollo watched Graphql query -->
     <template
