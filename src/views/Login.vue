@@ -43,7 +43,7 @@
 
 <script>
 // import authService from "../auth/authService";
-
+import { AUTH_TOKEN } from '../vue-apollo';
 export default {
   name: "login",
   data() {
@@ -74,13 +74,13 @@ export default {
       console.log('token', result)
 
       if(!!result.access_token){
-        localStorage.setItem("token", result.access_token)
+        localStorage.setItem(AUTH_TOKEN, result.access_token)
         this.$router.go("/home")
       }
     }
   },
   created() {
-    if (!!localStorage.getItem("token")) {
+    if (!!localStorage.getItem(AUTH_TOKEN)) {
       this.$router.push("/home");
     }
   }

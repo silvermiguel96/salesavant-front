@@ -31,6 +31,7 @@ import MainMenu from "./components/MainMenu.vue";
 import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
 import JobsQueue from "./components/jobsqueue/JobsQueue.vue";
 import { json } from "body-parser";
+import { AUTH_TOKEN } from './vue-apollo';
 
 export default {
   name: "App",
@@ -48,9 +49,9 @@ export default {
     };
   },
   created() {
-    if (!!localStorage.getItem("token")) {
+    if (!!localStorage.getItem(AUTH_TOKEN)) {
       this.isAuthenticated = true;
-      console.log("token", JSON.stringify(localStorage.getItem("token")));
+      console.log('AUTH_TOKEN', AUTH_TOKEN);
     }
   },
   methods: {

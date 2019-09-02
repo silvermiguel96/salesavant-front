@@ -14,6 +14,7 @@ import Login from "./views/Login.vue";
 // import Callback from "./components/Callback";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
+import { AUTH_TOKEN } from "./vue-apollo";
 
 Vue.use(Router);
 
@@ -144,7 +145,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem(AUTH_TOKEN)) {
       next({
         path: "/login"
       });
