@@ -6,11 +6,6 @@ const proxy = httpProxy.createProxyServer({});
 const environment = process.env.NODE_ENV || "local";
 const history = require("connect-history-api-fallback");
 
-const graphqlOptions = {
-  target: "http://salesavant-1235521355.us-east-1.elb.amazonaws.com",
-  auth: "alejandro@salesavant.com:qweqwe"
-};
-
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 console.log("process.env.VUE", process.env.VUE);
 
@@ -29,7 +24,7 @@ if (environment !== "local") {
   if (environment !== "proxylocal") app.use(requireHTTPS);
   app.get("/jobs/:entityId", (req, res) => {
     delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
+    proxy.web(req, res);
   });
   app.use(express.static("dist"));
   app.use(
@@ -40,32 +35,17 @@ if (environment !== "local") {
   app.use(express.static("dist"));
   app.post("/jobs", (req, res) => {
     delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
+    proxy.web(req, res);
   });
-  app.all("/login", (req, res) => {
-    delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
-  });
-  app.all("/graphql", (req, res) => {
-    delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
-  });
+
 } else if (!!process.env.VUE) {
   app.get("/jobs/:entityId", (req, res) => {
     delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
+    proxy.web(req, res);
   });
   app.post("/jobs", (req, res) => {
     delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
-  });
-  app.all("/login", (req, res) => {
-    delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
-  });
-  app.all("/graphql", (req, res) => {
-    delete req.headers.authorization;
-    proxy.web(req, res, graphqlOptions);
+    proxy.web(req, res);
   });
 } else {
   app.get("/", (req, res) =>
