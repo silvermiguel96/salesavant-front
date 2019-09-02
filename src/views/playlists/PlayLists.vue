@@ -26,7 +26,7 @@
         v-if="this.$route.query.moreThanCompanies"
       >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
     </ul>
-    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
+    <v-btn color="primary" dark @click="toggleSearch">search<v-icon right small>search</v-icon></v-btn>
     <template
       v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
       !!this.$route.query.playlistsSearch || !!this.$route.query.moreThanCompanies || !!this.$route.query.lessThanCompanies"

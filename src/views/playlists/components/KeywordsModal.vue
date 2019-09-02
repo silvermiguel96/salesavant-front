@@ -2,7 +2,8 @@
   <v-layout row>
     <v-dialog v-model="dialog" persistent max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark v-on="on">Get keywords</v-btn>
+        <v-btn color="success" dark v-on="on">Get keywords<v-icon right small>find_replace</v-icon>
+        </v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">Get keywords?</v-card-title>
