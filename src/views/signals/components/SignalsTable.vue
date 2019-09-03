@@ -7,7 +7,7 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      class="elevation-1"
+      class="elevation-1 ma-2"
       :pagination.sync="pagination"
       :rows-per-page-items="pagination.rowsPerPageItems"
       @update:pagination="updatePagination"

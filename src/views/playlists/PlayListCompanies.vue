@@ -49,8 +49,8 @@
           ]"
             divider=">"
           ></v-breadcrumbs>
-          <v-layout align-center justify-start fill-height>
-            <v-flex grow xs4 md2>
+          <v-layout wrap>
+            <v-flex grow xs12 sm3 md2>
               <create-orb-modal 
                 v-if="!jobObs"
                 :loading="isLoading"
@@ -72,7 +72,7 @@
                 @createOrbRefreshJob="createOrbRefreshJob"
               />
             </v-flex>
-            <v-flex grow xs5 md2>
+            <v-flex grow xs12 sm3 md2>
               <key-words-modal
                 v-if="!job"
                 :loading="isLoading"
@@ -95,7 +95,7 @@
                 :canModifySignalName="false"
               />
             </v-flex>
-            <v-flex grow xs md1>
+            <v-flex grow xs12 sm2 md1>
               <playlists-merge :playlist="playlist" />
             </v-flex>
           </v-layout>
