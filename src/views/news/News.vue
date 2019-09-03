@@ -28,8 +28,6 @@
       divider=">"
     ></v-breadcrumbs>
     <h1 class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
-    <ul  class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">
-    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
     <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
       <li
         v-if="this.$route.query.simpleSearch"
