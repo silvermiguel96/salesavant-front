@@ -74,7 +74,7 @@
             <v-card-text>
               <h3 class="subheading font-weight-bold">
                 Url:
-                <v-btn
+                <v-btn flat small
                   class="subheading green"
                   target="_black"
                   :href="`${ data.newsArticle.url}`"

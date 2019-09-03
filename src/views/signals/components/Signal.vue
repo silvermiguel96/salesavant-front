@@ -23,9 +23,9 @@
       ></v-breadcrumbs>
       <v-form @submit.prevent>
         <v-container>
-          <v-subheader>Signal details</v-subheader>
-          <v-layout>
-            <v-flex xs12 md4>
+          <v-subheader class="display-1">Signal details</v-subheader>
+          <v-layout row wrap>
+            <v-flex xs12 sm6 md3>
               <v-text-field
                 v-model="signal.name"
                 label="Name"
@@ -33,13 +33,13 @@
                 :disabled="!canModifySignalName"
               ></v-text-field>
             </v-flex>
-            <v-flex xs12 md4>
+            <v-flex xs12 sm6 md3>
               <v-text-field v-model="signal.description" label="Description" required></v-text-field>
             </v-flex>
-            <v-flex xs12 md4>
+            <v-flex xs12 sm6 md3>
               <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
             </v-flex>
-            <v-flex xs12 md4>
+            <v-flex xs12 sm6 md3>
               <v-text-field v-model="signal.group" label="Group" required></v-text-field>
             </v-flex>
           </v-layout>
@@ -48,7 +48,7 @@
               <v-btn
                 v-if="canModifySignalName"
                 type="submit"
-                color="primary"
+                color="success"
                 @click="save"
               >{{!!signal.id ? "Update" : "Create"}}</v-btn>
               <v-btn
@@ -63,7 +63,7 @@
       </v-form>
     </v-card>
     <v-card v-if="canModifySignalName">
-      <v-card-title>Related companies</v-card-title>
+      <v-card-title class="headline">Related companies</v-card-title>
       <v-container>
         <template v-if="!!this.$route.params.signalId && this.$route.params.signalId!=='create' ">
           <ApolloQuery

@@ -49,8 +49,8 @@
           ]"
             divider=">"
           ></v-breadcrumbs>
-          <v-layout align-center justify-start row fill-height>
-            <v-flex xs3 md2>
+          <v-layout wrap>
+            <v-flex grow xs12 sm3 md2>
               <create-orb-modal 
                 v-if="!jobObs"
                 :loading="isLoading"
@@ -61,7 +61,7 @@
                 v-if="!!jobObs"
                 @click="showJobModalOrb = !showJobModalOrb"
                 color="purple"
-              >View results</v-btn>
+              >View results<v-icon right small>check</v-icon></v-btn>
               <orb-job-modal
                 v-if="!!showJobModalOrb"
                 :job="jobObs"
@@ -72,7 +72,7 @@
                 @createOrbRefreshJob="createOrbRefreshJob"
               />
             </v-flex>
-            <v-flex xs3 md2>
+            <v-flex grow xs12 sm3 md2>
               <key-words-modal
                 v-if="!job"
                 :loading="isLoading"
@@ -83,7 +83,7 @@
                 v-if="!!job"
                 @click="showJobModal = !showJobModal"
                 color="purple"
-              >View keywords</v-btn>
+              >View keywords<v-icon right small>check</v-icon></v-btn>
               <job-modal
                 v-if="!!showJobModal"
                 :job="job"
@@ -95,7 +95,7 @@
                 :canModifySignalName="false"
               />
             </v-flex>
-            <v-flex xs1 md1>
+            <v-flex grow xs12 sm2 md1>
               <playlists-merge :playlist="playlist" />
             </v-flex>
           </v-layout>
@@ -112,7 +112,7 @@
               v-if="data.companies"
               :items="data.companies"
               @updatePagination="updatePagination"
-              class="result apollo"
+              class="result apollo ma-2"
             ></companies-table>
           </div>
 

@@ -1,11 +1,12 @@
-<template>
+<template >
   <v-data-table
+  
     :headers="headers"
     :items="items"
     :loading="!items.length"
     :pagination.sync="pagination"
     :rows-per-page-items="pagination.rowsPerPageItems"
-    class="elevation-1"
+    class="elevation-1 ma-2"
     @update:pagination="updatePagination"
     :total-items="totalItems"
   >

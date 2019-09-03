@@ -67,7 +67,7 @@
       <li v-if="this.$route.query.signalGroup">Signal group name: {{this.$route.query.signalGroup}}</li>
     </ul>
     <div class="calltoactions">
-      <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
+      <v-btn color="primary" dark @click="toggleSearch">search<v-icon right small>search</v-icon></v-btn>
       <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
       <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
     </div>
@@ -92,7 +92,7 @@
             <companies-table
               v-if="data.companies"
               :items="data.companies"
-              class="result apollo"
+              class="result apollo "
               @updatePagination="updatePagination"
             ></companies-table>
           </div>
@@ -140,7 +140,7 @@
             <companies-table
               v-if="data.companies"
               :items="data.companies"
-              class="result apollo"
+              class="result apollo "
               @updatePagination="updatePagination"
             ></companies-table>
           </div>

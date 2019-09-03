@@ -7,6 +7,7 @@
     <v-card-title>
       <h1 class="display-1">Playlists</h1>
     </v-card-title>
+    <v-divider></v-divider>
     <v-card-text>
       <v-layout row>
         <v-flex md9 lg10>

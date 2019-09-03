@@ -3,8 +3,9 @@
     <v-card-title>
       <h1 class="display-1">News</h1>
     </v-card-title>
+    <v-divider></v-divider>
     <v-card-text>
-      <h2>Categorized</h2>
+      <h2 class="display-1 ma-3">Categorized</h2>
       <v-data-table
         :headers="headers"
         :items="companyNews"

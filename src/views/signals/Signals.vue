@@ -1,5 +1,5 @@
 <template>
-  <div class="apollo-example">
+  <div class="apollo-example mx-4">
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>
@@ -40,8 +40,8 @@
       <li v-if="this.$route.query.category">Company category: {{this.$route.query.category}}</li>
     </ul>
 
-    <v-btn color="primary" dark @click="toggleSearch">search</v-btn>
-    <v-btn color="success" dark to="/signals/create">Create new signal</v-btn>
+    <v-btn small color="primary" dark @click="toggleSearch"><v-icon small>search</v-icon>search</v-btn>
+    <v-btn small to="/signals/create"><v-icon >add</v-icon>new signal</v-btn>
 
     <template
       v-if="!!this.$route.query &&

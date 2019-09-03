@@ -15,7 +15,11 @@
         @updatepagination="updatePagination"
       >
         <template v-slot:items="props">
-          <router-link :to="`/signals/${props.item.signal.id}`">{{ props.item.signal.name || "--"}}</router-link>
+          <td>
+            <router-link
+              :to="`/signals/${props.item.signal.id}`"
+            >{{ props.item.signal.name || "--"}}</router-link>
+          </td>
           <td>{{ props.item.signal.description || "--"}}</td>
           <td>{{ props.item.signal.group || "--"}}</td>
           <td>{{ props.item.signal.category || "--"}}</td>

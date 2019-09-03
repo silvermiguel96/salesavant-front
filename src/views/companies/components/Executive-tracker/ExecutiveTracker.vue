@@ -3,6 +3,7 @@
     <v-card-title>
        <h2 class="headline"> Contacts</h2>
     </v-card-title>
+    <v-divider></v-divider>
     <v-card-text>
       <v-data-table
         :headers="headers"

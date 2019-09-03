@@ -2,7 +2,7 @@
   <v-layout row>
     <v-dialog v-model="dialogOrb" persistent max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark v-on="on">ORB Refresh</v-btn>
+        <v-btn color="success" dark v-on="on">ORB Refresh<v-icon right small>autorenew</v-icon></v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">Get orb?</v-card-title>
