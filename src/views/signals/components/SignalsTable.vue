@@ -7,7 +7,7 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      class="elevation-1 ma-2"
+      class="elevation-1"
       :pagination.sync="pagination"
       :rows-per-page-items="pagination.rowsPerPageItems"
       @update:pagination="updatePagination"
@@ -81,9 +81,11 @@
         <td>{{props.item.modificationTime || ""}}</td>
         <td>
           <router-link v-if="props.item.id" :to="`/signals/${props.item.id}`">
-            <v-icon>edit</v-icon>
+            <v-icon size="20">edit</v-icon>
           </router-link>
-          <v-icon @click="deleteSignal(props.item.id)">delete</v-icon>
+        </td>
+        <td>
+          <v-icon @click="deleteSignal(props.item.id)" color="red lighten-2" size="20">delete</v-icon>
         </td>
       </template>
     </v-data-table>
@@ -122,7 +124,8 @@ export default {
         { text: "Default Score", value: "defaultScore", align: "left" },
         { text: "Creation Time", value: "creationTime", align: "left" },
         { text: "Modification Time", value: "modificationTime", align: "left" },
-        { text: "-", value: "icon", align: "left", sortable: false }
+        { text: "Edit", value: "icon", align: "left", sortable: false },
+        { text: "Delete", value: "icon", align: "left", sortable: false },
       ],
       snack: false,
       snackColor: "",
