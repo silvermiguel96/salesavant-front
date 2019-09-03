@@ -8,13 +8,13 @@
       <v-container grid-list-xs text-xs-center>
         <v-layout row wrap>
           <v-flex xs6>
-            <v-text-field name="name" v-model="company.name" label="name" @input="changeData"></v-text-field>
+            <v-text-field name="name" v-model="company.name" label="Name" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
               name="country"
               v-model="company.country"
-              label="country"
+              label="Country"
               @input="changeData"
             ></v-text-field>
           </v-flex>
@@ -27,24 +27,24 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="city" v-model="company.city" label="city" @input="changeData"></v-text-field>
+            <v-text-field name="city" v-model="company.city" label="City" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="region" v-model="company.region" label="region" @input="changeData"></v-text-field>
+            <v-text-field name="region" v-model="company.region" label="Region" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="state" v-model="company.state" label="state" @input="changeData"></v-text-field>
+            <v-text-field name="state" v-model="company.state" label="State" @input="changeData"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
               name="website"
               v-model="company.website"
-              label="website keywords"
+              label="Website eywords"
               @input="changeData"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="status" v-model="company.status" label="status" @input="changeData"></v-text-field>
+            <v-text-field name="status" v-model="company.status" label="Status" @input="changeData"></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -96,9 +96,9 @@
             <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
           </v-flex>
           <v-flex xs6>
-            <v-btn @click="search" type="submit" color="primary">
-              <v-icon>search</v-icon>
+            <v-btn class="mt-2" @click="search" type="submit" color="primary">
               {{" Companies Search"}}
+              <v-icon small right>search</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>

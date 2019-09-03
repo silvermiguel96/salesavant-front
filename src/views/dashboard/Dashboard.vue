@@ -2,9 +2,7 @@
   <v-card class="ma-3">
     <!-- TODO: dejar solamente 25, 50, 100 en las tablas que hay en este componente -->
     <v-card-title>
-      <div class="headline">Dashboard</div>
-      <v-spacer></v-spacer>
-      <div class="headline">Dashboard</div>
+      <div class="display-1">Dashboard</div>
     </v-card-title>
     <v-layout>
       <v-flex md4>
@@ -23,7 +21,7 @@
           </v-sheet>
         </v-card-text>
         <v-card-text>
-          <div class="headline font-weight-thin">Mgmt Changes</div>
+          <div class="headline font-weight-thin">Mgmt changes</div>
         </v-card-text>
       </v-flex>
       <v-flex md4>
@@ -42,7 +40,7 @@
           </v-sheet>
         </v-card-text>
         <v-card-text>
-          <div class="headline font-weight-thin">Funding Event</div>
+          <div class="headline font-weight-thin">Funding event</div>
         </v-card-text>
       </v-flex>
       <v-flex md4>

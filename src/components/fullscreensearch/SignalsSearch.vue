@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-subheader>Signals Search</v-subheader>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>
@@ -38,8 +37,8 @@
         <v-layout row wrap>
           <v-flex>
             <v-btn @click="search" type="submit" color="primary">
-              <v-icon>search</v-icon>
               {{"Search signals"}}
+              <v-icon small right>search</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>

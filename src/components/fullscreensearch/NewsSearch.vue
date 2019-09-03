@@ -1,6 +1,5 @@
 <template>
   <v-list three-line subheader>
-    <v-subheader>News Search</v-subheader>
     <v-list-tile avatar>
       <v-list-tile-content>
         <v-list-tile-sub-title>
@@ -11,14 +10,14 @@
                   <v-text-field
                     name="news"
                     v-model="news"
-                    label="search in news"
+                    label="Search in news"
                     @input="changeData"
                   ></v-text-field>
                 </v-flex>
                 <v-flex>
                   <v-btn @click="search" type="submit" color="primary">
-                    <v-icon>search</v-icon>
                     {{" Do a news Search"}}
+                    <v-icon small right>search</v-icon>
                   </v-btn>
                 </v-flex>
               </v-layout>

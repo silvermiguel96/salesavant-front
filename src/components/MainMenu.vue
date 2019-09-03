@@ -21,12 +21,7 @@ export default {
         { icon: "find_replace", text: "Playlists", router: "/playlists" },
         { icon: "assessment", text: "Companies", router: "/companies" },
         { icon: "assessment", text: "News", router: "/news" },
-        /* {
-          icon: "developer_board",
-          text: "New Companies",
-          router: "/new-companies"
-        }, */
-        { icon: "search", text: "Search", click: this.toggleSearch },
+        // { icon: "search", text: "Search", click: this.toggleSearch },
         { icon: "search", text: "Jobs Queue", click: this.toggleJobsQueuve }
       ]
     };
