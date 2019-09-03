@@ -18,16 +18,17 @@
       <td class="wrapping-td">
         <long-paragraph :text="props.item.description"></long-paragraph>
       </td>
-      <td>{{ props.item.city }}</td>
-      <td>{{ props.item.state }}</td>
-      <td>{{ props.item.country }}</td>
-      <td>{{ props.item.numEmployees }}</td>
-      <td>{{ props.item.momentum }}</td>
+      <td>{{ props.item.city || "--"}}</td>
+      <td>{{ props.item.state  || "--"}}</td>
+      <td>{{ props.item.country || "--"}}</td>
+      <td>{{ props.item.numEmployees || "0"}}</td>
+      <td>{{ props.item.momentum || "--"}}</td>
       <td class="wrapping-td">
-        <long-paragraph :text="props.item.website"></long-paragraph>
+        <long-paragraph  v-if="props.item.website" :text="props.item.website"></long-paragraph>
+        <p v-else>{{"--"}}</p>
       </td>
-      <td>{{ props.item.url }}</td>
-      <td>{{ props.item.vertical }}</td>
+      <td>{{ props.item.url || "--"}}</td>
+      <td>{{ props.item.vertical || "--" }}</td>
     </template>
   </v-data-table>
 </template>

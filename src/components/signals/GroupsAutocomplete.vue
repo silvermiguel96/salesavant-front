@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       loading: false,
-      search: null,
+      search: "",
       select: null,
       signalsGroupAggs: []
     };

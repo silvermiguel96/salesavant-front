@@ -20,12 +20,13 @@
 export default {
   data () {
     return {
+      contact: [],
       headers: [
-        { text: 'Company' },
-        { text: 'Name' },
-        { text: 'Title' },
-        { text: 'Bio' },
-        { text: 'Email'}
+        { text: 'Company', value: 'Company' },
+        { text: 'Name', value: 'Name' },
+        { text: 'Title', value: 'Title' },
+        { text: 'Bio', value: 'Bio' },
+        { text: 'Email', value: 'Email'}
       ]
     }
   }

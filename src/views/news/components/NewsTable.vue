@@ -14,13 +14,13 @@
         <a
           :key="`news-link${props.item.id || ''}`"
           :href="`news/${props.item.id || ''}`"
-        >{{ trimText(_get(props, "item.title", ""))}}</a>
+        >{{ trimText(_get(props, "item.title", "--"))}}</a>
       </td>
       <td>
         <a
           :key="`company-link${props.item.id}`"
           :href="`companies/${props.item.company.uid || ''}`"
-        >{{ trimText(_get(props, "item.company.name", ""))}}</a>
+        >{{ trimText(_get(props, "item.company.name", "--"))}}</a>
       </td>
       <td>
         <a
@@ -29,9 +29,9 @@
           target="_blank"
         >visit source</a>
       </td>
-      <td>{{ props.item.category || "" }}</td>
-      <td>{{ props.item.publishDate || ""}}</td>
-      <td>{{ props.item.creationTime || "" }}</td>
+      <td>{{ props.item.category || "--" }}</td>
+      <td>{{ props.item.publishDate || "--"}}</td>
+      <td>{{ props.item.creationTime || "--" }}</td>
     </template>
   </v-data-table>
 </template>
@@ -71,9 +71,6 @@ export default {
       ]
     };
   },
-  /* apollo: {
-    playlists: PLAYLISTS
-  } */
   methods: {
     updatePagination(dataFromEvent = {}) {
       this.$emit("updatePagination", { dataFromEvent });

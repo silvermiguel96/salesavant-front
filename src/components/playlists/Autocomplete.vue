@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       loading: false,
-      search: null,
+      search: "",
       select: { uid: "", name: "" },
       playlists: []
     };

@@ -48,7 +48,7 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      search: null,
+      search: "",
       autoUpdate: true,
       selectedPlaylists: [],
       isUpdating: false,

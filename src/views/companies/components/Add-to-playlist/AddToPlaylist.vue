@@ -12,7 +12,6 @@
       <v-layout row>
         <v-flex md9 lg10>
           <playlists-autocomplete
-            :placeholder="'Add signal'"
             @change="onPlaylistAutoCompleteChange"
             @onSearch="onSignalAutoCompleteSearch"
           />
@@ -120,7 +119,7 @@ export default {
       `,
       variables() {
         return {
-          companyUid: this.$route.params.companiesUid,
+          companyUid: this.$route.params.companiesUid | "",
           first: this.pagination.rowsPerPage,
           offset:
             this.pagination.rowsPerPage * this.pagination.page -

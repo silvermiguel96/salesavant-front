@@ -78,9 +78,6 @@ export default {
       this.$emit("updatePagination", { dataFromEvent });
     }
   },
-  /* apollo: {
-    playlists: PLAYLISTS
-  } */
   props: {
     items: Array,
     props: []

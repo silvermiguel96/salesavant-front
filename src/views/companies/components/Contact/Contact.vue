@@ -97,15 +97,16 @@ export default {
   data () {
     return {
       search: '',
+      contact: [],
       headers: [
-        { text: 'Connextions', },
-        { text: 'First', },
-        { text: 'Last' },
-        { text: 'Title' },
-        { text: 'Email'},
-        { text: 'Find' },
-        { text: 'Department' },
-        { text: 'Linkedin' }
+        { text: 'Connextions', value: 'Connextions'},
+        { text: 'First', value: 'First' },
+        { text: 'Last', value: 'Last' },
+        { text: 'Title', value: 'Title'},
+        { text: 'Email', value: 'Email'},
+        { text: 'Find', value: 'Find' },
+        { text: 'Department', value: 'Department' },
+        { text: 'Linkedin', value: 'Linkedin' }
       ]
     }
   }

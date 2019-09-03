@@ -138,6 +138,7 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
+      name: '',
       descending: false,
       page: 1,
       rowsPerPage: 25,

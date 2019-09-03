@@ -74,9 +74,11 @@
     </v-card-text>
     <!-- List singal -->
     <v-card-text>
-      <v-data-table :headers="Hkeywords" hide-actions></v-data-table>
-      <template>
-        <td></td>
+      <v-data-table 
+      :items="keywords"       
+      :headers="Hkeywords" hide-actions></v-data-table>
+      <template v-slot:items="props">
+        <td>{{  props.item }}</td>
       </template>
     </v-card-text>
   </v-card>
@@ -96,6 +98,7 @@ export default {
       snack: false,
       snackColor: "",
       snackText: "",
+      keywords: [],
       headersTable1: [
         {
           text: "Group",

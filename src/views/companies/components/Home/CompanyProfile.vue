@@ -65,9 +65,15 @@
       </h3>
     </v-card-text>
     <v-card-text>
+      <td></td>
       <h3 class="subheading font-weight-bold">
         Website:
-        <a v-if="company.url" :href="company.url" class="subheading">{{ company.url }}</a>
+        <a
+          v-if="company.url"
+          :key="`news-external-link${company.url || ''}`"
+          :href="httpCompany"
+          target="_blank"
+        >{{ company.url }}</a>
         <span v-else>--</span>
       </h3>
     </v-card-text>
@@ -107,16 +113,19 @@
         <span class="subheading">{{ company.status || '--' }}</span>
       </h3>
     </v-card-text>
-    <v-card-text >
+    <v-card-text>
       <h3 class="subheading font-weight-bold">
         NAICS code :
         <span class="subheading" v-if="company.naics">{{ company.naics.code || '--' }}</span>
       </h3>
     </v-card-text>
-    <v-card-text  >
+    <v-card-text>
       <h3 class="subheading font-weight-bold">
         NAICS description :
-        <span class="subheading" v-if="company.naics">{{ company.naics.description || '--' }}</span>
+        <span
+          class="subheading"
+          v-if="company.naics"
+        >{{ company.naics.description || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
@@ -133,8 +142,14 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      company: null
+      company: null,
+
     };
+  },
+  computed: {
+    httpCompany: function () {
+      return this.company.url.startsWith("http") ? this.company.url :  `http://${this.company.url}`;
+    },
   },
   apollo: {
     company: {
