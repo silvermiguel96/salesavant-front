@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-subheader>Signals Search</v-subheader>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn flat @click="snack = false">Close</v-btn>

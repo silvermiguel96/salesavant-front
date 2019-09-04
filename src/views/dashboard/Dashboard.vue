@@ -1,7 +1,7 @@
 <template>
   <v-card class="ma-3">
     <v-card-title>
-      <div class="headline">Dashboard</div>
+      <div class="display-1">Dashboard</div>
     </v-card-title>
     <v-layout wrap>
       <v-flex xs12 sm6 md3 lg3>
@@ -20,7 +20,7 @@
           </v-sheet>
         </v-card-text>
         <v-card-text>
-          <div class="headline font-weight-thin">Mgmt Changes</div>
+          <div class="headline font-weight-thin">Mgmt changes</div>
         </v-card-text>
       </v-flex>
       <v-flex xs12 sm6 md3 lg3>
@@ -39,7 +39,7 @@
           </v-sheet>
         </v-card-text>
         <v-card-text>
-          <div class="headline font-weight-thin">Funding Event</div>
+          <div class="headline font-weight-thin">Funding event</div>
         </v-card-text>
       </v-flex>
       <v-flex xs12 sm6 md3 lg3>

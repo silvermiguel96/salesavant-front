@@ -1,6 +1,5 @@
 <template>
   <v-list three-line subheader>
-    <v-subheader>News Search</v-subheader>
     <v-list-tile avatar>
       <v-list-tile-content>
         <v-list-tile-sub-title>
@@ -11,7 +10,7 @@
                   <v-text-field
                     name="news"
                     v-model="news"
-                    label="search in news"
+                    label="Search in news"
                     @input="changeData"
                   ></v-text-field>
                 </v-flex>

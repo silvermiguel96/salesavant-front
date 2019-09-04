@@ -2,7 +2,7 @@
   <v-layout row justify-center>
     <v-dialog
       v-model="show"
-      max-width="500"
+      max-width="530"
       hide-overlay
       transition="dialog-bottom-transition"
       persistent
@@ -14,13 +14,6 @@
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn @click="search" color="primary">
-              <v-icon>search</v-icon>
-              {{" Search"}}
-            </v-btn>
-          </v-toolbar-items>
         </v-toolbar>
         <v-expansion-panel>
           <v-expansion-panel-content :value="expand==='companies'">
