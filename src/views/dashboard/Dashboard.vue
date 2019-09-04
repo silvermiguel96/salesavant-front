@@ -6,8 +6,8 @@
       <v-spacer></v-spacer>
       <div class="headline">Dashboard</div>
     </v-card-title>
-    <v-layout>
-      <v-flex md4>
+    <v-layout wrap>
+      <v-flex xs12 sm6 md3 lg3>
         <v-card-text>
           <v-sheet color="light-blue darken-2">
             <v-sparkline
@@ -26,7 +26,7 @@
           <div class="headline font-weight-thin">Mgmt Changes</div>
         </v-card-text>
       </v-flex>
-      <v-flex md4>
+      <v-flex xs12 sm6 md3 lg3>
         <v-card-text>
           <v-sheet color="blue lighten-2">
             <v-sparkline
@@ -45,7 +45,7 @@
           <div class="headline font-weight-thin">Funding Event</div>
         </v-card-text>
       </v-flex>
-      <v-flex md4>
+      <v-flex xs12 sm6 md3 lg3>
         <v-card-text>
           <v-sheet color="amber lighten-2">
             <v-sparkline
@@ -64,7 +64,7 @@
           <div class="headline font-weight-thin">Acquisitions</div>
         </v-card-text>
       </v-flex>
-      <v-flex md4>
+      <v-flex xs12 sm6 md3 lg3>
         <v-card-text>
           <v-sheet color="deep-orange lighten-2">
             <v-sparkline

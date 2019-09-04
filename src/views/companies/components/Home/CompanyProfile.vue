@@ -80,7 +80,7 @@
     <v-card-text>
       <h3 class="subheading font-weight-bold">
         More key words:
-        <v-btn color="info" :disabled="true">Analyze website</v-btn>
+        <v-btn small color="info" :disabled="true">Analyze website</v-btn>
       </h3>
     </v-card-text>
     <v-card-text>

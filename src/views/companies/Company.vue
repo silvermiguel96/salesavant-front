@@ -1,13 +1,14 @@
 <template>
-  <ApolloQuery
-    :query="$route.params.playlistId ? require('./graphql/CompanyWithPlayList.gql') : require('./graphql/CompanySelected.gql')"
-    :variables="{ company: $route.params.companiesUid, playlist: $route.params.playlistId || '' }"
-  >
-    <template slot-scope="{ result: { loading, error, data } }">
-      <div class="apollo-example">
-        <v-breadcrumbs
-          v-if="data && data.company && data.playlist"
-          :items="[
+  <v-container fluid>
+    <ApolloQuery
+      :query="$route.params.playlistId ? require('./graphql/CompanyWithPlayList.gql') : require('./graphql/CompanySelected.gql')"
+      :variables="{ company: $route.params.companiesUid, playlist: $route.params.playlistId || '' }"
+    >
+      <template slot-scope="{ result: { loading, error, data } }">
+        <div class="apollo-example">
+          <v-breadcrumbs
+            v-if="data && data.company && data.playlist"
+            :items="[
             {
               text: 'Playlists',
               disabled: false,
@@ -28,11 +29,11 @@
               disable: true
             }
           ]"
-          divider=">"
-        ></v-breadcrumbs>
-        <v-breadcrumbs
-          v-else-if="data && data.company"
-          :items="[
+            divider=">"
+          ></v-breadcrumbs>
+          <v-breadcrumbs
+            v-else-if="data && data.company"
+            :items="[
             {
               text: 'Companies',
               disabled: false,
@@ -43,11 +44,11 @@
               disable: true
             }
           ]"
-          divider=">"
-        ></v-breadcrumbs>
-        <v-breadcrumbs
-          v-else
-          :items="[
+            divider=">"
+          ></v-breadcrumbs>
+          <v-breadcrumbs
+            v-else
+            :items="[
             {
               text: 'Companies',
               disabled: false,
@@ -58,69 +59,70 @@
               disable: true
             }
           ]"
-        ></v-breadcrumbs>
-      </div>
-      <!-- Loading -->
-      <div v-if="loading" class="loading apollo">Loading...</div>
+          ></v-breadcrumbs>
+        </div>
+        <!-- Loading -->
+        <div v-if="loading" class="loading apollo">Loading...</div>
 
-      <!-- Error -->
-      <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+        <!-- Error -->
+        <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-      <!-- Result -->
-      <div v-else-if="data" class="result apollo">
-        <!-- {{ JSON.stringify(data.company) }} -->
-        <v-tabs grow color="grey lighten-5">
-          <!-- Tab Home -->
-          <v-tab>Home</v-tab>
-          <v-tab-item lazy>
-            <v-layout row wrap justify-space-around class="mt-3">
-              <v-flex md5>
-                <company-profile />
-              </v-flex>
-              <v-flex md6>
-                <custom-sales-signals />
-              </v-flex>
-            </v-layout>
-          </v-tab-item>
-          <!-- Tab new signals -->
-          <!-- TODO: dividir news signals en una pestaña NEWS y otra SIGNALS -->
-          <!-- TODOLISTO: todos los tabs deben ser lazy -->
-          <v-tab>News</v-tab>
-          <v-tab-item lazy>
-            <news />
-          </v-tab-item>
-          <v-tab>Signals</v-tab>
-          <v-tab-item lazy>
-            <signals />
-          </v-tab-item>
-          <!-- Tab contact -->
-          <v-tab>Contact</v-tab>
-          <v-tab-item lazy>
-            <contact></contact>
-          </v-tab-item>
-          <!-- Executive Tracker -->
-          <v-tab>Executive tracker</v-tab>
-          <v-tab-item lazy>
-            <executive-tracker></executive-tracker>
-          </v-tab-item>
-          <!-- Tab Analytics -->
-          <v-tab>Analytics</v-tab>
-          <v-tab-item lazy>
-            <analytics></analytics>
-          </v-tab-item>
-          <!-- Tab add to playlist -->
-          <v-tab>Add to playlist</v-tab>
-          <!-- {{ JSON.stringify(data.company.playlists)}} -->
-          <v-tab-item lazy>
-            <add-to-playlist></add-to-playlist>
-          </v-tab-item>
-        </v-tabs>
-      </div>
+        <!-- Result -->
+        <div v-else-if="data" class="result apollo">
+          <!-- {{ JSON.stringify(data.company) }} -->
+          <v-tabs grow color="grey lighten-5">
+            <!-- Tab Home -->
+            <v-tab>Home</v-tab>
+            <v-tab-item lazy>
+                <v-layout row wrap justify-space-around class="mt-3">
+                  <v-flex md5>
+                    <company-profile />
+                  </v-flex>
+                  <v-flex md6>
+                    <custom-sales-signals />
+                  </v-flex>
+                </v-layout>
+            </v-tab-item>
+            <!-- Tab new signals -->
+            <!-- TODO: dividir news signals en una pestaña NEWS y otra SIGNALS -->
+            <!-- TODOLISTO: todos los tabs deben ser lazy -->
+            <v-tab>News</v-tab>
+            <v-tab-item lazy>
+              <news />
+            </v-tab-item>
+            <v-tab>Signals</v-tab>
+            <v-tab-item lazy>
+              <signals />
+            </v-tab-item>
+            <!-- Tab contact -->
+            <v-tab>Contact</v-tab>
+            <v-tab-item lazy>
+              <contact></contact>
+            </v-tab-item>
+            <!-- Executive Tracker -->
+            <v-tab>Executive tracker</v-tab>
+            <v-tab-item lazy>
+              <executive-tracker></executive-tracker>
+            </v-tab-item>
+            <!-- Tab Analytics -->
+            <v-tab>Analytics</v-tab>
+            <v-tab-item lazy>
+              <analytics></analytics>
+            </v-tab-item>
+            <!-- Tab add to playlist -->
+            <v-tab>Add to playlist</v-tab>
+            <!-- {{ JSON.stringify(data.company.playlists)}} -->
+            <v-tab-item lazy>
+              <add-to-playlist></add-to-playlist>
+            </v-tab-item>
+          </v-tabs>
+        </div>
 
-      <!-- No result  -->
-      <div v-else class="no-result apollo">Loading...</div>
-    </template>
-  </ApolloQuery>
+        <!-- No result  -->
+        <div v-else class="no-result apollo">Loading...</div>
+      </template>
+    </ApolloQuery>
+  </v-container>
 </template>
 
 <script>

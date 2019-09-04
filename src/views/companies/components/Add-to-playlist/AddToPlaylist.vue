@@ -16,9 +16,9 @@
             @onSearch="onSignalAutoCompleteSearch"
           />
         </v-flex>
-        <v-flex sm3 lg2>
-          <v-btn @click="addPlaylistToCompany" :disabled="!playlistUid && !currentPlaylistSearch">
-            <v-icon left>add</v-icon>Add
+        <v-flex d-flex align-center sm3 lg2>
+          <v-btn @click="addPlaylistToCompany"  small :disabled="!playlistUid && !currentPlaylistSearch">
+            <v-icon small >add</v-icon>Add
           </v-btn>
         </v-flex>
       </v-layout>
@@ -38,7 +38,7 @@
             <router-link :to="`/playlists/${props.item.uid}/companies`">{{ props.item.name || "--"}}</router-link>
           </td>
           <td>
-            <v-icon @click="deleteCompanyPlaylist(props.item.uid)">delete</v-icon>
+            <v-icon @click="deleteCompanyPlaylist(props.item.uid)" color="red lighten-2" size="20">delete</v-icon>
           </td>
         </template>
       </v-data-table>
@@ -72,7 +72,7 @@ export default {
       totalItems: 10000000,
       headers: [
         { text: "Name", value: "name" },
-        { text: "Action", value: "action" }
+        { text: "Delete", value: "action" }
       ]
     };
   },
