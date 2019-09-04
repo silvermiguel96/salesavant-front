@@ -1,9 +1,6 @@
 <template>
   <v-card class="ma-3">
-    <!-- TODO: dejar solamente 25, 50, 100 en las tablas que hay en este componente -->
     <v-card-title>
-      <div class="headline">Dashboard</div>
-      <v-spacer></v-spacer>
       <div class="headline">Dashboard</div>
     </v-card-title>
     <v-layout wrap>

@@ -80,11 +80,6 @@ const router = new Router({
       }
     },
     {
-      path: "/news",
-      name: "news",
-      component: News
-    },
-    {
       path: "/companies/:companiesUid",
       name: "company",
       component: Company,

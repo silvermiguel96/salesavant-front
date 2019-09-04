@@ -10,9 +10,9 @@
         <v-btn v-else flat :to="link.router">{{link.text}}</v-btn>
       </v-toolbar-items>
       <v-toolbar-items>
-        <v-btn flat color="white">
+        <v-btn flat color="white" @click="this.exitApp">
           <span>Sign Out</span>
-          <v-icon right>exit_to_app</v-icon>
+          <v-icon right >exit_to_app</v-icon>
         </v-btn>
       </v-toolbar-items>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
@@ -37,6 +37,8 @@
   </nav>
 </template>
 <script>
+import { AUTH_TOKEN } from '../vue-apollo';
+
 export default {
   data() {
     return {
@@ -50,11 +52,6 @@ export default {
         },
         { icon: "business", text: "Companies", router: "/companies", click: this.onCompanies },
         { icon: "assessment", text: "News", router: "/news", click: this.onNews },
-        /* {
-          icon: "developer_board",
-          text: "New Companies",
-          router: "/new-companies"
-        }, */
         { icon: "search", text: "Search", click: this.toggleSearch },
         { icon: "work", text: "Jobs Queue", click: this.toggleJobsQueuve }
       ]
@@ -82,6 +79,10 @@ export default {
     },
     onNews() {
       this.$router.push("/news")
+    },
+    exitApp() {
+      localStorage.removeItem(AUTH_TOKEN);
+       this.$router.go("/login")
     }
   }
 };
