@@ -15,10 +15,10 @@
                     @input="changeData"
                   ></v-text-field>
                 </v-flex>
-                <v-flex>
-                  <v-btn @click="search" type="submit" color="primary">
-                    <v-icon>search</v-icon>
-                    {{" Do a news Search"}}
+                <v-flex d-flex>
+                  <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
+                    <v-icon small>search</v-icon>
+                    {{"news search"}}
                   </v-btn>
                 </v-flex>
               </v-layout>

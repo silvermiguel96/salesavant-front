@@ -37,8 +37,8 @@
         </v-layout>
         <v-layout row wrap>
           <v-flex>
-            <v-btn @click="search" type="submit" color="primary">
-              <v-icon>search</v-icon>
+            <v-btn @click="search" class="text-capitalize" small type="submit" color="primary">
+              <v-icon small>search</v-icon>
               {{"Search playlists"}}
             </v-btn>
           </v-flex>
