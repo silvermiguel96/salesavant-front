@@ -1,12 +1,13 @@
 <template>
-  <div class="apollo-example mx-4">
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn flat @click="snack = false">Close</v-btn>
-    </v-snackbar>
-    <v-breadcrumbs
-      v-if="!!this.$route.query && !!this.$route.query.searchType"
-      :items="[
+  <v-container fluid>
+    <div class="apollo-example">
+      <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
+        {{ snackText }}
+        <v-btn flat @click="snack = false">Close</v-btn>
+      </v-snackbar>
+      <v-breadcrumbs
+        v-if="!!this.$route.query && !!this.$route.query.searchType"
+        :items="[
         {
           text: 'Signals',
           disabled: false,
@@ -18,104 +19,109 @@
           href: '/companies'
         }
       ]"
-      divider=">"
-    ></v-breadcrumbs>
-    <v-breadcrumbs
-      v-else
-      :items="[
+        divider=">"
+      ></v-breadcrumbs>
+      <v-breadcrumbs
+        v-else
+        :items="[
         {
           text: 'Signals',
           disabled: false,
           href: '/signals'
         }
       ]"
-      divider=">"
-    ></v-breadcrumbs>
-    <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
-    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
-      <li
-        v-if="this.$route.query.search"
-      >Companies with the words {{this.$route.query.search}} in the name or description</li>
-      <li v-if="this.$route.query.group">Company group: {{this.$route.query.group}}</li>
-      <li v-if="this.$route.query.category">Company category: {{this.$route.query.category}}</li>
-    </ul>
+        divider=">"
+      ></v-breadcrumbs>
+      <h1 v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
+      <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+        <li
+          v-if="this.$route.query.search"
+        >Companies with the words {{this.$route.query.search}} in the name or description</li>
+        <li v-if="this.$route.query.group">Company group: {{this.$route.query.group}}</li>
+        <li v-if="this.$route.query.category">Company category: {{this.$route.query.category}}</li>
+      </ul>
 
-    <v-btn small color="primary" dark @click="toggleSearch"><v-icon small>search</v-icon>search</v-btn>
-    <v-btn small to="/signals/create"><v-icon >add</v-icon>new signal</v-btn>
+      <v-btn small class="my-3 text-capitalize" color="primary" dark @click="toggleSearch" >
+        <v-icon small>search</v-icon>search
+      </v-btn>
+      <v-btn small class="my-3 text-capitalize" to="/signals/create">
+        <v-icon small>add</v-icon>new signal
+      </v-btn>
 
-    <template
-      v-if="!!this.$route.query &&
+      <template
+        v-if="!!this.$route.query &&
       !!this.$route.query.searchType &&
       this.$route.query.searchType ==='signals'"
-    >
-      <ApolloQuery
-        :query="require('./graphql/SearchsSignals.gql')"
-        :variables="{ 
+      >
+        <ApolloQuery
+          :query="require('./graphql/SearchsSignals.gql')"
+          :variables="{ 
           search: this.$route.query.search,  
           group: this.$route.query.group,
           category: this.$route.query.category, 
           first: rowsPerPage, 
           offset: (rowsPerPage * page) - rowsPerPage}"
-        :deep="true"
-      >
-        <template slot-scope="{ result: { loading, error, data } }">
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
+          :deep="true"
+        >
+          <template slot-scope="{ result: { loading, error, data } }">
+            <!-- Loading -->
+            <div v-if="loading" class="loading apollo">Loading...</div>
 
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+            <!-- Error -->
+            <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!---<div>{{ JSON.stringify(data) }}</div>-->
-            <signals-table
-              v-if="data.signals"
-              @deleteSignal="deleteSignal"
-              :signalId="signalId"
-              :items="data.signals"
-              class="result apollo"
-              @updatePagination="updatePagination"
-            ></signals-table>
-          </div>
+            <!-- Result -->
+            <div v-else-if="data" class="result apollo">
+              <!---<div>{{ JSON.stringify(data) }}</div>-->
+              <signals-table
+                v-if="data.signals"
+                @deleteSignal="deleteSignal"
+                :signalId="signalId"
+                :items="data.signals"
+                class="result apollo"
+                @updatePagination="updatePagination"
+              ></signals-table>
+            </div>
 
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </template>
-      </ApolloQuery>
-    </template>
-    <!-- Apollo watched Graphql query -->
-    <template v-else>
-      <ApolloQuery
-        :query="require('./graphql/Signals.gql')"
-        :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
-        :deep="true"
-      >
-        <template slot-scope="{ result: { loading, error, data } }">
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
+            <!-- No result -->
+            <div v-else class="no-result apollo">Loading...</div>
+          </template>
+        </ApolloQuery>
+      </template>
+      <!-- Apollo watched Graphql query -->
+      <template v-else>
+        <ApolloQuery
+          :query="require('./graphql/Signals.gql')"
+          :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+          :deep="true"
+        >
+          <template slot-scope="{ result: { loading, error, data } }">
+            <!-- Loading -->
+            <div v-if="loading" class="loading apollo">Loading...</div>
 
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+            <!-- Error -->
+            <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!---<div>{{ JSON.stringify(data) }}</div>-->
-            <signals-table
-              v-if="data.signals"
-              @deleteSignal="deleteSignal"
-              :signalId="signalId"
-              :items="data.signals"
-              class="result apollo"
-              @updatePagination="updatePagination"
-            ></signals-table>
-          </div>
+            <!-- Result -->
+            <div v-else-if="data" class="result apollo">
+              <!---<div>{{ JSON.stringify(data) }}</div>-->
+              <signals-table
+                v-if="data.signals"
+                @deleteSignal="deleteSignal"
+                :signalId="signalId"
+                :items="data.signals"
+                class="result apollo"
+                @updatePagination="updatePagination"
+              ></signals-table>
+            </div>
 
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </template>
-      </ApolloQuery>
-    </template>
-  </div>
+            <!-- No result -->
+            <div v-else class="no-result apollo">Loading...</div>
+          </template>
+        </ApolloQuery>
+      </template>
+    </div>
+  </v-container>
 </template>
 
 <script>

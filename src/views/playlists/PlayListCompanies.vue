@@ -1,19 +1,20 @@
 <template>
-  <v-card>
-    <!-- TODO: agregar modal de busqueda dentro de una playlist -->
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn flat @click="snack = false">Close</v-btn>
-    </v-snackbar>
-    <ApolloQuery
-      :query="require('./graphql/PlaylistCompanies.gql')"
-      :variables="{ uid: $route.params.playlistId, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
-    >
-      <template slot-scope="{ result: { loading, error, data } }">
-        <div class="apollo-example">
-          <v-breadcrumbs
-            v-if="data"
-            :items="[
+  <v-container fluid>
+    <v-card>
+      <!-- TODO: agregar modal de busqueda dentro de una playlist -->
+      <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
+        {{ snackText }}
+        <v-btn flat @click="snack = false">Close</v-btn>
+      </v-snackbar>
+      <ApolloQuery
+        :query="require('./graphql/PlaylistCompanies.gql')"
+        :variables="{ uid: $route.params.playlistId, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+      >
+        <template slot-scope="{ result: { loading, error, data } }">
+          <div class="apollo-example">
+            <v-breadcrumbs
+              v-if="data"
+              :items="[
             {
               text: 'Playlists',
               disabled: false,
@@ -28,11 +29,11 @@
               disabled: true
             }
           ]"
-            divider=">"
-          ></v-breadcrumbs>
-          <v-breadcrumbs
-            v-else
-            :items="[
+              divider=">"
+            ></v-breadcrumbs>
+            <v-breadcrumbs
+              v-else
+              :items="[
             {
               text: 'Playlists',
               disabled: false,
@@ -47,81 +48,83 @@
               disabled: true
             }
           ]"
-            divider=">"
-          ></v-breadcrumbs>
-          <v-layout wrap>
-            <v-flex grow xs12 sm3 md2>
-              <create-orb-modal 
-                v-if="!jobObs"
-                :loading="isLoading"
-                @createOrbRefreshJob="createOrbRefreshJob"
-              />
-              <v-btn
-                dark
-                v-if="!!jobObs"
-                @click="showJobModalOrb = !showJobModalOrb"
-                color="purple"
-              >View results<v-icon right small>check</v-icon></v-btn>
-              <orb-job-modal
-                v-if="!!showJobModalOrb"
-                :job="jobObs"
-                @refreshJobOrb="refreshJobOrb"
-                :loading="loadingModalOrb"
-                :dialog="showJobModalOrb"
-                @onClose="closeOrbJobModal"
-                @createOrbRefreshJob="createOrbRefreshJob"
-              />
-            </v-flex>
-            <v-flex grow xs12 sm3 md2>
-              <key-words-modal
-                v-if="!job"
-                :loading="isLoading"
-                @createKeywordsJob="createKeywordsJob"
-              />
-              <v-btn
-                dark
-                v-if="!!job"
-                @click="showJobModal = !showJobModal"
-                color="purple"
-              >View keywords<v-icon right small>check</v-icon></v-btn>
-              <job-modal
-                v-if="!!showJobModal"
-                :job="job"
-                @refreshJob="refreshJob"
-                :loading="loadingModal"
-                :dialog="showJobModal"
-                @onClose="closeJobModal"
-                @createKeywordsJob="createKeywordsJob"
-                :canModifySignalName="false"
-              />
-            </v-flex>
-            <v-flex grow xs12 sm2 md1>
-              <playlists-merge :playlist="playlist" />
-            </v-flex>
-          </v-layout>
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
+              divider=">"
+            ></v-breadcrumbs>
+            <v-layout wrap>
+              <v-flex grow xs4 sm2 md1>
+                <create-orb-modal
+                  v-if="!jobObs"
+                  :loading="isLoading"
+                  @createOrbRefreshJob="createOrbRefreshJob"
+                />
+                <v-btn
+                  dark
+                  v-if="!!jobObs"
+                  @click="showJobModalOrb = !showJobModalOrb"
+                  color="purple"
+                >
+                  View results
+                  <v-icon right small>check</v-icon>
+                </v-btn>
+                <orb-job-modal
+                  v-if="!!showJobModalOrb"
+                  :job="jobObs"
+                  @refreshJobOrb="refreshJobOrb"
+                  :loading="loadingModalOrb"
+                  :dialog="showJobModalOrb"
+                  @onClose="closeOrbJobModal"
+                  @createOrbRefreshJob="createOrbRefreshJob"
+                />
+              </v-flex>
+              <v-flex grow xs5 sm3 md1>
+                <key-words-modal
+                  v-if="!job"
+                  :loading="isLoading"
+                  @createKeywordsJob="createKeywordsJob"
+                />
+                <v-btn dark v-if="!!job" @click="showJobModal = !showJobModal" color="purple">
+                  View keywords
+                  <v-icon right small>check</v-icon>
+                </v-btn>
+                <job-modal
+                  v-if="!!showJobModal"
+                  :job="job"
+                  @refreshJob="refreshJob"
+                  :loading="loadingModal"
+                  :dialog="showJobModal"
+                  @onClose="closeJobModal"
+                  @createKeywordsJob="createKeywordsJob"
+                  :canModifySignalName="false"
+                />
+              </v-flex>
+              <v-flex grow xs3 sm1 md1>
+                <playlists-merge :playlist="playlist" />
+              </v-flex>
+            </v-layout>
+            <!-- Loading -->
+            <div v-if="loading" class="loading apollo">Loading...</div>
 
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+            <!-- Error -->
+            <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!--<pre>{{ JSON.stringify(data) }}</pre>-->
-            <companies-table
-              v-if="data.companies"
-              :items="data.companies"
-              @updatePagination="updatePagination"
-              class="result apollo ma-2"
-            ></companies-table>
+            <!-- Result -->
+            <div v-else-if="data" class="result apollo">
+              <!--<pre>{{ JSON.stringify(data) }}</pre>-->
+              <companies-table
+                v-if="data.companies"
+                :items="data.companies"
+                @updatePagination="updatePagination"
+                class="result apollo ma-2"
+              ></companies-table>
+            </div>
+
+            <!-- No result -->
+            <div v-else class="no-result apollo">Loading...</div>
           </div>
-
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </div>
-      </template>
-    </ApolloQuery>
-  </v-card>
+        </template>
+      </ApolloQuery>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -221,7 +224,7 @@ export default {
       console.log("jobsOrb", jobs);
       console.log("type", type);
       const existingJob = jobs.find(element => {
-         return element.entityId === playlistId && element.type === type;
+        return element.entityId === playlistId && element.type === type;
       });
 
       console.log("existingJobForOrb", existingJob);
@@ -240,7 +243,7 @@ export default {
 
       console.log("jobs", jobs);
       const existingJob = jobs.find(element => {
-        return element.entityId === playlistId  && element.type === type;
+        return element.entityId === playlistId && element.type === type;
       });
 
       console.log("existingJob", existingJob);
@@ -277,7 +280,7 @@ export default {
             ...updatedJob,
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
-            date: new Date(),
+            date: new Date()
           };
         } else {
           updatedJob = {
@@ -285,7 +288,7 @@ export default {
             type: "refresh_orb",
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
-            date: new Date(),
+            date: new Date()
           };
         }
 
@@ -334,7 +337,7 @@ export default {
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
             results: _get(jsonResult, "payload.keywords", []),
-            date: new Date(),
+            date: new Date()
           };
         } else {
           updatedJob = {
@@ -343,7 +346,7 @@ export default {
             status: _get(jsonResult, "status", null),
             progress: _get(jsonResult, "progressPercentage", null),
             results: _get(jsonResult, "payload.keywords", []),
-            date: new Date(),
+            date: new Date()
           };
         }
 
@@ -382,7 +385,7 @@ export default {
       const data = {
         job_name: "extract_keywords",
         playlist_uid: playlistId,
-        max_keywords: 300,
+        max_keywords: 300
       };
       try {
         const result = await fetch(url, {
@@ -411,7 +414,7 @@ export default {
           progress: 0,
           status: "created",
           results: [],
-          date: new Date(),
+          date: new Date()
         };
         console.log("newJob", newJob);
         let job = localStorage.getItem(jobUid);
@@ -457,7 +460,7 @@ export default {
       const url = "/jobs";
       const data = {
         job_name: "refresh_orb",
-        playlist_uid: playlistId,
+        playlist_uid: playlistId
       };
 
       try {
@@ -488,7 +491,7 @@ export default {
           entityId: playlistId,
           progress: 0,
           status: "created",
-          date: new Date(),
+          date: new Date()
         };
         console.log("newJob", newJob);
 
@@ -525,7 +528,7 @@ export default {
 
       const existingJob = jobs.find(element => {
         return element.entityId === playlistId && element.type === type;
-        });
+      });
 
       console.log("existingJob", existingJob);
       return existingJob;
@@ -539,7 +542,7 @@ export default {
       console.log("jobs", jobs);
 
       const existingJob = jobs.find(element => {
-         return element.entityId === playlistId  && element.type === type;
+        return element.entityId === playlistId && element.type === type;
       });
 
       console.log("existingJob", existingJob);

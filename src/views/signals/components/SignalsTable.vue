@@ -49,7 +49,7 @@
             </template>
           </v-edit-dialog>
         </td>
-        <td>{{props.item.category || ""}}</td>
+        <td>{{ props.item.category || "" }}</td>
         <td>
           <v-edit-dialog
             :return-value.sync="props.item.defaultScore"
@@ -77,8 +77,8 @@
             </template>
           </v-edit-dialog>
         </td>
-        <td>{{props.item.creationTime || ""}}</td>
-        <td>{{props.item.modificationTime || ""}}</td>
+        <td>{{ props.item.creationTime || "" }}</td>
+        <td>{{ props.item.modificationTime || "" }}</td>
         <td>
           <router-link v-if="props.item.id" :to="`/signals/${props.item.id}`">
             <v-icon size="20">edit</v-icon>
@@ -125,7 +125,7 @@ export default {
         { text: "Creation Time", value: "creationTime", align: "left" },
         { text: "Modification Time", value: "modificationTime", align: "left" },
         { text: "Edit", value: "icon", align: "left", sortable: false },
-        { text: "Delete", value: "icon", align: "left", sortable: false },
+        { text: "Delete", value: "icon", align: "left", sortable: false }
       ],
       snack: false,
       snackColor: "",
@@ -276,5 +276,7 @@ export default {
 .wrapping-td {
   white-space: normal;
 }
+a {
+  text-decoration: none;
+}
 </style>
-

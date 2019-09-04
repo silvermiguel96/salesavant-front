@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-card class="apollo-example">
       <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
@@ -45,12 +45,10 @@
           </v-layout>
           <v-layout>
             <v-flex xs12 md4>
-              <v-btn
-                v-if="canModifySignalName"
-                type="submit"
-                color="success"
-                @click="save"
-              >{{!!signal.id ? "Update" : "Create"}}</v-btn>
+              <v-btn v-if="canModifySignalName" type="submit" @click="save" class="text-capitalize">
+                <v-icon small>{{!!signal.id ? "update" : "add"}}</v-icon>
+                {{!!signal.id ? "Update" : "Create"}}
+              </v-btn>
               <v-btn
                 v-else
                 type="submit"
@@ -95,7 +93,7 @@
         </template>
       </v-container>
     </v-card>
-  </div>
+  </v-container>
 </template>
 
 <script>
