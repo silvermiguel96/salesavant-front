@@ -1,8 +1,9 @@
 <template>
-  <div class="apollo-example">
-    <v-breadcrumbs
-      v-if="!!this.$route.query && !!this.$route.query.searchType"
-      :items="[
+  <v-container fluid>
+    <div class="apollo-example">
+      <v-breadcrumbs
+        v-if="!!this.$route.query && !!this.$route.query.searchType"
+        :items="[
         {
           text: 'News',
           disabled: false,
@@ -14,102 +15,109 @@
           href: '/news'
         }
       ]"
-      divider=">"
-    ></v-breadcrumbs>
-    <v-breadcrumbs
-      v-else
-      :items="[
+        divider=">"
+      ></v-breadcrumbs>
+      <v-breadcrumbs
+        v-else
+        :items="[
         {
           text: 'News',
           disabled: false,
           href: '/news'
         }
       ]"
-      divider=">"
-    ></v-breadcrumbs>
-    <h1 class="ml-2" v-if="!!this.$route.query && !!this.$route.query.searchType">You're currently filtering by</h1>
-    <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
-      <li
-        v-if="this.$route.query.simpleSearch"
-      >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
-      <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
-      <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
-      <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
-      <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
-      <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
-      <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
-      <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
-      <li
-        v-if="this.$route.query.lessThanEmployees"
-      >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
-      <li
-        v-if="this.$route.query.moreThanEmployees"
-      >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
-      <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
-    </ul>
+        divider=">"
+      ></v-breadcrumbs>
+      <h1
+        class="ml-2"
+        v-if="!!this.$route.query && !!this.$route.query.searchType"
+      >You're currently filtering by</h1>
+      <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+        <li
+          v-if="this.$route.query.simpleSearch"
+        >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
+        <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
+        <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
+        <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
+        <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
+        <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
+        <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
+        <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
+        <li
+          v-if="this.$route.query.lessThanEmployees"
+        >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
+        <li
+          v-if="this.$route.query.moreThanEmployees"
+        >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
+        <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
+      </ul>
 
-    <v-btn color="primary" dark @click="toggleSearch">search<v-icon right small>search</v-icon></v-btn>
+      <v-btn color="primary" class="text-capitalize"  small dark @click="toggleSearch">
+        <v-icon small>search</v-icon>
+        search
+      </v-btn>
 
-    <!-- Apollo watched Graphql query -->
-    <template
-      v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='news' && !!this.$route.query.news"
-    >
-      <ApolloQuery
-        :query="require('./graphql/NewsSearch.gql')"
-        :variables="{ title: this.$route.query.news, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+      <!-- Apollo watched Graphql query -->
+      <template
+        v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='news' && !!this.$route.query.news"
       >
-        <template slot-scope="{ result: { loading, error, data } }">
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
+        <ApolloQuery
+          :query="require('./graphql/NewsSearch.gql')"
+          :variables="{ title: this.$route.query.news, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+        >
+          <template slot-scope="{ result: { loading, error, data } }">
+            <!-- Loading -->
+            <div v-if="loading" class="loading apollo">Loading...</div>
 
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+            <!-- Error -->
+            <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!---<div>{{ JSON.stringify(data) }}</div>-->
-            <news-table
-              v-if="data.news"
-              :items="data.news"
-              class="result apollo"
-              @updatePagination="updatePagination"
-            ></news-table>
-          </div>
+            <!-- Result -->
+            <div v-else-if="data" class="result apollo">
+              <!---<div>{{ JSON.stringify(data) }}</div>-->
+              <news-table
+                v-if="data.news"
+                :items="data.news"
+                class="result apollo"
+                @updatePagination="updatePagination"
+              ></news-table>
+            </div>
 
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </template>
-      </ApolloQuery>
-    </template>
-    <template v-else>
-      <ApolloQuery
-        :query="require('./graphql/News.gql')"
-        :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
-      >
-        <template slot-scope="{ result: { loading, error, data } }">
-          <!-- Loading -->
-          <div v-if="loading" class="loading apollo">Loading...</div>
+            <!-- No result -->
+            <div v-else class="no-result apollo">Loading...</div>
+          </template>
+        </ApolloQuery>
+      </template>
+      <template v-else>
+        <ApolloQuery
+          :query="require('./graphql/News.gql')"
+          :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+        >
+          <template slot-scope="{ result: { loading, error, data } }">
+            <!-- Loading -->
+            <div v-if="loading" class="loading apollo">Loading...</div>
 
-          <!-- Error -->
-          <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+            <!-- Error -->
+            <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
-          <!-- Result -->
-          <div v-else-if="data" class="result apollo">
-            <!---<div>{{ JSON.stringify(data) }}</div>-->
-            <news-table
-              v-if="data.news"
-              :items="data.news"
-              class="result apollo"
-              @updatePagination="updatePagination"
-            ></news-table>
-          </div>
+            <!-- Result -->
+            <div v-else-if="data" class="result apollo">
+              <!---<div>{{ JSON.stringify(data) }}</div>-->
+              <news-table
+                v-if="data.news"
+                :items="data.news"
+                class="result apollo"
+                @updatePagination="updatePagination"
+              ></news-table>
+            </div>
 
-          <!-- No result -->
-          <div v-else class="no-result apollo">Loading...</div>
-        </template>
-      </ApolloQuery>
-    </template>
-  </div>
+            <!-- No result -->
+            <div v-else class="no-result apollo">Loading...</div>
+          </template>
+        </ApolloQuery>
+      </template>
+    </div>
+  </v-container>
 </template>
 
 <script>

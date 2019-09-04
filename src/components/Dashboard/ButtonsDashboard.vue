@@ -2,7 +2,7 @@
   <v-card-text>
     <v-layout row wrap>
       <v-flex v-for="content in btnexports" :key="content.text">
-        <v-btn color="success" :to="content.to" :disabled="content.disabled">{{ content.text }}</v-btn>
+        <v-btn small class="text-capitalize" color="success" :to="content.to" :disabled="content.disabled">{{ content.text }}</v-btn>
       </v-flex>
     </v-layout>
   </v-card-text>

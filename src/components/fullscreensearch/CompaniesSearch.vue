@@ -95,10 +95,10 @@
           <v-flex xs6>
             <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
           </v-flex>
-          <v-flex xs6>
-            <v-btn class="mt-2" @click="search" type="submit" color="primary">
+          <v-flex  d-flex align-center  xs6>
+            <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
+              <v-icon small>search</v-icon>
               {{" Companies Search"}}
-              <v-icon small right>search</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>

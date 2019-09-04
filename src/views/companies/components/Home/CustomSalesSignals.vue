@@ -65,9 +65,9 @@
             @onSearch="onSignalAutoCompleteSearch"
           />
         </v-flex>
-        <v-flex sm3 lg2>
-          <v-btn @click="addSignalToCompany" :disabled="!signalId && !currentSignalSearch">
-            <v-icon left>add</v-icon>Add
+        <v-flex d-flex align-center sm3 lg2>
+          <v-btn class="text-capitalize" small @click="addSignalToCompany" :disabled="!signalId && !currentSignalSearch">
+            <v-icon small>add</v-icon>Add
           </v-btn>
         </v-flex>
       </v-layout>
