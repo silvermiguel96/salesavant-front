@@ -70,49 +70,47 @@
         <!-- Result -->
         <div v-else-if="data" class="result apollo">
           <!-- {{ JSON.stringify(data.company) }} -->
-          <v-tabs grow color="grey lighten-5">
+          <v-tabs grow  background-color="grey lighten-5" color="primary">
             <!-- Tab Home -->
             <v-tab>Home</v-tab>
-            <v-tab-item lazy>
-                <v-layout row wrap justify-space-around class="mt-3">
-                  <v-flex md5>
+            <v-tab-item >
+                <v-layout wrap justify-space-around class="mt-3">
+                  <v-flex xs12 md5 class="ma-2">
                     <company-profile />
                   </v-flex>
-                  <v-flex md6>
+                  <v-flex xs12 md6 class="ma-2" >
                     <custom-sales-signals />
                   </v-flex>
                 </v-layout>
             </v-tab-item>
             <!-- Tab new signals -->
-            <!-- TODO: dividir news signals en una pestaña NEWS y otra SIGNALS -->
-            <!-- TODOLISTO: todos los tabs deben ser lazy -->
             <v-tab>News</v-tab>
-            <v-tab-item lazy>
+            <v-tab-item >
               <news />
             </v-tab-item>
             <v-tab>Signals</v-tab>
-            <v-tab-item lazy>
+            <v-tab-item >
               <signals />
             </v-tab-item>
             <!-- Tab contact -->
             <v-tab>Contact</v-tab>
-            <v-tab-item lazy>
+            <v-tab-item >
               <contact></contact>
             </v-tab-item>
             <!-- Executive Tracker -->
             <v-tab>Executive tracker</v-tab>
-            <v-tab-item lazy>
+            <v-tab-item >
               <executive-tracker></executive-tracker>
             </v-tab-item>
             <!-- Tab Analytics -->
             <v-tab>Analytics</v-tab>
-            <v-tab-item lazy>
+            <v-tab-item >
               <analytics></analytics>
             </v-tab-item>
             <!-- Tab add to playlist -->
             <v-tab>Add to playlist</v-tab>
             <!-- {{ JSON.stringify(data.company.playlists)}} -->
-            <v-tab-item lazy>
+            <v-tab-item >
               <add-to-playlist></add-to-playlist>
             </v-tab-item>
           </v-tabs>

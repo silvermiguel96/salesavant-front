@@ -9,16 +9,21 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
-      <v-layout row>
-        <v-flex md9 lg10>
+      <v-layout >
+        <v-flex xs10 md11 lg10 class="m-1">
           <playlists-autocomplete
             @change="onPlaylistAutoCompleteChange"
             @onSearch="onSignalAutoCompleteSearch"
           />
         </v-flex>
-        <v-flex d-flex align-center sm3 lg2>
-          <v-btn @click="addPlaylistToCompany"  small :disabled="!playlistUid && !currentPlaylistSearch">
-            <v-icon small >add</v-icon>Add
+        <v-flex d-flex align-end xs2 sm1 lg2>
+          <v-btn
+            @click="addPlaylistToCompany"
+            small
+            :disabled="!playlistUid && !currentPlaylistSearch"
+            class="mx-2"
+          >
+            <v-icon small>add</v-icon>Add
           </v-btn>
         </v-flex>
       </v-layout>
@@ -28,18 +33,28 @@
         :headers="headers"
         :items="companyPlaylists.playlistsList"
         class="elevation-1"
-        :pagination.sync="pagination"
-        :rows-per-page-items="pagination.rowsPerPageItems"
-        :total-items="totalItems"
+        :items-per-page="pagination.rowsPerPage"
+        :footer-props="{
+          'items-per-page-options': pagination.rowsPerPageItems
+        }"
         @updatepagination="updatePagination"
+        :server-items-length="totalItems"
       >
-        <template v-slot:items="props">
-          <td>
-            <router-link :to="`/playlists/${props.item.uid}/companies`">{{ props.item.name || "--"}}</router-link>
-          </td>
-          <td>
-            <v-icon @click="deleteCompanyPlaylist(props.item.uid)" color="red lighten-2" size="20">delete</v-icon>
-          </td>
+        <template v-slot:item="{ item, headers }">
+          <tr>
+            <td>
+              <router-link
+                :to="`/playlists/${item.uid}/companies`"
+              >{{ item.name || "--"}}</router-link>
+            </td>
+            <td>
+              <v-icon
+                @click="deleteCompanyPlaylist(item.uid)"
+                color="red lighten-2"
+                size="20"
+              >delete</v-icon>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-card-text>

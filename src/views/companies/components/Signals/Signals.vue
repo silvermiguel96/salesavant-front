@@ -8,22 +8,23 @@
       <v-data-table
         :headers="headers"
         :items="companySignals"
+        :items-per-page="pagination.rowsPerPage"
+        :footer-props="{
+          'items-per-page-options': pagination.rowsPerPageItems
+        }"
         class="elevation-1"
-        :pagination.sync="pagination"
-        :rows-per-page-items="pagination.rowsPerPageItems"
-        :total-items="totalItems"
-        @updatepagination="updatePagination"
+        :server-items-length="totalItems"
       >
-        <template v-slot:items="props">
-          <td>
-            <router-link
-              :to="`/signals/${props.item.signal.id}`"
-            >{{ props.item.signal.name || "--"}}</router-link>
-          </td>
-          <td>{{ props.item.signal.description || "--"}}</td>
-          <td>{{ props.item.signal.group || "--"}}</td>
-          <td>{{ props.item.signal.category || "--"}}</td>
-          <td>{{ props.item.signal.defaultScore || "0"}}</td>
+        <template v-slot:item="{ item, headers }">
+          <tr>
+            <td>
+              <router-link :to="`/signals/${item.signal.id}`">{{ item.signal.name || "--"}}</router-link>
+            </td>
+            <td>{{ item.signal.description || "--"}}</td>
+            <td>{{ item.signal.group || "--"}}</td>
+            <td>{{ item.signal.category || "--"}}</td>
+            <td>{{ item.signal.defaultScore || "0"}}</td>
+          </tr>
         </template>
       </v-data-table>
     </v-card-text>
