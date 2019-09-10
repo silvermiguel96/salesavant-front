@@ -22,7 +22,7 @@
         :items="[
         {
           text: 'Companies',
-          disabled: false,
+          disabled: true,
           href: '/companies'
         }
       ]"
@@ -70,7 +70,7 @@
         >Signal group name: {{this.$route.query.signalGroup}}</li>
       </ul>
       <div class="calltoactions">
-        <v-btn color="primary" small class="text-capitalize" dark @click="toggleSearch">
+        <v-btn color="primary" small class="text-capitalize ma-2" dark @click="toggleSearch">
           <v-icon small>search</v-icon>
           search
         </v-btn>

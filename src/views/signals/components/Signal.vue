@@ -22,7 +22,7 @@
         divider=">"
       ></v-breadcrumbs>
       <v-form @submit.prevent>
-        <v-container>
+        <v-container >
           <v-subheader class="display-1">Signal details</v-subheader>
           <v-layout row wrap>
             <v-flex xs12 sm6 md3>

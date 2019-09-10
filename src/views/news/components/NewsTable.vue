@@ -2,11 +2,13 @@
   <v-data-table
     :headers="headers"
     :items="items"
+    :items-per-page="pagination.rowsPerPage"
+    :footer-props="{
+      'items-per-page-options': pagination.rowsPerPageItems
+    }"
     class="elevation-1"
-    :pagination.sync="pagination"
-    :rows-per-page-items="pagination.rowsPerPageItems"
     @update:pagination="updatePagination"
-    :total-items="totalItems"
+    :server-items-length="totalItems"
   >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:items="props">
@@ -67,7 +69,8 @@ export default {
           text: "Salesavant tracking date",
           value: "creationTime",
           align: "left"
-        }
+        },
+        { text: "Actions", value: "ks", sortable: false }
       ]
     };
   },

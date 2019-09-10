@@ -15,47 +15,41 @@
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
         </v-toolbar>
-        <v-expansion-panel>
-          <v-expansion-panel-content :value="expand==='companies'">
-            <template v-slot:header>
-              <div>Companies</div>
-            </template>
-
-            <companies-search
-              @change="changeCompanySearchObject"
-              @toggle="toggle"
-              @search="onCompanySearch"
-            />
-          </v-expansion-panel-content>
-          <v-expansion-panel-content :value="expand==='news'">
-            <template v-slot:header>
-              <div>News</div>
-            </template>
-            <v-card>
+        <v-expansion-panels>
+          <v-expansion-panel :value="expand==='companies'">
+            <v-expansion-panel-header>Companies</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <companies-search
+                @change="changeCompanySearchObject"
+                @toggle="toggle"
+                @search="onCompanySearch"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel :value="expand==='news'">
+            <v-expansion-panel-header>News</v-expansion-panel-header>
+            <v-expansion-panel-content>
               <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
-            </v-card>
-          </v-expansion-panel-content>
-          <v-expansion-panel-content :value="expand==='playlists'">
-            <template v-slot:header>
-              <div>Playlists</div>
-            </template>
-            <v-card>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <v-expansion-panel :value="expand==='playlists'">
+            <v-expansion-panel-header>Playlists</v-expansion-panel-header>
+            <v-expansion-panel-content>
               <playlist-search
                 @change="changePlaylists"
                 @toggle="toggle"
                 @search="onPlaylistsSearch"
               />
-            </v-card>
-          </v-expansion-panel-content>
-          <v-expansion-panel-content :value="expand==='signals'">
-            <template v-slot:header>
-              <div>Signals</div>
-            </template>
-            <v-card>
-              <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel :value="expand==='signals'">
+            <v-expansion-panel-header>Signals</v-expansion-panel-header>
+            <v-expansion-panel-content>
+                <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-card>
     </v-dialog>
   </v-layout>

@@ -22,7 +22,7 @@
         :items="[
         {
           text: 'News',
-          disabled: false,
+          disabled: true,
           href: '/news'
         }
       ]"
@@ -52,7 +52,7 @@
         <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
       </ul>
 
-      <v-btn color="primary" class="text-capitalize"  small dark @click="toggleSearch">
+      <v-btn color="primary" class="text-capitalize ma-2"  small dark @click="toggleSearch">
         <v-icon small>search</v-icon>
         search
       </v-btn>
@@ -204,22 +204,22 @@ export default {
   props: {
     showSearch: { type: Boolean, default: false }
   },
-  beforeCreate() {
-    console.log("beforeCreate", "this.$router", this.$router);
-    console.log("beforeCreate", "this.$route", this.$route);
-  },
-  created() {
-    console.log("created", "this.$router", this.$router);
-    console.log("created", "this.$route", this.$route);
-  },
-  beforeUpdate() {
-    console.log("beforeUpdate", "this.$router", this.$router);
-    console.log("beforeUpdate", "this.$route", this.$route);
-  },
-  updated() {
-    console.log("updated", "this.$router", this.$router);
-    console.log("updated", "this.$route", this.$route);
-  }
+  // beforeCreate() {
+  //   console.log("beforeCreate", "this.$router", this.$router);
+  //   console.log("beforeCreate", "this.$route", this.$route);
+  // },
+  // created() {
+  //   console.log("created", "this.$router", this.$router);
+  //   console.log("created", "this.$route", this.$route);
+  // },
+  // beforeUpdate() {
+  //   console.log("beforeUpdate", "this.$router", this.$router);
+  //   console.log("beforeUpdate", "this.$route", this.$route);
+  // },
+  // updated() {
+  //   console.log("updated", "this.$router", this.$router);
+  //   console.log("updated", "this.$route", this.$route);
+  // }
 };
 </script>
 
@@ -228,7 +228,7 @@ export default {
 .input,
 .apollo,
 .message {
-  padding: 12px;
+  padding: 10px;
 }
 
 label {

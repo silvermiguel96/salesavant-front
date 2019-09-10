@@ -27,7 +27,7 @@
           v-if="this.$route.query.moreThanCompanies"
         >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
       </ul>
-      <v-btn color="primary" class="text-capitalize" dark small @click="toggleSearch">
+      <v-btn color="primary" class="text-capitalize ma-2" dark small @click="toggleSearch">
         <v-icon small>search</v-icon>search
       </v-btn>
       <template

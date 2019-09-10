@@ -6,9 +6,8 @@
     </v-snackbar>
     <v-dialog v-model="dialogMerge" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn class="deep-purple darken-3 text-capitalize" dark small v-on="on"><v-icon small left>compare_arrows</v-icon>merge 
-          
-
+        <v-btn class="deep-purple darken-3 text-capitalize" dark small v-on="on">
+          <v-icon small left>compare_arrows</v-icon>merge
         </v-btn>
       </template>
       <v-card>

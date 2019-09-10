@@ -26,7 +26,7 @@
         :items="[
         {
           text: 'Signals',
-          disabled: false,
+          disabled: true,
           href: '/signals'
         }
       ]"
@@ -41,10 +41,10 @@
         <li v-if="this.$route.query.category">Company category: {{this.$route.query.category}}</li>
       </ul>
 
-      <v-btn small class="my-3 text-capitalize" color="primary" dark @click="toggleSearch" >
+      <v-btn small class="ma-2 text-capitalize" color="primary" dark @click="toggleSearch" >
         <v-icon small>search</v-icon>search
       </v-btn>
-      <v-btn small class="my-3 text-capitalize" to="/signals/create">
+      <v-btn small class="ma-2 text-capitalize" to="/signals/create">
         <v-icon small>add</v-icon>new signal
       </v-btn>
 
@@ -207,21 +207,21 @@ export default {
   props: {
     showSearch: { type: Boolean, default: false }
   },
-  beforeCreate() {
-    console.log("beforeCreate", "this.$router", this.$router);
-    console.log("beforeCreate", "this.$route", this.$route);
-  },
-  created() {
-    console.log("created", "this.$router", this.$router);
-    console.log("created", "this.$route", this.$route);
-  },
-  beforeUpdate() {
-    console.log("beforeUpdate", "this.$router", this.$router);
-    console.log("beforeUpdate", "this.$route", this.$route);
-  },
-  updated() {
-    console.log("updated", "this.$router", this.$router);
-    console.log("updated", "this.$route", this.$route);
-  }
+  // beforeCreate() {
+  //   console.log("beforeCreate", "this.$router", this.$router);
+  //   console.log("beforeCreate", "this.$route", this.$route);
+  // },
+  // created() {
+  //   console.log("created", "this.$router", this.$router);
+  //   console.log("created", "this.$route", this.$route);
+  // },
+  // beforeUpdate() {
+  //   console.log("beforeUpdate", "this.$router", this.$router);
+  //   console.log("beforeUpdate", "this.$route", this.$route);
+  // },
+  // updated() {
+  //   console.log("updated", "this.$router", this.$router);
+  //   console.log("updated", "this.$route", this.$route);
+  // }
 };
 </script>
