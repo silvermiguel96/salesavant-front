@@ -17,9 +17,9 @@
     ></v-breadcrumbs>
     <v-card class="ma-3">
       <v-card-title>
-        <v-layout row wrap>
+        <v-layout wrap>
           <v-flex v-for="btn in buttons" :key="btn.text">
-            <v-btn class="success">{{ btn.text }}</v-btn>
+            <v-btn class="success ma-2">{{ btn.text }}</v-btn>
           </v-flex>
         </v-layout>
       </v-card-title>
@@ -27,7 +27,7 @@
       <!-- Table Contacts Found (Managers and Above) -->
       <v-card-text>
         <div>
-          <v-toolbar text color="white">
+          <v-toolbar flat color="white">
             <v-toolbar-title>Contacts Found (Managers and Above)</v-toolbar-title>
           </v-toolbar>
           <v-data-table
@@ -48,7 +48,7 @@
       <!-- Contacts Found (Junior / Below Managers) -->
       <v-card-text>
         <div>
-          <v-toolbar text color="white">
+          <v-toolbar flat color="white">
             <v-toolbar-title>Contacts Found (Junior / Below Managers)</v-toolbar-title>
           </v-toolbar>
           <v-data-table
@@ -69,7 +69,7 @@
       <!-- Table Prospects by State -->
       <v-card-text>
         <div>
-          <v-toolbar text color="white">
+          <v-toolbar flat color="white">
             <v-toolbar-title>Prospects by State</v-toolbar-title>
           </v-toolbar>
           <v-data-table
@@ -90,7 +90,7 @@
       <!--  Table Custom Signals for playlist / Accuracy -->
       <v-card-text>
         <div>
-          <v-toolbar text color="white">
+          <v-toolbar flat color="white">
             <v-toolbar-title>Custom Signals for playlist / Accuracy</v-toolbar-title>
           </v-toolbar>
           <v-data-table :headers="customSignalsForPlaylist" :items="desserts" class="elevation-3">
@@ -106,7 +106,7 @@
       <!-- Table Custom Signals for playlist by Signal -->
       <v-card-text>
         <div>
-          <v-toolbar text color="white">
+          <v-toolbar flat color="white">
             <v-toolbar-title>Custom Signals for playlist by Signal</v-toolbar-title>
           </v-toolbar>
           <v-data-table :headers="customSignalsForPlaylistBySignal" :items="desserts" class="elevation-3">

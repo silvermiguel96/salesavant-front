@@ -24,7 +24,7 @@
       <v-form @submit.prevent>
         <v-container >
           <v-subheader class="display-1">Signal details</v-subheader>
-          <v-layout row wrap>
+          <v-layout wrap>
             <v-flex xs12 sm6 md3>
               <v-text-field
                 v-model="signal.name"

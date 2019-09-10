@@ -2,7 +2,7 @@
   <v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px" lazy>
       <template v-slot:activator="{ on }">
-        <v-btn small class="text-capitalize" color="green" dark v-on="on"><v-icon small>add</v-icon>Create playlist from search results</v-btn>
+        <v-btn small class="text-capitalize ma-2" color="green" dark v-on="on"><v-icon small>add</v-icon>Create playlist from search results</v-btn>
       </template>
       <v-card>
         <v-card-title>

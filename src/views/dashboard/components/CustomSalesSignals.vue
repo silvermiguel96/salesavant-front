@@ -1,7 +1,7 @@
 <template>
 <!-- Custom Sales Signals -->
 <v-card-text>
-  <v-toolbar text color="white">
+  <v-toolbar flat color="white">
         <v-toolbar-title>Custom Sales Signals</v-toolbar-title>
       </v-toolbar>
     <template>
