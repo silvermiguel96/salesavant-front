@@ -3,7 +3,7 @@
     <v-card-text>
       <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
-        <v-btn flat @click="snack = false">Close</v-btn>
+        <v-btn text @click="snack = false">Close</v-btn>
       </v-snackbar>
       <template>
         <v-btn class="warning text-capitalize" small @click.prevent="clearAll">

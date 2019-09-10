@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down" v-for="link in links" :key="link.text">
         <v-btn v-if="!!link.click" text @click="link.click">{{link.text}}</v-btn>
-        <v-btn v-else flat :to="link.router">{{link.text}}</v-btn>
+        <v-btn v-else text :to="link.router">{{link.text}}</v-btn>
       </v-toolbar-items>
       <v-toolbar-items>
         <v-btn text color="white" @click="this.exitApp">

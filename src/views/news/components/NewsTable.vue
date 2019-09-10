@@ -11,29 +11,31 @@
     :server-items-length="totalItems"
   >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-    <template v-slot:items="props">
-      <td>
-        <a
-          :key="`news-link${props.item.id || ''}`"
-          :href="`news/${props.item.id || ''}`"
-        >{{ trimText(_get(props, "item.title", "--"))}}</a>
-      </td>
-      <td>
-        <a
-          :key="`company-link${props.item.id}`"
-          :href="`companies/${props.item.company.uid || ''}`"
-        >{{ trimText(_get(props, "item.company.name", "--"))}}</a>
-      </td>
-      <td>
-        <a
-          :key="`news-external-link${props.item.id || ''}`"
-          :href="props.item.url || ''"
-          target="_blank"
-        >visit source</a>
-      </td>
-      <td>{{ props.item.category || "--" }}</td>
-      <td>{{ props.item.publishDate || "--"}}</td>
-      <td>{{ props.item.creationTime || "--" }}</td>
+    <template v-slot:item="{ item, headers }">
+      <tr>
+        <td>
+          <a
+            :key="`news-link${item.id || ''}`"
+            :href="`news/${item.id || ''}`"
+          >{{ trimText(_get( "item.title", "--"))}}</a>
+        </td>
+        <td>
+          <a
+            :key="`company-link${item.id}`"
+            :href="`companies/${item.company.uid || ''}`"
+          >{{ trimText(_get( "item.company.name", "--"))}}</a>
+        </td>
+        <td>
+          <a
+            :key="`news-external-link${item.id || ''}`"
+            :href="item.url || ''"
+            target="_blank"
+          >visit source</a>
+        </td>
+        <td>{{ item.category || "--" }}</td>
+        <td>{{ item.publishDate || "--"}}</td>
+        <td>{{ item.creationTime || "--" }}</td>
+      </tr>
     </template>
   </v-data-table>
 </template>

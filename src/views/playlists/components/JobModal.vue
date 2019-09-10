@@ -52,9 +52,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green" flat @click="createNewJob">Create new keyword results (process again)</v-btn>
-          <v-btn v-show="!results.length" color="green" flat @click="refreshJob">Refresh results</v-btn>
-          <v-btn color="error" flat @click="onClose">Close</v-btn>
+          <v-btn color="green" text @click="createNewJob">Create new keyword results (process again)</v-btn>
+          <v-btn v-show="!results.length" color="green" text @click="refreshJob">Refresh results</v-btn>
+          <v-btn color="error" text @click="onClose">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -7,7 +7,7 @@
       :item-value="'group'"
       :items="signalsGroupAggs"
       cache-items
-      flat
+      text
       hide-no-data
       hide-details
       label="In signal Group"

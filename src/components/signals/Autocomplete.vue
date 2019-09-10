@@ -8,7 +8,7 @@
       :items="signals"
       :search-input.sync="search"
       cache-items
-      flat
+      text
       hide-no-data
       hide-details
       :label="placeholder"

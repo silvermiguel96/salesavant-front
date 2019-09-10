@@ -1,6 +1,6 @@
 <template>
   <v-card-text>
-    <v-toolbar flat color="white">
+    <v-toolbar text color="white">
       <v-toolbar-title>Custom Signal Groups</v-toolbar-title>
     </v-toolbar>
     <template>

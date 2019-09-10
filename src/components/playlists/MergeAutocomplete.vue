@@ -15,7 +15,7 @@
             multiple
             :search-input.sync="search"
             cache-items
-            flat
+            text
             @change="change"
           >
             <template v-slot:selection="data">
