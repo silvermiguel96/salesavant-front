@@ -20,10 +20,10 @@
           >
             <template v-slot:selection="data">
               <v-chip
-                :selected="data.selected"
+                :input-value="data.selected"
                 close
                 class="chip--select-multi"
-                @input="remove(data.item)"
+                @click:close="remove(data.item)"
               >{{ data.item.name }}</v-chip>
             </template>
             <template v-slot:item="data">

@@ -52,7 +52,7 @@
               divider=">"
             ></v-breadcrumbs>
             <v-container fluid d-flex flex-wrap class="ma-1">
-              <v-flex xs6 sm3 md2 lg2 xl1 class="ma-1">
+              <v-flex d-flex  xs6 sm3 md2 lg2 xl1 class="ma-1">
                 <create-orb-modal
                   v-if="!jobObs"
                   :loading="isLoading"
@@ -77,7 +77,7 @@
                   @createOrbRefreshJob="createOrbRefreshJob"
                 />
               </v-flex>
-              <v-flex  xs5 sm3 md2 lg2 xl1 class="ma-1">
+              <v-flex d-flex xs5 sm3 md2 lg2 xl1 class="ma-1">
                 <key-words-modal
                   v-if="!job"
                   :loading="isLoading"
@@ -98,7 +98,7 @@
                   :canModifySignalName="false"
                 />
               </v-flex>
-              <v-flex  xs4 sm2 md2 lg1 xl1 class="ma-1">
+              <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
                 <playlists-merge :playlist="playlist" />
               </v-flex>
             </v-container>

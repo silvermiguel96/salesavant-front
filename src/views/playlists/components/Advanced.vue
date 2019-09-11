@@ -126,6 +126,7 @@
 export default {
   data() {
     return {
+      desserts: [],
       buttons: [
         { text: "Playlist" },
         { text: "Stats" },
