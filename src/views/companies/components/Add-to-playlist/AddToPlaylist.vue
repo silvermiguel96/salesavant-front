@@ -9,14 +9,14 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
-      <v-layout >
-        <v-flex xs10 md11 lg10 class="m-1">
+      <v-layout d-flex class="m-1" >
+        <v-flex xs10 md11 lg11 >
           <playlists-autocomplete
             @change="onPlaylistAutoCompleteChange"
             @onSearch="onSignalAutoCompleteSearch"
           />
         </v-flex>
-        <v-flex d-flex align-end xs2 sm1 lg2>
+        <v-flex d-flex align-end xs2 sm1 lg1>
           <v-btn
             @click="addPlaylistToCompany"
             small

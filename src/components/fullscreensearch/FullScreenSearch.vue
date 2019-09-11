@@ -15,7 +15,7 @@
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
         </v-toolbar>
-        <v-expansion-panels>
+        <v-expansion-panels accordion>
           <v-expansion-panel :value="expand==='companies'">
             <v-expansion-panel-header>Companies</v-expansion-panel-header>
             <v-expansion-panel-content>

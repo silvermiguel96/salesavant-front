@@ -6,7 +6,7 @@
     </v-snackbar>
     <v-form ref="playlistsSearchForm" @submit.prevent>
       <v-container grid-list-md text-xs-center>
-        <v-layout row wrap>
+        <v-layout >
           <v-flex>
             <v-text-field
               name="playlistsSearch"
@@ -16,7 +16,7 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
-        <v-layout row wrap>
+        <v-layout >
           <v-flex xl6 xs6>
             <v-text-field
               name="moreThanCompanies"
@@ -34,8 +34,8 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
-        <v-layout row wrap>
-          <v-flex>
+        <v-layout >
+          <v-flex d-flex  justify-center >
             <v-btn @click="search" class="text-capitalize" small type="submit" color="primary">
               <v-icon small>search</v-icon>
               {{"Search playlists"}}

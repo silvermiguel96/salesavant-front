@@ -6,7 +6,7 @@
     </v-snackbar>
     <v-form ref="playlistsSearchForm" @submit.prevent>
       <v-container grid-list-md text-xs-center>
-        <v-layout row wrap>
+        <v-layout>
           <v-flex>
             <v-text-field
               name="search"
@@ -16,16 +16,11 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
-        <v-layout row wrap>
+        <v-layout>
           <v-flex xs6>
-            <v-text-field
-              name="group"
-              v-model="signal.group"
-              label="Group"
-              @input="changeData"
-            ></v-text-field>
+            <v-text-field name="group" v-model="signal.group" label="Group" @input="changeData"></v-text-field>
           </v-flex>
-                    <v-flex xs6>
+          <v-flex xs6>
             <v-text-field
               name="category"
               v-model="signal.category"
@@ -34,8 +29,8 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
-        <v-layout row wrap>
-          <v-flex>
+        <v-layout>
+          <v-flex d-flex justify-center>
             <v-btn @click="search" class="text-capitalize" small type="submit" color="primary">
               <v-icon small>search</v-icon>
               {{"Search signals"}}
@@ -54,9 +49,9 @@ export default {
   data() {
     return {
       signal: {
-          search: "",
-          group: "",
-          category: ""
+        search: "",
+        group: "",
+        category: ""
       },
       snack: false,
       snackColor: "",
