@@ -15,8 +15,8 @@
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
         </v-toolbar>
-        <v-expansion-panels accordion>
-          <v-expansion-panel :value="expand==='companies'">
+        <v-expansion-panels accordion :value="expand">
+          <v-expansion-panel >
             <v-expansion-panel-header>Companies</v-expansion-panel-header>
             <v-expansion-panel-content>
               <companies-search
@@ -26,14 +26,14 @@
               />
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel :value="expand==='news'">
+          <v-expansion-panel >
             <v-expansion-panel-header>News</v-expansion-panel-header>
             <v-expansion-panel-content>
               <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
 
-          <v-expansion-panel :value="expand==='playlists'">
+          <v-expansion-panel>
             <v-expansion-panel-header>Playlists</v-expansion-panel-header>
             <v-expansion-panel-content>
               <playlist-search
@@ -43,7 +43,7 @@
               />
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel :value="expand==='signals'">
+          <v-expansion-panel>
             <v-expansion-panel-header>Signals</v-expansion-panel-header>
             <v-expansion-panel-content>
                 <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
@@ -108,7 +108,7 @@ export default {
   },
   props: {
     show: { type: Boolean, default: false },
-    expand: { type: String, default: "companies" }
+    expand: { type: Number , default: 0 }
   },
   components: {
     CompaniesSearch,

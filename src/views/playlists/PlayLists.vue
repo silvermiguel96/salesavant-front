@@ -132,7 +132,7 @@ export default {
     toggleSearch() {
       this.$emit("toggleSearch", {
         show: !this.$props.showSearch,
-        expand: "playlists"
+        expand: 2
       });
     }
   }
