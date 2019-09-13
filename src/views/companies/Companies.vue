@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <v-card>
     <div class="apollo-example">
       <v-breadcrumbs
         v-if="!!isFiltered"
@@ -185,6 +186,7 @@
         </ApolloQuery>
       </template>
     </div>
+    </v-card>
   </v-container>
 </template>
 

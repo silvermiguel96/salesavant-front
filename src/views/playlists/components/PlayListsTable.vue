@@ -62,7 +62,7 @@ export default {
           value: "name"
         },
         {
-          text: "# companies",
+          text: "Size",
           value: "companies.length",
           align: "left"
         },

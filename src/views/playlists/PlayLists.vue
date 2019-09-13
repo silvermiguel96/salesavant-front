@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <v-card>
     <div class="apollo-example">
       <!-- TODO: cuando cambio el número de registros por página no hace nada -->
       <v-breadcrumbs
@@ -91,6 +92,7 @@
         </ApolloQuery>
       </template>
     </div>
+    </v-card>
   </v-container>
 </template>
 
