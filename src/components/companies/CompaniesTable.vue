@@ -2,39 +2,42 @@
   <v-data-table
     :headers="headers"
     :items="items"
+    :items-per-page="pagination.rowsPerPage"
+    :footer-props="{
+      'items-per-page-options': pagination.rowsPerPageItems
+    }"
     class="elevation-1 ma-2"
-    :pagination.sync="pagination"
-    :rows-per-page-items="pagination.rowsPerPageItems"
     @update:pagination="updatePagination"
-    :total-items="totalItems"
+    :server-items-length="totalItems"
   >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-    <template v-slot:items="props">
-      <td>
-        <router-link :to="`/companies/${props.item.uid}`">{{ props.item.name }}</router-link>
-      </td>
-      <td>{{ props.item.totalSignals || "0"}}</td>
-      <td>{{ props.item.totalScore || "0"}}</td>
-      <td class="wrapping-td">
-        <long-paragraph :text="props.item.description"></long-paragraph>
-      </td>
-      <td>{{ props.item.city || "--"}}</td>
-      <td>{{ props.item.state  || "--"}}</td>
-      <td>{{ props.item.country || "--"}}</td>
-      <td>{{ props.item.numEmployees || "0"}}</td>
-      <td>{{ props.item.momentum || "--"}}</td>
-      <td class="wrapping-td">
-        <long-paragraph  v-if="props.item.website" :text="props.item.website"></long-paragraph>
-        <p v-else>{{"--"}}</p>
-      </td>
-      <td>{{ props.item.url || "--"}}</td>
-      <td>{{ props.item.vertical || "--" }}</td>
+    <template v-slot:item="{ item, headers }">
+      <tr>
+        <td>
+          <router-link :to="`/companies/${ item.uid}`">{{ item.name }}</router-link>
+        </td>
+        <td>{{ item.totalSignals || "0"}}</td>
+        <td>{{ item.totalScore || "0"}}</td>
+        <td class="wrapping-td">
+          <long-paragraph :text="item.description"></long-paragraph>
+        </td>
+        <td>{{ item.city || "--"}}</td>
+        <td>{{ item.state || "--"}}</td>
+        <td>{{ item.country || "--"}}</td>
+        <td>{{ item.numEmployees || "0"}}</td>
+        <td>{{ item.momentum || "--"}}</td>
+        <td class="wrapping-td">
+          <long-paragraph v-if="item.website" :text="item.website"></long-paragraph>
+          <p v-else>{{"--"}}</p>
+        </td>
+        <td>{{ item.url || "--"}}</td>
+        <td>{{ item.vertical || "--" }}</td>
+      </tr>
     </template>
   </v-data-table>
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
 import _get from "lodash.get";
 import LongParagraph from "./LongParagraph";
 export default {

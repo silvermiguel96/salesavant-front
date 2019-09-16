@@ -2,7 +2,7 @@
   <v-card v-if="company">
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
-      <v-btn flat @click="snack = false">Close</v-btn>
+      <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-card-title>
       <h1 class="display-1">Custom Sales Signals</h1>
@@ -20,7 +20,7 @@
         :headers="headersTable1"
         :items="company.signalGroupAggs"
         class="elevation-1"
-        hide-actions
+        hide-default-footer
       >
         <template v-slot:items="props">
           <td>{{ props.item.groupName || '[empty group name]' }}</td>
@@ -37,7 +37,7 @@
         :headers="headers"
         :items="companySignals"
         class="elevation-1 mt-5"
-        hide-actions
+        hide-default-footer
       >
         <template v-slot:items="props">
           <td>{{ props.item.signal.group || '[empty group name]' }}</td>
@@ -57,16 +57,16 @@
     </v-card-text>
     <!-- Add Signal -->
     <v-card-text>
-      <v-layout row>
-        <v-flex md9 lg10>
+      <v-layout class="ma-2" >
+        <v-flex xs11 md11 lg10>
           <signals-autocomplete
             :placeholder="'Add signal'"
             @change="onSignalAutoCompleteChange"
             @onSearch="onSignalAutoCompleteSearch"
           />
         </v-flex>
-        <v-flex d-flex align-center sm3 lg2>
-          <v-btn class="text-capitalize" small @click="addSignalToCompany" :disabled="!signalId && !currentSignalSearch">
+        <v-flex d-flex align-end xs1 sm2 lg2>
+          <v-btn class="text-capitalize mx-2" small @click="addSignalToCompany" :disabled="!signalId && !currentSignalSearch">
             <v-icon small>add</v-icon>Add
           </v-btn>
         </v-flex>
@@ -76,7 +76,7 @@
     <v-card-text>
       <v-data-table 
       :items="keywords"       
-      :headers="Hkeywords" hide-actions></v-data-table>
+      :headers="Hkeywords" hide-default-footer></v-data-table>
       <template v-slot:items="props">
         <td>{{  props.item }}</td>
       </template>

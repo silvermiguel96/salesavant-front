@@ -1,7 +1,7 @@
 <template>
-  <div>   
-  <!-- Apollo watched Graphql query -->
-  <h2 class="display-1 ma-3">Not categorized</h2>
+  <v-card-text>
+    <!-- Apollo watched Graphql query -->
+    <h2 class="display-1 ma-3">Not categorized</h2>
     <ApolloQuery
       :query="require('./graphql/NewsNotCategorized.gql')"
       :variables="{ companyUid: this.$route.params.companiesUid, first: pagination.rowsPerPage, offset: (pagination.rowsPerPage * pagination.page) - pagination.rowsPerPage, notCategorized: notCategorized}"
@@ -16,42 +16,44 @@
         <!-- Result -->
         <div v-else-if="data" class="result apollo">
           <!-- -<div>{{ JSON.stringify(data) }}</div> -->
-          <v-card-text>
-            <v-data-table
-              :headers="headers"
-              :items="data.companyNews"
-              class="elevation-1"
-              :pagination.sync="pagination"
-              :rows-per-page-items="pagination.rowsPerPageItems"
-              :total-items="totalItems"
-              @updatepagination="updatePagination"
-            >
-              <template v-slot:items="props">
-                <td>{{ props.item.company.name }}</td>
+          <v-data-table
+            :headers="headers"
+            :items="data.companyNews"
+            class="elevation-1"
+            :items-per-page="pagination.rowsPerPage"
+            :footer-props="{
+          'items-per-page-options': pagination.rowsPerPageItems
+        }"
+            :server-items-length="totalItems"
+            @updatepagination="updatePagination"
+          >
+            <template v-slot:item="{ item, headers }">
+              <tr>
+                <td>{{ item.company.name }}</td>
                 <td>
-                  <router-link :to="`/news/${props.item.id}`">
-                    <long-paragraph :text="props.item.title"></long-paragraph>
+                  <router-link :to="`/news/${item.id}`">
+                    <long-paragraph :text="item.title"></long-paragraph>
                   </router-link>
                 </td>
                 <td>
                   <a
-                    :key="`news-external-link${props.item.id || ''}`"
-                    :href="props.item.url || ''"
+                    :key="`news-external-link${item.id || ''}`"
+                    :href="item.url || ''"
                     target="_blank"
                   >visit source</a>
                 </td>
-                <td>{{ props.item.publishDate }}</td>
-                <td>{{ props.item.category || "--"}}</td>
-              </template>
-            </v-data-table>
-          </v-card-text>
+                <td>{{ item.publishDate }}</td>
+                <td>{{ item.category || "--"}}</td>
+              </tr>
+            </template>
+          </v-data-table>
         </div>
 
         <!-- No result -->
         <div v-else class="no-result apollo">Loading...</div>
       </template>
     </ApolloQuery>
-  </div>
+  </v-card-text>
 </template>
 
 <script>

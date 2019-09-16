@@ -4,7 +4,7 @@
       <!-- TODO: agregar modal de busqueda dentro de una playlist -->
       <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
-        <v-btn flat @click="snack = false">Close</v-btn>
+        <v-btn text @click="snack = false">Close</v-btn>
       </v-snackbar>
       <ApolloQuery
         :query="require('./graphql/PlaylistCompanies.gql')"
@@ -26,7 +26,8 @@
             },
             {
               text: 'companies',
-              disabled: true
+              disabled: false,
+              href: '/companies'
             }
           ]"
               divider=">"
@@ -50,8 +51,8 @@
           ]"
               divider=">"
             ></v-breadcrumbs>
-            <v-layout wrap>
-              <v-flex grow xs4 sm2 md1>
+            <v-container fluid d-flex flex-wrap class="ma-1">
+              <v-flex d-flex  xs6 sm3 md2 lg2 xl1 class="ma-1">
                 <create-orb-modal
                   v-if="!jobObs"
                   :loading="isLoading"
@@ -76,7 +77,7 @@
                   @createOrbRefreshJob="createOrbRefreshJob"
                 />
               </v-flex>
-              <v-flex grow xs5 sm3 md1>
+              <v-flex d-flex xs5 sm3 md2 lg2 xl1 class="ma-1">
                 <key-words-modal
                   v-if="!job"
                   :loading="isLoading"
@@ -97,10 +98,10 @@
                   :canModifySignalName="false"
                 />
               </v-flex>
-              <v-flex grow xs3 sm1 md1>
+              <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
                 <playlists-merge :playlist="playlist" />
               </v-flex>
-            </v-layout>
+            </v-container>
             <!-- Loading -->
             <div v-if="loading" class="loading apollo">Loading...</div>
 

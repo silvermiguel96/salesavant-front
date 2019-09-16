@@ -1,8 +1,8 @@
 <template>
   <v-card-text>
-    <v-layout row wrap>
+    <v-layout wrap>
       <v-flex v-for="content in btnexports" :key="content.text">
-        <v-btn small class="text-capitalize" color="success" :to="content.to" :disabled="content.disabled">{{ content.text }}</v-btn>
+        <v-btn small class="text-capitalize ma-1" color="success" :to="content.to" :disabled="content.disabled">{{ content.text }}</v-btn>
       </v-flex>
     </v-layout>
   </v-card-text>

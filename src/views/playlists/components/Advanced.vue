@@ -17,9 +17,9 @@
     ></v-breadcrumbs>
     <v-card class="ma-3">
       <v-card-title>
-        <v-layout row wrap>
+        <v-layout wrap>
           <v-flex v-for="btn in buttons" :key="btn.text">
-            <v-btn class="success">{{ btn.text }}</v-btn>
+            <v-btn class="success ma-2">{{ btn.text }}</v-btn>
           </v-flex>
         </v-layout>
       </v-card-title>
@@ -126,6 +126,7 @@
 export default {
   data() {
     return {
+      desserts: [],
       buttons: [
         { text: "Playlist" },
         { text: "Stats" },

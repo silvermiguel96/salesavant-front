@@ -5,10 +5,10 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
-      <h5 class="subheading font-weight-bold">
+      <h3 class="subheading font-weight-bold">
         Company:
         <span class="body-1">{{ company.name || '[empty name]' }}</span>
-      </h5>
+      </h3>
     </v-card-text>
     <v-card-text>
       <h3 class="subheading font-weight-bold">

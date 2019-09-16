@@ -45,7 +45,7 @@ export default {
       isAuthenticated: false,
       showSearch: false,
       showJobsQueue: false,
-      expand: "companies"
+      expand: 0
     };
   },
   created() {
@@ -57,7 +57,7 @@ export default {
   methods: {
     toggleSearch(data) {
       this.showSearch = data.show;
-      this.expand = data.expand || "companies";
+      this.expand = data.expand || 0 ;
     },
     toggleJobsQueuve(data) {
       this.showJobsQueue = data.show;

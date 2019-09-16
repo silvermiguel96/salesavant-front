@@ -1,95 +1,99 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
-      <v-btn flat @click="snack = false">Close</v-btn>
+      <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-data-table
       :headers="headers"
       :items="items"
+      :items-per-page="pagination.rowsPerPage"
+      :footer-props="{
+      'items-per-page-options': pagination.rowsPerPageItems
+    }"
       class="elevation-1"
-      :pagination.sync="pagination"
-      :rows-per-page-items="pagination.rowsPerPageItems"
       @update:pagination="updatePagination"
-      :total-items="totalItems"
+      :server-items-length="totalItems"
     >
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-      <template v-slot:items="props">
-        <td>{{props.item.id || ""}}</td>
-        <td>
-          <long-paragraph class="wrapping-td" :text="props.item.name"></long-paragraph>
-        </td>
-        <td>
-          <long-paragraph class="wrapping-td" :text="props.item.description"></long-paragraph>
-        </td>
-        <td>
-          <v-edit-dialog
-            :return-value.sync="props.item.group"
-            large
-            lazy
-            persistent
-            @save="save"
-            @cancel="cancel"
-            @open="open"
-            @close="close"
-          >
-            <div>{{ props.item.group || "--" }}</div>
-            <template v-slot:input>
-              <div class="mt-3 title">Update group</div>
-            </template>
-            <template v-slot:input>
-              <v-text-field
-                v-model="props.item.group"
-                label="Edit group"
-                single-line
-                counter
-                autofocus
-                @input="changeData({...props.item})"
-              ></v-text-field>
-            </template>
-          </v-edit-dialog>
-        </td>
-        <td>{{ props.item.category || "" }}</td>
-        <td>
-          <v-edit-dialog
-            :return-value.sync="props.item.defaultScore"
-            large
-            lazy
-            persistent
-            @save="save"
-            @cancel="cancel"
-            @open="open"
-            @close="close"
-          >
-            <div>{{ props.item.defaultScore || "--" }}</div>
-            <template v-slot:input>
-              <div class="mt-3 title">Update Score</div>
-            </template>
-            <template v-slot:input>
-              <v-text-field
-                v-model="props.item.defaultScore"
-                label="Edit score"
-                single-line
-                counter
-                autofocus
-                @input="changeData({...props.item})"
-              ></v-text-field>
-            </template>
-          </v-edit-dialog>
-        </td>
-        <td>{{ props.item.creationTime || "" }}</td>
-        <td>{{ props.item.modificationTime || "" }}</td>
-        <td>
-          <router-link v-if="props.item.id" :to="`/signals/${props.item.id}`">
-            <v-icon size="20">edit</v-icon>
-          </router-link>
-        </td>
-        <td>
-          <v-icon @click="deleteSignal(props.item.id)" color="red lighten-2" size="20">delete</v-icon>
-        </td>
+      <template v-slot:item="{ item, headers }">
+        <tr>
+          <td>{{item.id || ""}}</td>
+          <td>
+            <long-paragraph class="wrapping-td" :text="item.name"></long-paragraph>
+          </td>
+          <td>
+            <long-paragraph class="wrapping-td" :text="item.description"></long-paragraph>
+          </td>
+          <td>
+            <v-edit-dialog
+              :return-value.sync="item.group"
+              large
+              lazy
+              persistent
+              @save="save"
+              @cancel="cancel"
+              @open="open"
+              @close="close"
+            >
+              <div>{{ item.group || "--" }}</div>
+              <template v-slot:input>
+                <div class="mt-3 title">Update group</div>
+              </template>
+              <template v-slot:input>
+                <v-text-field
+                  v-model="item.group"
+                  label="Edit group"
+                  single-line
+                  counter
+                  autofocus
+                  @input="changeData({...item})"
+                ></v-text-field>
+              </template>
+            </v-edit-dialog>
+          </td>
+          <td>{{ item.category || "" }}</td>
+          <td>
+            <v-edit-dialog
+              :return-value.sync="item.defaultScore"
+              large
+              lazy
+              persistent
+              @save="save"
+              @cancel="cancel"
+              @open="open"
+              @close="close"
+            >
+              <div>{{ item.defaultScore || "--" }}</div>
+              <template v-slot:input>
+                <div class="mt-3 title">Update Score</div>
+              </template>
+              <template v-slot:input>
+                <v-text-field
+                  v-model="item.defaultScore"
+                  label="Edit score"
+                  single-line
+                  counter
+                  autofocus
+                  @input="changeData({...item})"
+                ></v-text-field>
+              </template>
+            </v-edit-dialog>
+          </td>
+          <td>{{ item.creationTime || "" }}</td>
+          <td>{{ item.modificationTime || "" }}</td>
+          <td>
+            <router-link v-if="item.id" :to="`/signals/${item.id}`">
+              <v-icon size="20">edit</v-icon>
+            </router-link>
+          </td>
+          <td>
+            <v-icon @click="deleteSignal(item.id)" color="red lighten-2" size="20">delete</v-icon>
+          </td>
+        </tr>
       </template>
     </v-data-table>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -2,7 +2,7 @@
   <v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px" lazy>
       <template v-slot:activator="{ on }">
-        <v-btn color="blue" small class="text-capitalize" dark v-on="on"><v-icon small>add</v-icon>Create signal from search results</v-btn>
+        <v-btn color="blue" small class="text-capitalize ma-2" dark v-on="on"><v-icon small>add</v-icon>Create signal from search results</v-btn>
       </template>
       <v-card>
         <v-card-title>
@@ -35,8 +35,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" :disabled="!isReady" flat @click="save">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" :disabled="!isReady" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

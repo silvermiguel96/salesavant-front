@@ -2,7 +2,7 @@
   <div>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
-      <v-btn flat @click="snack = false">Close</v-btn>
+      <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-form ref="simpleSearchForm" @submit.prevent>
       <v-container grid-list-xs text-xs-center>
@@ -95,7 +95,7 @@
           <v-flex xs6>
             <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
           </v-flex>
-          <v-flex  d-flex align-center  xs6>
+          <v-flex  d-flex align-end justify-center xs6>
             <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
               <v-icon small>search</v-icon>
               {{" Companies Search"}}

@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <v-card>
     <div class="apollo-example">
       <v-breadcrumbs
         v-if="!!isFiltered"
@@ -22,7 +23,7 @@
         :items="[
         {
           text: 'Companies',
-          disabled: false,
+          disabled: true,
           href: '/companies'
         }
       ]"
@@ -30,7 +31,7 @@
       ></v-breadcrumbs>
       <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
-        <v-btn flat @click="snack = false">Close</v-btn>
+        <v-btn text @click="snack = false">Close</v-btn>
       </v-snackbar>
       <h1 class="ml-2" v-if="!!isFiltered">You're currently filtering by</h1>
       <ul class="ml-2" v-if="!!isFiltered">
@@ -70,7 +71,7 @@
         >Signal group name: {{this.$route.query.signalGroup}}</li>
       </ul>
       <div class="calltoactions">
-        <v-btn color="primary" small class="text-capitalize" dark @click="toggleSearch">
+        <v-btn color="primary" small class="text-capitalize ma-2" dark @click="toggleSearch">
           <v-icon small>search</v-icon>
           search
         </v-btn>
@@ -185,6 +186,7 @@
         </ApolloQuery>
       </template>
     </div>
+    </v-card>
   </v-container>
 </template>
 
@@ -248,7 +250,7 @@ export default {
     toggleSearch() {
       this.$emit("toggleSearch", {
         show: !this.$props.showSearch,
-        expand: "companies"
+        expand: 0
       });
     },
     checkIfIsFiltered() {

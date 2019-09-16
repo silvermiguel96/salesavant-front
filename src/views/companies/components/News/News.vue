@@ -9,28 +9,32 @@
       <v-data-table
         :headers="headers"
         :items="companyNews"
+        :items-per-page="pagination.rowsPerPage"
+        :footer-props="{
+          'items-per-page-options': pagination.rowsPerPageItems
+        }"
         class="elevation-1"
-        :pagination.sync="pagination"
-        :rows-per-page-items="pagination.rowsPerPageItems"
-        :total-items="totalItems"
         @updatepagination="updatePagination"
+        :server-items-length="totalItems"
       >
-        <template v-slot:items="props">
-          <td>{{ props.item.company.name }}</td>
-          <td>
-            <router-link :to="`/news/${props.item.id}`">
-              <long-paragraph :text="props.item.title"></long-paragraph>
-            </router-link>
-          </td>
-          <td>
-            <a
-              :key="`news-external-link${props.item.id || ''}`"
-              :href="props.item.url || ''"
-              target="_blank"
-            >visit source</a>
-          </td>
-          <td>{{ props.item.publishDate }}</td>
-          <td>{{ props.item.category || "--"}}</td>
+        <template v-slot:item="{ item, headers }">
+          <tr>
+            <td>{{ props.item.company.name }}</td>
+            <td>
+              <router-link :to="`/news/${props.item.id}`">
+                <long-paragraph :text="props.item.title"></long-paragraph>
+              </router-link>
+            </td>
+            <td>
+              <a
+                :key="`news-external-link${props.item.id || ''}`"
+                :href="props.item.url || ''"
+                target="_blank"
+              >visit source</a>
+            </td>
+            <td>{{ props.item.publishDate }}</td>
+            <td>{{ props.item.category || "--"}}</td>
+          </tr>
         </template>
       </v-data-table>
     </v-card-text>
