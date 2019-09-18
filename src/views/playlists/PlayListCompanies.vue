@@ -71,11 +71,11 @@
                 <orb-job-modal
                   v-if="!!showJobModalOrb"
                   :job="jobObsRefresh"
-                  @refreshJobOrb="refreshJobForAll()"
+                  @refreshJobOrb="refreshJobForAll(jobObsRefresh.jobUid ,'refresh_orb')"
                   :loading="loadingModalOrb"
                   :dialog="showJobModalOrb"
                   @onClose="closeOrbJobModal"
-                  @createOrbRefreshJob="creationJobs('refreshJob')"
+                  @createOrbRefreshJob="creationJobs('refresh_orb')"
                 />
               </v-flex>
               <v-flex d-flex xs5 sm3 md2 lg2 xl1 class="ma-1">
@@ -97,7 +97,7 @@
                 <job-modal
                   v-if="!!showJobModal"
                   :job="jobGetKeywords"
-                  @refreshJob="refreshJobForAll('extract_keywords')"
+                  @refreshJob="refreshJobForAll(jobGetKeywords.jobUid ,'extract_keywords')"
                   :loading="loadingModal"
                   :dialog="showJobModal"
                   @onClose="closeJobModal"
@@ -362,7 +362,7 @@ export default {
         console.log("jobGetKeywords", this.jobGetKeywords);
       }
     },
-    async refreshJobForAll(jobId = null) {
+    async refreshJobForAll(jobId, type) {
       console.log('type refreshJobForAll', type);
       const playlistId = _get(this.$route, "params.playlistId", null);
       this.loadingModal = true;
@@ -386,6 +386,7 @@ export default {
           return;
         }
         const jsonResult = await result.json();
+
         console.log("jsonResult", jsonResult);
         let updatedJob = {};
         if (localStorage[jobId]) {
