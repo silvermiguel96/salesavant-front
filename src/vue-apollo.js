@@ -12,7 +12,7 @@ Vue.use(VueApollo);
 export const AUTH_TOKEN = "apollo-token";
 
 // Http endpoint
-const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4001/api";
+const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/api";
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||
