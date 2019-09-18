@@ -65,7 +65,7 @@
                   class="deep-purple darken-3 text-capitalize"
                   small
                 >
-                  View results
+                  View Orbs
                   <v-icon right small>check</v-icon>
                 </v-btn>
                 <orb-job-modal
