@@ -7,27 +7,38 @@
       </v-snackbar>
       <template>
         <v-btn class="warning text-capitalize" small @click.prevent="clearAll">
-          <v-icon small>clear_all</v-icon>
-          clear all
+          <v-icon small>clear_all</v-icon>clear all
         </v-btn>
         <v-data-table :headers="headers" :items="jobs" class="elevation-2 mt-2">
-          <template v-slot:items="props">
-            <td>{{ props.item.jobUid }}</td>
-            <td>{{ props.item.type }}</td>
-            <td>{{ props.item.entityId }}</td>
-            <td>{{ props.item.progress }}%</td>
-            <td>{{ props.item.status }}</td>
-            <td>{{ props.item.date }}</td>
-            <td>
-              <v-icon @click="deleteItem(props.item.jobUid)">delete</v-icon>
-              <v-icon @click="verifyJobStatus(props.item.jobUid)">refresh</v-icon>
-            </td>
-            <td v-if="props.item.status === 'finished'">
-              <a :href="`/playlists/${props.item.entityId}/companies`">view results</a>
-            </td>
+          <template v-slot:item="{ item, header}">
+            <tr>
+              <td>{{ item.jobUid }}</td>
+              <td>{{ item.type }}</td>
+              <td>{{ item.entityId }}</td>
+              <td>{{ item.progress }}%</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.date }}</td>
+              <td>
+                <v-icon @click="deleteItem( item.jobUid)">delete</v-icon>
+                <v-icon @click="verifyJobStatus(item.jobUid)">refresh</v-icon>
+              </td>
+              <td v-if="!!item.status === 'finished'">
+                <v-btn class="success text--white" dark>
+                  <a
+                    class="white--text"
+                    :href="`/playlists/${ item.entityId}/companies`"
+                  >view results</a>
+                </v-btn>
+              </td>
+              <td v-else>
+                <v-btn loading></v-btn>
+              </td>
+            </tr>
           </template>
           <template v-slot:no-data>
-            <v-btn color="primary ma-3" small class="text-capitalize" @click="loadJobs"><v-icon small>settings_backup_restore</v-icon>Reload Jobs</v-btn>
+            <v-btn color="primary ma-3" small class="text-capitalize" @click="loadJobs">
+              <v-icon small>settings_backup_restore</v-icon>Reload Jobs
+            </v-btn>
           </template>
         </v-data-table>
       </template>
@@ -55,7 +66,7 @@ export default {
       jobs: [],
       snack: false,
       snackColor: "",
-      snackText: "",
+      snackText: ""
     };
   },
   methods: {
@@ -70,7 +81,7 @@ export default {
     },
     async verifyJobStatus(jobId = null) {
       if (!jobId) {
-        this.snack = true
+        this.snack = true;
         this.snackColor = "error";
         this.snackText = "Oops! I can't read this job id";
         return;
@@ -124,4 +135,7 @@ export default {
 </script>
 
 <style>
+a {
+  text-decoration: none;
+}
 </style>
