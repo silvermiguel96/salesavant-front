@@ -56,7 +56,7 @@
                 <create-orb-modal
                   v-if="!jobObsRefresh"
                   :loading="isLoading"
-                  @createOrbRefreshJob="creationJobs('refresh_orb')"
+                  @createOrbRefreshJob="createJob('refresh_orb')"
                 />
                 <v-btn
                   dark
@@ -75,14 +75,14 @@
                   :loading="loadingModalOrb"
                   :dialog="showJobModalOrb"
                   @onClose="closeOrbJobModal"
-                  @createOrbRefreshJob="creationJobs('refresh_orb')"
+                  @createOrbRefreshJob="createJob('refresh_orb')"
                 />
               </v-flex>
               <v-flex d-flex xs5 sm3 md2 lg2 xl1 class="ma-1">
                 <key-words-modal
                   v-if="!jobGetKeywords"
                   :loading="isLoading"
-                  @createKeywordsJob="creationJobs('extract_keywords')"
+                  @createKeywordsJob="createJob('extract_keywords')"
                 />
                 <v-btn
                   v-if="!!jobGetKeywords"
@@ -101,7 +101,7 @@
                   :loading="loadingModal"
                   :dialog="showJobModal"
                   @onClose="closeJobModal"
-                  @createKeywordsJob="creationJobs('extract_keywords')"
+                  @createKeywordsJob="createJob('extract_keywords')"
                   :canModifySignalName="false"
                 />
               </v-flex>
@@ -224,7 +224,7 @@ export default {
     closeOrbJobModal() {
       this.showJobModalOrb = false;
     },
-    async creationJobs(type) {
+    async createJob(type) {
       console.log("Empieza la creacion de un  nuevos Jobs");
       console.log("type", type);
       this.isLoading = true;
@@ -245,7 +245,7 @@ export default {
         return;
       }
       // Creando el Json con el nombre del
-      const url = "/jobs";
+      const url = "http://localhost:4000/jobs";
       const data = {
         job_name: type,
         playlist_uid: playlistId
@@ -374,7 +374,7 @@ export default {
         return;
       }
       try {
-        const result = await fetch(`/jobs/${jobId}`, {
+        const result = await fetch(`http://localhost:4000/jobs/${jobId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `JWT ${localStorage["apollo-token"]}`

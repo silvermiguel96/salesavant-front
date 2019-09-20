@@ -3,7 +3,7 @@
     <v-card>
     <div class="apollo-example">
       <v-breadcrumbs
-        v-if="!!isFiltered"
+        v-if="!!this.$route.query && !!this.$route.query.searchType"
         :items="[
         {
           text: 'Companies',
@@ -33,7 +33,7 @@
         {{ snackText }}
         <v-btn text @click="snack = false">Close</v-btn>
       </v-snackbar>
-      <h1 class="ml-2" v-if="!!isFiltered">You're currently filtering by</h1>
+      <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
       <ul class="ml-2" v-if="!!isFiltered">
         <li
           v-if="this.$route.query.simpleSearch"

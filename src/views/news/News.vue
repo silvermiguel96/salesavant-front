@@ -29,27 +29,8 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <h1
-          class="ml-2"
-          v-if="!!this.$route.query && !!this.$route.query.searchType"
-        >You're currently filtering by</h1>
-        <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
-          <li
-            v-if="this.$route.query.simpleSearch"
-          >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
-          <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
-          <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
-          <li v-if="this.$route.query.website">Company website: {{this.$route.query.website}}</li>
-          <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
-          <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
-          <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
-          <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
-          <li
-            v-if="this.$route.query.lessThanEmployees"
-          >Companies with less than {{this.$route.query.lessThanEmployees}} employees</li>
-          <li
-            v-if="this.$route.query.moreThanEmployees"
-          >Companies with more than {{this.$route.query.moreThanEmployees}} employees</li>
+        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
+        <ul v-if="!!isFiltered">
           <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
         </ul>
 
@@ -145,7 +126,8 @@ export default {
         state: "",
         city: ""
       },
-      typeButton: ""
+      typeButton: "",
+      isFiltered: false
     };
   },
   components: { NewsTable },
@@ -165,61 +147,35 @@ export default {
       this.sortBy = sortBy;
       this.totalItems = 5;
     },
-    changeFieldSerch(newValue) {
-      this.searchField = newValue;
-    },
-    changeFieldSerchAdvanceName(newValue) {
-      this.searchAdvance.name = newValue;
-    },
-    changeFieldSerchAdvanceCountry(newValue) {
-      this.searchAdvance.country = newValue;
-    },
-    changeFieldSerchAdvanceLessThanEmployees(newValue) {
-      this.searchAdvance.lessThanEmployees = newValue;
-    },
-    changeFieldSerchAdvanceMoreThanEmployees(newValue) {
-      this.searchAdvance.moreThanEmployees = newValue;
-    },
-    changeFieldSerchAdvanceStatus(newValue) {
-      this.searchAdvance.status = newValue;
-    },
-    changeFieldSerchAdvanceRegion(newValue) {
-      this.searchAdvance.region = newValue;
-    },
-    changeFieldSerchAdvanceState(newValue) {
-      this.searchAdvance.state = newValue;
-    },
-    changeFieldSerchAdvanceCity(newValue) {
-      this.searchAdvance.city = newValue;
-    },
-    typeBtn(newValue) {
-      this.typeButton = newValue;
-    },
     toggleSearch() {
       this.$emit("toggleSearch", {
         show: !this.$props.showSearch,
         expand: 1
       });
+    },
+    checkIfIsFiltered() {
+      let result = false;
+      for (let key in this.$route.query) {
+        console.log(key);
+        if (!!this.$route.query[key] && key !== "searchType") {
+          result = true;
+          break;
+        }
+      }
+      return result;
     }
   },
   props: {
     showSearch: { type: Boolean, default: false }
+  },
+  beforeMount() {
+    this.isFiltered = this.checkIfIsFiltered();
+  },
+  beforeUpdate() {
+    this.isFiltered = this.checkIfIsFiltered();
+  },
+  updated() {
+    this.isFiltered = this.checkIfIsFiltered();
   }
-  // beforeCreate() {
-  //   console.log("beforeCreate", "this.$router", this.$router);
-  //   console.log("beforeCreate", "this.$route", this.$route);
-  // },
-  // created() {
-  //   console.log("created", "this.$router", this.$router);
-  //   console.log("created", "this.$route", this.$route);
-  // },
-  // beforeUpdate() {
-  //   console.log("beforeUpdate", "this.$router", this.$router);
-  //   console.log("beforeUpdate", "this.$route", this.$route);
-  // },
-  // updated() {
-  //   console.log("updated", "this.$router", this.$router);
-  //   console.log("updated", "this.$route", this.$route);
-  // }
 };
 </script>
