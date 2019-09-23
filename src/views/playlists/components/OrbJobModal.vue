@@ -2,7 +2,7 @@
   <v-layout row>
     <v-dialog v-model="dialog" persistent max-width="1000">
       <v-card>
-        <v-card-title class="headline">Orb</v-card-title>
+        <v-card-title class="headline">Orb job</v-card-title>
         <v-card-text>
           <div class="text-xs-center">
             <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
@@ -18,9 +18,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="error" text @click="onClose">Close</v-btn>
           <v-btn color="green" text @click="createNewJob">Create new ORB</v-btn>
           <v-btn color="green" text @click="refreshJobOrb">Refresh results</v-btn>
-          <v-btn color="error" text @click="onClose">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
