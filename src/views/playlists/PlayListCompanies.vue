@@ -72,7 +72,7 @@
                   v-if="!!showJobModalOrb"
                   :job="jobObsRefresh"
                   @refreshJobOrb="refreshJobForAll(jobObsRefresh.jobUid ,'refresh_orb')"
-                  :loading="loadingModalOrb"
+                  :loading="loadingModal"
                   :dialog="showJobModalOrb"
                   @onClose="closeOrbJobModal"
                   @createOrbRefreshJob="createJob('refresh_orb')"
@@ -146,7 +146,6 @@ import OrbJobModal from "./components/OrbJobModal.vue";
 
 import _get from "lodash.get";
 import gql from "graphql-tag";
-import { type } from "os";
 export default {
   data() {
     return {
@@ -159,7 +158,6 @@ export default {
       jobGetKeywords: null,
       jobObsRefresh: null,
       loadingModal: false,
-      loadingModalOrb: false,
       isLoading: false,
       showJobModalOrb: false,
       showJobModal: false,
@@ -362,65 +360,83 @@ export default {
         console.log("jobGetKeywords", this.jobGetKeywords);
       }
     },
-    async refreshJobForAll(jobId, type) {
-      console.log('type refreshJobForAll', type);
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      this.loadingModal = true;
-      console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
-      if (!jobId) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops! I can't read this job id";
-        return;
-      }
-      try {
-        const result = await fetch(`http://localhost:4000/jobs/${jobId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `JWT ${localStorage["apollo-token"]}`
-          }
-        });
-        console.log("result.status", result.status);
-        if (result.status === 404) {
-          this.loadingModal = true;
+    refreshJobForAll(jobId, type) {
+      const result = setInterval(() => {
+        this.loadingModal = true;
+        console.log("type refreshJobForAll", type);
+        const playlistId = _get(this.$route, "params.playlistId", null);
+        console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
+        if (!jobId) {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Oops! I can't read this job id";
           return;
         }
-        const jsonResult = await result.json();
+        try {
+          function status(response) {
+            if (response.status >= 200 && response.status < 300) {
+              return Promise.resolve(response);
+            } else {
+              return Promise.reject(new Error(response.statusText));
+            }
+          }
 
-        console.log("jsonResult", jsonResult);
-        let updatedJob = {};
-        if (localStorage[jobId]) {
-          updatedJob = JSON.parse(localStorage[jobId]);
-          updatedJob = {
-            ...updatedJob,
-            status: _get(jsonResult, "status", null),
-            progress: _get(jsonResult, "progressPercentage", null),
-            results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
-          };
-        } else {
-          updatedJob = {
-            entityId: playlistId,
-            type: "extract_keywords",
-            status: _get(jsonResult, "status", null),
-            progress: _get(jsonResult, "progressPercentage", null),
-            results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
-          };
-        }
+          fetch(`http://localhost:4000/jobs/${jobId}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `JWT ${localStorage["apollo-token"]}`
+            }
+          })
+            // .then(status)
+            .then(response => {
+              return response.json();
+            })
+            .then(jsonResult => {
+              console.log("Request succeeded with JSON response", jsonResult);
+              console.log("jsonResult.status", jsonResult.status);
+              if (jsonResult.status === 404) {
+                this.loadingModal = true;
+              }
+              let updatedJob = {};
+              if (localStorage[jobId]) {
+                updatedJob = JSON.parse(localStorage[jobId]);
+                updatedJob = {
+                  ...updatedJob,
+                  status: _get(jsonResult, "status", null),
+                  progress: _get(jsonResult, "progressPercentage", null),
+                  results: _get(jsonResult, "payload.keywords", []),
+                  date: new Date()
+                };
+              } else {
+                updatedJob = {
+                  entityId: playlistId,
+                  type: type,
+                  status: _get(jsonResult, "status", null),
+                  progress: _get(jsonResult, "progressPercentage", null),
+                  results: _get(jsonResult, "payload.keywords", []),
+                  date: new Date()
+                };
+              }
 
-        console.log("updatedJob", updatedJob);
-        localStorage[jobId] = JSON.stringify(updatedJob);
-        this.verifyJobsAll(type);
-        if (updatedJob.status === "finished") {
-          this.loadingModal = false;
+              console.log("updatedJob", updatedJob);
+              localStorage[jobId] = JSON.stringify(updatedJob);
+              if (updatedJob.status === "finished") {
+                clearInterval(result);
+                this.loadingModal = false;
+              }
+              this.verifyJobsAll(type);
+              console.log("jsonResult", jsonResult);
+            })
+            .catch(function(error) {
+              console.log("Request failed", error);
+            });
+        } catch (error) {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Oops! we did something wrong!";
+          console.log("error refreshing job", error);
         }
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops! we did something wrong!";
-        console.log("error refreshing job", error);
-      }
+      }, 3000);
     }
   },
   beforeMount() {

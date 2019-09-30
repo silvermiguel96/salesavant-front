@@ -14,7 +14,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="success" text @click="createOrbRefreshJob">Start process</v-btn>
-          <v-btn color="error" text @click="dialogOrb = false">Cancel, I will do it in other time</v-btn>
+          <v-btn color="error" text @click="dialogOrb = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
