@@ -65,8 +65,8 @@
                   class="deep-purple darken-3 text-capitalize"
                   small
                 >
-                  View Orbs
-                  <v-icon right small>check</v-icon>
+                  <v-icon small>check</v-icon>
+                  View OBS
                 </v-btn>
                 <orb-job-modal
                   v-if="!!showJobModalOrb"
@@ -91,8 +91,8 @@
                   dark
                   small
                 >
+                  <v-icon small>check</v-icon>
                   View keywords
-                  <v-icon right small>check</v-icon>
                 </v-btn>
                 <job-modal
                   v-if="!!showJobModal"

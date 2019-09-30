@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-dialog v-model="dialog" persistent max-width="500">
+    <v-dialog v-model="dialog" max-width="500">
       <template v-slot:activator="{ on }">
         <v-btn color="success" dark small class="text-capitalize" v-on="on"><v-icon small>find_replace</v-icon>get keywords
         </v-btn>
@@ -14,8 +14,8 @@
         <v-card-text>You're about to start a process to get this playlist keywords, this process can have several time depending on the data amount or the already queued processes.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="success" text @click="createKeywordsJob">Start process</v-btn>
-          <v-btn color="error" text @click="dialog = false">Cancel, I will do it in other time</v-btn>
+          <v-btn color="error" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="success" text @click="createKeywordsJob">Start </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

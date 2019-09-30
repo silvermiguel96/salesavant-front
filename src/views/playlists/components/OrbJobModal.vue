@@ -2,19 +2,18 @@
   <v-layout row>
     <v-dialog v-model="dialog" persistent max-width="1000">
       <v-card>
-        <v-card-title class="headline">Orb job</v-card-title>
+        <v-card-title class="headline">OBS job</v-card-title>
         <v-card-text>
-          <div class="text-xs-center">
-            <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
+          <div class="text-center">
+            <v-progress-circular v-show="loading" :size="60" indeterminate color="primary"></v-progress-circular>
           </div>
-          <div>
-            <ul>
-              <li>Job: {{job.jobUid || ""}}</li>
-              <li>Status: {{job.status}}</li>
-              <li>Type: {{job.type}}</li>
-              <li>Progress: {{job.progress}}%</li>
-            </ul>
-          </div>
+          <p>
+            <strong>Status:</strong>
+            {{job.status}}
+          </p>
+          <v-progress-linear v-model="job.progress" height="25" class="white--text" reactive>
+            <strong>{{ Math.ceil(job.progress) }}%</strong>
+          </v-progress-linear>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -40,13 +39,13 @@ export default {
         { text: "Total", align: "left", sortable: false },
         { text: "Score", align: "left", sortable: false },
         { text: "Actions", align: "left", sortable: false }
-      ],
+      ]
     };
   },
   props: {
     job: { type: Object, required: true },
     loading: { type: Boolean, default: false },
-    dialog: { type: Boolean, default: false },
+    dialog: { type: Boolean, default: false }
   },
   methods: {
     onClose() {
