@@ -16,7 +16,7 @@
           <v-toolbar-title>Search</v-toolbar-title>
         </v-toolbar>
         <v-expansion-panels accordion :value="expand">
-          <v-expansion-panel >
+          <v-expansion-panel>
             <v-expansion-panel-header>Companies</v-expansion-panel-header>
             <v-expansion-panel-content>
               <companies-search
@@ -26,7 +26,7 @@
               />
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel >
+          <v-expansion-panel>
             <v-expansion-panel-header>News</v-expansion-panel-header>
             <v-expansion-panel-content>
               <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
@@ -46,7 +46,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header>Signals</v-expansion-panel-header>
             <v-expansion-panel-content>
-                <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
+              <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -101,14 +101,12 @@ export default {
       signalsSearchObject: { ...defaultSignalsSearchObject },
       searchType: null,
       news: "",
-      playlistsSearchObject: {
-        defaultplaylistsSearchObject
-      }
+      playlistsSearchObject: { ...defaultplaylistsSearchObject }
     };
   },
   props: {
     show: { type: Boolean, default: false },
-    expand: { type: Number , default: 0 }
+    expand: { type: Number, default: 0 }
   },
   components: {
     CompaniesSearch,

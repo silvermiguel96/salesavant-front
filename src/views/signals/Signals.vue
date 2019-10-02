@@ -33,13 +33,11 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <h1
-          v-if="!!this.$route.query && !!this.$route.query.searchType"
-        >You're currently filtering by</h1>
-        <ul v-if="!!this.$route.query && !!this.$route.query.searchType">
+        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
+        <ul class="ml-2" v-if="!!isFiltered">
           <li
             v-if="this.$route.query.search"
-          >Companies with the words {{this.$route.query.search}} in the name or description</li>
+          >Companies with the words "{{this.$route.query.search}}" in the name or description</li>
           <li v-if="this.$route.query.group">Company group: {{this.$route.query.group}}</li>
           <li v-if="this.$route.query.category">Company category: {{this.$route.query.category}}</li>
         </ul>
@@ -147,7 +145,8 @@ export default {
       rowsPerPage: 5,
       sortBy: "",
       totalItems: 10,
-      signalId: ""
+      signalId: "",
+      isFiltered: false
     };
   },
   components: { SignalsTable },
@@ -206,26 +205,30 @@ export default {
         show: !this.$props.showSearch,
         expand: 3
       });
+    },
+    checkIfIsFiltered() {
+      let result = false;
+      for (let key in this.$route.query) {
+        console.log("key", key);
+        if (!!this.$route.query[key] && key !== "searchType") {
+          result = true;
+          break;
+        }
+      }
+      return result;
     }
   },
   props: {
     showSearch: { type: Boolean, default: false }
+  },
+  beforeMount() {
+    this.isFiltered = this.checkIfIsFiltered();
+  },
+  beforeUpdate() {
+    this.isFiltered = this.checkIfIsFiltered();
+  },
+  updated() {
+    this.isFiltered = this.checkIfIsFiltered();
   }
-  // beforeCreate() {
-  //   console.log("beforeCreate", "this.$router", this.$router);
-  //   console.log("beforeCreate", "this.$route", this.$route);
-  // },
-  // created() {
-  //   console.log("created", "this.$router", this.$router);
-  //   console.log("created", "this.$route", this.$route);
-  // },
-  // beforeUpdate() {
-  //   console.log("beforeUpdate", "this.$router", this.$router);
-  //   console.log("beforeUpdate", "this.$route", this.$route);
-  // },
-  // updated() {
-  //   console.log("updated", "this.$router", this.$router);
-  //   console.log("updated", "this.$route", this.$route);
-  // }
 };
 </script>

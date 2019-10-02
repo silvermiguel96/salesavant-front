@@ -7,12 +7,12 @@
     <v-dialog v-model="dialogMerge" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn class="deep-purple darken-3 text-capitalize" dark small v-on="on">
-          <v-icon small left>compare_arrows</v-icon>merge
+          <v-icon small >compare_arrows</v-icon>merge
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline">Merge playlist "{{_get(playlist, 'name', '[empty name]')}}" with:</span>
+        <v-card-title class="headline">
+          Merge playlist "{{_get(playlist, 'name', '[empty name]')}}" with:
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -35,8 +35,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="white" small class="text-capitalize" @click="dialogMerge = false">Close</v-btn>
-          <v-btn color="green" small class="text-capitalize" dark @click="save">Save</v-btn>
+          <v-btn color="error" text small class="text-capitalize" @click="dialogMerge = false">Close</v-btn>
+          <v-btn color="green" text small class="text-capitalize" dark @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

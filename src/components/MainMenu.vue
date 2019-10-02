@@ -18,9 +18,6 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     </v-toolbar>
     <v-navigation-drawer right app v-model="drawer" class="primary">
-      <v-row align="center" justify="center">
-        <v-img :src="require('../assets/salesavant_header.png')" max-height="200" max-width="240" class="ma-2" alt="salesavant.png"></v-img>
-      </v-row>
       <v-list>
         <v-list-item-group>
           <v-list-item v-for="link in links" :key="link.text" :to="link.route" @click="link.click">

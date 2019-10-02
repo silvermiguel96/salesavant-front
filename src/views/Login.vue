@@ -68,7 +68,7 @@ export default {
           "Content-Type": "application/json"
         })
       };
-      const result = await fetch("http://localhost:4001/auth", fecthDetails)
+      const result = await fetch("http://localhost:4000/auth", fecthDetails)
         .then(res => res.json())
         .catch(error => console.error("Error:", error))
       console.log('token', result)

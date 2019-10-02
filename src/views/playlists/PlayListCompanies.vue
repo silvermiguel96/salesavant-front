@@ -52,49 +52,56 @@
               divider=">"
             ></v-breadcrumbs>
             <v-container fluid d-flex flex-wrap class="ma-1">
-              <v-flex d-flex  xs6 sm3 md2 lg2 xl1 class="ma-1">
+              <v-flex d-flex xs6 sm3 md2 lg2 xl1 class="ma-1">
                 <create-orb-modal
-                  v-if="!jobObs"
+                  v-if="!jobObsRefresh"
                   :loading="isLoading"
-                  @createOrbRefreshJob="createOrbRefreshJob"
+                  @createOrbRefreshJob="createJob('refresh_orb')"
                 />
                 <v-btn
                   dark
-                  v-if="!!jobObs"
+                  v-if="!!jobObsRefresh"
                   @click="showJobModalOrb = !showJobModalOrb"
-                  color="purple"
+                  class="deep-purple darken-3 text-capitalize"
+                  small
                 >
-                  View results
-                  <v-icon right small>check</v-icon>
+                  <v-icon small>check</v-icon>
+                  View ORB
                 </v-btn>
                 <orb-job-modal
                   v-if="!!showJobModalOrb"
-                  :job="jobObs"
-                  @refreshJobOrb="refreshJobOrb"
-                  :loading="loadingModalOrb"
+                  :job="jobObsRefresh"
+                  @refreshJobOrb="refreshJobForAll(jobObsRefresh.jobUid ,'refresh_orb')"
+                  :loading="loadingModal"
                   :dialog="showJobModalOrb"
                   @onClose="closeOrbJobModal"
-                  @createOrbRefreshJob="createOrbRefreshJob"
+                  @createOrbRefreshJob="createJob('refresh_orb')"
                 />
               </v-flex>
               <v-flex d-flex xs5 sm3 md2 lg2 xl1 class="ma-1">
                 <key-words-modal
-                  v-if="!job"
+                  v-if="!jobGetKeywords"
                   :loading="isLoading"
-                  @createKeywordsJob="createKeywordsJob"
+                  @createKeywordsJob="createJob('extract_keywords')"
                 />
-                <v-btn dark v-if="!!job" @click="showJobModal = !showJobModal" color="purple">
+                <v-btn
+                  v-if="!!jobGetKeywords"
+                  @click="showJobModal = !showJobModal"
+                  class="deep-purple darken-3 text-capitalize"
+                  dark
+                  small
+                >
+                  <v-icon small>check</v-icon>
                   View keywords
-                  <v-icon right small>check</v-icon>
                 </v-btn>
                 <job-modal
                   v-if="!!showJobModal"
-                  :job="job"
-                  @refreshJob="refreshJob"
+                  :job="jobGetKeywords"
+                  @refreshJob="refreshJobForAll(jobGetKeywords.jobUid ,'extract_keywords')"
                   :loading="loadingModal"
                   :dialog="showJobModal"
                   @onClose="closeJobModal"
-                  @createKeywordsJob="createKeywordsJob"
+                  @createKeywordsJob="createJob('extract_keywords')"
                   :canModifySignalName="false"
                 />
               </v-flex>
@@ -142,16 +149,15 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      name: '',
+      name: "",
       descending: false,
       page: 1,
       rowsPerPage: 25,
       sortBy: "",
       totalItems: 10,
-      job: null,
-      jobObs: null,
+      jobGetKeywords: null,
+      jobObsRefresh: null,
       loadingModal: false,
-      loadingModalOrb: false,
       isLoading: false,
       showJobModalOrb: false,
       showJobModal: false,
@@ -216,155 +222,9 @@ export default {
     closeOrbJobModal() {
       this.showJobModalOrb = false;
     },
-    verifyJobsOrb(type) {
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      const jobs = Object.keys(localStorage)
-        .filter(key => key.indexOf("job") > -1)
-        .map(key => JSON.parse(localStorage[key]));
-
-      console.log("jobsOrb", jobs);
+    async createJob(type) {
+      console.log("Empieza la creacion de un  nuevos Jobs");
       console.log("type", type);
-      const existingJob = jobs.find(element => {
-        return element.entityId === playlistId && element.type === type;
-      });
-
-      console.log("existingJobForOrb", existingJob);
-      if (existingJob) {
-        this.jobObs = existingJob;
-      } else {
-        this.jobObs = null;
-      }
-      console.log("jobObs", this.jobObs);
-    },
-    verifyJobs(type) {
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      const jobs = Object.keys(localStorage)
-        .filter(key => key.indexOf("job") > -1)
-        .map(key => JSON.parse(localStorage[key]));
-
-      console.log("jobs", jobs);
-      const existingJob = jobs.find(element => {
-        return element.entityId === playlistId && element.type === type;
-      });
-
-      console.log("existingJob", existingJob);
-      if (existingJob) {
-        this.job = existingJob;
-      } else {
-        this.job = null;
-      }
-    },
-    async refreshJobOrb(jobId = null) {
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      this.loadingModalOrb = true;
-      console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
-      if (!jobId) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops! I can't read this job id";
-        return;
-      }
-      try {
-        const result = await fetch(`/jobs/${jobId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage["apollo-token"]}`
-          }
-        });
-        console.log("result.status", result.status);
-        const jsonResult = await result.json();
-        console.log("jsonResultObs", jsonResult);
-        let updatedJob = {};
-        if (localStorage[jobId]) {
-          updatedJob = JSON.parse(localStorage[jobId]);
-          updatedJob = {
-            ...updatedJob,
-            status: _get(jsonResult, "status", null),
-            progress: _get(jsonResult, "progressPercentage", null),
-            date: new Date()
-          };
-        } else {
-          updatedJob = {
-            entityId: playlistId,
-            type: "refresh_orb",
-            status: _get(jsonResult, "status", null),
-            progress: _get(jsonResult, "progressPercentage", null),
-            date: new Date()
-          };
-        }
-
-        console.log("updatedJob", updatedJob);
-        localStorage[jobId] = JSON.stringify(updatedJob);
-        this.verifyJobsOrb("refresh_orb");
-        if (updatedJob.status === "finished") {
-          this.loadingModalOrb = false;
-        }
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops! we did something wrong!";
-        console.log("error refreshing job", error);
-      }
-    },
-    async refreshJob(jobId = null) {
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      this.loadingModal = true;
-      console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
-      if (!jobId) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops! I can't read this job id";
-        return;
-      }
-      try {
-        const result = await fetch(`/jobs/${jobId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage["apollo-token"]}`
-          }
-        });
-        console.log("result.status", result.status);
-        if (result.status === 404) {
-          this.loadingModal = true;
-          return;
-        }
-        const jsonResult = await result.json();
-        console.log("jsonResult", jsonResult);
-        let updatedJob = {};
-        if (localStorage[jobId]) {
-          updatedJob = JSON.parse(localStorage[jobId]);
-          updatedJob = {
-            ...updatedJob,
-            status: _get(jsonResult, "status", null),
-            progress: _get(jsonResult, "progressPercentage", null),
-            results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
-          };
-        } else {
-          updatedJob = {
-            entityId: playlistId,
-            type: "extract_keywords",
-            status: _get(jsonResult, "status", null),
-            progress: _get(jsonResult, "progressPercentage", null),
-            results: _get(jsonResult, "payload.keywords", []),
-            date: new Date()
-          };
-        }
-
-        console.log("updatedJob", updatedJob);
-        localStorage[jobId] = JSON.stringify(updatedJob);
-        this.verifyJobs("extract_keywords");
-        if (updatedJob.status === "finished") {
-          this.loadingModal = false;
-        }
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops! we did something wrong!";
-        console.log("error refreshing job", error);
-      }
-    },
-    async createKeywordsJob() {
       this.isLoading = true;
       console.log("this.$route.params", this.$route.params);
       const playlistId = _get(this.$route, "params.playlistId", null);
@@ -375,108 +235,32 @@ export default {
         this.snackText = "Couldn't find the playlist Id, please try later!";
         return;
       }
-      if (!!this.isThereAJobForTheSamePlaylist("extract_keywords")) {
+      if (!!this.isThereAJobForTheSamePlaylistObsForAll(type)) {
         this.isLoading = false;
         this.snack = true;
         this.snackColor = "error";
         this.snackText = "There's already a job for this playlist!";
         return;
       }
-      const url = "/jobs";
+      // Creando el Json con el nombre del
+      const url = "http://localhost:4000/jobs";
       const data = {
-        job_name: "extract_keywords",
-        playlist_uid: playlistId,
-        max_keywords: 300
-      };
-      try {
-        const result = await fetch(url, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage["apollo-token"]}`
-          }
-        });
-        const jsonResult = await result.json();
-        console.log("jsonResult", jsonResult);
-        const jobUid = _get(jsonResult, "job_uid", null);
-        console.log("jobUid", jobUid);
-        if (!jobUid) {
-          this.isLoading = false;
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Couldn't get a job id, please try later!";
-          return;
-        }
-        const newJob = {
-          jobUid,
-          type: "extract_keywords",
-          entityId: playlistId,
-          progress: 0,
-          status: "created",
-          results: [],
-          date: new Date()
-        };
-        console.log("newJob", newJob);
-        let job = localStorage.getItem(jobUid);
-        console.log("job", job);
-        if (!job) {
-          localStorage.setItem(jobUid, JSON.stringify(newJob));
-        } else {
-          this.isLoading = false;
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "This Job already exists!";
-          return;
-        }
-        this.isLoading = false;
-        this.dialog = false;
-        console.log("finish");
-        this.verifyJobs("extract_keywords");
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops we did something wrong!";
-        console.log("error creating job to get playlist keywords", error);
-      }
-    },
-    async createOrbRefreshJob() {
-      this.isLoading = true;
-      console.log("this.$route.params", this.$route.params);
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      if (!playlistId || playlistId === "undefined") {
-        this.isLoading = false;
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Couldn't find the playlist Id, please try later!";
-        return;
-      }
-      if (!!this.isThereAJobForTheSamePlaylistObs("refresh_orb")) {
-        this.isLoading = false;
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "There's already a job for this playlist!";
-        return;
-      }
-      const url = "/jobs";
-      const data = {
-        job_name: "refresh_orb",
+        job_name: type,
         playlist_uid: playlistId
       };
-
+      console.log("url data", data);
       try {
+        //Genera el Fetch con los datos
         const result = await fetch(url, {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage["apollo-token"]}`
+            Authorization: `JWT ${localStorage["apollo-token"]}`
           }
         });
-
         const jsonResult = await result.json();
-        console.log("jsonResult", jsonResult);
-
+        // console.log("jsonResult", jsonResult);
         const jobUid = _get(jsonResult, "job_uid", null);
         console.log("jobUid", jobUid);
         if (!jobUid) {
@@ -488,7 +272,7 @@ export default {
         }
         const newJob = {
           jobUid,
-          type: "refresh_orb",
+          type: type,
           entityId: playlistId,
           progress: 0,
           status: "created",
@@ -496,8 +280,12 @@ export default {
         };
         console.log("newJob", newJob);
 
+        // if (type === "refresh_orb") {
+        // } else if (type === "extract_keywords") {
+        // }
         let job = localStorage.getItem(jobUid);
         console.log("job", job);
+        // Si creamos el Job lo asignamos a el localStorage
         if (!job) {
           localStorage.setItem(jobUid, JSON.stringify(newJob));
         } else {
@@ -511,7 +299,8 @@ export default {
         this.dialogOrb = false;
         console.log("dialogOrb", this.dialogOrb);
         console.log("finish");
-        this.verifyJobsOrb("refresh_orb");
+        //Verificamos si el Obs que acabas de crear no este registrado
+        this.verifyJobsAll(type);
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
@@ -519,40 +308,140 @@ export default {
         console.log("error creating job to get playlist keywords", error);
       }
     },
-    isThereAJobForTheSamePlaylist(type) {
+    isThereAJobForTheSamePlaylistObsForAll(type) {
+      // Valida si dentro de el colar Exite un Job para no seguir generando mas Jobs
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
         .map(key => JSON.parse(localStorage[key]));
 
-      console.log("jobs", jobs);
+      console.log("isThereAJobForTheSamePlaylistObsForAll", jobs);
 
       const existingJob = jobs.find(element => {
         return element.entityId === playlistId && element.type === type;
       });
 
-      console.log("existingJob", existingJob);
+      console.log("existingJobForAll", existingJob);
       return existingJob;
     },
-    isThereAJobForTheSamePlaylistObs(type) {
+    verifyJobsAll(type) {
       const playlistId = _get(this.$route, "params.playlistId", null);
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
         .map(key => JSON.parse(localStorage[key]));
 
-      console.log("jobs", jobs);
-
+      console.log("JobsGeneral", jobs);
+      console.log("type", type);
       const existingJob = jobs.find(element => {
         return element.entityId === playlistId && element.type === type;
       });
 
-      console.log("existingJob", existingJob);
-      return existingJob;
+      if (type === "refresh_orb") {
+        console.log(
+          `Exixting Job All Type: ${type} and Jobs is :`,
+          existingJob
+        );
+        if (existingJob) {
+          this.jobObsRefresh = existingJob;
+        } else {
+          this.jobObsRefresh = null;
+        }
+        console.log("jobObsRefresh", this.jobObsRefresh);
+      } else if (type === "extract_keywords") {
+        console.log(
+          `Exixting Job All Type: ${type} and Jobs is :`,
+          existingJob
+        );
+        if (existingJob) {
+          this.jobGetKeywords = existingJob;
+        } else {
+          this.jobGetKeywords = null;
+        }
+        console.log("jobGetKeywords", this.jobGetKeywords);
+      }
+    },
+    refreshJobForAll(jobId, type) {
+      const result = setInterval(() => {
+        this.loadingModal = true;
+        console.log("type refreshJobForAll", type);
+        const playlistId = _get(this.$route, "params.playlistId", null);
+        console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
+        if (!jobId) {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Oops! I can't read this job id";
+          return;
+        }
+        try {
+          function status(response) {
+            if (response.status >= 200 && response.status < 300) {
+              return Promise.resolve(response);
+            } else {
+              return Promise.reject(new Error(response.statusText));
+            }
+          }
+
+          fetch(`http://localhost:4000/jobs/${jobId}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `JWT ${localStorage["apollo-token"]}`
+            }
+          })
+            // .then(status)
+            .then(response => {
+              return response.json();
+            })
+            .then(jsonResult => {
+              console.log("Request succeeded with JSON response", jsonResult);
+              console.log("jsonResult.status", jsonResult.status);
+              if (jsonResult.status === 404) {
+                this.loadingModal = true;
+              }
+              let updatedJob = {};
+              if (localStorage[jobId]) {
+                updatedJob = JSON.parse(localStorage[jobId]);
+                updatedJob = {
+                  ...updatedJob,
+                  status: _get(jsonResult, "status", null),
+                  progress: _get(jsonResult, "progressPercentage", null),
+                  results: _get(jsonResult, "payload.keywords", []),
+                  date: new Date()
+                };
+              } else {
+                updatedJob = {
+                  entityId: playlistId,
+                  type: type,
+                  status: _get(jsonResult, "status", null),
+                  progress: _get(jsonResult, "progressPercentage", null),
+                  results: _get(jsonResult, "payload.keywords", []),
+                  date: new Date()
+                };
+              }
+
+              console.log("updatedJob", updatedJob);
+              localStorage[jobId] = JSON.stringify(updatedJob);
+              if (updatedJob.status === "finished") {
+                clearInterval(result);
+                this.loadingModal = false;
+              }
+              this.verifyJobsAll(type);
+              console.log("jsonResult", jsonResult);
+            })
+            .catch(function(error) {
+              console.log("Request failed", error);
+            });
+        } catch (error) {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = "Oops! we did something wrong!";
+          console.log("error refreshing job", error);
+        }
+      }, 3000);
     }
   },
   beforeMount() {
-    this.verifyJobs("extract_keywords");
-    this.verifyJobsOrb("refresh_orb");
+    this.verifyJobsAll("extract_keywords");
+    this.verifyJobsAll("refresh_orb");
   },
   beforeCreate() {
     this.$apollo.query.playlist;

@@ -4,17 +4,17 @@
       <v-card>
         <v-card-title class="headline">Keywords Job</v-card-title>
         <v-card-text>
-          <div class="text-xs-center">
-            <v-progress-circular v-show="loading" :size="50" indeterminate color="primary"></v-progress-circular>
+          <div class="text-center">
+            <v-progress-circular v-show="loading" :size="60" indeterminate color="primary"></v-progress-circular>
           </div>
-          <div>
-            <ul>
-              <li>Job: {{job.jobUid || ""}}</li>
-              <li>Status: {{job.status}}</li>
-              <li>Type: {{job.type}}</li>
-              <li>Progress: {{job.progress}}%</li>
-            </ul>
-          </div>
+          <p>
+            <strong>Status:</strong>
+            {{job.status}}
+          </p>
+          <v-progress-linear v-model="job.progress" height="25" class="white--text" reactive>
+            <strong>{{ Math.ceil(job.progress) }}%</strong>
+          </v-progress-linear>
+
           <v-data-table
             v-if="!!job && job.status === 'finished' && !!results.length"
             :headers="headers"
@@ -52,8 +52,6 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green" text @click="createNewJob">Create new keyword results (process again)</v-btn>
-          <v-btn v-show="!results.length" color="green" text @click="refreshJob">Refresh results</v-btn>
           <v-btn color="error" text @click="onClose">Close</v-btn>
         </v-card-actions>
       </v-card>

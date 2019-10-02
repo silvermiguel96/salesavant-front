@@ -8,14 +8,14 @@
           </v-btn>
           <v-toolbar-title>Jobs Queue</v-toolbar-title>
         </v-toolbar>
-      <table-jobs></table-jobs>
+        <table-jobs></table-jobs>
       </v-card>
     </v-dialog>
   </v-layout>
 </template>
 
 <script>
-import TableJobs from './TableJobs.vue';
+import TableJobs from "./TableJobs.vue";
 
 export default {
   data() {
