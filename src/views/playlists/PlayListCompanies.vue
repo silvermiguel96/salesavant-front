@@ -66,7 +66,7 @@
                   small
                 >
                   <v-icon small>check</v-icon>
-                  View OBS
+                  View ORB
                 </v-btn>
                 <orb-job-modal
                   v-if="!!showJobModalOrb"

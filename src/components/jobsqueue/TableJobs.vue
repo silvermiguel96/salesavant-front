@@ -17,7 +17,7 @@
               <td>{{ item.entityId }}</td>
               <td>{{ item.progress }}%</td>
               <td>{{ item.status }}</td>
-              <td>{{ item.date }}</td>
+              <td>{{ changeTimeHuman(item.date) }}</td>
               <td>
                 <v-icon @click="deleteItem( item.jobUid)">delete</v-icon>
                 <v-icon @click="verifyJobStatus(item.jobUid, item.type)">refresh</v-icon>
@@ -70,6 +70,11 @@ export default {
     };
   },
   methods: {
+    changeTimeHuman(time) {
+      var HumanDate = time.split(".", 1).toString();
+      var HumanTime = HumanDate.split("T", 2).join(" ");
+      return HumanTime;
+    },
     loadJobs() {
       const jobs = Object.keys(localStorage)
         .filter(key => key.indexOf("job") > -1)
@@ -144,7 +149,7 @@ export default {
                 this.loadingModal = false;
               }
               this.verifyJobsAll(type);
-              this.loadJobs()
+              this.loadJobs();
               console.log("jsonResult", jsonResult);
             })
             .catch(function(error) {

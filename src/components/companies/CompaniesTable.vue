@@ -52,8 +52,7 @@ export default {
       headers: [
         {
           text: "Company",
-          align: "left",
-          sortable: true,
+          sortable: false,
           value: "name"
         },
         { text: "Signals", value: "totalSignals" },
@@ -61,16 +60,16 @@ export default {
         {
           text: "Description",
           value: "description",
-          align: "left"
+          sortable: false
         },
-        { text: "City", value: "city", align: "left" },
-        { text: "State", value: "state", align: "left" },
-        { text: "Country", value: "country", align: "left" },
-        { text: "Emp.", value: "numEmployees", align: "left" },
-        { text: "Momentum", value: "momentum", align: "left" },
-        { text: "Website", value: "website", align: "left" },
-        { text: "Url", value: "url", align: "left" },
-        { text: "Vertical", value: "vertical", align: "left" }
+        { text: "City", value: "city" },
+        { text: "State", value: "state" },
+        { text: "Country", value: "country" },
+        { text: "Emp.", value: "numEmployees" },
+        { text: "Momentum", value: "momentum" },
+        { text: "Website", value: "website" },
+        { text: "Url", value: "url" },
+        { text: "Vertical", value: "vertical" }
       ]
     };
   },

@@ -2,10 +2,10 @@
   <v-layout row>
     <v-dialog v-model="dialogOrb" max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark small class="text-capitalize" v-on="on"><v-icon small>autorenew</v-icon>Orb refresh</v-btn>
+        <v-btn color="success" dark small  v-on="on"><v-icon small>autorenew</v-icon>ORB <span class="text-capitalize">refresh</span></v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Get OBS?</v-card-title>
+        <v-card-title class="headline">Get ORB?</v-card-title>
         <v-card-text v-show="loading">
           We're currently creating the job for extracting the keywords for this playlist
           <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>

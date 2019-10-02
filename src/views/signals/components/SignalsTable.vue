@@ -80,8 +80,8 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ item.creationTime || "" }}</td>
-          <td>{{ item.modificationTime || "" }}</td>
+          <td>{{ changeTimeHuman(item.creationTime) || "" }}</td>
+          <td>{{ changeTimeHuman(item.modificationTime) || "" }}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
@@ -152,6 +152,11 @@ export default {
     },
     deleteSignal(signalId) {
       this.$emit("deleteSignal", signalId);
+    },
+    changeTimeHuman(time) {
+      var HumanDate = time.split(".", 1).toString();
+      var HumanTime = HumanDate.split("T", 2).join(" ");
+      return HumanTime;
     },
     async save() {
       if (!this.signal) {
