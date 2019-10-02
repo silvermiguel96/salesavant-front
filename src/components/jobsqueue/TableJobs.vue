@@ -71,8 +71,8 @@ export default {
   },
   methods: {
     changeTimeHuman(time) {
-      var HumanDate = time.split(".", 1).toString();
-      var HumanTime = HumanDate.split("T", 2).join(" ");
+      let HumanDate = time.split(".", 1).toString();
+      let HumanTime = HumanDate.split("T", 2).join(" ");
       return HumanTime;
     },
     loadJobs() {
