@@ -65,8 +65,7 @@
                   class="deep-purple darken-3 text-capitalize"
                   small
                 >
-                  <v-icon small>check</v-icon>
-                  View ORB
+                  <v-icon small>check</v-icon>View ORB
                 </v-btn>
                 <orb-job-modal
                   v-if="!!showJobModalOrb"
@@ -91,8 +90,7 @@
                   dark
                   small
                 >
-                  <v-icon small>check</v-icon>
-                  View keywords
+                  <v-icon small>check</v-icon>View keywords
                 </v-btn>
                 <job-modal
                   v-if="!!showJobModal"
@@ -107,6 +105,13 @@
               </v-flex>
               <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
                 <playlists-merge :playlist="playlist" />
+              </v-flex>
+              <v-flex d-flex xs6 sm2 md2 lg1 xl1 class="ma-1">
+                <export-companies-modal
+                  v-if="!jobExportComapany"
+                  :loading="isLoading"
+                  @createOrbRefreshJob="createJob('export_companies')"
+                />
               </v-flex>
             </v-container>
             <!-- Loading -->
@@ -138,15 +143,28 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import KeyWordsModal from "./components/KeywordsModal.vue";
-import CreateOrbModal from "./components/CreateOrbModal.vue";
+import KeyWordsModal from "./components/GetKeywords/KeywordsModal.vue";
+import CreateOrbModal from "./components/OrbRefresh/CreateOrbModal.vue";
 import PlaylistsMerge from "./components/PlaylistMerge.vue";
-import JobModal from "./components/JobModal.vue";
-import OrbJobModal from "./components/OrbJobModal.vue";
+import JobModal from "./components/GetKeywords/JobModal.vue";
+import OrbJobModal from "./components/OrbRefresh/OrbJobModal.vue";
+
+// ExportCompanies
+
+import ExportCompaniesModal from "./components/ExportCompanies/ExportCompaniesModal.vue";
 
 import _get from "lodash.get";
 import gql from "graphql-tag";
 export default {
+  components: {
+    CompaniesTable,
+    KeyWordsModal,
+    JobModal,
+    OrbJobModal,
+    CreateOrbModal,
+    PlaylistsMerge,
+    ExportCompaniesModal
+  },
   data() {
     return {
       name: "",
@@ -157,6 +175,7 @@ export default {
       totalItems: 10,
       jobGetKeywords: null,
       jobObsRefresh: null,
+      jobExportComapany: null,
       loadingModal: false,
       isLoading: false,
       showJobModalOrb: false,
@@ -191,14 +210,6 @@ export default {
       },
       fetchPolicy: "cache-and-network"
     }
-  },
-  components: {
-    CompaniesTable,
-    KeyWordsModal,
-    JobModal,
-    OrbJobModal,
-    CreateOrbModal,
-    PlaylistsMerge
   },
   methods: {
     updatePagination({
