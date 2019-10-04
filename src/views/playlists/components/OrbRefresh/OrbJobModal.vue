@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-dialog v-model="dialog" persistent max-width="1000">
+    <v-dialog v-model="dialog" max-width="1000">
       <v-card>
         <v-card-title class="headline">ORB job</v-card-title>
         <v-card-text>

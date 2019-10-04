@@ -116,18 +116,17 @@
                   class="deep-purple darken-3 text-capitalize"
                   small
                 >
-                  <job-export-modal
-                    v-if="!!showjobExportCompanies"
-                    :job="jobExportComapany"
-                    @refreshJobOrb="refreshJobForAll(jobExportComapany.jobUid ,'export_companies')"
-                    :loading="loadingModal"
-                    :dialog="showjobExportCompanies"
-                    @onClose="CloseExportCompanies"
-                    @createOrbRefreshJob="createJob('export_companies')"
-                  />
-
                   <v-icon small>check</v-icon>Export Companies
                 </v-btn>
+                <job-export-modal
+                  v-if="!!showjobExportCompanies"
+                  :job="jobExportComapany"
+                  @refreshJobOrb="refreshJobForAll(jobExportComapany.jobUid ,'export_companies')"
+                  :loading="loadingModal"
+                  :dialog="showjobExportCompanies"
+                  @onClose="CloseExportCompanies"
+                  @createOrbRefreshJob="createJob('export_companies')"
+                />
               </v-flex>
               <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
                 <playlists-merge :playlist="playlist" />
@@ -394,8 +393,7 @@ export default {
           this.jobGetKeywords = null;
         }
         console.log("jobGetKeywords", this.jobGetKeywords);
-      }
-      else if (type === "export_companies") {
+      } else if (type === "export_companies") {
         console.log(
           `Exixting Job All Type: ${type} and Jobs is :`,
           existingJob
@@ -491,7 +489,6 @@ export default {
     this.verifyJobsAll("extract_keywords");
     this.verifyJobsAll("refresh_orb");
     this.verifyJobsAll("export_companies");
-
   },
   beforeCreate() {
     this.$apollo.query.playlist;
