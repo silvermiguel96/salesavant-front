@@ -17,7 +17,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn  color="grey darken-1" text @click="onClose">Close</v-btn>
+          <v-btn  color="grey darken-1" class="text-capitalize" text @click="onClose">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

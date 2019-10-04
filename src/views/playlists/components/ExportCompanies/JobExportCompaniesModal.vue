@@ -17,10 +17,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" text @click="onClose">Close</v-btn>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="onClose">Close</v-btn>
           <div v-for="filename in job.results" :key="filename">
-            <!-- <v-btn color="green darken-1" text @click="downloadExportCompanies(filename)">Download</v-btn> -->
-            <v-btn color="green darken-1" text :href="`http://localhost:4000${filename}`">Download</v-btn>
+            <v-btn color="green darken-1" class="text-capitalize" text :href="`http://localhost:4000${filename}`">Download</v-btn>
           </div>
         </v-card-actions>
       </v-card>
@@ -52,19 +51,6 @@ export default {
     dialog: { type: Boolean, default: false }
   },
   methods: {
-    downloadExportCompanies(filename) {
-      console.log("Descargando");
-      fetch(`http://localhost:4000${filename}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${localStorage["apollo-token"]}`
-        }
-      }).then(response => {
-        window;
-        return response.json();
-        console.log(response);
-      });
-    },
     onClose() {
       this.$emit("onClose");
     },
