@@ -105,7 +105,7 @@ export default {
       return existingJob;
     },
     getResults() {
-      const results = _get(this.$props.job, "results", []);
+      const results = _get(this.$props.job, "results.keywords", []);
       this.results = results.map(item => ({
         showSave: false,
         name: item[0] || "",

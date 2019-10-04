@@ -8,7 +8,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Get ORB?</v-card-title>
+        <v-card-title class="headline">Get export companies?</v-card-title>
         <v-card-text v-show="loading">
           We're currently creating the job for extracting the keywords for this playlist
           <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>

@@ -103,15 +103,34 @@
                   :canModifySignalName="false"
                 />
               </v-flex>
-              <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
-                <playlists-merge :playlist="playlist" />
-              </v-flex>
-              <v-flex d-flex xs6 sm2 md2 lg1 xl1 class="ma-1">
+              <v-flex d-flex xs6 sm3 md3 lg3 xl1 class="ma-1">
                 <export-companies-modal
                   v-if="!jobExportComapany"
                   :loading="isLoading"
                   @createOrbRefreshJob="createJob('export_companies')"
                 />
+                <v-btn
+                  dark
+                  v-if="!!jobExportComapany"
+                  @click="showjobExportCompanies = !showjobExportCompanies"
+                  class="deep-purple darken-3 text-capitalize"
+                  small
+                >
+                  <job-export-modal
+                    v-if="!!showjobExportCompanies"
+                    :job="jobExportComapany"
+                    @refreshJobOrb="refreshJobForAll(jobExportComapany.jobUid ,'export_companies')"
+                    :loading="loadingModal"
+                    :dialog="showjobExportCompanies"
+                    @onClose="CloseExportCompanies"
+                    @createOrbRefreshJob="createJob('export_companies')"
+                  />
+
+                  <v-icon small>check</v-icon>Export Companies
+                </v-btn>
+              </v-flex>
+              <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
+                <playlists-merge :playlist="playlist" />
               </v-flex>
             </v-container>
             <!-- Loading -->
@@ -152,6 +171,7 @@ import OrbJobModal from "./components/OrbRefresh/OrbJobModal.vue";
 // ExportCompanies
 
 import ExportCompaniesModal from "./components/ExportCompanies/ExportCompaniesModal.vue";
+import JobExportModal from "./components/ExportCompanies/JobExportCompaniesModal.vue";
 
 import _get from "lodash.get";
 import gql from "graphql-tag";
@@ -163,7 +183,8 @@ export default {
     OrbJobModal,
     CreateOrbModal,
     PlaylistsMerge,
-    ExportCompaniesModal
+    ExportCompaniesModal,
+    JobExportModal
   },
   data() {
     return {
@@ -180,6 +201,7 @@ export default {
       isLoading: false,
       showJobModalOrb: false,
       showJobModal: false,
+      showjobExportCompanies: false,
       snack: false,
       snackColor: "",
       snackText: "",
@@ -232,6 +254,9 @@ export default {
     },
     closeOrbJobModal() {
       this.showJobModalOrb = false;
+    },
+    CloseExportCompanies() {
+      this.showjobExportCompanies = false;
     },
     async createJob(type) {
       console.log("Empieza la creacion de un  nuevos Jobs");
@@ -370,6 +395,18 @@ export default {
         }
         console.log("jobGetKeywords", this.jobGetKeywords);
       }
+      else if (type === "export_companies") {
+        console.log(
+          `Exixting Job All Type: ${type} and Jobs is :`,
+          existingJob
+        );
+        if (existingJob) {
+          this.jobExportComapany = existingJob;
+        } else {
+          this.jobExportComapany = null;
+        }
+        console.log("jobExportComapany", this.jobExportComapany);
+      }
     },
     refreshJobForAll(jobId, type) {
       const result = setInterval(() => {
@@ -415,7 +452,7 @@ export default {
                   ...updatedJob,
                   status: _get(jsonResult, "status", null),
                   progress: _get(jsonResult, "progressPercentage", null),
-                  results: _get(jsonResult, "payload.keywords", []),
+                  results: _get(jsonResult, "payload", []),
                   date: new Date()
                 };
               } else {
@@ -424,7 +461,7 @@ export default {
                   type: type,
                   status: _get(jsonResult, "status", null),
                   progress: _get(jsonResult, "progressPercentage", null),
-                  results: _get(jsonResult, "payload.keywords", []),
+                  results: _get(jsonResult, "payload", []),
                   date: new Date()
                 };
               }
@@ -453,6 +490,8 @@ export default {
   beforeMount() {
     this.verifyJobsAll("extract_keywords");
     this.verifyJobsAll("refresh_orb");
+    this.verifyJobsAll("export_companies");
+
   },
   beforeCreate() {
     this.$apollo.query.playlist;

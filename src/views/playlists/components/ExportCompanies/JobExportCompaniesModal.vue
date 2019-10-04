@@ -2,22 +2,26 @@
   <v-layout row>
     <v-dialog v-model="dialog" persistent max-width="1000">
       <v-card>
-        <v-card-title class="headline">ORB job</v-card-title>
+        <v-card-title class="headline">Export companies</v-card-title>
         <v-card-text>
-          <div class="text-center">
+          <div>
             <v-progress-circular v-show="loading" :size="60" indeterminate color="primary"></v-progress-circular>
           </div>
           <p>
             <strong>Status:</strong>
             {{job.status}}
           </p>
-          <v-progress-linear v-model="job.progress" height="25" class="white--text" >
+          <v-progress-linear v-model="job.progress" height="25" class="white--text">
             <strong>{{ Math.ceil(job.progress) }}%</strong>
           </v-progress-linear>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn  color="grey darken-1" text @click="onClose">Close</v-btn>
+          <v-btn color="grey darken-1" text @click="onClose">Close</v-btn>
+          <div v-for="filename in job.results" :key="filename">
+            <!-- <v-btn color="green darken-1" text @click="downloadExportCompanies(filename)">Download</v-btn> -->
+            <v-btn color="green darken-1" text :href="`http://localhost:4000${filename}`">Download</v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -48,6 +52,19 @@ export default {
     dialog: { type: Boolean, default: false }
   },
   methods: {
+    downloadExportCompanies(filename) {
+      console.log("Descargando");
+      fetch(`http://localhost:4000${filename}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage["apollo-token"]}`
+        }
+      }).then(response => {
+        window;
+        return response.json();
+        console.log(response);
+      });
+    },
     onClose() {
       this.$emit("onClose");
     },
