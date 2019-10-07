@@ -14,8 +14,8 @@
         <v-card-text>You're about to start a process to get this playlist keywords, this process can have several time depending on the data amount or the already queued processes.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="success" text @click="createKeywordsJob">Start </v-btn>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="green darken-1" class="text-capitalize" text @click="createKeywordsJob">Start </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

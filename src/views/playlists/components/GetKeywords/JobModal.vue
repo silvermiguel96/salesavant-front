@@ -1,6 +1,6 @@
 <template>
   <v-layout row>
-    <v-dialog v-model="dialog" persistent max-width="1000">
+    <v-dialog v-model="dialog" max-width="1000">
       <v-card>
         <v-card-title class="headline">Keywords Job</v-card-title>
         <v-card-text>
@@ -105,7 +105,7 @@ export default {
       return existingJob;
     },
     getResults() {
-      const results = _get(this.$props.job, "results", []);
+      const results = _get(this.$props.job, "results.keywords", []);
       this.results = results.map(item => ({
         showSave: false,
         name: item[0] || "",

@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn small class="text-capitalize ma-2" color="green" dark v-on="on">
           <v-icon small>add</v-icon>save as playlist
@@ -19,8 +19,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="green darken-1" :disabled="!playlistName" text @click="save">Save</v-btn>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
+          <v-btn color="green darken-1" class="text-capitalize" :disabled="!playlistName" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -65,8 +65,7 @@
                   class="deep-purple darken-3 text-capitalize"
                   small
                 >
-                  <v-icon small>check</v-icon>
-                  View ORB
+                  <v-icon small>check</v-icon>View ORB
                 </v-btn>
                 <orb-job-modal
                   v-if="!!showJobModalOrb"
@@ -91,8 +90,7 @@
                   dark
                   small
                 >
-                  <v-icon small>check</v-icon>
-                  View keywords
+                  <v-icon small>check</v-icon>View keywords
                 </v-btn>
                 <job-modal
                   v-if="!!showJobModal"
@@ -103,6 +101,31 @@
                   @onClose="closeJobModal"
                   @createKeywordsJob="createJob('extract_keywords')"
                   :canModifySignalName="false"
+                />
+              </v-flex>
+              <v-flex d-flex xs6 sm3 md3 lg3 xl1 class="ma-1">
+                <export-companies-modal
+                  v-if="!jobExportComapany"
+                  :loading="isLoading"
+                  @createOrbRefreshJob="createJob('export_companies')"
+                />
+                <v-btn
+                  dark
+                  v-if="!!jobExportComapany"
+                  @click="showjobExportCompanies = !showjobExportCompanies"
+                  class="deep-purple darken-3 text-capitalize"
+                  small
+                >
+                  <v-icon small>check</v-icon>Export Companies
+                </v-btn>
+                <job-export-modal
+                  v-if="!!showjobExportCompanies"
+                  :job="jobExportComapany"
+                  @refreshJobOrb="refreshJobForAll(jobExportComapany.jobUid ,'export_companies')"
+                  :loading="loadingModal"
+                  :dialog="showjobExportCompanies"
+                  @onClose="CloseExportCompanies"
+                  @createOrbRefreshJob="createJob('export_companies')"
                 />
               </v-flex>
               <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
@@ -138,15 +161,30 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import KeyWordsModal from "./components/KeywordsModal.vue";
-import CreateOrbModal from "./components/CreateOrbModal.vue";
+import KeyWordsModal from "./components/GetKeywords/KeywordsModal.vue";
+import CreateOrbModal from "./components/OrbRefresh/CreateOrbModal.vue";
 import PlaylistsMerge from "./components/PlaylistMerge.vue";
-import JobModal from "./components/JobModal.vue";
-import OrbJobModal from "./components/OrbJobModal.vue";
+import JobModal from "./components/GetKeywords/JobModal.vue";
+import OrbJobModal from "./components/OrbRefresh/OrbJobModal.vue";
+
+// ExportCompanies
+
+import ExportCompaniesModal from "./components/ExportCompanies/ExportCompaniesModal.vue";
+import JobExportModal from "./components/ExportCompanies/JobExportCompaniesModal.vue";
 
 import _get from "lodash.get";
 import gql from "graphql-tag";
 export default {
+  components: {
+    CompaniesTable,
+    KeyWordsModal,
+    JobModal,
+    OrbJobModal,
+    CreateOrbModal,
+    PlaylistsMerge,
+    ExportCompaniesModal,
+    JobExportModal
+  },
   data() {
     return {
       name: "",
@@ -157,10 +195,12 @@ export default {
       totalItems: 10,
       jobGetKeywords: null,
       jobObsRefresh: null,
+      jobExportComapany: null,
       loadingModal: false,
       isLoading: false,
       showJobModalOrb: false,
       showJobModal: false,
+      showjobExportCompanies: false,
       snack: false,
       snackColor: "",
       snackText: "",
@@ -192,14 +232,6 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  components: {
-    CompaniesTable,
-    KeyWordsModal,
-    JobModal,
-    OrbJobModal,
-    CreateOrbModal,
-    PlaylistsMerge
-  },
   methods: {
     updatePagination({
       dataFromEvent: {
@@ -221,6 +253,9 @@ export default {
     },
     closeOrbJobModal() {
       this.showJobModalOrb = false;
+    },
+    CloseExportCompanies() {
+      this.showjobExportCompanies = false;
     },
     async createJob(type) {
       console.log("Empieza la creacion de un  nuevos Jobs");
@@ -358,6 +393,17 @@ export default {
           this.jobGetKeywords = null;
         }
         console.log("jobGetKeywords", this.jobGetKeywords);
+      } else if (type === "export_companies") {
+        console.log(
+          `Exixting Job All Type: ${type} and Jobs is :`,
+          existingJob
+        );
+        if (existingJob) {
+          this.jobExportComapany = existingJob;
+        } else {
+          this.jobExportComapany = null;
+        }
+        console.log("jobExportComapany", this.jobExportComapany);
       }
     },
     refreshJobForAll(jobId, type) {
@@ -404,7 +450,7 @@ export default {
                   ...updatedJob,
                   status: _get(jsonResult, "status", null),
                   progress: _get(jsonResult, "progressPercentage", null),
-                  results: _get(jsonResult, "payload.keywords", []),
+                  results: _get(jsonResult, "payload", []),
                   date: new Date()
                 };
               } else {
@@ -413,7 +459,7 @@ export default {
                   type: type,
                   status: _get(jsonResult, "status", null),
                   progress: _get(jsonResult, "progressPercentage", null),
-                  results: _get(jsonResult, "payload.keywords", []),
+                  results: _get(jsonResult, "payload", []),
                   date: new Date()
                 };
               }
@@ -442,6 +488,7 @@ export default {
   beforeMount() {
     this.verifyJobsAll("extract_keywords");
     this.verifyJobsAll("refresh_orb");
+    this.verifyJobsAll("export_companies");
   },
   beforeCreate() {
     this.$apollo.query.playlist;
