@@ -18,8 +18,8 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="onClose">Close</v-btn>
-          <div v-for="filename in job.results" :key="filename">
-            <v-btn color="green darken-1" class="text-capitalize" text :href="`${process.env.VUE_APP_REST_API_URL}${filename}`">Download</v-btn>
+          <div v-for="filename in job.results" :key="filename"> 
+            <v-btn color="green darken-1" class="text-capitalize" text :href="`${url}${filename}`">Download</v-btn>
           </div>
         </v-card-actions>
       </v-card>
@@ -33,6 +33,7 @@ import { setTimeout } from "timers";
 export default {
   data() {
     return {
+      url: process.env.VUE_APP_REST_API_URL,
       headers: [
         {
           text: "Keyword",
