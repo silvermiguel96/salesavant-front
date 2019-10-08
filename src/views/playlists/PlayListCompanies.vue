@@ -278,7 +278,6 @@ export default {
         return;
       }
       // Creando el Json con el nombre del
-      const url = "http://localhost:4000/jobs";
       const data = {
         job_name: type,
         playlist_uid: playlistId
@@ -286,7 +285,7 @@ export default {
       console.log("url data", data);
       try {
         //Genera el Fetch con los datos
-        const result = await fetch(url, {
+        const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/jobs`, {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
@@ -427,7 +426,7 @@ export default {
             }
           }
 
-          fetch(`http://localhost:4000/jobs/${jobId}`, {
+          fetch(`${process.env.VUE_APP_REST_API_URL}/jobs/${jobId}`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `JWT ${localStorage["apollo-token"]}`

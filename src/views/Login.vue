@@ -68,7 +68,7 @@ export default {
           "Content-Type": "application/json"
         })
       };
-      const result = await fetch("http://localhost:4000/auth", fecthDetails)
+      const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/auth`, fecthDetails)
         .then(res => res.json())
         .catch(error => console.error("Error:", error))
       console.log('token', result)

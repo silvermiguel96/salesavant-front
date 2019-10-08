@@ -105,7 +105,7 @@ export default {
             }
           }
 
-          fetch(`http://localhost:4000/jobs/${jobId}`, {
+          fetch(`${process.env.VUE_APP_REST_API_URL}/jobs/${jobId}`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `JWT ${localStorage["apollo-token"]}`

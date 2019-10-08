@@ -19,7 +19,7 @@
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="onClose">Close</v-btn>
           <div v-for="filename in job.results" :key="filename">
-            <v-btn color="green darken-1" class="text-capitalize" text :href="`http://localhost:4000${filename}`">Download</v-btn>
+            <v-btn color="green darken-1" class="text-capitalize" text :href="`${process.env.VUE_APP_REST_API_URL}${filename}`">Download</v-btn>
           </div>
         </v-card-actions>
       </v-card>
