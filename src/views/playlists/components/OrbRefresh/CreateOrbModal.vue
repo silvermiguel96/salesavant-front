@@ -2,7 +2,7 @@
   <v-layout row>
     <v-dialog v-model="dialogOrb" max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark small v-on="on">
+        <v-btn class="grey darken-1" width="150" dark small v-on="on">
           <v-icon small>autorenew</v-icon>ORB
           <span class="text-capitalize">refresh</span>
         </v-btn>
