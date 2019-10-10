@@ -12,9 +12,7 @@
         <v-data-table :headers="headers" :items="jobs" class="elevation-2 mt-2">
           <template v-slot:item="{ item, header}">
             <tr>
-              <td>{{ item.jobUid }}</td>
               <td>{{ item.type }}</td>
-              <td>{{ item.entityId }}</td>
               <td>{{ item.progress }}%</td>
               <td>{{ item.status }}</td>
               <td>{{ changeTimeHuman(item.date) }}</td>
@@ -54,9 +52,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Job uid", sortable: false, value: "jobUid" },
         { text: "Job Type", value: "type" },
-        { text: "Entity Id", value: "entityId" },
         { text: "Progress ", value: "progress" },
         { text: "Status", value: "status" },
         { text: "Date", value: "date" },
@@ -83,6 +79,11 @@ export default {
       console.log("jobs", jobs);
 
       this.jobs = [...jobs];
+    },
+    chargeJobs() {
+      this.jobs.forEach(element => {
+        this.verifyJobStatus(element.jobUid, element.type)
+      });
     },
     verifyJobStatus(jobId, type) {
       const result = setInterval(() => {
@@ -216,6 +217,9 @@ export default {
   },
   created() {
     this.loadJobs();
+  },
+  beforeMount() {
+    this.chargeJobs();
   }
 };
 </script>
