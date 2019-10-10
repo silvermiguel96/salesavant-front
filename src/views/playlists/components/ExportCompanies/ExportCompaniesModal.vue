@@ -2,7 +2,7 @@
   <v-layout row>
     <v-dialog v-model="dialogOrb" max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark small v-on="on">
+        <v-btn color="grey darken-1" width="150" dark small v-on="on">
           <v-icon small>cloud_download</v-icon>
           <span class="text-capitalize">export companies</span>
         </v-btn>

@@ -58,15 +58,18 @@
                   :loading="isLoading"
                   @createOrbRefreshJob="createJob('refresh_orb')"
                 />
-                <v-btn
-                  dark
-                  v-if="!!jobObsRefresh"
-                  @click="showJobModalOrb = !showJobModalOrb"
-                  class="deep-purple darken-3 text-capitalize"
-                  small
-                >
-                  <v-icon small>check</v-icon>View ORB
-                </v-btn>
+                <v-layout row>
+                  <v-btn
+                    v-if="!!jobObsRefresh"
+                    @click="showJobModalOrb = !showJobModalOrb"
+                    class="blue darken-1 text-capitalize"
+                    dark
+                    small
+                    width="150"
+                  >
+                    <v-icon small>check</v-icon>View ORB
+                  </v-btn>
+                </v-layout>
                 <orb-job-modal
                   v-if="!!showJobModalOrb"
                   :job="jobObsRefresh"
@@ -83,15 +86,18 @@
                   :loading="isLoading"
                   @createKeywordsJob="createJob('extract_keywords')"
                 />
-                <v-btn
-                  v-if="!!jobGetKeywords"
-                  @click="showJobModal = !showJobModal"
-                  class="deep-purple darken-3 text-capitalize"
-                  dark
-                  small
-                >
-                  <v-icon small>check</v-icon>View keywords
-                </v-btn>
+                <v-layout row>
+                  <v-btn
+                    v-if="!!jobGetKeywords"
+                    @click="showJobModal = !showJobModal"
+                    class="blue darken-1 text-capitalize"
+                    dark
+                    small
+                    width="150"
+                  >
+                    <v-icon small>check</v-icon>View keywords
+                  </v-btn>
+                </v-layout>
                 <job-modal
                   v-if="!!showJobModal"
                   :job="jobGetKeywords"
@@ -103,21 +109,24 @@
                   :canModifySignalName="false"
                 />
               </v-flex>
-              <v-flex d-flex xs6 sm3 md3 lg3 xl1 class="ma-1">
+              <v-flex d-flex xs6 sm3 md2 lg2 xl1 class="ma-1">
                 <export-companies-modal
                   v-if="!jobExportComapany"
                   :loading="isLoading"
                   @createOrbRefreshJob="createJob('export_companies')"
                 />
-                <v-btn
-                  dark
-                  v-if="!!jobExportComapany"
-                  @click="showjobExportCompanies = !showjobExportCompanies"
-                  class="deep-purple darken-3 text-capitalize"
-                  small
-                >
-                  <v-icon small>check</v-icon>Export Companies
-                </v-btn>
+                <v-layout row>
+                  <v-btn
+                    v-if="!!jobExportComapany"
+                    @click="showjobExportCompanies = !showjobExportCompanies"
+                    class="blue darken-1 text-capitalize"
+                    dark
+                    small
+                    width="150"
+                  >
+                    <v-icon small>check</v-icon>Export Companies
+                  </v-btn>
+                </v-layout>
                 <job-export-modal
                   v-if="!!showjobExportCompanies"
                   :job="jobExportComapany"
@@ -128,7 +137,7 @@
                   @createOrbRefreshJob="createJob('export_companies')"
                 />
               </v-flex>
-              <v-flex d-flex xs4 sm2 md2 lg1 xl1 class="ma-1">
+              <v-flex d-flex xs5 sm2 md2 lg2 xl1 class="ma-1">
                 <playlists-merge :playlist="playlist" />
               </v-flex>
             </v-container>

@@ -2,7 +2,7 @@
   <v-layout row>
     <v-dialog v-model="dialog" max-width="500">
       <template v-slot:activator="{ on }">
-        <v-btn color="success" dark small class="text-capitalize" v-on="on"><v-icon small>find_replace</v-icon>get keywords
+        <v-btn color="grey darken-1" width="150" dark small class="text-capitalize" v-on="on"><v-icon small>find_replace</v-icon>get keywords
         </v-btn>
       </template>
       <v-card>

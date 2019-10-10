@@ -1,12 +1,12 @@
 <template>
-  <v-layout>
+  <v-layout row>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-dialog v-model="dialogMerge" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn class="deep-purple darken-3 text-capitalize" dark small v-on="on">
+        <v-btn class="grey darken-1 text-capitalize" width="150" dark small v-on="on">
           <v-icon small >compare_arrows</v-icon>merge
         </v-btn>
       </template>
