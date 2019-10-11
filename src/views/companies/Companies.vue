@@ -72,7 +72,7 @@
       </ul>
       <div class="calltoactions">
         <v-btn color="primary" small class="text-capitalize ma-2" dark @click="toggleSearch">
-          <v-icon small>search</v-icon>
+          <v-icon class="pr-1" small>search</v-icon>
           search
         </v-btn>
         <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />

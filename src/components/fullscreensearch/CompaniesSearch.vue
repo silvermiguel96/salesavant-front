@@ -97,7 +97,7 @@
           </v-flex>
           <v-flex  d-flex align-end justify-center xs6>
             <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
-              <v-icon small>search</v-icon>
+              <v-icon class="pr-1" small>search</v-icon>
               {{" Companies Search"}}
             </v-btn>
           </v-flex>

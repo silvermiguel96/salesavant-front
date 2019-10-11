@@ -32,7 +32,7 @@
         <v-layout>
           <v-flex d-flex justify-center>
             <v-btn @click="search" class="text-capitalize" small type="submit" color="primary">
-              <v-icon small>search</v-icon>
+              <v-icon  class="pr-1" small>search</v-icon>
               {{"Search signals"}}
             </v-btn>
           </v-flex>

@@ -43,7 +43,7 @@
           >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
         </ul>
         <v-btn color="primary" class="text-capitalize ma-2" dark small @click="toggleSearch">
-          <v-icon small>search</v-icon>search
+          <v-icon small class="pr-1">search</v-icon>search
         </v-btn>
         <template
           v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
