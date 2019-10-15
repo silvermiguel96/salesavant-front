@@ -23,9 +23,9 @@
       ></v-breadcrumbs>
       <v-form @submit.prevent>
         <v-container >
-          <v-subheader class="display-1">Signal details</v-subheader>
+          <h1 class="display-1 my-4 text-capitalize">Signal details</h1>
           <v-layout wrap>
-            <v-flex xs12 sm6 md3>
+            <v-flex xs12 sm6 md3 class="px-1">
               <v-text-field
                 v-model="signal.name"
                 label="Name"
@@ -33,20 +33,20 @@
                 :disabled="!canModifySignalName"
               ></v-text-field>
             </v-flex>
-            <v-flex xs12 sm6 md3>
+            <v-flex xs12 sm6 md3 class="px-1">
               <v-text-field v-model="signal.description" label="Description" required></v-text-field>
             </v-flex>
-            <v-flex xs12 sm6 md3>
+            <v-flex xs12 sm6 md3 class="px-1">
               <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
             </v-flex>
-            <v-flex xs12 sm6 md3>
+            <v-flex xs12 sm6 md3 class="px-1">
               <v-text-field v-model="signal.group" label="Group" required></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout>
             <v-flex xs12 md4>
               <v-btn v-if="canModifySignalName" type="submit" @click="save" class="text-capitalize">
-                <v-icon small>{{!!signal.id ? "update" : "add"}}</v-icon>
+                <v-icon small class="pr-1">{{!!signal.id ? "update" : "add"}}</v-icon>
                 {{!!signal.id ? "Update" : "Create"}}
               </v-btn>
               <v-btn
@@ -61,8 +61,8 @@
       </v-form>
     </v-card>
     <v-card v-if="canModifySignalName">
-      <v-card-title class="headline">Related companies</v-card-title>
       <v-container>
+      <h1 class="headline my-4 text-capitalize">Related companies</h1>
         <template v-if="!!this.$route.params.signalId && this.$route.params.signalId!=='create' ">
           <ApolloQuery
             :query="require('../graphql/SearchsCompanySignal.gql')"

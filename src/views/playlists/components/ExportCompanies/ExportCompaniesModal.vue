@@ -4,7 +4,7 @@
       <template v-slot:activator="{ on }">
         <v-btn color="grey darken-1" width="150" dark small v-on="on">
           <v-icon small>cloud_download</v-icon>
-          <span class="text-capitalize">export companies</span>
+          <span class="text-capitalize pa-1">export companies</span>
         </v-btn>
       </template>
       <v-card>

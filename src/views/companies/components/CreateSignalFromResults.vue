@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn color="blue" small class="text-capitalize ma-2" dark v-on="on">
-          <v-icon small>add</v-icon>save as signal
+          <v-icon class="pr-1" small>add</v-icon>save as signal
         </v-btn>
       </template>
       <v-card>

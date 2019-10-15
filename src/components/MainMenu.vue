@@ -5,19 +5,19 @@
         <img class="logo" :src="require('../assets/salesavant_header.png')" />
       </router-link>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down" v-for="link in links" :key="link.text">
-        <v-btn v-if="!!link.click" text @click="link.click">{{link.text}}</v-btn>
-        <v-btn v-else text :to="link.router">{{link.text}}</v-btn>
+      <v-toolbar-items class="hidden-sm-and-down " v-for="link in links" :key="link.text">
+        <v-btn v-if="!!link.click" text class="text-capitalize" @click="link.click">{{link.text}}</v-btn>
+        <v-btn v-else text class="text-capitalize" :to="link.router">{{link.text}}</v-btn>
       </v-toolbar-items>
       <v-toolbar-items>
-        <v-btn text color="white" @click="this.exitApp">
+        <v-btn text color="white" class="text-capitalize" @click="this.exitApp">
           <span>Sign Out</span>
-          <v-icon right>exit_to_app</v-icon>
+          <v-icon small right>exit_to_app</v-icon>
         </v-btn>
       </v-toolbar-items>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon small @click="drawer = !drawer"></v-app-bar-nav-icon>
     </v-toolbar>
-    <v-navigation-drawer right app v-model="drawer" class="primary">
+    <v-navigation-drawer right small app v-model="drawer" class="primary">
       <v-list>
         <v-list-item-group>
           <v-list-item v-for="link in links" :key="link.text" :to="link.route" @click="link.click">
@@ -25,7 +25,7 @@
               <v-icon class="white--text">{{ link.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title class="white--text" :to="link.router">{{ link.text }}</v-list-item-title>
+              <v-list-item-title class="white--text " :to="link.router">{{ link.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>

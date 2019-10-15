@@ -35,7 +35,7 @@
         </ul>
 
         <v-btn color="primary" class="text-capitalize ma-2" small dark @click="toggleSearch">
-          <v-icon small>search</v-icon>search
+          <v-icon class="pr-1" small>search</v-icon>search
         </v-btn>
 
         <!-- Apollo watched Graphql query -->

@@ -7,7 +7,7 @@
       </v-snackbar>
       <template>
         <v-btn class="warning text-capitalize" small @click.prevent="clearAll">
-          <v-icon small>clear_all</v-icon>clear all
+          <v-icon class="pr-1" small>clear_all</v-icon>clear all
         </v-btn>
         <v-data-table :headers="headers" :items="jobs" class="elevation-2 mt-2">
           <template v-slot:item="{ item, header}">
@@ -35,7 +35,7 @@
           </template>
           <template v-slot:no-data>
             <v-btn color="primary ma-3" small class="text-capitalize" @click="loadJobs">
-              <v-icon small>settings_backup_restore</v-icon>Reload Jobs
+              <v-icon class="pr-1" small>settings_backup_restore</v-icon>Reload Jobs
             </v-btn>
           </template>
         </v-data-table>

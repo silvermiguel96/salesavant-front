@@ -7,7 +7,7 @@
         </v-flex>
         <v-flex d-flex align-center justify-center>
           <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
-            <v-icon small>search</v-icon>
+            <v-icon class="pr-1" small>search</v-icon>
             {{"news search"}}
           </v-btn>
         </v-flex>

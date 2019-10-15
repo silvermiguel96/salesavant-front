@@ -43,10 +43,10 @@
         </ul>
 
         <v-btn small class="ma-2 text-capitalize" color="primary" dark @click="toggleSearch">
-          <v-icon small>search</v-icon>search
+          <v-icon small class="pr-1">search</v-icon>search
         </v-btn>
         <v-btn small class="ma-2 text-capitalize" to="/signals/create">
-          <v-icon small>add</v-icon>new signal
+          <v-icon small class="pr-1">add</v-icon>new signal
         </v-btn>
 
         <template
