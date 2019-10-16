@@ -11,7 +11,7 @@
     <v-card-actions default>
       <v-icon large color="blue">info</v-icon>
       <h2 class="headline font-weight-bold">Custome Score:</h2>
-      <p class="headline">{{company.totalScore || '--'}}</p>
+      <h2 class="headline mx-1">{{company.totalScore || '--'}}</h2>
     </v-card-actions>
     <v-card-text>
       <!-- The first table -->
