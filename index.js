@@ -4,8 +4,9 @@ const port = process.env.PORT || 4000;
 const environment = process.env.NODE_ENV || "local";
 const history = require("connect-history-api-fallback");
 
-console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-console.log("process.env.VUE", process.env.VUE);
+var now = Date(Date.now()).toString();
+console.log(now, "process.env.NODE_ENV", process.env.NODE_ENV);
+console.log(now, "process.env.VUE", process.env.VUE);
 
 function requireHTTPS(req, res, next) {
   if (
@@ -28,6 +29,7 @@ app.use(
 
 app.listen(port, () =>
   console.log(
-    `Example app listening on port ${port}! environment = ${environment}`
+    now,
+    `SaleSavant app listening on port ${port}! environment = ${environment}`
   )
 );
