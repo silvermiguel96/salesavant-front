@@ -13,7 +13,6 @@
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "start": "node index.js",
-    "proxy": "NODE_ENV=proxylocal node index.js",
     "dev": "NODE_ENV=local VUE=true node index.js"
   },
   "dependencies": {
