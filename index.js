@@ -33,7 +33,7 @@ app.listen(port, () =>
     `SaleSavant app listening on port ${port}! environment = ${environment}`
   )
 );
-var fs = require("");
+var fs = require("fs");
 
 fs.readdir("./dist", function (err, items) {
   console.log(items);
