@@ -7,8 +7,6 @@ const history = require("connect-history-api-fallback");
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 console.log("process.env.VUE", process.env.VUE);
 
-app.get("/", (req, res) => res.status(200).json({ message: "everything ok" }));
-
 function requireHTTPS(req, res, next) {
   if (
     !req.secure &&
