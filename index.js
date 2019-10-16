@@ -18,9 +18,13 @@ function requireHTTPS(req, res, next) {
   }
   next();
 }
-if (environment === "production") app.use(requireHTTPS);
+if (environment === "production") {
+  app.use(requireHTTPS);
+  app.use(express.static("dist/static"));
+} else {
+  app.use(express.static("dist"));
+}
 
-if (environment !== "production") app.use(express.static("dist"));
 app.use(
   history({
     index: "/index.html"
@@ -35,7 +39,7 @@ app.listen(port, () =>
 );
 var fs = require("fs");
 
-fs.readdir("./dist", function (err, items) {
+fs.readdir("./dist/static/", function (err, items) {
   console.log(items);
 
   for (var i = 0; i < items.length; i++) {
