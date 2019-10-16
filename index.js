@@ -39,7 +39,7 @@ app.listen(port, () =>
   )
 );
 var fs = require("fs");
-let path = "./dist/js/";
+let path = "./dist";
 console.log("path", path);
 fs.readdir(path, function (err, items) {
   if (items) {
