@@ -20,7 +20,7 @@ function requireHTTPS(req, res, next) {
 }
 if (environment === "production") {
   app.use(requireHTTPS);
-  
+
 } else {
   app.use(express.static("dist"));
 }
@@ -39,11 +39,12 @@ app.listen(port, () =>
   )
 );
 var fs = require("fs");
-
-fs.readdir("./dist/js/", function (err, items) {
-  console.log(items);
-
-  for (var i = 0; i < items.length; i++) {
-    console.log(items[i]);
+let path = "./dist/js/";
+console.log("path", path);
+fs.readdir(path, function (err, items) {
+  if (items) {
+    console.log(items);
+  } else {
+    console.log("empty");
   }
 });
