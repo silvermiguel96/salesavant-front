@@ -83,10 +83,10 @@
 
               <!-- Result -->
               <div v-else-if="data" class="result apollo">
-                <!---<div>{{ JSON.stringify(data) }}</div>-->
+                <!---<div>{{ JSON.stringify(data.newsArticles) }}</div>-->
                 <news-table
-                  v-if="data.news"
-                  :items="data.news"
+                  v-if="data.newsArticles"
+                  :items="data.newsArticles"
                   class="result apollo"
                   @updatePagination="updatePagination"
                 ></news-table>
