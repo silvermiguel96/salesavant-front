@@ -18,9 +18,9 @@ function requireHTTPS(req, res, next) {
   }
   next();
 }
-if (environment == "production") app.use(requireHTTPS);
+if (environment === "production") app.use(requireHTTPS);
 
-app.use(express.static("dist"));
+if (environment !== "production") app.use(express.static("dist"));
 app.use(
   history({
     index: "/index.html"
@@ -33,9 +33,9 @@ app.listen(port, () =>
     `SaleSavant app listening on port ${port}! environment = ${environment}`
   )
 );
-var fs = require('fs');
+var fs = require("");
 
-fs.readdir('.', function (err, items) {
+fs.readdir("./dist", function (err, items) {
   console.log(items);
 
   for (var i = 0; i < items.length; i++) {
