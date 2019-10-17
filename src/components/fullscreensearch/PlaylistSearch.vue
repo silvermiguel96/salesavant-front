@@ -13,6 +13,7 @@
               v-model="playlist.playlistsSearch"
               label="Playlist name or description"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
         </v-layout>
@@ -23,6 +24,7 @@
               v-model="playlist.moreThanCompanies"
               label="More than companies"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xl6 xs6>
@@ -31,6 +33,7 @@
               v-model="playlist.lessThanCompanies"
               label="Less than companies"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
         </v-layout>

@@ -13,12 +13,13 @@
               v-model="signal.search"
               label="Signal name or description"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout>
           <v-flex xs6>
-            <v-text-field name="group" v-model="signal.group" label="Group" @input="changeData"></v-text-field>
+            <v-text-field name="group" v-model="signal.group" label="Group" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
@@ -26,6 +27,7 @@
               v-model="signal.category"
               label="Category"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
         </v-layout>
