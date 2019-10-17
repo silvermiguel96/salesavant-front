@@ -15,8 +15,8 @@
       <tr>
         <td>
           <router-link
-            :to="`/companies/${props.item.company.uid}`"
-          >{{ props.item.company.name || "--" }}</router-link>
+            :to="`/companies/${item.company.uid}`"
+          >{{ item.company.name || "--" }}</router-link>
         </td>
       </tr>
     </template>

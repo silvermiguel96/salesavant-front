@@ -25,13 +25,15 @@
               class="elevation-1"
               @updatePagination="updatePagination"
             >
-              <template v-slot:items="props">
-                <td>
-                  <router-link
-                    :to="`/signals?search=&group=${props.item.group}&category=&searchType=signals`"
-                  >{{ props.item.group }}</router-link>
-                </td>
-                <td>{{ props.item.totalCompanies }}</td>
+              <template v-slot:item="{ item, headers}">
+                <tr>
+                  <td>
+                    <router-link
+                      :to="`/signals?search=&group=${item.group}&category=&searchType=signals`"
+                    >{{ item.group }}</router-link>
+                  </td>
+                  <td>{{ item.totalCompanies }}</td>
+                </tr>
               </template>
             </v-data-table>
           </div>
