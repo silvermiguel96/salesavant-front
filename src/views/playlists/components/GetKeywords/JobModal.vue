@@ -26,23 +26,23 @@
           >
             <template v-slot:item="{ item, headers }">
               <tr>
-                <td v-show="!props.item.showSave">{{ props.item.name || ""}}</td>
-                <td v-show="!props.item.showSave">{{ props.item.total || "" }}</td>
-                <td v-show="!props.item.showSave">{{ props.item.score || "" }}</td>
+                <td v-show="!item.showSave">{{ item.name || ""}}</td>
+                <td v-show="!item.showSave">{{ item.total || "" }}</td>
+                <td v-show="!item.showSave">{{ item.score || "" }}</td>
                 <td>
                   <table>
                     <tr>
                       <td>
-                        <v-icon v-show="!props.item.showSave" @click="toggleSave(props.index)">save</v-icon>
+                        <v-icon v-show="!item.showSave" @click="toggleSave(item.index)">save</v-icon>
                         <v-icon
-                          v-show="props.item.showSave"
-                          @click="toggleSave(props.index)"
+                          v-show="item.showSave"
+                          @click="toggleSave(item.index)"
                         >exit_to_app</v-icon>
                       </td>
-                      <td v-if="props.item.showSave">
+                      <td v-if="item.showSave">
                         <signal
-                          :score="props.item.score || ''"
-                          :name="props.item.name || ''"
+                          :score="item.score || ''"
+                          :name="item.name || ''"
                           :canModifySignalName="false"
                           :jobUid="job.jobUid || ''"
                         />
