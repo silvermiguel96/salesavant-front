@@ -4,16 +4,21 @@
     :items="items"
     class="elevation-1"
     :pagination.sync="pagination"
-    :rows-per-page-items="pagination.rowsPerPageItems"
+    :items-per-pag="pagination.rowsPerPageItems"
+    :footer-props="{
+      'items-per-page-options': pagination.rowsPerPageItems
+    }"
     @update:pagination="updatePagination"
-    :total-items="totalItems"
+    :server-items-length="totalItems"
   >
-    <template v-slot:items="props">
-      <td>
-        <router-link
-          :to="`/companies/${props.item.company.uid}`"
-        >{{ props.item.company.name || "--" }}</router-link>
-      </td>
+    <template v-slot:item="{ item, headers}">
+      <tr>
+        <td>
+          <router-link
+            :to="`/companies/${props.item.company.uid}`"
+          >{{ props.item.company.name || "--" }}</router-link>
+        </td>
+      </tr>
     </template>
   </v-data-table>
 </template>
