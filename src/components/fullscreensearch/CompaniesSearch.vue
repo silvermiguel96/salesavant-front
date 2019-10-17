@@ -8,7 +8,7 @@
       <v-container grid-list-xs text-xs-center>
         <v-layout row wrap>
           <v-flex xs6>
-            <v-text-field name="name" v-model="company.name" label="Name" @input="changeData"></v-text-field>
+            <v-text-field name="name" v-model="company.name" label="Name"  @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
@@ -16,6 +16,7 @@
               v-model="company.country"
               label="Country"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
@@ -24,16 +25,17 @@
               label="Description"
               v-model="company.description"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="city" v-model="company.city" label="City" @input="changeData"></v-text-field>
+            <v-text-field name="city" v-model="company.city" label="City" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="region" v-model="company.region" label="Region" @input="changeData"></v-text-field>
+            <v-text-field name="region" v-model="company.region" label="Region" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="state" v-model="company.state" label="State" @input="changeData"></v-text-field>
+            <v-text-field name="state" v-model="company.state" label="State" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
@@ -41,10 +43,11 @@
               v-model="company.website"
               label="Website eywords"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="status" v-model="company.status" label="Status" @input="changeData"></v-text-field>
+            <v-text-field name="status" v-model="company.status" label="Status" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -54,6 +57,7 @@
               v-model="company.moreThanEmployees"
               label="More than y employees"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
@@ -62,6 +66,7 @@
               v-model="company.lessThanEmployees"
               label="Less than x employees"
               @input="changeData"
+              autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-layout row wrap>
@@ -71,6 +76,7 @@
                 v-model="company.moreThanScore"
                 label="More than score"
                 @input="changeData"
+                autocomplete="off"
               ></v-text-field>
             </v-flex>
             <v-flex xs6>
@@ -79,6 +85,7 @@
                 v-model="company.lessThanScore"
                 label="Less than score"
                 @input="changeData"
+                autocomplete="off"
               ></v-text-field>
             </v-flex>
           </v-layout>

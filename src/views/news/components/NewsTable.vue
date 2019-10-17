@@ -17,13 +17,19 @@
           <a
             :key="`news-link${item.id || ''}`"
             :href="`news/${item.id || ''}`"
-          >{{ trimText(_get( "item.title", "--"))}}</a>
+          >{{
+            trimText(item.title)
+             }}</a>
+             <!-- trimText(_get( "item.title", "--")) -->
         </td>
         <td>
           <a
             :key="`company-link${item.id}`"
             :href="`companies/${item.company.uid || ''}`"
-          >{{ trimText(_get( "item.company.name", "--"))}}</a>
+          >{{ 
+            trimText(item.company.name)
+            }}</a>
+            <!-- trimText(_get( "item.company.name", "--")) -->
         </td>
         <td>
           <a
@@ -72,7 +78,6 @@ export default {
           value: "creationTime",
           align: "left"
         },
-        { text: "Actions", value: "ks", sortable: false }
       ]
     };
   },
@@ -83,7 +88,7 @@ export default {
     _get: _get,
     trimText(text = "") {
       if (!!text) {
-        return `${text.substring(0, 50)}${text.length > 50 ? "..." : ""}`;
+        return `${text.substring(0, 35)}${text.length > 35 ? "..." : ""}`;
       }
     }
   },

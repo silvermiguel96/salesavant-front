@@ -3,7 +3,7 @@
     <v-container grid-list-md text-xs-center>
       <v-layout row wrap>
         <v-flex>
-          <v-text-field name="news" v-model="news" label="Search in news" @input="changeData"></v-text-field>
+          <v-text-field name="news" v-model="news" label="Search in news" @input="changeData" autocomplete="off"></v-text-field>
         </v-flex>
         <v-flex d-flex align-center justify-center>
           <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
