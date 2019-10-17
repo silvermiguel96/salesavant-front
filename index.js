@@ -19,18 +19,13 @@ function requireHTTPS(req, res, next) {
   next();
 }
 if (environment === "production") {
-  app.use(requireHTTPS);
-
-} else {
+  app.use(
+    history({
+      index: "/index.html"
+    })
+  );
   app.use(express.static("dist"));
 }
-
-app.use(
-  history({
-    index: "/index.html"
-  })
-);
-app.use(express.static("dist"));
 
 app.listen(port, () =>
   console.log(
