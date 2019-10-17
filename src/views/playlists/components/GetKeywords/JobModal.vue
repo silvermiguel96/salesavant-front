@@ -20,33 +20,37 @@
             :headers="headers"
             :items="results"
             class="elevation-1"
-            :rows-per-page-items="[100]"
+            :footer-props="{
+              'items-per-page-options': [100]
+            }"
           >
-            <template v-slot:items="props">
-              <td v-show="!props.item.showSave">{{ props.item.name || ""}}</td>
-              <td v-show="!props.item.showSave">{{ props.item.total || "" }}</td>
-              <td v-show="!props.item.showSave">{{ props.item.score || "" }}</td>
-              <td>
-                <table>
-                  <tr>
-                    <td>
-                      <v-icon v-show="!props.item.showSave" @click="toggleSave(props.index)">save</v-icon>
-                      <v-icon
-                        v-show="props.item.showSave"
-                        @click="toggleSave(props.index)"
-                      >exit_to_app</v-icon>
-                    </td>
-                    <td v-if="props.item.showSave">
-                      <signal
-                        :score="props.item.score || ''"
-                        :name="props.item.name || ''"
-                        :canModifySignalName="false"
-                        :jobUid="job.jobUid || ''"
-                      />
-                    </td>
-                  </tr>
-                </table>
-              </td>
+            <template v-slot:item="{ item, headers }">
+              <tr>
+                <td v-show="!props.item.showSave">{{ props.item.name || ""}}</td>
+                <td v-show="!props.item.showSave">{{ props.item.total || "" }}</td>
+                <td v-show="!props.item.showSave">{{ props.item.score || "" }}</td>
+                <td>
+                  <table>
+                    <tr>
+                      <td>
+                        <v-icon v-show="!props.item.showSave" @click="toggleSave(props.index)">save</v-icon>
+                        <v-icon
+                          v-show="props.item.showSave"
+                          @click="toggleSave(props.index)"
+                        >exit_to_app</v-icon>
+                      </td>
+                      <td v-if="props.item.showSave">
+                        <signal
+                          :score="props.item.score || ''"
+                          :name="props.item.name || ''"
+                          :canModifySignalName="false"
+                          :jobUid="job.jobUid || ''"
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </v-card-text>
