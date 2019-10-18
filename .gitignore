@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+dist
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
@@ -26,4 +27,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-dist/*
