@@ -27,16 +27,16 @@
             <template v-slot:item="{ item, headers }">
               <tr>
                 <td v-show="!item.showSave">{{ item.name || ""}}</td>
-                <td v-show="!item.showSave">{{ item.total || "" }}</td>
+                <td v-show="!item.showSave">{{ item || "" }}</td>
                 <td v-show="!item.showSave">{{ item.score || "" }}</td>
                 <td>
                   <table>
                     <tr>
                       <td>
-                        <v-icon v-show="!item.showSave" @click="toggleSave(item.index)">save</v-icon>
+                        <v-icon v-show="!item.showSave" @click="toggleSave(item)">save</v-icon>
                         <v-icon
                           v-show="item.showSave"
-                          @click="toggleSave(item.index)"
+                          @click="toggleSave(item)"
                         >exit_to_app</v-icon>
                       </td>
                       <td v-if="item.showSave">
@@ -110,8 +110,10 @@ export default {
     },
     getResults() {
       const results = _get(this.$props.job, "results.keywords", []);
+      const i = 0
       this.results = results.map(item => ({
         showSave: false,
+        index: ++i,
         name: item[0] || "",
         total: item[1] || "--",
         score: item[2] || "--"

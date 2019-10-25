@@ -1,44 +1,47 @@
 <template>
-<!-- Custom Sales Signals -->
-<v-card-text>
-  <v-toolbar flat color="white">
-        <v-toolbar-title>Custom Sales Signals</v-toolbar-title>
-      </v-toolbar>
+  <!-- Custom Sales Signals -->
+  <v-card-text>
+    <v-toolbar flat color="white">
+      <v-toolbar-title>Custom Sales Signals</v-toolbar-title>
+    </v-toolbar>
     <template>
-        <!-- Apollo watched Graphql query -->
-        <ApolloQuery 
-            :query="require('../graphql/TableSalesSignals.gql')"
-            :variables="{ first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"   
-        >
+      <!-- Apollo watched Graphql query -->
+      <ApolloQuery
+        :query="require('../graphql/TableSalesSignals.gql')"
+        :variables="{ first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+      >
         <template slot-scope="{ result: { loading, error, data } }">
-            <!-- Loading -->
-            <div v-if="loading" class="loading apollo">Loading...</div>
-            <!-- Result -->
-            <div v-else-if="data" class="result apollo">
-                <v-data-table
-                    :headers="headers"
-                    :items="data.signalsAggs"
-                    class="elevation-1"
-                    @updatePagination="updatePagination"
-                >
-                <template v-slot:items="props">
-                     <td>
-                        <router-link :to="`/signals/${props.item.signal.id}`">{{ props.item.signal.name || "--"}}</router-link>
-                    </td>
-                    <td>{{props.item.totalCompanies || "0"}}</td>
-                    <td>{{props.item.signal.defaultScore || "0"}}</td>
-                    <td>{{props.item.signal.group || "-"}}</td>
-                </template>
-                </v-data-table>
-            </div>
-            <!-- No result -->
-            <div v-else class="no-result apollo">Loading...</div>
-
+          <!-- Loading -->
+          <div v-if="loading" class="loading apollo">Loading...</div>
+          <!-- Result -->
+          <div v-else-if="data" class="result apollo">
+            <!-- <div>{{ JSON.stringify(data) }}</div> -->
+            <v-data-table
+              :headers="headers"
+              :items="data.signalsAggs"
+              class="elevation-1"
+              @updatePagination="updatePagination"
+            >
+              <template v-slot:item="{ item, headers}">
+                <tr>
+                  <td>
+                    <router-link
+                      :to="`/signals/${item.signal.id}`"
+                    >{{ item.signal.name || "--"}}</router-link>
+                  </td>
+                  <td>{{item.totalCompanies || "0"}}</td>
+                  <td>{{item.signal.defaultScore || "0"}}</td>
+                  <td>{{item.signal.group || "-"}}</td>
+                </tr>
+              </template>
+            </v-data-table>
+          </div>
+          <!-- No result -->
+          <div v-else class="no-result apollo">Loading...</div>
         </template>
-        </ApolloQuery>
-    </template>    
-</v-card-text>
-    
+      </ApolloQuery>
+    </template>
+  </v-card-text>
 </template>
 <script>
 export default {

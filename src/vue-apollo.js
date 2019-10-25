@@ -23,6 +23,9 @@ Vue.prototype.$filesRoot = filesRoot;
 // Config
 const defaultOptions = {
   httpEndpoint,
+  inMemoryCacheOptions: {
+    freezeResults: false
+  },
   wsEndpoint: null,
   tokenName: AUTH_TOKEN,
   persisting: false,
