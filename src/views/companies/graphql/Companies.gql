@@ -1,17 +1,20 @@
 query AllCompanies($first: Int, $offset: Int) {
   companies(first: $first, offset: $offset) {
-    uid
-    name
-    status
-    description
-    city
-    state
-    country
-    numEmployees
-    momentum
-    url
-    vertical
-    totalScore
-    totalSignals
+    totalResults
+    companiesList {
+      uid
+      name
+      status
+      description
+      city
+      state
+      country
+      numEmployees
+      momentum
+      url
+      vertical
+      totalScore
+      totalSignals
+    }
   }
 }

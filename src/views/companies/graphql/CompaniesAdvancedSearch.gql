@@ -12,9 +12,6 @@ query CompaniesAdvancedSearch(
   $moreThanScore: Float
   $lessThanScore: Float
   $first: Int
-  $playlistUid: String
-  $signalId: Int
-  $signalGroup: String
   $offset: Int
 ) {
   companies(
@@ -31,35 +28,36 @@ query CompaniesAdvancedSearch(
     moreThanScore: $moreThanScore
     lessThanScore: $lessThanScore
     first: $first
-    playlistUid: $playlistUid
-    signalId: $signalId
-    signalGroup: $signalGroup
     offset: $offset
   ) {
-    creationTime
-    modificationTime
-    uid
-    name
-    website
-    description
-    url
-    handle
-    logoUrl
-    city
-    country
-    region
-    state
-    numEmployees
-    momentum
-    vertical
-    industry
-    status
-    dateFounded
-    dateAcquired
-    linkedinHandle
-    stockSymbol
-    naicsCode
-    totalScore
-    totalSignals
+    totalResults
+    companiesList {
+      creationTime
+      modificationTime
+      uid
+      name
+      website
+      description
+      url
+      handle
+      logoUrl
+      city
+      country
+      region
+      state
+      numEmployees
+      momentum
+      vertical
+      industry
+      status
+      dateFounded
+      dateAcquired
+      linkedinHandle
+      stockSymbol
+      naicsCode
+      totalScore
+      totalSignals
+    }
+    
   }
 }

@@ -1,17 +1,19 @@
 query SinglePlaylist($uid: String $first: Int $offset: Int) {
-  companies(playlistUid: $uid first: $first offset: $offset){
-    uid
-    name
-    description
-    city
-    state
-    country
-    momentum
-    numEmployees
-    website
-    url
-    vertical
-    totalScore
-    totalSignals
+  playlistCompanies(playlistUid: $uid first: $first offset: $offset){
+    companiesList{
+      uid
+      name
+      description
+      city
+      state
+      country
+      momentum
+      numEmployees
+      website
+      url
+      vertical
+      totalScore
+      totalSignals
+    }
   }
 }

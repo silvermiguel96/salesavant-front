@@ -173,8 +173,8 @@
             <div v-else-if="data" class="result apollo">
               <!---<div>{{ JSON.stringify(data) }}</div>-->
               <companies-table
-                v-if="data.companies "
-                :items="data.companies"
+                v-if="data.companies.companiesList"
+                :items="data.companies.companiesList"
                 class="result apollo"
                 @updatePagination="updatePagination"
               ></companies-table>

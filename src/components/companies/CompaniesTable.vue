@@ -18,19 +18,11 @@
         </td>
         <td>{{ item.totalSignals || "0"}}</td>
         <td>{{ item.totalScore || "0"}}</td>
-        <td class="wrapping-td">
-          <long-paragraph :text="item.description"></long-paragraph>
-        </td>
-        <td>{{ item.city || "--"}}</td>
+        <td>{{ item.numEmployees || "0"}}</td>
         <td>{{ item.state || "--"}}</td>
         <td>{{ item.country || "--"}}</td>
-        <td>{{ item.numEmployees || "0"}}</td>
         <td>{{ item.momentum || "--"}}</td>
-        <td class="wrapping-td">
-          <long-paragraph v-if="item.website" :text="item.website"></long-paragraph>
-          <p v-else>{{"--"}}</p>
-        </td>
-        <td>{{ item.url || "--"}}</td>
+        <td>{{ item.website || "--"}}</td>
         <td>{{ item.vertical || "--" }}</td>
       </tr>
     </template>
@@ -50,26 +42,15 @@ export default {
       },
       totalItems: 10000000,
       headers: [
-        {
-          text: "Company",
-          sortable: false,
-          value: "name"
-        },
+        { text: "Company", value: "name", sortable: false},
         { text: "Signals", value: "totalSignals" },
         { text: "Score", value: "totalScore" },
-        {
-          text: "Description",
-          value: "description",
-          sortable: false
-        },
-        { text: "City", value: "city" },
-        { text: "State", value: "state" },
-        { text: "Country", value: "country" },
         { text: "Emp.", value: "numEmployees" },
-        { text: "Momentum", value: "momentum" },
-        { text: "Website", value: "website" },
-        { text: "Url", value: "url" },
-        { text: "Vertical", value: "vertical" }
+        { text: "State", value: "state", sortable: false },
+        { text: "Country", value: "country", sortable: false },
+        { text: "Momentum", value: "momentum", sortable: false },
+        { text: "Url", value: "url", sortable: false },
+        { text: "Vertical", value: "vertical", sortable: false }
       ]
     };
   },

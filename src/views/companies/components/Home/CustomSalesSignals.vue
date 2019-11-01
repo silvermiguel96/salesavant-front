@@ -35,7 +35,7 @@
       <v-data-table
         v-if="companySignals"
         :headers="headers"
-        :items="companySignals"
+        :items="companySignals.companySignalsList"
         class="elevation-1 mt-5"
         hide-default-footer
       >
@@ -178,14 +178,17 @@ export default {
     companySignals: {
       query: gql`
         query getSignalsForSingleCompany($companyUid: String) {
-          companySignals(companyUid: $companyUid, first: 10000) {
-            signal {
-              id
-              name
-              category
-              group
+          companySignals(companyUid: $companyUid, first: 10) {
+            totalResults
+            companySignalsList{
+              score
+              signal {
+                id
+                name
+                category
+                group
+              }
             }
-            score
           }
         }
       `,
