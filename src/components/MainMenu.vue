@@ -1,23 +1,6 @@
 <template>
   <nav>
-    <v-toolbar color="primary" dark dense>
-      <router-link to="/home">
-        <img class="logo" :src="require('../assets/salesavant_header.png')" />
-      </router-link>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down " v-for="link in links" :key="link.text">
-        <v-btn v-if="!!link.click" text class="text-capitalize" @click="link.click">{{link.text}}</v-btn>
-        <v-btn v-else text class="text-capitalize" :to="link.router">{{link.text}}</v-btn>
-      </v-toolbar-items>
-      <v-toolbar-items>
-        <v-btn text color="white" class="text-capitalize" @click="this.exitApp">
-          <span>Sign Out</span>
-          <v-icon small right>exit_to_app</v-icon>
-        </v-btn>
-      </v-toolbar-items>
-      <v-app-bar-nav-icon small @click="drawer = !drawer"></v-app-bar-nav-icon>
-    </v-toolbar>
-    <v-navigation-drawer right small app v-model="drawer" class="primary">
+    <v-navigation-drawer left small app v-model="drawer" class="primary">
       <v-list>
         <v-list-item-group>
           <v-list-item v-for="link in links" :key="link.text" :to="link.route" @click="link.click">
@@ -31,6 +14,22 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+    <v-toolbar color="primary" dark dense>
+      <v-app-bar-nav-icon class="d-md-none" small @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <router-link to="/home">
+        <img class="logo mt-1" :src="require('../assets/salesavant_header.png')" />
+      </router-link>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down " v-for="link in links" :key="link.text">
+        <v-btn v-if="!!link.click" text class="text-capitalize" @click="link.click">{{link.text}}</v-btn>
+        <v-btn v-else text class="text-capitalize" :to="link.router">{{link.text}}</v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items>
+        <v-btn text color="white" class="text-capitalize px-0" style="min-width: 30px;"  @click="this.exitApp">
+          <v-icon medium right>exit_to_app</v-icon>
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
   </nav>
 </template>
 <script>

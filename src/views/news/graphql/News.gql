@@ -8,7 +8,6 @@ query AllNews($first: Int, $offset: Int) {
       name
     }
     category
-    searchNews
     publishDate
     creationTime
   }

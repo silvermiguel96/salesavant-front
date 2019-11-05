@@ -2,10 +2,10 @@
   <div class="min-width-description">
     {{showMore ? text : trimText(text)}}
     <a
-      v-show="!showMore && !!text &&text.length > 30"
+      v-show="!showMore && !!text &&text.length > this.maxLength"
       @click.prevent="toggle"
     >+</a>
-    <a v-show="showMore && !!text && text.length > 30" @click.prevent="toggle">-</a>
+    <a v-show="showMore && !!text && text.length > this.maxLength" @click.prevent="toggle">-</a>
   </div>
 </template>
 
@@ -17,12 +17,16 @@ export default {
     };
   },
   props: {
-    text: String
+    text: String,
+    maxLength: {
+      type: Number,
+      default: 30
+    }
   },
   methods: {
     trimText(text = "") {
       if (!!text) {
-        return `${text.substring(0, 30)}${text.length > 30 ? "..." : ""}`;
+        return `${text.substring(0, this.maxLength)}${text.length > this.maxLength ? "..." : ""}`;
       }
     },
     toggle() {

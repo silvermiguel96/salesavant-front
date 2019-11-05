@@ -1,5 +1,10 @@
-query AllCompanies($first: Int, $offset: Int) {
-  companies(first: $first, offset: $offset) {
+query AllCompanies(
+  $first: Int, 
+  $offset: Int,
+  $sortBy: String,
+  $sortOrder: String
+) {
+  companies(first: $first, offset: $offset, sortBy: $sortBy, sortOrder: $sortOrder ) {
     totalResults
     companiesList {
       uid

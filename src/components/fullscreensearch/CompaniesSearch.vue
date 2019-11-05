@@ -11,22 +11,10 @@
             <v-text-field name="name" v-model="company.name" label="Name"  @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field
-              name="country"
-              v-model="company.country"
-              label="Country"
-              @input="changeData"
-              autocomplete="off"
-            ></v-text-field>
+            <v-text-field name="country" v-model="company.country" label="Country" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field
-              name="description"
-              label="Description"
-              v-model="company.description"
-              @input="changeData"
-              autocomplete="off"
-            ></v-text-field>
+            <v-text-field name="description" label="Description" v-model="company.description" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="city" v-model="company.city" label="City" @input="changeData" autocomplete="off"></v-text-field>
@@ -38,13 +26,7 @@
             <v-text-field name="state" v-model="company.state" label="State" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field
-              name="website"
-              v-model="company.website"
-              label="Website eywords"
-              @input="changeData"
-              autocomplete="off"
-            ></v-text-field>
+            <v-text-field name="website" v-model="company.website" label="Website eywords" @input="changeData" autocomplete="off" ></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="status" v-model="company.status" label="Status" @input="changeData" autocomplete="off"></v-text-field>
@@ -55,7 +37,7 @@
             <v-text-field
               name="moreThanEmployees"
               v-model="company.moreThanEmployees"
-              label="More than y employees"
+              label="More than employees"
               @input="changeData"
               autocomplete="off"
             ></v-text-field>
@@ -64,7 +46,7 @@
             <v-text-field
               name="lessThanEmployees"
               v-model="company.lessThanEmployees"
-              label="Less than x employees"
+              label="Less than employees"
               @input="changeData"
               autocomplete="off"
             ></v-text-field>
@@ -102,7 +84,7 @@
           <v-flex xs6>
             <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
           </v-flex>
-          <v-flex  d-flex align-end justify-center xs6>
+          <v-flex  d-flex align-end justify-center >
             <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
               <v-icon class="pr-1" small>search</v-icon>
               {{" Companies Search"}}
@@ -180,8 +162,7 @@ export default {
       if (!this.atLeastOneCompanyFieldIsNotEmpty()) {
         this.snack = true;
         this.snackColor = "error";
-        this.snackText =
-          "At least one company field search criteria is not empty!";
+        this.snackText = "At least one company field search criteria is not empty!";
         return;
       }
       if (!this.showNewPlaylistName) {
@@ -261,8 +242,7 @@ export default {
           if (!playlist) {
             this.snack = true;
             this.snackColor = "error";
-            this.snackText =
-              "it seems that we created your playlist but couldn't check it, please check manually";
+            this.snackText = "it seems that we created your playlist but couldn't check it, please check manually";
             return;
           }
           this.toggle();

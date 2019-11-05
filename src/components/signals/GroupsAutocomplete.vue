@@ -10,7 +10,7 @@
       text
       hide-no-data
       hide-details
-      label="In signal Group"
+      label="In signal group"
       @change="change"
       clearable
     ></v-autocomplete>

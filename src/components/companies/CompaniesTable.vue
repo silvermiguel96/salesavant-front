@@ -2,28 +2,31 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :items-per-page="pagination.rowsPerPage"
+    :options.sync="options"
+    :server-items-length="totalResults"
+    :items-per-page="options.rowsPerPage"
     :footer-props="{
-      'items-per-page-options': pagination.rowsPerPageItems
+      'items-per-page-options': [10, 20, 50]
     }"
-    class="elevation-1 ma-2"
-    @update:pagination="updatePagination"
-    :server-items-length="totalItems"
+    class="mx-2"
+    @update:options="updateOptions"
   >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-    <template v-slot:item="{ item, headers }">
+    <template v-slot:item="{ item }">
       <tr>
         <td>
-          <router-link :to="`/companies/${ item.uid}`">{{ item.name }}</router-link>
+          <router-link :to="`/companies/${ item.uid}`">
+            <long-paragraph :text="item.name" :maxLength="35"></long-paragraph>
+          </router-link>
         </td>
-        <td>{{ item.totalSignals || "0"}}</td>
-        <td>{{ item.totalScore || "0"}}</td>
-        <td>{{ item.numEmployees || "0"}}</td>
+        <td>{{ item.totalScore.toLocaleString() || "0"}}</td>
+        <td>{{ item.numEmployees.toLocaleString() || "0"}}</td>
         <td>{{ item.state || "--"}}</td>
         <td>{{ item.country || "--"}}</td>
         <td>{{ item.momentum || "--"}}</td>
-        <td>{{ item.website || "--"}}</td>
-        <td>{{ item.vertical || "--" }}</td>
+        <td>
+          <long-paragraph :text="item.vertical" :maxLength="35"></long-paragraph>
+        </td>
       </tr>
     </template>
   </v-data-table>
@@ -31,35 +34,31 @@
 
 <script>
 import _get from "lodash.get";
-import LongParagraph from "./LongParagraph";
+import LongParagraph from "../../components/companies/LongParagraph.vue";
 export default {
   data() {
     return {
-      pagination: {
-        page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
-      },
-      totalItems: 10000000,
       headers: [
-        { text: "Company", value: "name", sortable: false},
-        { text: "Signals", value: "totalSignals" },
-        { text: "Score", value: "totalScore" },
-        { text: "Emp.", value: "numEmployees" },
-        { text: "State", value: "state", sortable: false },
-        { text: "Country", value: "country", sortable: false },
-        { text: "Momentum", value: "momentum", sortable: false },
-        { text: "Url", value: "url", sortable: false },
-        { text: "Vertical", value: "vertical", sortable: false }
-      ]
+        { text: "Company", value: "name", width: 250},
+        { text: "Score", value: "totalScore", width: 80, sortable: true},
+        { text: "Employees", value: "numEmployees",width: 80, sortable: true, divider: true },
+        { text: "State", value: "state", width: 140, sortable: false },
+        { text: "Country", value: "country", width: 140,  sortable: false },
+        { text: "Momentum", value: "momentum", width: 140, sortable: false },
+        { text: "Vertical", value: "vertical", width: 200, sortable: false }
+      ],
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      },
     };
   },
   /* apollo: {
     playlists: PLAYLISTS
   } */
   methods: {
-    updatePagination(dataFromEvent = {}) {
-      this.$emit("updatePagination", { dataFromEvent });
+    updateOptions(dataFromEvent = {}) {
+      this.$emit("updateOptions", { dataFromEvent });
     },
     _get: _get,
     trimText(text = "") {
@@ -68,9 +67,9 @@ export default {
   },
   props: {
     items: Array,
-    props: []
+    totalResults: Number
   },
-  components: {
+  components:{
     LongParagraph
   }
 };

@@ -21,7 +21,11 @@
                 </v-toolbar-items>
               </v-toolbar>
               <v-card-text>
-                <v-text-field v-model="userlogin.username" label="Email"></v-text-field>
+                <v-text-field v-model="userlogin.username" 
+                label="Email" 
+                type="email" 
+                name="email" 
+                append-icon="mail"></v-text-field>
                 <v-text-field
                   v-model="userlogin.password"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
@@ -42,7 +46,6 @@
 </template>
 
 <script>
-// import authService from "../auth/authService";
 import { AUTH_TOKEN } from '../vue-apollo';
 export default {
   name: "login",

@@ -10,12 +10,13 @@
     >
       <v-card>
         <v-toolbar dark>
-          <v-btn icon dark @click="toggle">
+          <v-btn icon @click="toggle">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
         </v-toolbar>
         <v-expansion-panels accordion :value="expand">
+
           <v-expansion-panel>
             <v-expansion-panel-header>Companies</v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -26,13 +27,7 @@
               />
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>News</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <news-search @change="changeNews" @toggle="toggle" @search="onNewsSearch" />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-
+          
           <v-expansion-panel>
             <v-expansion-panel-header>Playlists</v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -43,10 +38,24 @@
               />
             </v-expansion-panel-content>
           </v-expansion-panel>
+
           <v-expansion-panel>
             <v-expansion-panel-header>Signals</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <signals-search @change="changeSignals" @toggle="toggle" @search="onSignalsSearch" />
+              <signals-search 
+              @change="changeSignals"
+              @toggle="toggle"
+              @search="onSignalsSearch" />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <v-expansion-panel>
+            <v-expansion-panel-header>News</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <news-search 
+              @change="changeNews" 
+              @toggle="toggle" 
+              @search="onNewsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -96,7 +105,6 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
-      simpleSearch: "",
       companySearchObject: { ...defaultCompanySearchObject },
       signalsSearchObject: { ...defaultSignalsSearchObject },
       searchType: null,
@@ -120,9 +128,6 @@ export default {
     },
     search() {
       switch (this.searchType) {
-        case "simple":
-          this.onSimpleSearch();
-          break;
         case "company":
           this.onCompanySearch();
           break;
@@ -136,10 +141,6 @@ export default {
           this.onSignalsSearch();
           break;
       }
-    },
-    changeSimpleSearch(data) {
-      this.searchType = "simple";
-      this.simpleSearch = data.simpleSearch || "";
     },
     changeCompanySearchObject(data) {
       this.searchType = "company";
@@ -156,16 +157,6 @@ export default {
     changeSignals(data) {
       this.searchType = "signals";
       this.signalsSearchObject = { ...data };
-    },
-    onSimpleSearch() {
-      this.toggle();
-      this.$router.push({
-        path: "/companies",
-        query: {
-          simpleSearch: this.simpleSearch,
-          searchType: "simple"
-        }
-      });
     },
     onCompanySearch() {
       this.toggle();
