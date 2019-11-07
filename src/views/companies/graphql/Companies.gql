@@ -1,17 +1,25 @@
-query AllCompanies($first: Int, $offset: Int) {
-  companies(first: $first, offset: $offset) {
-    uid
-    name
-    status
-    description
-    city
-    state
-    country
-    numEmployees
-    momentum
-    url
-    vertical
-    totalScore
-    totalSignals
+query AllCompanies(
+  $first: Int, 
+  $offset: Int,
+  $sortBy: String,
+  $sortOrder: String
+) {
+  companies(first: $first, offset: $offset, sortBy: $sortBy, sortOrder: $sortOrder ) {
+    totalResults
+    companiesList {
+      uid
+      name
+      status
+      description
+      city
+      state
+      country
+      numEmployees
+      momentum
+      url
+      vertical
+      totalScore
+      totalSignals
+    }
   }
 }

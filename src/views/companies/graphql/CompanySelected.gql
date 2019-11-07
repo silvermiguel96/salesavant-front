@@ -24,8 +24,5 @@ query SelecteCompany($company: String){
     naicsCode
     totalScore
     totalSignals
-    employees{
-      title
-    }
   }
 }

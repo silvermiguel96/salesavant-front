@@ -41,7 +41,7 @@
           <v-flex d-flex  justify-center >
             <v-btn @click="search" class="text-capitalize" small type="submit" color="primary">
               <v-icon class="pr-1" small>search</v-icon>
-              {{"Search playlists"}}
+              {{"playlists search"}}
             </v-btn>
           </v-flex>
         </v-layout>

@@ -32,26 +32,27 @@
         ></v-breadcrumbs>
         <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
         <ul class="ml-2" v-if="!!isFiltered">
-          <li
-            v-if="this.$route.query.playlistsSearch"
-          >Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
-          <li
-            v-if="this.$route.query.lessThanCompanies"
-          >Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
-          <li
-            v-if="this.$route.query.moreThanCompanies"
-          >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
+          <li v-if="this.$route.query.playlistsSearch" >Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
+          <li v-if="this.$route.query.lessThanCompanies" >Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
+          <li v-if="this.$route.query.moreThanCompanies" >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
         </ul>
         <v-btn color="primary" class="text-capitalize ma-2" dark small @click="toggleSearch">
           <v-icon small class="pr-1">search</v-icon>search
         </v-btn>
-        <template
-          v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
+        <template v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
       !!this.$route.query.playlistsSearch || !!this.$route.query.moreThanCompanies || !!this.$route.query.lessThanCompanies"
         >
           <ApolloQuery
             :query="require('./graphql/PlaylistSearch.gql')"
-            :variables="{ search: this.$route.query.playlistsSearch,lessThanCompanies: Number.parseInt(this.$route.query.lessThanCompanies || 0) , moreThanCompanies: Number.parseInt(this.$route.query.moreThanCompanies) || 0 ,first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+            :variables="{ 
+              search: this.$route.query.playlistsSearch,
+              lessThanCompanies: Number.parseInt(this.$route.query.lessThanCompanies || 0) , 
+              moreThanCompanies: Number.parseInt(this.$route.query.moreThanCompanies) || 0 ,
+              first: this.itemsPerPage, 
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading-->
@@ -64,10 +65,11 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <play-lists-table
-                  v-if="data.playlists.length"
-                  :items="data.playlists"
+                  v-if="data.playlists.playlistsList.length"
+                  :items="data.playlists.playlistsList"
+                  :totalResults="data.playlists.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></play-lists-table>
               </div>
 
@@ -80,7 +82,12 @@
           <!-- Apollo watched Graphql query -->
           <ApolloQuery
             :query="require('./graphql/Playlists.gql')"
-            :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+            :variables="{
+              first: this.itemsPerPage, 
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -93,10 +100,11 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <play-lists-table
-                  v-if="data.playlists.length"
-                  :items="data.playlists"
+                  v-if="data.playlists.playlistsList.length"
+                  :items="data.playlists.playlistsList"
+                  :totalResults="data.playlists.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></play-lists-table>
               </div>
 
@@ -117,11 +125,10 @@ export default {
   data() {
     return {
       items: ["playlists"],
-      descending: false,
       page: 1,
-      rowsPerPage: 5,
+      itemsPerPage: 10,
       sortBy: "",
-      totalItems: 5,
+      sortOrder: "",
       isFiltered: false
     };
   },
@@ -130,20 +137,32 @@ export default {
   },
   components: { PlayListsTable },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 5
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
       this.page = page;
-      this.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.itemsPerPage = itemsPerPage;
+      if (sortBy.length > 0) {
+        switch (sortBy[0]) {
+          case "totalScore":
+            this.sortBy = "score";
+          case "totalSignals":
+            this.sortBy = "signals";
+          case "numEmployees":
+            this.sortBy = "employees";
+        }
+      }else{
+        this.sortBy = "";
+      }
+      if (sortDesc.length > 0) {
+        if (sortDesc[0]) {
+          this.sortOrder = "desc";
+        } else {
+          this.sortOrder = "asc";
+        }
+      }else{
+        this.sortOrder = "";
+      }
     },
     toggleSearch() {
       this.$emit("toggleSearch", {

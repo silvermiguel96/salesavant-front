@@ -1,21 +1,24 @@
 query SearchPlaylist($search: String, $lessThanCompanies: Int, $moreThanCompanies: Int, $first: Int, $offset: Int) {
   playlists(search: $search, lessThanCompanies: $lessThanCompanies, moreThanCompanies: $moreThanCompanies first: $first, offset: $offset) {
-    creationTime
-    modificationTime
-    uid
-    name
-    category
-    description
-    accountId
-    userId
-    account {
-      id
+    totalResults
+    playlistsList{
+      creationTime
+      modificationTime
+      uid
+      name
+      category
+      description
+      accountId
+      userId
+      account {
+        id
+      }
+      user {
+        id
+      }
+      totalSignals
+      totalCompanies
+      totalScore
     }
-    user {
-      id
-    }
-    totalSignals
-    totalCompanies
-    totalScore
   }
 }
