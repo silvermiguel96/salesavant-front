@@ -2,13 +2,14 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :items-per-page="pagination.rowsPerPage"
+    :server-items-length="totalResults"
+    :items-per-page="options.itemsPerPage"
     :footer-props="{
-      'items-per-page-options': pagination.rowsPerPageItems
+      'items-per-page-options': [10, 20, 50]
     }"
-    class="elevation-1"
-    @update:pagination="updatePagination"
-    :server-items-length="totalItems"
+    :options.sync="options"
+    class="mx-2"
+    @update:options="updateOptions"
   >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:item="{ item, headers }">
@@ -52,12 +53,6 @@ import LongParagraph from "../../../components/companies/LongParagraph.vue";
 export default {
   data() {
     return {
-      pagination: {
-        page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
-      },
-      totalItems: 10000000,
       headers: [
         {
           text: "News Title",
@@ -78,12 +73,16 @@ export default {
           value: "creationTime",
           align: "left"
         },
-      ]
+      ],
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      }
     };
   },
   methods: {
-    updatePagination(dataFromEvent = {}) {
-      this.$emit("updatePagination", { dataFromEvent });
+    updateOptions(dataFromEvent = {}) {
+      this.$emit("updateOptions", { dataFromEvent });
     },
     _get: _get,
     trimText(text = "") {
@@ -94,7 +93,7 @@ export default {
   },
   props: {
     items: Array,
-    props: []
+    totalResults: Number
   },
   components: {
     LongParagraph

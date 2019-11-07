@@ -5,7 +5,7 @@
       :loading="loading"
       :item-text="'name'"
       :item-value="'uid'"
-      :items="playlists"
+      :items="playlists.playlistsList"
       :search-input.sync="search"
       cache-items
       text
@@ -34,8 +34,10 @@ export default {
       query: gql`
         query getFilteredPlaylists($search: String) {
           playlists(first: 25, search: $search) {
-            uid
-            name
+            playlistsList{
+              uid
+              name
+            }
           }
         }
       `,

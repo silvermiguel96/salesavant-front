@@ -2,15 +2,14 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :loading="!items.length"
-    :items-per-page="pagination.rowsPerPage"
+    :server-items-length="totalResults"
+    :items-per-page="options.itemsPerPage"
     :footer-props="{
-      'items-per-page-options': pagination.rowsPerPageItems
+      'items-per-page-options': [10, 20, 50]
     }"
-    class="elevation-1 ma-2"
-    @update:pagination="updatePagination"
-    :server-items-length="totalItems"
-  >
+    :options.sync="options"
+    class="mx-2"
+    @update:options="updateOptions">
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:item="{ item, headers }">
       <tr>
@@ -21,9 +20,8 @@
             }}
           </router-link>
         </td>
-        <td>{{ item.totalCompanies }}</td>
-        <td>{{ item.totalSignals || "0" }}</td>
-        <td>{{ item.totalScore || "0" }}</td>
+        <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "-"}}</td>
+        <td>{{ item.totalScore ? item.totalScore.toLocaleString() : "0" }}</td>
         <td>
           <p>contacts coming soon</p>
         </td>
@@ -48,12 +46,6 @@
 export default {
   data() {
     return {
-      pagination: {
-        page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
-      },
-      totalItems: 100000,
       headers: [
         {
           text: "Name",
@@ -66,7 +58,6 @@ export default {
           value: "companies.length",
           align: "left"
         },
-        { text: "Signals", value: "signalsCount", align: "left" },
         { text: "Score", value: "scoreCount", align: "left" },
         { text: "Contacts", align: "left", value: "contacts" },
         { text: "Advanced", align: "left", value: "advanced" },
@@ -74,12 +65,16 @@ export default {
         { text: "Creation Time", value: "creationTime", align: "left" },
         { text: "Favorite", align: "left", value: "favorite" },
         { text: "Remove", align: "left" }
-      ]
+      ],
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      },
     };
   },
   methods: {
-    updatePagination(dataFromEvent = {}) {
-      this.$emit("updatePagination", { dataFromEvent });
+    updateOptions(dataFromEvent = {}) {
+      this.$emit("updateOptions", { dataFromEvent });
     },
     changeTimeHuman(time) {
       let HumanDate = time.split(".", 1).toString();
@@ -89,7 +84,7 @@ export default {
   },
   props: {
     items: Array,
-    props: []
+    totalResults: Number
   }
 };
 </script>

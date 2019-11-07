@@ -1,12 +1,20 @@
-query AllPlaylists($first: Int, $offset: Int) {
-  playlists(first: $first, offset: $offset) {
-    uid
-    name
-    creationTime
-    accountId
-    userId
-    totalSignals
-    totalCompanies
-    totalScore
+query AllPlaylists(
+  $first: Int,
+  $offset: Int,
+  $sortBy: String,
+  $sortOrder: String
+) {
+  playlists(first: $first, offset: $offset, sortBy: $sortBy, sortOrder: $sortOrder ) {
+    totalResults
+    playlistsList{
+      uid
+      name
+      creationTime
+      accountId
+      userId
+      totalSignals
+      totalCompanies
+      totalScore
+    }
   }
 }

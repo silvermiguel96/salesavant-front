@@ -44,7 +44,13 @@
         >
           <ApolloQuery
             :query="require('./graphql/NewsSearch.gql')"
-            :variables="{ title: this.$route.query.news, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+            :variables="{ 
+              title: this.$route.query.news, 
+              first: this.itemsPerPage,
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -57,10 +63,11 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <news-table
-                  v-if="data.news"
-                  :items="data.news"
+                  v-if="data.newsArticles.newsList.length"
+                  :items="data.newsArticles.newsList"
+                  :totalResults="data.newsArticles.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></news-table>
               </div>
 
@@ -72,7 +79,12 @@
         <template v-else>
           <ApolloQuery
             :query="require('./graphql/News.gql')"
-            :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+            :variables="{
+              first: this.itemsPerPage,
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -85,10 +97,11 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data.newsArticles) }}</div>-->
                 <news-table
-                  v-if="data.newsArticles"
-                  :items="data.newsArticles"
+                  v-if="data.newsArticles.newsList.length"
+                  :items="data.newsArticles.newsList"
+                  :totalResults="data.newsArticles.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></news-table>
               </div>
 
@@ -110,11 +123,10 @@ export default {
     return {
       items: ["News"],
       company: "",
-      descending: false,
       page: 1,
-      rowsPerPage: 5,
+      itemsPerPage: 10,
       sortBy: "",
-      totalItems: 10,
+      sortOrder: "",
       searchField: "",
       searchAdvance: {
         country: "",
@@ -132,20 +144,33 @@ export default {
   },
   components: { NewsTable },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
       this.page = page;
-      this.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.itemsPerPage = itemsPerPage;
+
+      if (sortBy.length > 0) {
+        switch (sortBy[0]) {
+          case "totalScore":
+            this.sortBy = "score";
+          case "totalSignals":
+            this.sortBy = "signals";
+          case "numEmployees":
+            this.sortBy = "employees";
+        }
+      }else{
+        this.sortBy = "";
+      }
+      if (sortDesc.length > 0) {
+        if (sortDesc[0]) {
+          this.sortOrder = "desc";
+        } else {
+          this.sortOrder = "asc";
+        }
+      }else{
+        this.sortOrder = "";
+      }
     },
     toggleSearch() {
       this.$emit("toggleSearch", {

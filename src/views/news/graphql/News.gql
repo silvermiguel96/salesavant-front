@@ -1,14 +1,17 @@
 query AllNews($first: Int, $offset: Int) {
   newsArticles(first: $first, offset: $offset) {
-    id
-    url
-    title
-    company {
-      uid
-      name
+    totalResults
+    newsList{
+      id
+      url
+      title
+      company {
+        uid
+        name
+      }
+      category
+      publishDate
+      creationTime
     }
-    category
-    publishDate
-    creationTime
   }
 }

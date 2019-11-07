@@ -2,12 +2,12 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :options.sync="options"
     :server-items-length="totalResults"
-    :items-per-page="options.rowsPerPage"
+    :items-per-page="options.itemsPerPage"
     :footer-props="{
       'items-per-page-options': [10, 20, 50]
     }"
+    :options.sync="options"
     class="mx-2"
     @update:options="updateOptions"
   >
@@ -19,8 +19,8 @@
             <long-paragraph :text="item.name" :maxLength="35"></long-paragraph>
           </router-link>
         </td>
-        <td>{{ item.totalScore.toLocaleString() || "0"}}</td>
-        <td>{{ item.numEmployees.toLocaleString() || "0"}}</td>
+        <td>{{ item.totalScore ? item.totalScore.toLocaleString() : "0"}}</td>
+        <td>{{ item.numEmployees ? item.numEmployees.toLocaleString() : "0"}}</td>
         <td>{{ item.state || "--"}}</td>
         <td>{{ item.country || "--"}}</td>
         <td>{{ item.momentum || "--"}}</td>
@@ -50,7 +50,7 @@ export default {
       options: {
         page: 1,
         itemsPerPage: 10
-      },
+      }
     };
   },
   /* apollo: {

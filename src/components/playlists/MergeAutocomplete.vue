@@ -6,7 +6,7 @@
           <v-autocomplete
             v-model="selectedPlaylists"
             :disabled="isUpdating"
-            :items="playlists"
+            :items="playlists.playlistsList"
             chips
             color="blue-grey lighten-2"
             label="Select"
@@ -60,8 +60,11 @@ export default {
       query: gql`
         query getFilteredPlaylists($search: String) {
           playlists(first: 25, search: $search) {
-            uid
-            name
+            totalResults
+            playlistsList{
+              uid
+              name
+            }
           }
         }
       `,

@@ -82,26 +82,26 @@
           <ApolloQuery
             :query="require('./graphql/CompaniesAdvancedSearch.gql')"
             :variables="{ 
-            name: this.$route.query.name || '',
-            description: this.$route.query.description || '',
-            country: this.$route.query.country || '',
-            website: this.$route.query.website || '',
-            city: this.$route.query.city || '',
-            region: this.$route.query.region || '',
-            state: this.$route.query.state || '',
-            status: this.$route.query.status || '',
-            lessThanEmployees: this.$route.query.lessThanEmployees || '0',
-            moreThanEmployees: this.$route.query.moreThanEmployees || '0',
-            moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '-1'),
-            lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
-            playlistUid: this.$route.query.playlistUid || '',
-            signalId: this.$route.query.signalId || 0,
-            signalGroup: this.$route.query.signalGroup || '',
-            sortBy: this.sortBy,
-            sortOrder: this.sortOrder,
-            first: this.itemsPerPage,
-            offset: (this.itemsPerPage * this.page) - this.itemsPerPage
-          }"
+              name: this.$route.query.name || '',
+              description: this.$route.query.description || '',
+              country: this.$route.query.country || '',
+              website: this.$route.query.website || '',
+              city: this.$route.query.city || '',
+              region: this.$route.query.region || '',
+              state: this.$route.query.state || '',
+              status: this.$route.query.status || '',
+              lessThanEmployees: this.$route.query.lessThanEmployees || '0',
+              moreThanEmployees: this.$route.query.moreThanEmployees || '0',
+              moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '-1'),
+              lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
+              playlistUid: this.$route.query.playlistUid || '',
+              signalId: this.$route.query.signalId || 0,
+              signalGroup: this.$route.query.signalGroup || '',
+              first: this.itemsPerPage,
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -131,10 +131,11 @@
           <ApolloQuery
             :query="require('./graphql/Companies.gql')"
             :variables="{
-            sortBy: this.sortBy,
-            sortOrder: this.sortOrder,
-            first: this.itemsPerPage, 
-            offset: (this.itemsPerPage * this.page) - this.itemsPerPage}"
+              first: this.itemsPerPage, 
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -146,7 +147,7 @@
               <!-- Result -->
               <div v-else-if="data" class="result apollo">
                 <companies-table
-                  v-if="data.companies"
+                  v-if="data.companies.companiesList.length"
                   :items="data.companies.companiesList"
                   :totalResults="data.companies.totalResults"
                   class="result apollo"
