@@ -216,10 +216,10 @@ export default {
         switch (sortBy[0]) {
           case "totalScore":
             this.sortBy = "score";
-          case "totalSignals":
-            this.sortBy = "signals";
+            break;
           case "numEmployees":
             this.sortBy = "employees";
+            break;
         }
       }else{
         this.sortBy = "";

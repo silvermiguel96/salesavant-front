@@ -39,13 +39,13 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Company", value: "name", width: 250},
-        { text: "Score", value: "totalScore", width: 80, sortable: true},
-        { text: "Employees", value: "numEmployees",width: 80, sortable: true, divider: true },
-        { text: "State", value: "state", width: 140, sortable: false },
-        { text: "Country", value: "country", width: 140,  sortable: false },
-        { text: "Momentum", value: "momentum", width: 140, sortable: false },
-        { text: "Vertical", value: "vertical", width: 200, sortable: false }
+        { text: "Company", value: "name", width: '30%'},
+        { text: "Score", value: "totalScore", width: '8%', sortable: true},
+        { text: "Employees", value: "numEmployees",width: '10%', sortable: true, divider: true },
+        { text: "State", value: "state", width: '10%', sortable: false },
+        { text: "Country", value: "country", width: '10%',  sortable: false },
+        { text: "Momentum", value: "momentum", width: '20%', sortable: false },
+        { text: "Vertical", value: "vertical", width: '20%', sortable: false }
       ],
       options: {
         page: 1,
