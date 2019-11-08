@@ -9,27 +9,20 @@
     }"
     :options.sync="options"
     class="mx-2"
-    @update:options="updateOptions">
+    @update:options="updateOptions"
+  >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:item="{ item, headers }">
       <tr>
         <td>
-          <router-link :to="`playlists/${item.uid}/companies`">
-            {{
-            item.name
-            }}
-          </router-link>
+          <router-link :to="`playlists/${item.uid}/companies`">{{item.name}}</router-link>
         </td>
-        <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "-"}}</td>
+        <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
         <td>{{ item.totalScore ? item.totalScore.toLocaleString() : "0" }}</td>
-        <td>
-          <p>contacts coming soon</p>
-        </td>
+        <td>{{ changeTimeHuman(item.creationTime) }}</td>
         <td>
           <router-link :to="`/advanced/${item.uid}`">Advanced</router-link>
         </td>
-        <td>{{ item.userId }}</td>
-        <td>{{ changeTimeHuman(item.creationTime) }}</td>
         <td>
           <a href>Add Coming soon</a>
         </td>
@@ -47,29 +40,18 @@ export default {
   data() {
     return {
       headers: [
-        {
-          text: "Name",
-          align: "left",
-          sortable: true,
-          value: "name"
-        },
-        {
-          text: "Size",
-          value: "companies.length",
-          align: "left"
-        },
-        { text: "Score", value: "scoreCount", align: "left" },
-        { text: "Contacts", align: "left", value: "contacts" },
-        { text: "Advanced", align: "left", value: "advanced" },
-        { text: "Owner", value: "userId", align: "left" },
-        { text: "Creation Time", value: "creationTime", align: "left" },
-        { text: "Favorite", align: "left", value: "favorite" },
-        { text: "Remove", align: "left" }
+        { text: "Name", value: "name", width: "30%", sortable: false },
+        { text: "Size", value: "totalCompanies", width: "8%", sortable: true },
+        { text: "Score", value: "totalScore", width: "8%", sortable: true },
+        { text: "Creation Time", value: "creationTime", width: "15%", sortable: true},
+        { text: "Advanced", value: "advanced", width: "10%", sortable: true },
+        { text: "Favorite", value: "favorite", width: "10%", sortable: true },
+        { text: "Remove", width: "10%", sortable: true }
       ],
       options: {
         page: 1,
         itemsPerPage: 10
-      },
+      }
     };
   },
   methods: {
