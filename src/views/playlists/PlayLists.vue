@@ -165,10 +165,7 @@ export default {
       }
     },
     toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 2
-      });
+      this.$emit("toggleSearch", { expand: 1});
     },
     checkIfIsFiltered() {
       let result = false;

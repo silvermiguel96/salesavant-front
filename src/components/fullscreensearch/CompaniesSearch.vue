@@ -26,7 +26,7 @@
             <v-text-field name="state" v-model="company.state" label="State" @input="changeData" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="website" v-model="company.website" label="Website eywords" @input="changeData" autocomplete="off" ></v-text-field>
+            <v-text-field name="website" v-model="company.website" label="Website Keywords" @input="changeData" autocomplete="off" ></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field name="status" v-model="company.status" label="Status" @input="changeData" autocomplete="off"></v-text-field>
@@ -139,11 +139,11 @@ export default {
     changeData() {
       this.$emit("change", { ...this.company });
     },
-    toggle() {
-      this.$emit("toggle");
+    toggleSearch() {
+      this.$emit("toggleSearch");
     },
     search() {
-      this.toggle();
+      this.toggleSearch();
       this.$emit("search");
     },
     onPlaylistAutocompleteChange(value) {
@@ -245,7 +245,7 @@ export default {
             this.snackText = "it seems that we created your playlist but couldn't check it, please check manually";
             return;
           }
-          this.toggle();
+          this.toggleSearch();
           this.$router.push({
             path: `/playlists/${playlist.uid}/companies`
           });

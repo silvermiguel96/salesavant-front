@@ -6,20 +6,13 @@
           v-if="isAuthenticated"
           :showSearch="showSearch"
           @toggleSearch="toggleSearch"
-          :showJobsQueue="showJobsQueue"
-          @toggleJobsQueuve="toggleJobsQueuve"
         ></main-menu>
         <full-screen-search
           v-if="isAuthenticated"
           :show="showSearch"
-          @toggle="toggleSearch"
+          @toggleSearch="toggleSearch"
           :expand="expand"
         ></full-screen-search>
-        <jobs-queue
-          v-if="isAuthenticated && !!showJobsQueue"
-          :show="showJobsQueue"
-          @toggle="toggleJobsQueuve"
-        ></jobs-queue>
         <router-view :showSearch="showSearch" @toggleSearch="toggleSearch"></router-view>
       </v-content>
     </template>
@@ -29,7 +22,6 @@
 <script>
 import MainMenu from "./components/MainMenu.vue";
 import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
-import JobsQueue from "./components/jobsqueue/JobsQueue.vue";
 import { json } from "body-parser";
 import { AUTH_TOKEN } from './vue-apollo';
 
@@ -37,14 +29,12 @@ export default {
   name: "App",
   components: {
     MainMenu,
-    FullScreenSearch,
-    JobsQueue
+    FullScreenSearch
   },
   data() {
     return {
       isAuthenticated: false,
       showSearch: false,
-      showJobsQueue: false,
       expand: 0
     };
   },
@@ -56,11 +46,8 @@ export default {
   },
   methods: {
     toggleSearch(data) {
-      this.showSearch = data.show;
+      this.showSearch = !this.showSearch;
       this.expand = data.expand || 0 ;
-    },
-    toggleJobsQueuve(data) {
-      this.showJobsQueue = data.show;
     }
   }
 };

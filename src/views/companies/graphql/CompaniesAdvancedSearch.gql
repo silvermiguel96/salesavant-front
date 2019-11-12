@@ -12,7 +12,9 @@ query CompaniesAdvancedSearch(
   $moreThanScore: Float
   $lessThanScore: Float
   $first: Int
-  $offset: Int
+  $offset: Int,
+  $sortBy: String,
+  $sortOrder: String
 ) {
   companies(
     searchName: $name
@@ -29,6 +31,8 @@ query CompaniesAdvancedSearch(
     lessThanScore: $lessThanScore
     first: $first
     offset: $offset
+    sortBy: $sortBy
+    sortOrder: $sortOrder
   ) {
     totalResults
     companiesList {

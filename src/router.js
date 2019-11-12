@@ -8,10 +8,10 @@ import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from "./views/news/News.vue";
+import Jobs from "./views/jobs/Jobs.vue";
 import SingleNews from "./views/news/components/SingleNews.vue"
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
-// import Callback from "./components/Callback";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 import { AUTH_TOKEN } from "./vue-apollo";
@@ -35,6 +35,14 @@ const router = new Router({
       path: "/home",
       name: "home",
       component: Home,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/jobs",
+      name: "jobs",
+      component: Jobs,
       meta: {
         requiresAuth: true
       }
@@ -150,6 +158,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-})
+});
 
 export default router;
