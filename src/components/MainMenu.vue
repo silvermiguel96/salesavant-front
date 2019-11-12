@@ -59,7 +59,7 @@ export default {
           click: this.onNews
         },
         { icon: "search", text: "Search", click: this.toggleSearch },
-        { icon: "work", text: "Jobs Queue", click: this.toggleJobsQueuve }
+        { icon: "work", text: "Jobs", click: this.toggleJobsQueuve }
       ]
     };
   },

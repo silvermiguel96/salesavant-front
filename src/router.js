@@ -111,11 +111,6 @@ const router = new Router({
         requiresAuth: true
       }
     },
-    // {
-    //   path: "/callback",
-    //   name: "callback",
-    //   component: Callback
-    // },
     {
       path: "/signals",
       name: "signals",

@@ -23,6 +23,7 @@
              }}</a>
              <!-- trimText(_get( "item.title", "--")) -->
         </td>
+        <td>{{ item.publishDate || "--"}}</td>
         <td>
           <a
             :key="`company-link${item.id}`"
@@ -40,7 +41,6 @@
           >visit source</a>
         </td>
         <td>{{ item.category || "--" }}</td>
-        <td>{{ item.publishDate || "--"}}</td>
         <td>{{ item.creationTime || "--" }}</td>
       </tr>
     </template>
@@ -54,25 +54,12 @@ export default {
   data() {
     return {
       headers: [
-        {
-          text: "News Title",
-          align: "left",
-          sortable: true,
-          value: "title"
-        },
-        {
-          text: "Company name",
-          value: "company.name",
-          align: "left"
-        },
-        { text: "Url", value: "url", align: "left" },
-        { text: "Category", value: "category" },
-        { text: "Published Date", value: "publishDate", align: "left" },
-        {
-          text: "Salesavant tracking date",
-          value: "creationTime",
-          align: "left"
-        },
+        { text: "Title", align: "left", value: "title", sortable: false,  },
+        { text: "Published Date", value: "publishDate", align: "left", sortable: true },
+        { text: "Company", value: "company.name", align: "left",sortable: false },
+        { text: "Url", value: "url", align: "left", sortable: false },
+        { text: "Category", value: "category", sortable: false },
+        { text: "Creation Time", value: "creationTime", align: "left", sortable: false },
       ],
       options: {
         page: 1,
