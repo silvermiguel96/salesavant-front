@@ -25,7 +25,7 @@
               disabled: true
             },
             {
-              text: 'companies',
+              text: 'Companies',
               disabled: false,
               href: '/companies'
             }
@@ -267,89 +267,90 @@ export default {
       this.showjobExportCompanies = false;
     },
     async createJob(type) {
-      console.log("Empieza la creacion de un  nuevos Jobs");
-      console.log("type", type);
-      this.isLoading = true;
-      console.log("this.$route.params", this.$route.params);
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      if (!playlistId || playlistId === "undefined") {
-        this.isLoading = false;
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Couldn't find the playlist Id, please try later!";
-        return;
-      }
-      if (!!this.isThereAJobForTheSamePlaylistObsForAll(type)) {
-        this.isLoading = false;
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "There's already a job for this playlist!";
-        return;
-      }
-      // Creando el Json con el nombre del
-      const data = {
-        job_name: type,
-        playlist_uid: playlistId
-      };
-      console.log("url data", data);
-      try {
-        //Genera el Fetch con los datos
-        const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/jobs`, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `JWT ${localStorage["apollo-token"]}`
-          }
-        });
-        const jsonResult = await result.json();
-        // console.log("jsonResult", jsonResult);
-        const jobUid = _get(jsonResult, "job_uid", null);
-        console.log("jobUid", jobUid);
-        if (!jobUid) {
-          this.isLoading = false;
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Couldn't get a job id, please try later!";
-          return;
-        }
-        const newJob = {
-          jobUid,
-          type: type,
-          entityId: playlistId,
-          progress: 0,
-          status: "created",
-          date: new Date()
-        };
-        console.log("newJob", newJob);
+      this.$emit("createJob", {jobType:type, description:"test", additionalData:{playlist_uid:this.playlist.uid}});
+      // console.log("Empieza la creacion de un  nuevos Jobs");
+      // console.log("type", type);
+      // this.isLoading = true;
+      // console.log("this.$route.params", this.$route.params);
+      // const playlistId = _get(this.$route, "params.playlistId", null);
+      // if (!playlistId || playlistId === "undefined") {
+      //   this.isLoading = false;
+      //   this.snack = true;
+      //   this.snackColor = "error";
+      //   this.snackText = "Couldn't find the playlist Id, please try later!";
+      //   return;
+      // }
+      // if (!!this.isThereAJobForTheSamePlaylistObsForAll(type)) {
+      //   this.isLoading = false;
+      //   this.snack = true;
+      //   this.snackColor = "error";
+      //   this.snackText = "There's already a job for this playlist!";
+      //   return;
+      // }
+      // // Creando el Json con el nombre del
+      // const data = {
+      //   job_name: type,
+      //   playlist_uid: playlistId
+      // };
+      // console.log("url data", data);
+      // try {
+      //   //Genera el Fetch con los datos
+      //   const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/jobs`, {
+      //     method: "POST",
+      //     body: JSON.stringify(data),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `JWT ${localStorage["apollo-token"]}`
+      //     }
+      //   });
+      //   const jsonResult = await result.json();
+      //   // console.log("jsonResult", jsonResult);
+      //   const jobUid = _get(jsonResult, "job_uid", null);
+      //   console.log("jobUid", jobUid);
+      //   if (!jobUid) {
+      //     this.isLoading = false;
+      //     this.snack = true;
+      //     this.snackColor = "error";
+      //     this.snackText = "Couldn't get a job id, please try later!";
+      //     return;
+      //   }
+      //   const newJob = {
+      //     jobUid,
+      //     type: type,
+      //     entityId: playlistId,
+      //     progress: 0,
+      //     status: "created",
+      //     date: new Date()
+      //   };
+      //   console.log("newJob", newJob);
 
-        // if (type === "refresh_orb") {
-        // } else if (type === "extract_keywords") {
-        // }
-        let job = localStorage.getItem(jobUid);
-        console.log("job", job);
-        // Si creamos el Job lo asignamos a el localStorage
-        if (!job) {
-          localStorage.setItem(jobUid, JSON.stringify(newJob));
-        } else {
-          this.isLoading = false;
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "This Job already exists!";
-          return;
-        }
-        this.isLoading = false;
-        this.dialogOrb = false;
-        console.log("dialogOrb", this.dialogOrb);
-        console.log("finish");
-        //Verificamos si el Obs que acabas de crear no este registrado
-        this.verifyJobsAll(type);
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops we did something wrong!";
-        console.log("error creating job to get playlist keywords", error);
-      }
+      //   // if (type === "refresh_orb") {
+      //   // } else if (type === "extract_keywords") {
+      //   // }
+      //   let job = localStorage.getItem(jobUid);
+      //   console.log("job", job);
+      //   // Si creamos el Job lo asignamos a el localStorage
+      //   if (!job) {
+      //     localStorage.setItem(jobUid, JSON.stringify(newJob));
+      //   } else {
+      //     this.isLoading = false;
+      //     this.snack = true;
+      //     this.snackColor = "error";
+      //     this.snackText = "This Job already exists!";
+      //     return;
+      //   }
+      //   this.isLoading = false;
+      //   this.dialogOrb = false;
+      //   console.log("dialogOrb", this.dialogOrb);
+      //   console.log("finish");
+      //   //Verificamos si el Obs que acabas de crear no este registrado
+      //   this.verifyJobsAll(type);
+      // } catch (error) {
+      //   this.snack = true;
+      //   this.snackColor = "error";
+      //   this.snackText = "Oops we did something wrong!";
+      //   console.log("error creating job to get playlist keywords", error);
+      // }
     },
     isThereAJobForTheSamePlaylistObsForAll(type) {
       // Valida si dentro de el colar Exite un Job para no seguir generando mas Jobs

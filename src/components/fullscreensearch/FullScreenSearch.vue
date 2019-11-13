@@ -1,10 +1,11 @@
 <template>
   <v-layout row justify-center>
     <v-dialog
-      v-model="show"
+      v-model="showSearch"
       max-width="530"
       hide-overlay
       transition="dialog-bottom-transition"
+      @click:outside="this.toggleSearch"
       persistent
       scrollable
     >
@@ -113,7 +114,7 @@ export default {
     };
   },
   props: {
-    show: { type: Boolean, default: false },
+    showSearch: { type: Boolean, default: false },
     expand: { type: Number, default: 0 }
   },
   components: {
@@ -124,8 +125,7 @@ export default {
   },
   methods: {
     toggleSearch() {
-      console.log('toggle search modal');
-      this.$emit("toggleSearch", { });
+      this.$emit("toggleSearch", {});
     },
     search() {
       switch (this.searchType) {
