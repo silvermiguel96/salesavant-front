@@ -7,23 +7,27 @@
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="companySignals"
-        :items-per-page="pagination.rowsPerPage"
+        :items="companySignals.companySignalsList"
+        :server-items-length="companySignals.totalResults"
+        :items-per-page="options.itemsPerPage"
         :footer-props="{
-          'items-per-page-options': pagination.rowsPerPageItems
+          'items-per-page-options': [10, 20, 50]
         }"
-        class="elevation-1"
-        :server-items-length="totalItems"
+        :options.sync="options"
+        class="mx-2"
+        @updateOptions="updateOptions"
       >
         <template v-slot:item="{ item, headers }">
           <tr>
             <td>
-              <router-link :to="`/signals/${item.signal.id}`">{{ item.signal.name || "--"}}</router-link>
+              <router-link :to="`/signals/${item.signal.id}`">{{
+                item.signal.name || "--"
+              }}</router-link>
             </td>
-            <td>{{ item.signal.description || "--"}}</td>
-            <td>{{ item.signal.group || "--"}}</td>
-            <td>{{ item.signal.category || "--"}}</td>
-            <td>{{ item.signal.defaultScore || "0"}}</td>
+            <td>{{ item.signal.description || "--" }}</td>
+            <td>{{ item.signal.group || "--" }}</td>
+            <td>{{ item.signal.category || "--" }}</td>
+            <td>{{ item.signal.defaultScore || "0" }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -37,15 +41,12 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      pagination: {
+      options: {
         page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
+        itemsPerPage: 10
       },
       companySignals: [],
       descending: false,
-      sortBy: "",
-      totalItems: 10000000,
       headers: [
         { text: "Name", value: "name" },
         { text: "Description", value: "description" },
@@ -56,20 +57,11 @@ export default {
     };
   },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10000000
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
-      this.pagination.page = page;
-      this.pagination.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = totalItems;
+      this.page = page;
+      this.itemsPerPage = itemsPerPage;
     }
   },
   components: {
@@ -88,13 +80,18 @@ export default {
             first: $first
             offset: $offset
           ) {
-            signal {
+            totalResults
+            companySignalsList {
               id
-              name
-              description
-              group
-              category
-              defaultScore
+              signal {
+                id
+                name
+                description
+                group
+                category
+                defaultScore
+              }
+              score
             }
           }
         }
@@ -102,10 +99,10 @@ export default {
       variables() {
         return {
           companyUid: this.$route.params.companiesUid,
-          first: this.pagination.rowsPerPage,
+          first: this.options.rowsPerPage,
           offset:
-            this.pagination.rowsPerPage * this.pagination.page -
-            this.pagination.rowsPerPage
+            this.options.rowsPerPage * this.options.page -
+            this.options.rowsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
@@ -116,5 +113,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>

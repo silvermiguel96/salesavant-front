@@ -8,32 +8,33 @@
       <h2 class="display-1 ma-3">Categorized</h2>
       <v-data-table
         :headers="headers"
-        :items="companyNews"
-        :items-per-page="pagination.rowsPerPage"
+        :items="companyNews.companyNewsList"
+        :items-per-page="options.itemsPerPage"
         :footer-props="{
-          'items-per-page-options': pagination.rowsPerPageItems
+          'items-per-page-options': [10, 20, 50]
         }"
-        class="elevation-1"
-        @updatepagination="updatePagination"
-        :server-items-length="totalItems"
+        :options.sync="options"
+        class="mx-2"
+        @update:options="updateOptions"
+        :server-items-length="companyNews.totalResults"
       >
         <template v-slot:item="{ item, headers }">
           <tr>
-            <td>{{ props.item.company.name }}</td>
             <td>
-              <router-link :to="`/news/${props.item.id}`">
-                <long-paragraph :text="props.item.title"></long-paragraph>
+              <router-link :to="`/news/${item.id}`">
+                <long-paragraph :text="item.title"></long-paragraph>
               </router-link>
             </td>
             <td>
               <a
-                :key="`news-external-link${props.item.id || ''}`"
-                :href="props.item.url || ''"
+                :key="`news-external-link${item.id || ''}`"
+                :href="item.url || ''"
                 target="_blank"
-              >visit source</a>
+                >visit source</a
+              >
             </td>
-            <td>{{ props.item.publishDate }}</td>
-            <td>{{ props.item.category || "--"}}</td>
+            <td>{{ item.publishDate }}</td>
+            <td>{{ item.category || "--" }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -49,39 +50,29 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      pagination: {
-        page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
-      },
       descending: false,
       notCategorized: true,
+      companyNews: [],
       sortBy: "",
       totalItems: 10000000,
       headers: [
-        { text: "Company", value: "company.name" },
         { text: "Title", value: "title" },
         { text: "Url", value: "props.item.url" },
         { text: "Publish date", value: "publishDate" },
         { text: "Category", value: "category" }
-      ]
+      ],
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      }
     };
   },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
-      this.pagination.page = page;
-      this.pagination.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
     }
   },
   components: {
@@ -103,24 +94,26 @@ export default {
             offset: $offset
             notCategorized: $notCategorized
           ) {
-            company {
-              name
+            totalResults
+            companyNewsList {
+              id
+              creationTime
+              url
+              title
+              publishDate
+              category
+              companyUid
             }
-            id
-            title
-            publishDate
-            category
-            url
           }
         }
       `,
       variables() {
         return {
           companyUid: this.$route.params.companiesUid,
-          first: this.pagination.rowsPerPage,
+          first: this.options.itemsPerPage,
           offset:
-            this.pagination.rowsPerPage * this.pagination.page -
-            this.pagination.rowsPerPage,
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage,
           notCategorized: this.notCategorized
         };
       },

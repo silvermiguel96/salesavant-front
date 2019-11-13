@@ -4,7 +4,14 @@
     <h2 class="display-1 ma-3">Not categorized</h2>
     <ApolloQuery
       :query="require('./graphql/NewsNotCategorized.gql')"
-      :variables="{ companyUid: this.$route.params.companiesUid, first: pagination.rowsPerPage, offset: (pagination.rowsPerPage * pagination.page) - pagination.rowsPerPage, notCategorized: notCategorized}"
+      :variables="{
+        companyUid: this.$route.params.companiesUid,
+        first: this.options.itemsPerPage,
+        offset:
+          this.options.itemsPerPage * this.options.page -
+          this.options.itemsPerPage,
+        notCategorized: notCategorized
+      }"
     >
       <template slot-scope="{ result: { loading, error, data } }">
         <!-- Loading -->
@@ -15,21 +22,21 @@
 
         <!-- Result -->
         <div v-else-if="data" class="result apollo">
-          <!-- -<div>{{ JSON.stringify(data) }}</div> -->
+          <!-- -<div>{{ JSON.stringify(data) }}</div>  -->
           <v-data-table
             :headers="headers"
-            :items="data.companyNews"
-            class="elevation-1"
-            :items-per-page="pagination.rowsPerPage"
+            :items="data.companyNews.companyNewsList"
+            class="mx-2"
+            :items-per-page="options.itemsPerPage"
             :footer-props="{
-          'items-per-page-options': pagination.rowsPerPageItems
-        }"
-            :server-items-length="totalItems"
-            @updatepagination="updatePagination"
+              'items-per-page-options': [10, 20, 50]
+            }"
+            :server-items-length="data.companyNews.totalResults"
+            :options.sync="options"
+            @update:options="updateOptions"
           >
             <template v-slot:item="{ item, headers }">
               <tr>
-                <td>{{ item.company.name }}</td>
                 <td>
                   <router-link :to="`/news/${item.id}`">
                     <long-paragraph :text="item.title"></long-paragraph>
@@ -40,10 +47,11 @@
                     :key="`news-external-link${item.id || ''}`"
                     :href="item.url || ''"
                     target="_blank"
-                  >visit source</a>
+                    >visit source</a
+                  >
                 </td>
                 <td>{{ item.publishDate }}</td>
-                <td>{{ item.category || "--"}}</td>
+                <td>{{ item.category || "--" }}</td>
               </tr>
             </template>
           </v-data-table>
@@ -62,18 +70,13 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      pagination: {
+      options: {
         page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
+        itemsPerPage: 10
       },
       newsCompany: [],
-      descending: false,
       notCategorized: "",
-      sortBy: "",
-      totalItems: 10000000,
       headers: [
-        { text: "Company", value: "company.name" },
         { text: "Title", value: "title" },
         { text: "Url", value: "props.item.url" },
         { text: "Publish date", value: "publishDate" },
@@ -82,20 +85,11 @@ export default {
     };
   },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
-      this.pagination.page = page;
-      this.pagination.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
     }
   },
   components: {
