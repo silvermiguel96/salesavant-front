@@ -4,6 +4,7 @@
       <div class="apollo-example">
         <!-- TODO: cuando cambio el número de registros por página no hace nada -->
         <v-breadcrumbs
+          :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :items="[
         {
@@ -21,6 +22,7 @@
         ></v-breadcrumbs>
         <v-breadcrumbs
           v-else
+          :large="true"
           :items="[
           {
             text: 'Playlists',

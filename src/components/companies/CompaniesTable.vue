@@ -39,13 +39,19 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Company", value: "name", width: '20%'},
-        { text: "Score", value: "totalScore", width: '10%', sortable: true},
-        { text: "Employees", value: "numEmployees", width: '10%', sortable: true, divider: true },
-        { text: "State", value: "state", width: '15%', sortable: false },
-        { text: "Country", value: "country", width: '15%',  sortable: false },
-        { text: "Momentum", value: "momentum", width: '15%', sortable: false },
-        { text: "Vertical", value: "vertical", width: '15%', sortable: false }
+        { text: "Company", value: "name", width: "20%" },
+        { text: "Score", value: "totalScore", width: "10%", sortable: true },
+        {
+          text: "Employees",
+          value: "numEmployees",
+          width: "10%",
+          sortable: true,
+          divider: true
+        },
+        { text: "State", value: "state", width: "15%", sortable: false },
+        { text: "Country", value: "country", width: "15%", sortable: false },
+        { text: "Momentum", value: "momentum", width: "15%", sortable: false },
+        { text: "Vertical", value: "vertical", width: "15%", sortable: false }
       ],
       options: {
         page: 1,
@@ -69,7 +75,7 @@ export default {
     items: Array,
     totalResults: Number
   },
-  components:{
+  components: {
     LongParagraph
   }
 };
