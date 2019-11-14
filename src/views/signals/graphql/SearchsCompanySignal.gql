@@ -1,6 +1,7 @@
 query getSignalsById($signalId: Int, $first: Int, $offset: Int) {
-  companySignals(signalId: $signalId, first:$first , offset: $offset) {
-    company {
+  signalCompanies(signalId: $signalId, first:$first , offset: $offset) {
+    totalResults
+    companiesList{
       uid
       name
     }

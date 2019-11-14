@@ -8,21 +8,21 @@
       <v-breadcrumbs
         v-if="!!this.$route.params.signalId"
         :items="[
-        {
-          text: 'Signals',
-          disabled: false,
-          href: '/signals'
-        },
-        {
-          text: this.signal.name || this.$route.params.signalId,
-          disabled: true,
-          href: `/signals/${this.$route.params.signalId}`
-        }
-      ]"
+          {
+            text: 'Signals',
+            disabled: false,
+            href: '/signals'
+          },
+          {
+            text: this.signal.name || this.$route.params.signalId,
+            disabled: true,
+            href: `/signals/${this.$route.params.signalId}`
+          }
+        ]"
         divider=">"
       ></v-breadcrumbs>
       <v-form @submit.prevent>
-        <v-container >
+        <v-container>
           <h1 class="display-1 my-4 text-capitalize">Signal details</h1>
           <v-layout wrap>
             <v-flex xs12 sm6 md3 class="px-1">
@@ -34,27 +34,47 @@
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md3 class="px-1">
-              <v-text-field v-model="signal.description" label="Description" required></v-text-field>
+              <v-text-field
+                v-model="signal.description"
+                label="Description"
+                required
+              ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md3 class="px-1">
-              <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
+              <v-text-field
+                v-model="signal.defaultScore"
+                label="Score"
+                required
+              ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6 md3 class="px-1">
-              <v-text-field v-model="signal.group" label="Group" required></v-text-field>
+              <v-text-field
+                v-model="signal.group"
+                label="Group"
+                required
+              ></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout>
             <v-flex xs12 md4>
-              <v-btn v-if="canModifySignalName" type="submit" @click="save" class="text-capitalize">
-                <v-icon small class="pr-1">{{!!signal.id ? "update" : "add"}}</v-icon>
-                {{!!signal.id ? "Update" : "Create"}}
+              <v-btn
+                v-if="canModifySignalName"
+                type="submit"
+                @click="save"
+                class="text-capitalize"
+              >
+                <v-icon small class="pr-1">{{
+                  !!signal.id ? "update" : "add"
+                }}</v-icon>
+                {{ !!signal.id ? "Update" : "Create" }}
               </v-btn>
               <v-btn
                 v-else
                 type="submit"
                 color="primary"
                 @click="saveKeyWordsAsSignal"
-              >Save from playlist keywords</v-btn>
+                >Save from playlist keywords</v-btn
+              >
             </v-flex>
           </v-layout>
         </v-container>
@@ -62,11 +82,20 @@
     </v-card>
     <v-card v-if="canModifySignalName">
       <v-container>
-      <h1 class="headline my-4 text-capitalize">Related companies</h1>
-        <template v-if="!!this.$route.params.signalId && this.$route.params.signalId!=='create' ">
+        <h1 class="headline my-4 text-capitalize">Related companies</h1>
+        <template
+          v-if="
+            !!this.$route.params.signalId &&
+              this.$route.params.signalId !== 'create'
+          "
+        >
           <ApolloQuery
             :query="require('../graphql/SearchsCompanySignal.gql')"
-            :variables="{signalId: parseInt(this.$route.params.signalId), first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+            :variables="{
+              signalId: parseInt(this.$route.params.signalId),
+              first: this.itemsPerPage, 
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+            }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -79,10 +108,11 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <company-signals
-                  v-if="data.companySignals"
-                  :items="data.companySignals"
+                  v-if="data.signalCompanies.totalResults"
+                  :items="data.signalCompanies.companiesList"
+                  :totalResults="data.signalCompanies.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></company-signals>
               </div>
 
@@ -122,9 +152,8 @@ export default {
       snackText: "",
       descending: false,
       page: 1,
-      rowsPerPage: 5,
+      itemsPerPage: 10,
       sortBy: "",
-      totalItems: 10,
       signal: { ...defaultSignal },
       companySignals: []
     };
@@ -162,20 +191,11 @@ export default {
     }
   },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
       this.page = page;
-      this.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.itemsPerPage = itemsPerPage;
     },
     async save() {
       if (!this.signal) {
