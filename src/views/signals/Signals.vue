@@ -79,10 +79,8 @@
               category: this.$route.query.category,
               category: this.$route.query.category,
               category: this.$route.query.category,
-              first: rowsPerPage,
-              first: rowsPerPage,
-              first: rowsPerPage,
-              offset: rowsPerPage * page - rowsPerPage
+              first: this.itemsPerPage,
+              offset: this.itemsPerPage * this.page - this.itemsPerPage  
             }"
             :deep="true"
           >
@@ -97,12 +95,13 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <signals-table
-                  v-if="data.signals"
+                  v-if="data.signals.signalsList"
                   @deleteSignal="deleteSignal"
                   :signalId="signalId"
-                  :items="data.signals"
+                  :items="data.signals.signalsList"
+                  :totalResults="data.signals.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></signals-table>
               </div>
 
@@ -117,7 +116,8 @@
             :query="require('./graphql/Signals.gql')"
             :variables="{
               first: this.itemsPerPage,
-              offset: this.itemsPerPage * this.page - this.itemsPerPage            }"
+              offset: this.itemsPerPage * this.page - this.itemsPerPage   
+            }"
             :deep="true"
           >
             <template slot-scope="{ result: { loading, error, data } }">

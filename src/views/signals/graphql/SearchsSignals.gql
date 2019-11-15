@@ -1,30 +1,35 @@
 query SearchsSignals(
-  $search: String, 
-  $group: String, 
-  $category: String, 
-  $first: Int, 
-  $offset: Int) {
+  $search: String
+  $group: String
+  $category: String
+  $first: Int
+  $offset: Int
+) {
   signals(
-    search: $search,
-    group: $group, 
-    category: $category,
+    search: $search
+    group: $group
+    category: $category
     first: $first
-    offset: $offset) {
-    id
-    name
-  	user {
-  	  id
-  	}
-    group
-    userId
-    account {
+    offset: $offset
+  ) {
+    totalResults
+    signalsList {
       id
+      name
+      user {
+        id
+      }
+      group
+      userId
+      account {
+        id
+      }
+      category
+      accountId
+      description
+      creationTime
+      defaultScore
+      modificationTime
     }
-    category
-    accountId
-    description
-    creationTime
-    defaultScore
-    modificationTime
   }
 }
