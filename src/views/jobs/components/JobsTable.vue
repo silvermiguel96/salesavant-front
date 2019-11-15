@@ -17,7 +17,6 @@
         <td>{{ item.jobType || "--" }}</td>
         <td>{{ item.description || "--" }}</td>
         <td>{{ changeTimeHuman(item.creationTime) }}</td>
-        <td>{{ item.status || "--" }}</td>
         <td>{{ item.progress || "0%" }}</td>
         <td>{{ item.result || "--" }}</td>
       </tr>
@@ -33,7 +32,6 @@ export default {
         { text: "JobType", value: "jobType", width: "15%", sortable: false },
         { text: "Description", value: "description", width: "20%", sortable: false },
         { text: "Creation Time", value: "creationTime", width: "15%", sortable: false},
-        { text: "Status", value: "status", width: "15%", sortable: true },
         { text: "Progress", value: "progress", width: "15%", sortable: true },
         { text: "Result", value: "result", width: "20%", sortable: true }
       ],

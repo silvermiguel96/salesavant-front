@@ -15,11 +15,13 @@
           ]"
         divider=">"
       ></v-breadcrumbs>
-      <v-row no-gutters class="ml-2">
-          <v-col cols="12" md="4">
-            <v-text-field v-model="search" append-icon="search" label="Filter" single-line hide-details></v-text-field>
-          </v-col>
-      </v-row>
+      <v-container fluid class="mx-1">
+        <v-row no-gutters class="ml-2">
+            <v-col cols="12" md="4">
+              <v-text-field v-model="search" append-icon="search" label="Filter" single-line hide-details></v-text-field>
+            </v-col>
+        </v-row>
+      </v-container>
       <div>
         <ApolloQuery
           :query="require('./graphql/Jobs.gql')"
@@ -61,7 +63,10 @@ export default {
     return {
       items: [],
       page: 1,
-      itemsPerPage: 10
+      itemsPerPage: 10,
+      snack: false,
+      snackColor: "",
+      snackText: "",
     };
   },
   props: {
