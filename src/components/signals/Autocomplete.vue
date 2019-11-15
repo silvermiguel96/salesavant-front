@@ -5,7 +5,7 @@
       :loading="loading"
       :item-text="'name'"
       :item-value="'id'"
-      :items="signals"
+      :items="signals.signalsList"
       :search-input.sync="search"
       cache-items
       text
@@ -37,8 +37,11 @@ export default {
       query: gql`
         query getFilteredSignals($search: String) {
           signals(first: 25, search: $search) {
-            id
-            name
+            totalResults
+            signalsList {
+              id
+              name
+            }
           }
         }
       `,
