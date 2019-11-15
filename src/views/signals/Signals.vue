@@ -9,40 +9,53 @@
         <v-breadcrumbs
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :items="[
-        {
-          text: 'Signals',
-          disabled: false,
-          href: '/signals'
-        },
-        {
-          text: `${this.$route.query.searchType} search`,
-          disabled: true,
-          href: '/companies'
-        }
-      ]"
+            {
+              text: 'Signals',
+              disabled: false,
+              href: '/signals'
+            },
+            {
+              text: `${this.$route.query.searchType} search`,
+              disabled: true,
+              href: '/companies'
+            }
+          ]"
           divider=">"
         ></v-breadcrumbs>
         <v-breadcrumbs
           v-else
           :items="[
-        {
-          text: 'Signals',
-          disabled: true,
-          href: '/signals'
-        }
-      ]"
+            {
+              text: 'Signals',
+              disabled: true,
+              href: '/signals'
+            }
+          ]"
           divider=">"
         ></v-breadcrumbs>
-        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
+        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">
+          filtering by
+        </h1>
         <ul class="ml-2" v-if="!!isFiltered">
-          <li
-            v-if="this.$route.query.search"
-          >Companies with the words "{{this.$route.query.search}}" in the name or description</li>
-          <li v-if="this.$route.query.group">Company group: {{this.$route.query.group}}</li>
-          <li v-if="this.$route.query.category">Company category: {{this.$route.query.category}}</li>
+          <li v-if="this.$route.query.search">
+            Companies with the words "{{ this.$route.query.search }}" in the
+            name or description
+          </li>
+          <li v-if="this.$route.query.group">
+            Company group: {{ this.$route.query.group }}
+          </li>
+          <li v-if="this.$route.query.category">
+            Company category: {{ this.$route.query.category }}
+          </li>
         </ul>
 
-        <v-btn small class="ma-2 text-capitalize" color="primary" dark @click="toggleSearch">
+        <v-btn
+          small
+          class="ma-2 text-capitalize"
+          color="primary"
+          dark
+          @click="toggleSearch"
+        >
           <v-icon small class="pr-1">search</v-icon>search
         </v-btn>
         <v-btn small class="ma-2 text-capitalize" to="/signals/create">
@@ -50,18 +63,27 @@
         </v-btn>
 
         <template
-          v-if="!!this.$route.query &&
-      !!this.$route.query.searchType &&
-      this.$route.query.searchType ==='signals'"
+          v-if="
+            !!this.$route.query &&
+              !!this.$route.query.searchType &&
+              this.$route.query.searchType === 'signals'
+          "
         >
           <ApolloQuery
             :query="require('./graphql/SearchsSignals.gql')"
-            :variables="{ 
-          search: this.$route.query.search,  
-          group: this.$route.query.group,
-          category: this.$route.query.category, 
-          first: rowsPerPage, 
-          offset: (rowsPerPage * page) - rowsPerPage}"
+            :variables="{
+              search: this.$route.query.search,
+              search: this.$route.query.search,
+              search: this.$route.query.search,
+              group: this.$route.query.group,
+              category: this.$route.query.category,
+              category: this.$route.query.category,
+              category: this.$route.query.category,
+              first: rowsPerPage,
+              first: rowsPerPage,
+              first: rowsPerPage,
+              offset: rowsPerPage * page - rowsPerPage
+            }"
             :deep="true"
           >
             <template slot-scope="{ result: { loading, error, data } }">
@@ -93,7 +115,9 @@
         <template v-else>
           <ApolloQuery
             :query="require('./graphql/Signals.gql')"
-            :variables="{first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage}"
+            :variables="{
+              first: this.itemsPerPage,
+              offset: this.itemsPerPage * this.page - this.itemsPerPage            }"
             :deep="true"
           >
             <template slot-scope="{ result: { loading, error, data } }">
@@ -107,12 +131,13 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <signals-table
-                  v-if="data.signals"
+                  v-if="data.signals.totalResults"
                   @deleteSignal="deleteSignal"
                   :signalId="signalId"
-                  :items="data.signals"
+                  :items="data.signals.signalsList"
+                  :totalResults="data.signals.totalResults"
                   class="result apollo"
-                  @updatePagination="updatePagination"
+                  @updateOptions="updateOptions"
                 ></signals-table>
               </div>
 
@@ -140,31 +165,21 @@ export default {
       snackText: "",
       showTable: true,
       items: ["signals"],
-      descending: false,
       page: 1,
-      rowsPerPage: 5,
+      itemsPerPage: 10,
+      descending: false,
       sortBy: "",
-      totalItems: 10,
       signalId: "",
       isFiltered: false
     };
   },
   components: { SignalsTable },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
       this.page = page;
-      this.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.itemsPerPage = itemsPerPage;
     },
     async deleteSignal(signalId) {
       // const signalId = this.signalId

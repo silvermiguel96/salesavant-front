@@ -1,13 +1,14 @@
 query searchCompanyNewFalse($companyUid: String, $first: Int, $offset: Int, $notCategorized: Boolean) {
   companyNews(companyUid: $companyUid, first: $first, offset: $offset, notCategorized: $notCategorized) {
-    company {
-      name
+    totalResults
+    companyNewsList{
+			id
+      creationTime
+      url
+      title
+      publishDate
+      category
+      companyUid
     }
-    id
-    title
-    publishDate
-    category
-    url
   }
 }
-
