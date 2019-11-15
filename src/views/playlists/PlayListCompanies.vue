@@ -1,146 +1,89 @@
 <template>
   <v-container fluid>
     <v-card>
-      <!-- TODO: agregar modal de busqueda dentro de una playlist -->
-      <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
+      <v-snackbar bottom v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
         <v-btn text @click="snack = false">Close</v-btn>
       </v-snackbar>
+      <v-breadcrumbs
+        :large="true"
+        :items="[
+            {
+              text: 'Playlists',
+              disabled: false,
+              href: '/playlists'
+            },
+            {
+              text: playlist.name || $route.params.playlistUID,
+              disabled: true
+            }
+          ]"
+        divider=">"
+      ></v-breadcrumbs>
+      <v-container fluid class="mx-1">
+        <v-row no-gutters>
+          <v-col cols="12" md="4">
+            <v-text-field
+              v-model="search"
+              append-icon="search"
+              label="Filter"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="8">
+            <div class="d-flex justify-md-end">
+              <div class="mt-2 mr-2">
+                <job-modal :jobType="'ORBRefresh'" :additionalData="{}">
+                  <template v-slot:label>
+                    <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
+                  </template>
+                  <template v-slot:title>Export as CSV</template>
+                  <template v-slot:content>Export companies Data</template>
+                </job-modal>
+              </div>
+              <div class="mt-2 mr-2">
+                <jobs-menu
+                  :items="[
+                    {
+                      title: 'Companies',
+                      icon: 'update',
+                      callback: () => {
+                        this.createJob('OrbRefresh');
+                      }
+                    },
+                    {
+                      title: 'Keywords',
+                      icon: 'update',
+                      callback: () => {
+                        this.createJob('KeywordsRefresh');
+                      }
+                    },
+                    {
+                      title: 'Contacts',
+                      icon: 'update',
+                      callback: () => {
+                        this.createJob('ContactsRefresh');
+                      }
+                    }
+                  ]"
+                >
+                  <template v-slot:label>Refresh</template>
+                </jobs-menu>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
       <ApolloQuery
         :query="require('./graphql/PlaylistCompanies.gql')"
-        :variables="{ uid: $route.params.playlistId, first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+        :variables="{ 
+          uid: $route.params.playlistUID, 
+          first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage 
+        }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <div class="apollo-example">
-            <v-breadcrumbs
-              v-if="data"
-              :items="[
-            {
-              text: 'Playlists',
-              disabled: false,
-              href: '/playlists'
-            },
-            {
-              text: playlist.name || $route.params.playlistId,
-              disabled: true
-            },
-            {
-              text: 'companies',
-              disabled: false,
-              href: '/companies'
-            }
-          ]"
-              divider=">"
-            ></v-breadcrumbs>
-            <v-breadcrumbs
-              v-else
-              :items="[
-            {
-              text: 'Playlists',
-              disabled: false,
-              href: '/playlists'
-            },
-            {
-              text: $route.params.playlistId,
-              disabled: true
-            },
-            {
-              text: 'companies',
-              disabled: true
-            }
-          ]"
-              divider=">"
-            ></v-breadcrumbs>
-            <v-container fluid d-flex flex-wrap class="ma-1">
-              <v-flex d-flex xs6 sm3 md2 lg2 xl1 class="ma-1">
-                <create-orb-modal
-                  v-if="!jobObsRefresh"
-                  :loading="isLoading"
-                  @createOrbRefreshJob="createJob('refresh_orb')"
-                />
-                <v-layout row>
-                  <v-btn
-                    v-if="!!jobObsRefresh"
-                    @click="showJobModalOrb = !showJobModalOrb"
-                    class="blue darken-1 text-capitalize"
-                    dark
-                    small
-                    width="150"
-                  >
-                    <v-icon small>check</v-icon>View ORB
-                  </v-btn>
-                </v-layout>
-                <orb-job-modal
-                  v-if="!!showJobModalOrb"
-                  :job="jobObsRefresh"
-                  @refreshJobOrb="refreshJobForAll(jobObsRefresh.jobUid ,'refresh_orb')"
-                  :loading="loadingModal"
-                  :dialog="showJobModalOrb"
-                  @onClose="closeOrbJobModal"
-                  @createOrbRefreshJob="createJob('refresh_orb')"
-                />
-              </v-flex>
-              <v-flex d-flex xs5 sm3 md2 lg2 xl1 class="ma-1">
-                <key-words-modal
-                  v-if="!jobGetKeywords"
-                  :loading="isLoading"
-                  @createKeywordsJob="createJob('extract_keywords')"
-                />
-                <v-layout row>
-                  <v-btn
-                    v-if="!!jobGetKeywords"
-                    @click="showJobModal = !showJobModal"
-                    class="blue darken-1 text-capitalize"
-                    dark
-                    small
-                    width="150"
-                  >
-                    <v-icon small>check</v-icon>View keywords
-                  </v-btn>
-                </v-layout>
-                <job-modal
-                  v-if="!!showJobModal"
-                  :job="jobGetKeywords"
-                  @refreshJob="refreshJobForAll(jobGetKeywords.jobUid ,'extract_keywords')"
-                  :loading="loadingModal"
-                  :dialog="showJobModal"
-                  @onClose="closeJobModal"
-                  @createKeywordsJob="createJob('extract_keywords')"
-                  :canModifySignalName="false"
-                />
-              </v-flex>
-              <v-flex d-flex xs6 sm3 md2 lg2 xl1 class="ma-1">
-                <export-companies-modal
-                  v-if="!jobExportComapany"
-                  :loading="isLoading"
-                  @createOrbRefreshJob="createJob('export_companies')"
-                />
-                <v-layout row>
-                  <v-btn
-                    v-if="!!jobExportComapany"
-                    @click="showjobExportCompanies = !showjobExportCompanies"
-                    class="blue darken-1 text-capitalize"
-                    dark
-                    small
-                    width="150"
-                  >
-                    <v-icon small>check</v-icon>Export Companies
-                  </v-btn>
-                </v-layout>
-                <job-export-modal
-                  v-if="!!showjobExportCompanies"
-                  :job="jobExportComapany"
-                  @refreshJobOrb="refreshJobForAll(jobExportComapany.jobUid ,'export_companies')"
-                  :loading="loadingModal"
-                  :dialog="showjobExportCompanies"
-                  @onClose="CloseExportCompanies"
-                  @createOrbRefreshJob="createJob('export_companies')"
-                />
-              </v-flex>
-              <v-flex d-flex xs5 sm2 md2 lg2 xl1 class="ma-1">
-                <playlists-merge :playlist="playlist" />
-              </v-flex>
-            </v-container>
             <!-- Loading -->
             <div v-if="loading" class="loading apollo">Loading...</div>
 
@@ -170,11 +113,8 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import KeyWordsModal from "./components/GetKeywords/KeywordsModal.vue";
-import CreateOrbModal from "./components/OrbRefresh/CreateOrbModal.vue";
-import PlaylistsMerge from "./components/PlaylistMerge.vue";
-import JobModal from "./components/GetKeywords/JobModal.vue";
-import OrbJobModal from "./components/OrbRefresh/OrbJobModal.vue";
+import JobModal from "../../components/jobs/JobModal.vue";
+import JobsMenu from "../../components/jobs/JobsMenu.vue";
 
 // ExportCompanies
 
@@ -186,13 +126,8 @@ import gql from "graphql-tag";
 export default {
   components: {
     CompaniesTable,
-    KeyWordsModal,
     JobModal,
-    OrbJobModal,
-    CreateOrbModal,
-    PlaylistsMerge,
-    ExportCompaniesModal,
-    JobExportModal
+    JobsMenu
   },
   data() {
     return {
@@ -202,14 +137,8 @@ export default {
       rowsPerPage: 25,
       sortBy: "",
       totalItems: 10,
-      jobGetKeywords: null,
-      jobObsRefresh: null,
-      jobExportComapany: null,
       loadingModal: false,
       isLoading: false,
-      showJobModalOrb: false,
-      showJobModal: false,
-      showjobExportCompanies: false,
       snack: false,
       snackColor: "",
       snackText: "",
@@ -235,7 +164,7 @@ export default {
       `,
       variables() {
         return {
-          uid: this.$route.params.playlistId
+          uid: this.$route.params.playlistUID
         };
       },
       fetchPolicy: "cache-and-network"
@@ -257,246 +186,16 @@ export default {
       this.sortBy = sortBy;
       this.totalItems = 5;
     },
-    closeJobModal() {
-      this.showJobModal = false;
-    },
-    closeOrbJobModal() {
-      this.showJobModalOrb = false;
-    },
-    CloseExportCompanies() {
-      this.showjobExportCompanies = false;
-    },
-    async createJob(type) {
-      console.log("Empieza la creacion de un  nuevos Jobs");
-      console.log("type", type);
-      this.isLoading = true;
-      console.log("this.$route.params", this.$route.params);
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      if (!playlistId || playlistId === "undefined") {
-        this.isLoading = false;
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Couldn't find the playlist Id, please try later!";
-        return;
-      }
-      if (!!this.isThereAJobForTheSamePlaylistObsForAll(type)) {
-        this.isLoading = false;
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "There's already a job for this playlist!";
-        return;
-      }
-      // Creando el Json con el nombre del
-      const data = {
-        job_name: type,
-        playlist_uid: playlistId
-      };
-      console.log("url data", data);
-      try {
-        //Genera el Fetch con los datos
-        const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/jobs`, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `JWT ${localStorage["apollo-token"]}`
-          }
-        });
-        const jsonResult = await result.json();
-        // console.log("jsonResult", jsonResult);
-        const jobUid = _get(jsonResult, "job_uid", null);
-        console.log("jobUid", jobUid);
-        if (!jobUid) {
-          this.isLoading = false;
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Couldn't get a job id, please try later!";
-          return;
-        }
-        const newJob = {
-          jobUid,
-          type: type,
-          entityId: playlistId,
-          progress: 0,
-          status: "created",
-          date: new Date()
-        };
-        console.log("newJob", newJob);
-
-        // if (type === "refresh_orb") {
-        // } else if (type === "extract_keywords") {
-        // }
-        let job = localStorage.getItem(jobUid);
-        console.log("job", job);
-        // Si creamos el Job lo asignamos a el localStorage
-        if (!job) {
-          localStorage.setItem(jobUid, JSON.stringify(newJob));
-        } else {
-          this.isLoading = false;
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "This Job already exists!";
-          return;
-        }
-        this.isLoading = false;
-        this.dialogOrb = false;
-        console.log("dialogOrb", this.dialogOrb);
-        console.log("finish");
-        //Verificamos si el Obs que acabas de crear no este registrado
-        this.verifyJobsAll(type);
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops we did something wrong!";
-        console.log("error creating job to get playlist keywords", error);
-      }
-    },
-    isThereAJobForTheSamePlaylistObsForAll(type) {
-      // Valida si dentro de el colar Exite un Job para no seguir generando mas Jobs
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      const jobs = Object.keys(localStorage)
-        .filter(key => key.indexOf("job") > -1)
-        .map(key => JSON.parse(localStorage[key]));
-
-      console.log("isThereAJobForTheSamePlaylistObsForAll", jobs);
-
-      const existingJob = jobs.find(element => {
-        return element.entityId === playlistId && element.type === type;
+    async createJob(jobType) {
+      this.$emit("createJob", {
+        jobType: jobType,
+        description: "test",
+        additionalData: { playlist_uid: this.playlist.uid }
       });
-
-      console.log("existingJobForAll", existingJob);
-      return existingJob;
-    },
-    verifyJobsAll(type) {
-      const playlistId = _get(this.$route, "params.playlistId", null);
-      const jobs = Object.keys(localStorage)
-        .filter(key => key.indexOf("job") > -1)
-        .map(key => JSON.parse(localStorage[key]));
-
-      console.log("JobsGeneral", jobs);
-      console.log("type", type);
-      const existingJob = jobs.find(element => {
-        return element.entityId === playlistId && element.type === type;
-      });
-
-      if (type === "refresh_orb") {
-        console.log(
-          `Exixting Job All Type: ${type} and Jobs is :`,
-          existingJob
-        );
-        if (existingJob) {
-          this.jobObsRefresh = existingJob;
-        } else {
-          this.jobObsRefresh = null;
-        }
-        console.log("jobObsRefresh", this.jobObsRefresh);
-      } else if (type === "extract_keywords") {
-        console.log(
-          `Exixting Job All Type: ${type} and Jobs is :`,
-          existingJob
-        );
-        if (existingJob) {
-          this.jobGetKeywords = existingJob;
-        } else {
-          this.jobGetKeywords = null;
-        }
-        console.log("jobGetKeywords", this.jobGetKeywords);
-      } else if (type === "export_companies") {
-        console.log(
-          `Exixting Job All Type: ${type} and Jobs is :`,
-          existingJob
-        );
-        if (existingJob) {
-          this.jobExportComapany = existingJob;
-        } else {
-          this.jobExportComapany = null;
-        }
-        console.log("jobExportComapany", this.jobExportComapany);
-      }
-    },
-    refreshJobForAll(jobId, type) {
-      const result = setInterval(() => {
-        this.loadingModal = true;
-        console.log("type refreshJobForAll", type);
-        const playlistId = _get(this.$route, "params.playlistId", null);
-        console.log("playlistcompanies ", "refreshJob ", "jobId ", jobId);
-        if (!jobId) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Oops! I can't read this job id";
-          return;
-        }
-        try {
-          function status(response) {
-            if (response.status >= 200 && response.status < 300) {
-              return Promise.resolve(response);
-            } else {
-              return Promise.reject(new Error(response.statusText));
-            }
-          }
-
-          fetch(`${process.env.VUE_APP_REST_API_URL}/jobs/${jobId}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `JWT ${localStorage["apollo-token"]}`
-            }
-          })
-            // .then(status)
-            .then(response => {
-              return response.json();
-            })
-            .then(jsonResult => {
-              console.log("Request succeeded with JSON response", jsonResult);
-              console.log("jsonResult.status", jsonResult.status);
-              if (jsonResult.status === 404) {
-                this.loadingModal = true;
-              }
-              let updatedJob = {};
-              if (localStorage[jobId]) {
-                updatedJob = JSON.parse(localStorage[jobId]);
-                updatedJob = {
-                  ...updatedJob,
-                  status: _get(jsonResult, "status", null),
-                  progress: _get(jsonResult, "progressPercentage", null),
-                  results: _get(jsonResult, "payload", []),
-                  date: new Date()
-                };
-              } else {
-                updatedJob = {
-                  entityId: playlistId,
-                  type: type,
-                  status: _get(jsonResult, "status", null),
-                  progress: _get(jsonResult, "progressPercentage", null),
-                  results: _get(jsonResult, "payload", []),
-                  date: new Date()
-                };
-              }
-
-              console.log("updatedJob", updatedJob);
-              localStorage[jobId] = JSON.stringify(updatedJob);
-              if (updatedJob.status === "finished") {
-                clearInterval(result);
-                this.loadingModal = false;
-              }
-              this.verifyJobsAll(type);
-              console.log("jsonResult", jsonResult);
-            })
-            .catch(function(error) {
-              console.log("Request failed", error);
-            });
-        } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Oops! we did something wrong!";
-          console.log("error refreshing job", error);
-        }
-      }, 3000);
+      this.snack = true;
+      this.snackText = `Job ${jobType} enqueed successfully`;
+      this.snackColor = "success";
     }
-  },
-  beforeMount() {
-    this.verifyJobsAll("extract_keywords");
-    this.verifyJobsAll("refresh_orb");
-    this.verifyJobsAll("export_companies");
   },
   beforeCreate() {
     this.$apollo.query.playlist;

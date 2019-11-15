@@ -1,16 +1,17 @@
 <template>
   <v-layout row justify-center>
     <v-dialog
-      v-model="show"
+      v-model="showSearch"
       max-width="530"
       hide-overlay
       transition="dialog-bottom-transition"
+      @click:outside="this.toggleSearch"
       persistent
       scrollable
     >
       <v-card>
         <v-toolbar dark>
-          <v-btn icon @click="toggle">
+          <v-btn icon @click="toggleSearch">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Search</v-toolbar-title>
@@ -22,7 +23,7 @@
             <v-expansion-panel-content>
               <companies-search
                 @change="changeCompanySearchObject"
-                @toggle="toggle"
+                @toggleSearch="toggleSearch"
                 @search="onCompanySearch"
               />
             </v-expansion-panel-content>
@@ -33,7 +34,7 @@
             <v-expansion-panel-content>
               <playlist-search
                 @change="changePlaylists"
-                @toggle="toggle"
+                @toggleSearch="toggleSearch"
                 @search="onPlaylistsSearch"
               />
             </v-expansion-panel-content>
@@ -44,7 +45,7 @@
             <v-expansion-panel-content>
               <signals-search 
               @change="changeSignals"
-              @toggle="toggle"
+              @toggleSearch="toggleSearch"
               @search="onSignalsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -54,7 +55,7 @@
             <v-expansion-panel-content>
               <news-search 
               @change="changeNews" 
-              @toggle="toggle" 
+              @toggleSearch="toggleSearch" 
               @search="onNewsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -113,7 +114,7 @@ export default {
     };
   },
   props: {
-    show: { type: Boolean, default: false },
+    showSearch: { type: Boolean, default: false },
     expand: { type: Number, default: 0 }
   },
   components: {
@@ -123,8 +124,8 @@ export default {
     SignalsSearch
   },
   methods: {
-    toggle() {
-      this.$emit("toggle", { show: !this.$props.show });
+    toggleSearch() {
+      this.$emit("toggleSearch", {});
     },
     search() {
       switch (this.searchType) {
@@ -159,28 +160,24 @@ export default {
       this.signalsSearchObject = { ...data };
     },
     onCompanySearch() {
-      this.toggle();
       this.$router.push({
         path: "/companies",
         query: { ...this.companySearchObject, searchType: "company" }
       });
     },
     onNewsSearch() {
-      this.toggle();
       this.$router.push({
         path: "/news",
         query: { news: this.news, searchType: "news" }
       });
     },
     onPlaylistsSearch() {
-      this.toggle();
       this.$router.push({
         path: "/playlists",
         query: { ...this.playlistsSearchObject, searchType: "playlists" }
       });
     },
     onSignalsSearch() {
-      this.toggle();
       this.$router.push({
         path: "/signals",
         query: { ...this.signalsSearchObject, searchType: "signals" }

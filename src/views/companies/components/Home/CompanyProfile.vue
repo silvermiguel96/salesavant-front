@@ -1,72 +1,66 @@
   <template>
   <v-card v-if="company">
     <v-card-title>
-      <h1 class="display-1">Profile</h1>
+      <div class="headline">Profile</div>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <div class="subtitle-2 font-weight-bold">
         Company:
-        <span class="body-1">{{ company.name || '[empty name]' }}</span>
-      </h3>
+        <span class="caption">{{ company.name || '[empty name]' }}</span>
+      </div>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Momentum:
-        <span class="body-1">{{ company.momentum || '--' }}</span>
+        <span class="caption">{{ company.momentum || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Signals Score:
-        <span class="body-1">{{company.totalScore || '--'}}</span>
+        <span class="caption">{{company.totalScore || '--'}}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
-        News Score ???:
-        <span class="body-1">--</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Total signals:
-        <span class="body-1">{{company.totalSignals || '--'}}</span>
+        <span class="caption">{{company.totalSignals || '--'}}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Website keywords
-        <span class="body-1">{{company.website || '--'}}</span>
+        <span class="caption">{{company.website || '--'}}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Vertical Groups:
-        <span class="body-1">{{ company.vertical || '--' }}</span>
+        <span class="caption">{{ company.vertical || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Industry:
-        <span class="body-1">{{company.industry || '--'}}</span>
+        <span class="caption">{{company.industry || '--'}}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Other Vertical ???:
-        <span class="body-1">--</span>
+        <span class="caption">--</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Description:
-        <span class="body-1">{{ company.description || '--' }}</span>
+        <span class="caption text-justify">{{ company.description || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
       <td></td>
-      <h3 class="body-1 font-weight-bold">
+      <h3 class="caption font-weight-bold">
         Website:
         <a
           v-if="company.url"
@@ -78,60 +72,60 @@
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="body-1 font-weight-bold">
+      <h3 class="caption font-weight-bold">
         More key words:
         <v-btn small color="info" :disabled="true">Analyze website</v-btn>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         City:
-        <span class="body-1">{{ company.city || '--' }}</span>
+        <span class="caption">{{ company.city || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         State:
-        <span class="body-1">{{ company.state || '--' }}</span>
+        <span class="caption">{{ company.state || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Country:
-        <span class="body-1">{{ company.country || '--' }}</span>
+        <span class="caption">{{ company.country || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Num Employess:
-        <span class="body-1">{{ company.numEmployees || '--' }}</span>
+        <span class="caption">{{ company.numEmployees || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Status :
-        <span class="body-1">{{ company.status || '--' }}</span>
+        <span class="caption">{{ company.status || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         NAICS code :
-        <span class="body-1" v-if="company.naics">{{ company.naics.code || '--' }}</span>
+        <span class="caption" v-if="company.naics">{{ company.naics.code || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         NAICS description :
         <span
-          class="body-1"
+          class="caption"
           v-if="company.naics"
         >{{ company.naics.description || '--' }}</span>
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="subheading font-weight-bold">
+      <h3 class="subtitle-2 font-weight-bold">
         Funding ???:
-        <span class="body-1">--</span>
+        <span class="caption">--</span>
       </h3>
     </v-card-text>
   </v-card>

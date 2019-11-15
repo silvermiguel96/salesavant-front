@@ -4,6 +4,7 @@
       <div class="apollo-example">
         <!-- TODO: cuando cambio el número de registros por página no hace nada -->
         <v-breadcrumbs
+          :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :items="[
         {
@@ -21,6 +22,7 @@
         ></v-breadcrumbs>
         <v-breadcrumbs
           v-else
+          :large="true"
           :items="[
           {
             text: 'Playlists',
@@ -32,14 +34,25 @@
         ></v-breadcrumbs>
         <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
         <ul class="ml-2" v-if="!!isFiltered">
-          <li v-if="this.$route.query.playlistsSearch" >Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
-          <li v-if="this.$route.query.lessThanCompanies" >Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
+          <li v-if="this.$route.query.playlistsSearch">Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
+          <li v-if="this.$route.query.lessThanCompanies">Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
           <li v-if="this.$route.query.moreThanCompanies" >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
         </ul>
-        <v-btn color="primary" class="text-capitalize ma-2" dark small @click="toggleSearch">
-          <v-icon small class="pr-1">search</v-icon>search
-        </v-btn>
-        <template v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
+        <v-container fluid class="mx-1">
+          <v-row no-gutters class="ml-2">
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Filter"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+        <template
+          v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
       !!this.$route.query.playlistsSearch || !!this.$route.query.moreThanCompanies || !!this.$route.query.lessThanCompanies"
         >
           <ApolloQuery
@@ -151,7 +164,7 @@ export default {
             this.sortBy = "companies";
             break;
         }
-      }else{
+      } else {
         this.sortBy = "";
       }
       if (sortDesc.length > 0) {
@@ -160,15 +173,12 @@ export default {
         } else {
           this.sortOrder = "asc";
         }
-      }else{
+      } else {
         this.sortOrder = "";
       }
     },
     toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 2
-      });
+      this.$emit("toggleSearch", { expand: 1 });
     },
     checkIfIsFiltered() {
       let result = false;

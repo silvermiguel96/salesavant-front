@@ -54,28 +54,31 @@ export default {
         },
         {
           icon: "assessment",
-          text: "News",
-          router: "/news",
+          text: "Contacts",
+          router: "/contacts",
           click: this.onNews
         },
-        { icon: "search", text: "Search", click: this.toggleSearch },
-        { icon: "work", text: "Jobs Queue", click: this.toggleJobsQueuve }
+        { 
+          icon: "work", 
+          text: "Jobs", 
+          click: this.onJobs
+        },
+        { 
+          icon: "search", 
+          text: "Search", 
+          click: this.toggleSearch 
+        }
       ]
     };
   },
   props: {
-    showSearch: { type: Boolean, default: false },
-    showJobsQueue: { type: Boolean, default: false }
   },
   methods: {
     toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 0
-      });
+      this.$emit("toggleSearch", {expand: 0});
     },
-    toggleJobsQueuve() {
-      this.$emit("toggleJobsQueuve", { show: !this.$props.showJobsQueue });
+    onJobs() {
+      this.$router.push("/jobs");
     },
     onPlaylists() {
       this.$router.push("/playlists");

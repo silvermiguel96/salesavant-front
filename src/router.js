@@ -8,10 +8,10 @@ import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from "./views/news/News.vue";
+import Jobs from "./views/jobs/Jobs.vue";
 import SingleNews from "./views/news/components/SingleNews.vue"
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
-// import Callback from "./components/Callback";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 import { AUTH_TOKEN } from "./vue-apollo";
@@ -40,6 +40,14 @@ const router = new Router({
       }
     },
     {
+      path: "/jobs",
+      name: "jobs",
+      component: Jobs,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: "/playlists",
       name: "playlists",
       component: PlayLists,
@@ -48,7 +56,7 @@ const router = new Router({
       }
     },
     {
-      path: "/playlists/:playlistId/companies",
+      path: "/playlists/:playlistUID/companies",
       name: "playlist-companies",
       component: PlayListCompanies,
       meta: {
@@ -111,11 +119,6 @@ const router = new Router({
         requiresAuth: true
       }
     },
-    // {
-    //   path: "/callback",
-    //   name: "callback",
-    //   component: Callback
-    // },
     {
       path: "/signals",
       name: "signals",
@@ -155,6 +158,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-})
+});
 
 export default router;

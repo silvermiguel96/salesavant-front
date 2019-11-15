@@ -19,7 +19,7 @@
             <v-data-table
               :headers="headers"
               :items="data.signalsAggs"
-              class="elevation-1"
+              class="elevation-4"
               @updatePagination="updatePagination"
             >
               <template v-slot:item="{ item, headers}">

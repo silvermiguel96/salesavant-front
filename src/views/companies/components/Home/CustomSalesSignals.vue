@@ -397,8 +397,7 @@ export default {
               console.log("hola5");
               this.snack = true;
               this.snackColor = "error";
-              this.snackText =
-                "Oops!! we did something wrong when creating a new signal!!!";
+              this.snackText = "Oops!! we did something wrong when creating a new signal!!!";
               return;
             }
             console.log("newSignal", newSignal);

@@ -64,11 +64,11 @@ export default {
     changeData(data) {
       this.$emit("change", { ...this.signal });
     },
-    toggle() {
-      this.$emit("toggle");
+    toggleSearch() {
+      this.$emit("toggleSearch");
     },
     search() {
-      this.toggle();
+      this.toggleSearch();
       this.$emit("search");
     }
   }

@@ -1,9 +1,14 @@
 <template>
   <v-container fluid>
+    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
+          {{ snackText }}
+      <v-btn text @click="snack = false">Close</v-btn>
+    </v-snackbar>
     <v-card>
       <div class="apollo-example">
         <v-breadcrumbs
           v-if="!!this.$route.query && !!this.$route.query.searchType"
+          :large="true"
           :items="[
         {
           text: 'Companies',
@@ -20,6 +25,7 @@
         ></v-breadcrumbs>
         <v-breadcrumbs
           v-else
+          :large="true"
           :items="[
         {
           text: 'Companies',
@@ -29,19 +35,11 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-          {{ snackText }}
-          <v-btn text @click="snack = false">Close</v-btn>
-        </v-snackbar>
-        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
-        <ul class="ml-2" v-if="!!isFiltered">
-          <li
-            v-if="this.$route.query.simpleSearch"
-          >Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
+        <span class="ml-6 body-1 " v-if="!!isFiltered">Filtering by</span>
+        <ul class="ml-6 body-2" v-if="!!isFiltered">
+          <li v-if="this.$route.query.simpleSearch">Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
           <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
-          <li
-            v-if="this.$route.query.description"
-          >Company description: {{this.$route.query.description}}</li>
+          <li v-if="this.$route.query.description">Company description: {{this.$route.query.description}}</li>
           <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
           <li v-if="this.$route.query.website">Company url: {{this.$route.query.website}}</li>
           <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
@@ -69,11 +67,30 @@
           >Signal group name: {{this.$route.query.signalGroup}}</li>
         </ul>
         <div class="calltoactions">
-          <v-btn color="primary" small class="text-capitalize ma-2" dark @click="toggleSearch">
-            <v-icon class="pr-1" small>search</v-icon>search
-          </v-btn>
-          <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
-          <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
+          <v-container fluid class="mx-1">
+          <v-row no-gutters class="ml-2">
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Filter"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="8">
+              <div class="d-flex justify-md-end">
+                <div class="mt-2 mr-2">
+                  <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
+                </div>
+                <div class="mt-2 mr-2">
+                  <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+          
         </div>
         <!-- Apollo watched Graphql query -->
         <template

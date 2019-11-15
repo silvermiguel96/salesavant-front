@@ -27,11 +27,11 @@ export default {
     changeData(data) {
       this.$emit("change", { news: data });
     },
-    toggle() {
-      this.$emit("toggle");
+    toggleSearch() {
+      this.$emit("toggleSearch");
     },
     search() {
-      this.toggle();
+      this.toggleSearch();
       this.$emit("search");
     }
   }
