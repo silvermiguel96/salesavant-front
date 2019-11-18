@@ -35,7 +35,7 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <span class="ml-6 body-1 " v-if="!!isFiltered">Filtering by</span>
+        <span class="ml-6 body-1" v-if="!!isFiltered">Filtering by</span>
         <ul class="ml-6 body-2" v-if="!!isFiltered">
           <li v-if="this.$route.query.simpleSearch">Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
           <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
@@ -197,6 +197,7 @@ export default {
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
+      search:"",
       searchField: "",
       searchAdvance: {
         country: "",

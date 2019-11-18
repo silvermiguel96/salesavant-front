@@ -35,7 +35,6 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
 export default {
   data() {
     return {

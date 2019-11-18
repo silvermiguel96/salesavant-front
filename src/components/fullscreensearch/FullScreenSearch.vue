@@ -14,7 +14,7 @@
           <v-btn icon @click="toggleSearch">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Search</v-toolbar-title>
+          <v-toolbar-title>Advanced Search</v-toolbar-title>
         </v-toolbar>
         <v-expansion-panels accordion :value="expand">
 

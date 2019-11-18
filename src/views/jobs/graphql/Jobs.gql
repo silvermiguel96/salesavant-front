@@ -10,6 +10,7 @@ query AllJobs(
       modificationTime
       jobType
       description
+      progress
       result
       status
       additionalData

@@ -132,7 +132,6 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
 import PlayListsTable from "./components/PlayListsTable.vue";
 export default {
   data() {
@@ -142,7 +141,8 @@ export default {
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
-      isFiltered: false
+      isFiltered: false,
+      search:""
     };
   },
   props: {

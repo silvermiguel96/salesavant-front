@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="apollo-example">
+    <v-card>
       <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
         {{ snackText }}
         <v-btn text @click="snack = false">Close</v-btn>

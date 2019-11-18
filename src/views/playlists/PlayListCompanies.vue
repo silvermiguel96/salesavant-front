@@ -34,13 +34,10 @@
           <v-col cols="12" md="8">
             <div class="d-flex justify-md-end">
               <div class="mt-2 mr-2">
-                <job-modal :jobType="'ORBRefresh'" :additionalData="{}">
-                  <template v-slot:label>
-                    <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
-                  </template>
-                  <template v-slot:title>Export as CSV</template>
-                  <template v-slot:content>Export companies Data</template>
-                </job-modal>
+                <v-btn color="primary" outlined rounded  min-width="140" @click="createJob('export_companies')">
+                  <v-icon size="18" class="mr-2">cloud_download</v-icon>
+                  Export
+                </v-btn>
               </div>
               <div class="mt-2 mr-2">
                 <jobs-menu
@@ -49,14 +46,14 @@
                       title: 'Companies',
                       icon: 'update',
                       callback: () => {
-                        this.createJob('OrbRefresh');
+                        this.createJob('refresh_orb');
                       }
                     },
                     {
                       title: 'Keywords',
                       icon: 'update',
                       callback: () => {
-                        this.createJob('KeywordsRefresh');
+                        this.createJob('extract_keywords');
                       }
                     },
                     {
@@ -116,10 +113,6 @@ import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import JobModal from "../../components/jobs/JobModal.vue";
 import JobsMenu from "../../components/jobs/JobsMenu.vue";
 
-// ExportCompanies
-
-import ExportCompaniesModal from "./components/ExportCompanies/ExportCompaniesModal.vue";
-import JobExportModal from "./components/ExportCompanies/JobExportCompaniesModal.vue";
 
 import _get from "lodash.get";
 import gql from "graphql-tag";
@@ -137,7 +130,7 @@ export default {
       rowsPerPage: 25,
       sortBy: "",
       totalItems: 10,
-      loadingModal: false,
+      search:"",
       isLoading: false,
       snack: false,
       snackColor: "",
