@@ -115,7 +115,7 @@ export default {
     this.loadData();
     this.interval = setInterval(function() {
         this.loadData();
-      }.bind(this), 30000);
+      }.bind(this), 3000);
   },
   beforeDestroy: function() {
     clearInterval(this.interval);

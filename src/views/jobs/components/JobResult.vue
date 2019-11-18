@@ -9,7 +9,7 @@
             <KeywordsJobResult :job="job"/>
         </div>
         <div v-else-if="job.jobType=='export_companies'">
-            <a v-if="resultParsed" target="_blank" :href="resultParsed.fileName">Download</a>
+            <a v-if="resultParsed" target="_blank" :href="salesavantAPI + resultParsed.fileName">Download</a>
         </div>
     </div>
 </template>
@@ -23,6 +23,7 @@ export default {
     };
   },
   props: {
+    salesavantAPI:{type:String, default:process.env.VUE_APP_REST_API_URL},
     job: Object
   },
   computed:{
