@@ -182,8 +182,10 @@ export default {
     async createJob(jobType) {
       this.$emit("createJob", {
         jobType: jobType,
-        description: "test",
-        additionalData: { playlist_uid: this.playlist.uid }
+        additionalData: { 
+          playlist_uid: this.playlist.uid,
+          playlist_name: this.playlist.name
+        }
       });
       this.snack = true;
       this.snackText = `Job ${jobType} enqueed successfully`;

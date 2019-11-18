@@ -69,7 +69,7 @@ export default {
         `,
         variables: {
           jobType: _get(jobData, "jobType"),
-          description: _get(jobData, "description"),
+          description: _get(jobData, "description", ""),
           additionalData: jobData.additionalData ? JSON.stringify(jobData.additionalData): ""
         }
       });
