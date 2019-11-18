@@ -9,8 +9,8 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
-      <v-layout d-flex class="m-1" >
-        <v-flex xs10 md11 lg11 >
+      <v-layout d-flex class="m-1">
+        <v-flex xs10 md11 lg11>
           <playlists-autocomplete
             @change="onPlaylistAutoCompleteChange"
             @onSearch="onSignalAutoCompleteSearch"
@@ -31,7 +31,7 @@
     <v-card-text>
       <v-data-table
         :headers="headers"
-        :items="companyPlaylists.playlistsList"
+        :items="companyPlaylists.companyPlaylistsList"
         class="elevation-1"
         :items-per-page="pagination.rowsPerPage"
         :footer-props="{
@@ -43,16 +43,17 @@
         <template v-slot:item="{ item, headers }">
           <tr>
             <td>
-              <router-link
-                :to="`/playlists/${item.uid}/companies`"
-              >{{ item.name || "--"}}</router-link>
+              <router-link :to="`/playlists/${item.uid}/companies`">{{
+                item.name || "--"
+              }}</router-link>
             </td>
             <td>
               <v-icon
                 @click="deleteCompanyPlaylist(item.uid)"
                 color="red lighten-2"
                 size="20"
-              >delete</v-icon>
+                >delete</v-icon
+              >
             </td>
           </tr>
         </template>
@@ -124,8 +125,8 @@ export default {
             first: $first
             offset: $offset
           ) {
-            name
-            playlistsList {
+            totalResults
+            companyPlaylistsList {
               uid
               name
             }
@@ -134,7 +135,7 @@ export default {
       `,
       variables() {
         return {
-          companyUid: this.$route.params.companiesUid | "",
+          companyUid: this.$route.params.companiesUid ,
           first: this.pagination.rowsPerPage,
           offset:
             this.pagination.rowsPerPage * this.pagination.page -
@@ -285,5 +286,4 @@ export default {
   }
 };
 </script>
-<style>
-</style>
+<style></style>
