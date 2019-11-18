@@ -13,41 +13,19 @@
   >
     <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
     <template v-slot:item="{ item, headers }">
-      <tr>
-        <td>{{ item.jobType || "--" }}</td>
-        <td>{{ item.description || "--" }}</td>
-        <td>{{ changeTimeHuman(item.creationTime) }}</td>
-        
-        <td v-if="item.progress > 0 && item.progress < 100">
-          <v-progress-circular
-            :rotate="-90"
-            :size="38"
-            :width="4"
-            color="light-blue"
-            :value="item.progress.toFixed(0)"
-            style="font-size: 0.9em;"
-          >{{ item.progress.toFixed(0) }}%</v-progress-circular>
-        </td>
-        <td v-else-if="item.progress >= 100">100%</td>
-        <td v-else>Waiting...</td>
-
-        <td v-if="item.progress >= 100">
-          <JobResult :job="item"/>
-        </td>
-        <td v-else>Loading...</td>
-      </tr>
+        <JobRow :job="item"/>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import JobResult from './JobResult';
+import JobRow from './JobRow';
 
 export default {
   data() {
     return {
       headers: [
-        { text: "JobType", value: "jobType", width: "25%", sortable: false },
+        { text: "JobName", value: "jobType", width: "25%", sortable: false },
         {
           text: "Description",
           value: "description",
@@ -76,14 +54,27 @@ export default {
       let HumanDate = time.split(".", 1).toString();
       let HumanTime = HumanDate.split("T", 2).join(" ");
       return HumanTime;
+    },
+    getJobName(jobType){
+      switch(jobType){
+        case "extract_keywords": return "Extract Keywords";
+        case "refresh_orb": return "Refresh ORB";
+        case "export_companies": return "Export Companies";
+        case "refresh_news": return "Refresh News";
+      }
     }
   },
   props: {
     items: Array,
     totalResults: Number
   },
+  computed:{
+    additionalDataParsed: function(){
+
+    }
+  },
   components:{
-    JobResult
+    JobRow
   }
 };
 </script>
