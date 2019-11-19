@@ -1,10 +1,11 @@
 query AllCompanies(
+  $searchNameOrDescription: String,
   $first: Int, 
   $offset: Int,
   $sortBy: String,
   $sortOrder: String
 ) {
-  companies(first: $first, offset: $offset, sortBy: $sortBy, sortOrder: $sortOrder ) {
+  companies(searchNameOrDescription: $searchNameOrDescription, first: $first, offset: $offset, sortBy: $sortBy, sortOrder: $sortOrder ) {
     totalResults
     companiesList {
       uid

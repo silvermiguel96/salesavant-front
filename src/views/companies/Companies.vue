@@ -66,32 +66,7 @@
             v-if="this.$route.query.signalGroup"
           >Signal group name: {{this.$route.query.signalGroup}}</li>
         </ul>
-        <div class="calltoactions">
-          <v-container fluid class="mx-1">
-          <v-row no-gutters class="ml-2">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Filter"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="8">
-              <div class="d-flex justify-md-end">
-                <div class="mt-2 mr-2">
-                  <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
-                </div>
-                <div class="mt-2 mr-2">
-                  <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-        </v-container>
           
-        </div>
         <!-- Apollo watched Graphql query -->
         <template
           v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
@@ -145,9 +120,33 @@
           </ApolloQuery>
         </template>
         <template v-else>
+          <v-container fluid class="mx-1">
+          <v-row no-gutters class="ml-2">
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Filter"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="8">
+              <div class="d-flex justify-md-end">
+                <div class="mt-2 mr-2">
+                  <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
+                </div>
+                <div class="mt-2 mr-2">
+                  <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
           <ApolloQuery
             :query="require('./graphql/Companies.gql')"
             :variables="{
+              searchNameOrDescription: this.search,
               first: this.itemsPerPage, 
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,

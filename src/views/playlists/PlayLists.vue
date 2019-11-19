@@ -38,19 +38,6 @@
           <li v-if="this.$route.query.lessThanCompanies">Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
           <li v-if="this.$route.query.moreThanCompanies" >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
         </ul>
-        <v-container fluid class="mx-1">
-          <v-row no-gutters class="ml-2">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Filter"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
         <template
           v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
       !!this.$route.query.playlistsSearch || !!this.$route.query.moreThanCompanies || !!this.$route.query.lessThanCompanies"
@@ -92,10 +79,25 @@
           </ApolloQuery>
         </template>
         <template v-else>
+          
+          <v-container fluid class="mx-1">
+            <v-row no-gutters class="ml-2">
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="search"
+                  append-icon="search"
+                  label="Filter"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
           <!-- Apollo watched Graphql query -->
           <ApolloQuery
             :query="require('./graphql/Playlists.gql')"
             :variables="{
+              search: this.search,
               first: this.itemsPerPage, 
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,

@@ -34,7 +34,7 @@
           <v-col cols="12" md="8">
             <div class="d-flex justify-md-end">
               <div class="mt-2 mr-2">
-                <v-btn color="primary" outlined rounded  min-width="140" @click="createJob('export_companies')">
+                <v-btn color="primary" outlined rounded  min-width="150" @click="createJob('export_companies')">
                   <v-icon size="18" class="mr-2">cloud_download</v-icon>
                   Export
                 </v-btn>
