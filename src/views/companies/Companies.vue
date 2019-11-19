@@ -152,6 +152,7 @@
               sortBy: this.sortBy,
               sortOrder: this.sortOrder
             }"
+            :skip="search.length >0 && search.length<=2"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->

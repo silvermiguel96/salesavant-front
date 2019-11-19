@@ -79,7 +79,6 @@
           </ApolloQuery>
         </template>
         <template v-else>
-          
           <v-container fluid class="mx-1">
             <v-row no-gutters class="ml-2">
               <v-col cols="12" md="4">
@@ -103,6 +102,7 @@
               sortBy: this.sortBy,
               sortOrder: this.sortOrder
             }"
+            :skip="search.length >0 && search.length<=2"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
