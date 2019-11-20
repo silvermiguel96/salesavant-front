@@ -1,10 +1,12 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600">
+  <v-dialog v-model="dialog" scrollable persistent max-width="600">
     <template v-slot:activator="{ on }">
       <a v-on="on" href="#">View</a>
     </template>
     <v-card>
-      <v-card-title class="title">Extracted Keywords</v-card-title>
+      <v-card-title style="padding-left:16px;">Playlist Keywords</v-card-title>
+      <v-card-subtitle>{{ additionalDataParsed.playlist_name }}</v-card-subtitle>
+      <v-divider class="mx-4"></v-divider>
       <v-card-text>
         <v-data-table
           v-if="!!job"
@@ -116,6 +118,11 @@ export default {
           }));
       }
       return keywords;
+    },
+    additionalDataParsed: function(){
+        if (!!this.job && !! this.job.additionalData){
+            return JSON.parse(this.job.additionalData);
+        }
     }
   }
 };
