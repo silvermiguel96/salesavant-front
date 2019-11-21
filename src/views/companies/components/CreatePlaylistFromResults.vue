@@ -2,12 +2,12 @@
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn class="text-capitalize ma-2" color="green" dark v-on="on">
+        <v-btn class="text-capitalize ma-2" color="primary" v-on="on">
           <v-icon class="pr-1" small>add</v-icon>save as playlist
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Give the playlist a name</v-card-title>
+        <v-card-title class="headline">Playlist Name</v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>

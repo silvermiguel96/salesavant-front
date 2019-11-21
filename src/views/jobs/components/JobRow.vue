@@ -1,13 +1,13 @@
 <template >
       <tr>
         <td>
-          
-          <div >{{ getJobName(job.jobType) || "--" }}</div>
-          <div class="font-weight-light"> {{additionalDataParsed.playlist_name}}</div>  
+          <div>
+              <router-link :to="`/playlists/${additionalDataParsed.playlist_uid}/companies`">{{ additionalDataParsed.playlist_name }}</router-link> 
+          </div>  
+          <div class="font-weight-light"> {{ getJobName(job.jobType) }}</div>  
         </td>
         <td>{{ job.description || "--" }}</td>
         <td>{{ changeTimeHuman(job.creationTime) }}</td>
-        
         <td v-if="job.progress > 0 && job.progress < 100">
           <v-progress-circular
             :rotate="-90"

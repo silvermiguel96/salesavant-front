@@ -6,7 +6,6 @@ import PlayLists from "./views/playlists/PlayLists.vue";
 import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
-import NewCompanies from "./views/newcompanies/NewCompanies.vue";
 import News from "./views/news/News.vue";
 import Jobs from "./views/jobs/Jobs.vue";
 import SingleNews from "./views/news/components/SingleNews.vue"
@@ -107,14 +106,6 @@ const router = new Router({
       path: "/advanced/:playlistId",
       name: "advanced",
       component: Calibration,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/new-companies",
-      name: "newcompanies",
-      component: NewCompanies,
       meta: {
         requiresAuth: true
       }

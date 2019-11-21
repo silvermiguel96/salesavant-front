@@ -2,22 +2,22 @@ query AllSignals($first: Int, $offset: Int) {
   signals(first: $first offset: $offset) {
     totalResults
     signalsList{
-          id
-    name
-    user {
       id
-    }
-    group
-    userId
-    account {
-      id
-    }
-    category
-    accountId
-    description
-    creationTime
-    defaultScore
-    modificationTime
+      userId
+      user {
+        id
+      }
+      account {
+        id
+      }
+      name
+      group
+      category
+      accountId
+      description
+      creationTime
+      defaultScore
+      modificationTime
     }
   }
 }
