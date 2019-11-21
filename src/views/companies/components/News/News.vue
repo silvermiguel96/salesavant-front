@@ -9,14 +9,14 @@
       <v-data-table
         :headers="headers"
         :items="companyNews.companyNewsList"
+        :server-items-length="companyNews.totalResults" 
         :items-per-page="options.itemsPerPage"
         :footer-props="{
           'items-per-page-options': [10, 20, 50]
         }"
         :options.sync="options"
         class="mx-2"
-        @update:options="updateOptions"
-        :server-items-length="companyNews.totalResults"
+        @updateOptions="updateOptions"
       >
         <template v-slot:item="{ item, headers }">
           <tr>
@@ -71,8 +71,8 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.options.page = page;
-      this.options.itemsPerPage = itemsPerPage;
+      this.options.page = options.page;
+      this.options.itemsPerPage = options.itemsPerPage;
     }
   },
   components: {
