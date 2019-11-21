@@ -7,7 +7,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Give the playlist a name</v-card-title>
+        <v-card-title class="headline">Playlist Name</v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>

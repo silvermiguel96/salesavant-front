@@ -25,9 +25,8 @@
         <v-btn v-else text class="text-capitalize" :to="link.router">{{link.text}}</v-btn>
       </v-toolbar-items>
       <v-toolbar-items>
-        <v-btn text color="white" class="text-capitalize pr-0" @click="this.exitApp">
+        <v-btn text color="white" class="text-capitalize" @click="this.exitApp">
             Logout
-          <v-icon medium right>exit_to_app</v-icon>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -100,6 +99,6 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  width: 150px;
+  width: 170px;
 }
 </style>

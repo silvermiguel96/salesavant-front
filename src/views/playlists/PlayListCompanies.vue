@@ -179,7 +179,7 @@ export default {
       this.sortBy = sortBy;
       this.totalItems = 5;
     },
-    async createJob(jobType) {
+    createJob(jobType) {
       this.$emit("createJob", {
         jobType: jobType,
         additionalData: { 

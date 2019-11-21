@@ -1,17 +1,16 @@
 <template>
   <v-layout row justify-center>
     <v-dialog
-      v-model="showSearch"
+      :value="value"
       max-width="530"
       hide-overlay
       transition="dialog-bottom-transition"
-      @click:outside="this.toggleSearch"
+      @keydown.esc="$emit('hideSearch')"
       persistent
-      scrollable
-    >
+      scrollable>
       <v-card>
-        <v-toolbar dark>
-          <v-btn icon @click="toggleSearch">
+        <v-toolbar dark color="">
+          <v-btn icon @click.native="$emit('input')">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Advanced Search</v-toolbar-title>
@@ -114,7 +113,7 @@ export default {
     };
   },
   props: {
-    showSearch: { type: Boolean, default: false },
+    value: { type: Boolean, default: false },
     expand: { type: Number, default: 0 }
   },
   components: {
@@ -191,5 +190,6 @@ export default {
 .v-dialog__content {
   justify-content: flex-end;
   height: unset;
+  padding-top: 30px;
 }
 </style>

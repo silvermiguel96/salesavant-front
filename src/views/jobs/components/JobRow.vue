@@ -8,7 +8,6 @@
         </td>
         <td>{{ job.description || "--" }}</td>
         <td>{{ changeTimeHuman(job.creationTime) }}</td>
-        
         <td v-if="job.progress > 0 && job.progress < 100">
           <v-progress-circular
             :rotate="-90"
