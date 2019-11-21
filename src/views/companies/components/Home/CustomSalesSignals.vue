@@ -5,13 +5,13 @@
       <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-card-title>
-      <h1 class="display-1">Custom Sales Signals</h1>
+      <h1 class="headline">Custom Sales Signals</h1>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-actions default>
       <v-icon large color="blue">info</v-icon>
       <h2 class="headline font-weight-bold">Custome Score:</h2>
-      <h2 class="headline mx-1">{{company.totalScore || '--'}}</h2>
+      <h2 class="headline mx-1">{{ company.totalScore || "--" }}</h2>
     </v-card-actions>
     <v-card-text>
       <!-- The first table -->
@@ -23,7 +23,7 @@
         hide-default-footer
       >
         <template v-slot:items="props">
-          <td>{{ props.item.groupName || '[empty group name]' }}</td>
+          <td>{{ props.item.groupName || "[empty group name]" }}</td>
           <td>{{ props.item.count }}</td>
           <td class="text-xs-right">{{ props.item.score }}</td>
         </template>
@@ -37,18 +37,33 @@
         :headers="headers"
         :items="companySignals.companySignalsList"
         class="elevation-1 mt-5"
-        hide-default-footer
+        :server-items-length="companySignals.totalResults"
+        :items-per-page="options.itemsPerPage"
+        :footer-props="{
+          'items-per-page-options': [10, 20, 50]
+        }"
+        :options.sync="options"
+        @updateOptions="updateOptions"
       >
-        <template v-slot:items="props">
-          <td>{{ props.item.signal.group || '[empty group name]' }}</td>
-          <td>{{ props.item.signal.name || '[empty signal name]' }}</td>
-          <td>{{ props.item.score || '--' }}</td>
-          <td class="justify-center layout px-0">
-            <v-icon
-              small
-              @click="deleteItem({item: props.item, signalId:props.item.signal.id})"
-            >delete</v-icon>
-          </td>
+        <template v-slot:item="{ item, headers }">
+          <tr>
+            <td>{{ item.signal.group || "[empty group name]" }}</td>
+            <td>{{ item.signal.name || "[empty signal name]" }}</td>
+            <td>{{ item.score || "--" }}</td>
+            <td class="justify-center layout px-0">
+              <v-icon
+                small
+                color="red"
+                @click="
+                  deleteItem({
+                    item: item,
+                    signalId: item.signal.id
+                  })
+                "
+                >delete</v-icon
+              >
+            </td>
+          </tr>
         </template>
         <template v-slot:no-data>
           <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -57,7 +72,7 @@
     </v-card-text>
     <!-- Add Signal -->
     <v-card-text>
-      <v-layout class="ma-2" >
+      <v-layout class="ma-2">
         <v-flex xs11 md11 lg10>
           <signals-autocomplete
             :placeholder="'Add signal'"
@@ -66,7 +81,12 @@
           />
         </v-flex>
         <v-flex d-flex align-end xs1 sm2 lg2>
-          <v-btn class="text-capitalize mx-2" small @click="addSignalToCompany" :disabled="!signalId && !currentSignalSearch">
+          <v-btn
+            class="text-capitalize mx-2"
+            small
+            @click="addSignalToCompany"
+            :disabled="!signalId && !currentSignalSearch"
+          >
             <v-icon small>add</v-icon>Add
           </v-btn>
         </v-flex>
@@ -74,11 +94,13 @@
     </v-card-text>
     <!-- List singal -->
     <v-card-text>
-      <v-data-table 
-      :items="keywords"       
-      :headers="Hkeywords" hide-default-footer></v-data-table>
+      <v-data-table
+        :items="keywords"
+        :headers="Hkeywords"
+        hide-default-footer
+      ></v-data-table>
       <template v-slot:items="props">
-        <td>{{  props.item }}</td>
+        <td>{{ props.item }}</td>
       </template>
     </v-card-text>
   </v-card>
@@ -90,6 +112,10 @@ import _get from "lodash.get";
 export default {
   data() {
     return {
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      },
       signalId: null,
       currentSignalSearch: null,
       company: [],
@@ -177,24 +203,39 @@ export default {
     },
     companySignals: {
       query: gql`
-        query getSignalsForSingleCompany($companyUid: String) {
-          companySignals(companyUid: $companyUid, first: 10) {
+        query searchCompanyPlaylist(
+          $companyUid: String
+          $first: Int
+          $offset: Int
+        ) {
+          companySignals(
+            companyUid: $companyUid
+            first: $first
+            offset: $offset
+          ) {
             totalResults
-            companySignalsList{
-              score
+            companySignalsList {
+              id
               signal {
                 id
                 name
-                category
+                description
                 group
+                category
+                defaultScore
               }
+              score
             }
           }
         }
       `,
       variables() {
         return {
-          companyUid: this.$route.params.companiesUid
+          companyUid: this.$route.params.companiesUid,
+          first: this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       fetchPolicy: "no-cache"
@@ -221,10 +262,16 @@ export default {
         }
       ];
     },
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+    }) {
+      this.options.page = options.page;
+      this.options.itemsPerPage = options.itemsPerPage;
+    },
     async deleteItem({ item = null, signalId = null }) {
       try {
         console.log({ item, signalId });
-        const index = this.companySignals.indexOf(item);
+        const index = this.companySignals.companySignalsList.indexOf(item);
         const isConfirmed = confirm(
           "Are you sure you want to delete this item?"
         );
@@ -254,14 +301,7 @@ export default {
             "data.deleteCompanySignal.companySignal.id",
             null
           );
-          if (!companySignalId) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "Oops!! something happened when trying to remove the company - signal, please review manually or try again!!";
-            return;
-          }
-          this.companySignals.splice(index, 1);
+          this.companySignals.companySignalsList.splice(index, 1);
           this.refreshData();
         }
       } catch (error) {
@@ -292,11 +332,8 @@ export default {
       this.$apollo.queries.companySignals.refresh();
     },
     async addSignalToCompany() {
-      console.log("hola");
       try {
-        console.log("hola2");
         if (!!this.signalId || !!this.currentSignalSearch) {
-          console.log("hola3");
           if (!!this.signalId) {
             const result = await this.$apollo.mutate({
               mutation: gql`
@@ -397,7 +434,8 @@ export default {
               console.log("hola5");
               this.snack = true;
               this.snackColor = "error";
-              this.snackText = "Oops!! we did something wrong when creating a new signal!!!";
+              this.snackText =
+                "Oops!! we did something wrong when creating a new signal!!!";
               return;
             }
             console.log("newSignal", newSignal);
@@ -459,7 +497,6 @@ export default {
           return;
         }
       } catch (error) {
-        console.log("hola4");
         this.snack = true;
         this.snackColor = "error";
         this.snackText = "Oops we did something wrong!!";

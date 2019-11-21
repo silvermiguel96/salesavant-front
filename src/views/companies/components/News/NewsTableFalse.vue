@@ -26,14 +26,14 @@
           <v-data-table
             :headers="headers"
             :items="data.companyNews.companyNewsList"
-            class="mx-2"
+            :server-items-length="data.companyNews.totalResults"
             :items-per-page="options.itemsPerPage"
             :footer-props="{
               'items-per-page-options': [10, 20, 50]
             }"
-            :server-items-length="data.companyNews.totalResults"
             :options.sync="options"
-            @update:options="updateOptions"
+            class="mx-2"
+            @updateOptions="updateOptions"
           >
             <template v-slot:item="{ item, headers }">
               <tr>
@@ -75,7 +75,7 @@ export default {
         itemsPerPage: 10
       },
       newsCompany: [],
-      notCategorized: "",
+      notCategorized: false,
       headers: [
         { text: "Title", value: "title" },
         { text: "Url", value: "props.item.url" },
@@ -88,8 +88,8 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.options.page = page;
-      this.options.itemsPerPage = itemsPerPage;
+      this.options.page = options.page;
+      this.options.itemsPerPage = options.itemsPerPage;
     }
   },
   components: {
