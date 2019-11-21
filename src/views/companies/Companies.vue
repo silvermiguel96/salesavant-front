@@ -71,7 +71,7 @@
         <template
           v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
         >
-          <v-fluid-container>
+          <v-container fluid>
               <v-row>
                   <v-col cols="12" md="8">
                     <div class="d-flex">
@@ -84,7 +84,7 @@
                     </div>
                     </v-col>
               </v-row>
-          </v-fluid-container>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/CompaniesAdvancedSearch.gql')"
             :variables="{ 
