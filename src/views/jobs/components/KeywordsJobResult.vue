@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="dialog" scrollable persistent max-width="600">
+  <v-dialog 
+    v-model="dialog" 
+    scrollable 
+    persistent 
+    max-width="600"
+    @keydown.esc="dialog=false">
     <template v-slot:activator="{ on }">
       <a v-on="on" href="#">View</a>
     </template>
