@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import _get from "lodash.get";
-import LongParagraph from "../../../../components/companies/LongParagraph.vue";
-import SignalsAutocomplete from "../../../../components/signals/Autocomplete.vue";
 
+import _get from "lodash.get";
+import LongParagraph from "../../../../components/common/LongParagraph.vue";
+import SignalsAutocomplete from "../../../../components/signals/Autocomplete.vue";
 import gql from "graphql-tag";
 export default {
   data() {

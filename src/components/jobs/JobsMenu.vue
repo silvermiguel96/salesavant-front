@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-menu offset-y>
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">
+        <v-btn class="text-capitalize" color="primary" dark v-on="on" min-width="150">
           <v-icon size="18" class="mr-2">update</v-icon>  
           <slot name="label"></slot>
         </v-btn>

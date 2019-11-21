@@ -24,10 +24,10 @@
           <router-link :to="`/advanced/${item.uid}`">Advanced</router-link>
         </td>
         <td>
-          <a href>Add Coming soon</a>
+          <p >Coming soon</p>
         </td>
         <td>
-          <a href>Remove Coming soon</a>
+          <p >Coming soon</p>
         </td>
       </tr>
     </template>
@@ -39,13 +39,13 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Name", value: "name", width: "30%", sortable: false },
-        { text: "Size", value: "totalCompanies", width: "8%", sortable: true },
-        { text: "Score", value: "totalScore", width: "8%", sortable: true },
-        { text: "Creation Time", value: "creationTime", width: "15%", sortable: true},
-        { text: "Advanced", value: "advanced", width: "10%", sortable: true },
-        { text: "Favorite", value: "favorite", width: "10%", sortable: true },
-        { text: "Remove", width: "10%", sortable: true }
+        { text: "Name", value: "name", width: "40%", sortable: false },
+        { text: "Size", value: "totalCompanies", width: "10%", sortable: true },
+        { text: "Score", value: "totalScore", width: "10%", sortable: true },
+        { text: "Creation Time", value: "creationTime", width: "16%", sortable: false},
+        { text: "Advanced", value: "advanced", width: "8%", sortable: false },
+        { text: "Favorite", value: "favorite", width: "8%", sortable: false },
+        { text: "Remove", width: "8%", sortable: false }
       ],
       options: {
         page: 1,

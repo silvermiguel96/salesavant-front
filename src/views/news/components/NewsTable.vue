@@ -18,20 +18,14 @@
           <a
             :key="`news-link${item.id || ''}`"
             :href="`news/${item.id || ''}`"
-          >{{
-            trimText(item.title)
-             }}</a>
-             <!-- trimText(_get( "item.title", "--")) -->
+          >{{ trimText(item.title) }}</a>
         </td>
         <td>{{ item.publishDate || "--"}}</td>
         <td>
           <a
             :key="`company-link${item.id}`"
             :href="`companies/${item.company.uid || ''}`"
-          >{{ 
-            trimText(item.company.name)
-            }}</a>
-            <!-- trimText(_get( "item.company.name", "--")) -->
+          >{{ trimText(item.company.name) }}</a>
         </td>
         <td>
           <a
@@ -49,17 +43,36 @@
 
 <script>
 import _get from "lodash.get";
-import LongParagraph from "../../../components/companies/LongParagraph.vue";
 export default {
   data() {
     return {
       headers: [
-        { text: "Title", align: "left", value: "title", sortable: false,  },
-        { text: "Published Date", value: "publishDate", align: "left", sortable: true },
-        { text: "Company", value: "company.name", align: "left",sortable: false },
+        {
+          text: "Title",
+          align: "left",
+          value: "title",
+          sortable: false
+        },
+        {
+          text: "Published Date",
+          value: "publishDate",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Company",
+          value: "company.name",
+          align: "left",
+          sortable: false
+        },
         { text: "Url", value: "url", align: "left", sortable: false },
         { text: "Category", value: "category", sortable: false },
-        { text: "Creation Time", value: "creationTime", align: "left", sortable: false },
+        {
+          text: "Creation Time",
+          value: "creationTime",
+          align: "left",
+          sortable: false
+        }
       ],
       options: {
         page: 1,
@@ -81,9 +94,6 @@ export default {
   props: {
     items: Array,
     totalResults: Number
-  },
-  components: {
-    LongParagraph
   }
 };
 </script>
@@ -92,4 +102,3 @@ export default {
   white-space: normal;
 }
 </style>
-

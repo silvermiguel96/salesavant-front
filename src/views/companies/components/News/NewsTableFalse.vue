@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import LongParagraph from "./LongParagraph.vue";
+import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import gql from "graphql-tag";
 export default {
   data() {

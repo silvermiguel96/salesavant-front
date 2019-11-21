@@ -3,13 +3,15 @@
     <template>
       <v-content>
         <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
-        <full-screen-search
+        <advanced-search
           v-if="isAuthenticated"
-          :showSearch="showSearch"
+          v-model="showSearchDialog"
           :expand="expand"
           @toggleSearch="toggleSearch"
-        ></full-screen-search>
-        <router-view :showSearch="showSearch" @toggleSearch="toggleSearch" @createJob="createJob"></router-view>
+          @showSearch="showSearch"
+          @hideSearch="hideSearch"
+        ></advanced-search>
+        <router-view :showSearch="showSearchDialog" @toggleSearch="toggleSearch" @createJob="createJob"></router-view>
       </v-content>
     </template>
   </v-app>
@@ -17,7 +19,7 @@
 
 <script>
 import MainMenu from "./components/MainMenu.vue";
-import FullScreenSearch from "./components/fullscreensearch/FullScreenSearch.vue";
+import AdvancedSearch from "./components/advanced-search/AdvancedSearch";
 import { json } from "body-parser";
 import { AUTH_TOKEN } from './vue-apollo';
 import gql from "graphql-tag";
@@ -27,12 +29,12 @@ export default {
   name: "App",
   components: {
     MainMenu,
-    FullScreenSearch
+    AdvancedSearch
   },
   data() {
     return {
       isAuthenticated: false,
-      showSearch: false,
+      showSearchDialog: false,
       expand: 0
     };
   },
@@ -44,11 +46,16 @@ export default {
   },
   methods: {
     toggleSearch(data) {
-      this.showSearch = !this.showSearch;
+      this.showSearchDialog = !this.showSearchDialog;
       this.expand = data.expand || 0 ;
     },
+    showSearch(){
+      this.showSearchDialog = true;
+    },
+    hideSearch(){
+      this.showSearchDialog = false;
+    },
     async createJob(jobData){
-      console.log("createJob", jobData);
       const result = await this.$apollo.mutate({
         mutation: gql`
           mutation($jobType: String!, $description: String, $additionalData: JSONString) {
