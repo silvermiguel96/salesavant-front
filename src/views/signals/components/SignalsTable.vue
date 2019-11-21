@@ -116,7 +116,7 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import LongParagraph from "../../../components/companies/LongParagraph";
+import LongParagraph from "../../../components/common/LongParagraph";
 export default {
   data() {
     return {

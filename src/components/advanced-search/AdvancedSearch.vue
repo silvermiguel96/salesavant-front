@@ -1,5 +1,4 @@
 <template>
-  <v-layout row justify-center>
     <v-dialog
       :value="value"
       max-width="530"
@@ -9,7 +8,7 @@
       persistent
       scrollable>
       <v-card>
-        <v-toolbar dark color="">
+        <v-toolbar dark color="primary">
           <v-btn icon @click.native="$emit('input')">
             <v-icon>close</v-icon>
           </v-btn>
@@ -61,7 +60,6 @@
         </v-expansion-panels>
       </v-card>
     </v-dialog>
-  </v-layout>
 </template>
 
 <script>
@@ -191,5 +189,6 @@ export default {
   justify-content: flex-end;
   height: unset;
   padding-top: 30px;
+  margin-left: 16px;
 }
 </style>

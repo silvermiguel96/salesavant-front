@@ -34,7 +34,7 @@
 
 <script>
 import _get from "lodash.get";
-import LongParagraph from "../../components/companies/LongParagraph.vue";
+import LongParagraph from "../../components/common/LongParagraph.vue";
 export default {
   data() {
     return {

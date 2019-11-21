@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-navigation-drawer left small app v-model="drawer" class="primary">
+    <v-navigation-drawer left small app v-model="drawer" color="primary">
       <v-list>
         <v-list-item-group>
           <v-list-item v-for="link in links" :key="link.text" :to="link.route" @click="link.click">
