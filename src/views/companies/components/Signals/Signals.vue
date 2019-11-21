@@ -5,7 +5,7 @@
       <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-card-title>
-      <h1 class="display-1">Signals</h1>
+      <h1 class="headline">Signals</h1>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
@@ -179,11 +179,8 @@ export default {
       );
     },
     async addSignalToCompany() {
-      console.log("hola");
       try {
-        console.log("hola2");
         if (!!this.signalId || !!this.currentSignalSearch) {
-          console.log("hola3");
           if (!!this.signalId) {
             console.log("this.signalId", this.signalId);
 
@@ -342,14 +339,12 @@ export default {
             return;
           }
         } else {
-          console.log("hola5");
           this.snack = true;
           this.snackColor = "error";
           this.snackText = "Select a signal first";
           return;
         }
       } catch (error) {
-        console.log("hola4");
         this.snack = true;
         this.snackColor = "error";
         this.snackText = "Oops we did something wrong!!";

@@ -1,7 +1,7 @@
 <template>
   <v-card class="ma-3">
     <v-card-title>
-      <h1 class="display-1">News</h1>
+      <h1 class="headline">News</h1>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>

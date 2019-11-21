@@ -6,6 +6,7 @@
         <v-btn text @click="snack = false">Close</v-btn>
       </v-snackbar>
       <v-breadcrumbs
+      :large="true"
         v-if="!!this.$route.params.signalId"
         :items="[
           {

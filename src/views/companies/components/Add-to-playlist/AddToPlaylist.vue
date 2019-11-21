@@ -5,7 +5,7 @@
       <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-card-title>
-      <h1 class="display-1">Playlists</h1>
+      <h1 class="headline">Playlists</h1>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>

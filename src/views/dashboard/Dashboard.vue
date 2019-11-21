@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import ButtonsDashboard from "../../components/dashboard/ButtonsDashboard.vue";
+import ButtonsDashboard from "../../components/Dashboard/ButtonsDashboard.vue";
 import TableCustomSalesSignals from "./components/CustomSalesSignals.vue";
 import CustomSignalGroups from "./components/CustomSignalGroups.vue";
 export default {

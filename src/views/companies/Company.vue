@@ -14,6 +14,7 @@
       <template slot-scope="{ result: { loading, error, data } }">
         <div class="apollo-example">
           <v-breadcrumbs
+            :large="true"
             v-if="data && data.company && data.playlist"
             :items="[
               {
@@ -39,6 +40,7 @@
             divider=">"
           ></v-breadcrumbs>
           <v-breadcrumbs
+            :large="true"
             v-else-if="data && data.company"
             :items="[
               {
@@ -54,6 +56,7 @@
             divider=">"
           ></v-breadcrumbs>
           <v-breadcrumbs
+            :large="true"
             v-else
             :items="[
               {
@@ -95,7 +98,7 @@
             <v-tab-item>
               <signals />
             </v-tab-item>
-                        <!-- Tab contacts -->
+            <!-- Tab contacts -->
             <v-tab>Contacts</v-tab>
             <v-tab-item>
               <contact></contact>

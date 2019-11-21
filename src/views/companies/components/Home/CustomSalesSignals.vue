@@ -5,7 +5,7 @@
       <v-btn text @click="snack = false">Close</v-btn>
     </v-snackbar>
     <v-card-title>
-      <h1 class="display-1">Custom Sales Signals</h1>
+      <h1 class="headline">Custom Sales Signals</h1>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-actions default>
@@ -332,11 +332,8 @@ export default {
       this.$apollo.queries.companySignals.refresh();
     },
     async addSignalToCompany() {
-      console.log("hola");
       try {
-        console.log("hola2");
         if (!!this.signalId || !!this.currentSignalSearch) {
-          console.log("hola3");
           if (!!this.signalId) {
             const result = await this.$apollo.mutate({
               mutation: gql`
@@ -500,7 +497,6 @@ export default {
           return;
         }
       } catch (error) {
-        console.log("hola4");
         this.snack = true;
         this.snackColor = "error";
         this.snackText = "Oops we did something wrong!!";

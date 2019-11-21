@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="company">
     <v-card-title>
-      <div class="display-1">Profile</div>
+      <div class="headline">Profile</div>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
