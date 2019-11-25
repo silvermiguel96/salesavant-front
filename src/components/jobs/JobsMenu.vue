@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-menu offset-y>
+    <v-menu open-on-hover offset-y>
       <template v-slot:activator="{ on }">
         <v-btn class="text-capitalize" color="primary" dark v-on="on" min-width="150">
           <v-icon size="18" class="mr-2">update</v-icon>  

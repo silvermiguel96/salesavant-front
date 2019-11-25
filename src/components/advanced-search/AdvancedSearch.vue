@@ -100,14 +100,11 @@ const defaultplaylistsSearchObject = {
 export default {
   data() {
     return {
-      notifications: false,
-      sound: true,
-      widgets: false,
-      companySearchObject: { ...defaultCompanySearchObject },
-      signalsSearchObject: { ...defaultSignalsSearchObject },
       searchType: null,
+      companySearchObject: { ...defaultCompanySearchObject },
+      playlistsSearchObject: { ...defaultplaylistsSearchObject },
+      signalsSearchObject: { ...defaultSignalsSearchObject },
       news: "",
-      playlistsSearchObject: { ...defaultplaylistsSearchObject }
     };
   },
   props: {
@@ -116,9 +113,9 @@ export default {
   },
   components: {
     CompaniesSearch,
-    NewsSearch,
     PlaylistSearch,
-    SignalsSearch
+    SignalsSearch,
+    NewsSearch
   },
   methods: {
     toggleSearch() {
@@ -180,6 +177,12 @@ export default {
         query: { ...this.signalsSearchObject, searchType: "signals" }
       });
     }
+  },
+  mounted: function() {
+    console.log("AdvancedSearch mounted");
+  },
+  beforeDestroy: function() {
+    console.log("AdvancedSearch beforeDestroy");
   }
 };
 </script>

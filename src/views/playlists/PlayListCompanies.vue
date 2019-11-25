@@ -108,14 +108,12 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import JobModal from "../../components/jobs/JobModal.vue";
 import JobsMenu from "../../components/jobs/JobsMenu.vue";
-
-
 import _get from "lodash.get";
 import gql from "graphql-tag";
+
 export default {
   components: {
     CompaniesTable,

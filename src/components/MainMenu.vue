@@ -78,16 +78,16 @@ export default {
       this.$emit("toggleSearch", {expand: 0});
     },
     onJobs() {
-      this.$router.push("/jobs");
+      this.$router.push("/jobs").catch(err => {});
     },
     onPlaylists() {
-      this.$router.push("/playlists");
+      this.$router.push("/playlists").catch(err => {});
     },
     onCompanies() {
-      this.$router.push("/companies");
+      this.$router.push("/companies").catch(err => {});
     },
     onNews() {
-      this.$router.push("/news");
+      this.$router.push("/news").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);

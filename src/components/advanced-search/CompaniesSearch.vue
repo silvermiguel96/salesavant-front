@@ -1,9 +1,5 @@
 <template>
   <div>
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-form ref="simpleSearchForm" @submit.prevent>
       <v-container grid-list-xs text-xs-center>
         <v-layout row wrap>
@@ -157,116 +153,6 @@ export default {
     onSignalsGroupAutocompleteChange(value) {
       this.company = { ...this.company, ...value };
       this.changeData();
-    },
-    async save() {
-      if (!this.atLeastOneCompanyFieldIsNotEmpty()) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "At least one company field search criteria is not empty!";
-        return;
-      }
-      if (!this.showNewPlaylistName) {
-        this.showNewPlaylistName = true;
-        return;
-      }
-      if (!this.newPlaylistName) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "New Playlist Name can not be empty!";
-        return;
-      }
-      if (this.atLeastOneCompanyFieldIsNotEmpty() && !!this.newPlaylistName) {
-        try {
-          const result = await this.$apollo.mutate({
-            mutation: gql`
-              mutation(
-                $name: String
-                $city: String
-                $description: String
-                $state: String
-                $region: String
-                $country: String
-                $status: String
-                $lessThanEmployees: Int
-                $moreThanEmployees: Int
-                $moreThanScore: Int
-                $lessThanScore: Int
-                $playlistName: String!
-              ) {
-                createPlaylistFromSearch(
-                  companySearch: {
-                    name: $name
-                    city: $city
-                    description: $description
-                    state: $state
-                    region: $region
-                    country: $country
-                    status: $status
-                    lessThanEmployees: $lessThanEmployees
-                    moreThanEmployees: $moreThanEmployees
-                    moreThanScore: $moreThanScore
-                    lessThanScore: $lessThanScore
-                  }
-                  playlistData: { name: $playlistName }
-                ) {
-                  playlist {
-                    uid
-                    name
-                  }
-                }
-              }
-            `,
-            // Parameters
-            variables: {
-              name: _get(this.company, "name", ""),
-              country: _get(this.company, "country", ""),
-              description: _get(this.company, "description", ""),
-              website: _get(this.company, "website", ""),
-              city: _get(this.company, "city", ""),
-              region: _get(this.company, "region", ""),
-              state: _get(this.company, "state", ""),
-              status: _get(this.company, "status", ""),
-              lessThanEmployees: _get(this.company, "lessThanEmployees", "0"),
-              moreThanEmployees: _get(this.company, "moreThanEmployees", "0"),
-              moreThanScore: _get(this.company, "moreThanScore", "0"),
-              lessThanScore: _get(this.company, "lessThanScore", "0"),
-              playlistName: this.newPlaylistName
-            }
-          });
-          console.log("saving simple search success", result);
-          const playlist = _get(
-            result,
-            "data.createPlaylistFromSearch.playlist",
-            null
-          );
-          if (!playlist) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText = "it seems that we created your playlist but couldn't check it, please check manually";
-            return;
-          }
-          this.toggleSearch();
-          this.$router.push({
-            path: `/playlists/${playlist.uid}/companies`
-          });
-        } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "oops we did something wrong!";
-          console.log("error saving simple search as a play list", error);
-        }
-      }
-    },
-    atLeastOneCompanyFieldIsNotEmpty() {
-      let result = false;
-      for (let key in this.company) {
-        console.log("key", key);
-        if (!!this.company[key]) {
-          result = true;
-          break;
-        }
-      }
-      return result;
     }
   }
 };

@@ -1,9 +1,5 @@
 <template>
   <div>
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-form ref="playlistsSearchForm" @submit.prevent>
       <v-container grid-list-md text-xs-center>
         <v-layout>
