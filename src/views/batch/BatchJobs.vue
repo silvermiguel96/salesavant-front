@@ -1,15 +1,11 @@
 <template>
   <v-container fluid>
-    <v-snackbar bottom v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-card>
       <v-breadcrumbs
         :large="true"
         :items="[
             {
-              text: 'Jobs',
+              text: 'Batch Jobs',
               disabled: true
             },
           ]"
@@ -56,10 +52,7 @@ export default {
       totalResults: 0,
       page: 1,
       itemsPerPage: 10,
-      search: "",
-      snack: false,
-      snackColor: "",
-      snackText: ""
+      search: ""
     };
   },
   methods: {

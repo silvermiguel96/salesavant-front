@@ -24,7 +24,6 @@
         </v-layout>
       </v-card-title>
       <v-card-text>Identified contacts (Manager level and above) for 1 unique companies out of 2 total unique companies in this playlist.</v-card-text>
-      <!-- Table Contacts Found (Managers and Above) -->
       <v-card-text>
         <div>
           <v-toolbar flat color="white">

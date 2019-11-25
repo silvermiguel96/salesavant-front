@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: "JobName", value: "jobType", width: "25%", sortable: false },
+        { text: "Job Name", value: "jobType", width: "25%", sortable: false },
         {
           text: "Description",
           value: "description",

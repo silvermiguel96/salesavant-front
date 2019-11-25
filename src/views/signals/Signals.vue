@@ -2,10 +2,6 @@
   <v-container fluid>
     <v-card>
       <div class="apollo-example">
-        <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-          {{ snackText }}
-          <v-btn text @click="snack = false">Close</v-btn>
-        </v-snackbar>
         <v-breadcrumbs
         :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
@@ -162,9 +158,6 @@ import { setTimeout } from "timers";
 export default {
   data() {
     return {
-      snack: false,
-      snackColor: "",
-      snackText: "",
       showTable: true,
       items: ["signals"],
       page: 1,

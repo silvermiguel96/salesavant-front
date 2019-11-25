@@ -1,19 +1,26 @@
 <template>
   <v-app>
-    <template>
-      <v-content>
-        <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
-        <advanced-search
-          v-if="isAuthenticated"
-          v-model="showSearchDialog"
-          :expand="expand"
-          @toggleSearch="toggleSearch"
-          @showSearch="showSearch"
-          @hideSearch="hideSearch"
-        ></advanced-search>
-        <router-view :showSearch="showSearchDialog" @toggleSearch="toggleSearch" @createJob="createJob"></router-view>
-      </v-content>
-    </template>
+    <v-content>
+      <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
+        {{ snackText }}
+        <v-btn text @click="snack = false">Close</v-btn>
+      </v-snackbar>
+      <main-menu v-if="isAuthenticated" :showSearch="showSearch" @toggleSearch="toggleSearch"></main-menu>
+      <advanced-search
+        v-if="isAuthenticated"
+        v-model="showSearchDialog"
+        :expand="expand"
+        @toggleSearch="toggleSearch"
+        @showSearch="showSearch"
+        @hideSearch="hideSearch"
+      ></advanced-search>
+      <router-view
+      :showSearch="showSearchDialog"
+      @toggleSearch="toggleSearch"
+      @showSnack="showSnack"
+      @hideSnack="hideSnack"
+      @createJob="createJob"></router-view>
+    </v-content>
   </v-app>
 </template>
 
@@ -35,7 +42,10 @@ export default {
     return {
       isAuthenticated: false,
       showSearchDialog: false,
-      expand: 0
+      expand: 0,
+      snack: false,
+      snackColor: "",
+      snackText: "",
     };
   },
   created() {
@@ -54,6 +64,16 @@ export default {
     },
     hideSearch(){
       this.showSearchDialog = false;
+    },
+    showSnack(text, color){
+      this.snack = true;
+      this.snackText = text;
+      this.snackColor = color;
+    },
+    hideSnack(){
+      this.snack = false;
+      this.snackText = '';
+      this.snackColor = '';
     },
     async createJob(jobData){
       const result = await this.$apollo.mutate({

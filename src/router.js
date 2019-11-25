@@ -9,7 +9,7 @@ import Company from "./views/companies/Company.vue";
 import News from "./views/news/News.vue";
 import BatchJobs from "./views/batch/BatchJobs.vue";
 import SingleNews from "./views/news/components/SingleNews.vue";
-import Calibration from "./views/playlists/components/Advanced.vue";
+import PlaylistAdvanced from "./views/playlists/components/PlaylistAdvanced.vue";
 import Login from "./views/Login.vue";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
@@ -105,7 +105,7 @@ const router = new Router({
     {
       path: "/advanced/:playlistId",
       name: "advanced",
-      component: Calibration,
+      component: PlaylistAdvanced,
       meta: {
         requiresAuth: true
       }

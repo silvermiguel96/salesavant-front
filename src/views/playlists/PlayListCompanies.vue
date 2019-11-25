@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
     <v-card>
-      <v-snackbar bottom v-model="snack" :timeout="10000" :color="snackColor">
-        {{ snackText }}
-        <v-btn text @click="snack = false">Close</v-btn>
-      </v-snackbar>
       <v-breadcrumbs
         :large="true"
         :items="[
@@ -81,15 +77,11 @@
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <div class="apollo-example">
-            <!-- Loading -->
             <div v-if="loading" class="loading apollo">Loading...</div>
 
-            <!-- Error -->
-            <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+            <div v-else-if="error" class="error apollo">An error occured</div>
 
-            <!-- Result -->
             <div v-else-if="data" class="result apollo">
-              <!--<pre>{{ JSON.stringify(data) }}</pre>-->
               <companies-table
                 v-if="data.playlistCompanies.companiesList"
                 :items="data.playlistCompanies.companiesList"
@@ -98,7 +90,6 @@
               ></companies-table>
             </div>
 
-            <!-- No result -->
             <div v-else class="no-result apollo">Loading...</div>
           </div>
         </template>
@@ -130,9 +121,6 @@ export default {
       totalItems: 10,
       search:"",
       isLoading: false,
-      snack: false,
-      snackColor: "",
-      snackText: "",
       playlist: {
         uid: "",
         name: "",
@@ -185,9 +173,7 @@ export default {
           playlist_name: this.playlist.name
         }
       });
-      this.snack = true;
-      this.snackText = `Job ${jobType} enqueed successfully`;
-      this.snackColor = "success";
+      this.$emit("showSnack",`Job ${jobType} enqueed successfully`,"success");
     }
   },
   beforeCreate() {
