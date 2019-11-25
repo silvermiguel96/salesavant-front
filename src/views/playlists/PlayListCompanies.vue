@@ -109,8 +109,8 @@
 
 <script>
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import JobModal from "../../components/jobs/JobModal.vue";
-import JobsMenu from "../../components/jobs/JobsMenu.vue";
+import JobModal from "../../components/batch/JobModal.vue";
+import JobsMenu from "../../components/batch/JobsMenu.vue";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 

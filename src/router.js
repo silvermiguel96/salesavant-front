@@ -7,8 +7,8 @@ import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import News from "./views/news/News.vue";
-import Jobs from "./views/jobs/Jobs.vue";
-import SingleNews from "./views/news/components/SingleNews.vue"
+import BatchJobs from "./views/batch/BatchJobs.vue";
+import SingleNews from "./views/news/components/SingleNews.vue";
 import Calibration from "./views/playlists/components/Advanced.vue";
 import Login from "./views/Login.vue";
 import Signals from "./views/signals/Signals.vue";
@@ -39,9 +39,9 @@ const router = new Router({
       }
     },
     {
-      path: "/jobs",
-      name: "jobs",
-      component: Jobs,
+      path: "/batch",
+      name: "batch",
+      component: BatchJobs,
       meta: {
         requiresAuth: true
       }

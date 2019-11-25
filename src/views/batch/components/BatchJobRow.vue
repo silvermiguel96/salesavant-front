@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import JobResult from './JobResult';
+import JobResult from './BatchJobResult';
 
 export default {
   data() {

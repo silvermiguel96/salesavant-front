@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import JobRow from './JobRow';
+import JobRow from './BatchJobRow';
 
 export default {
   data() {

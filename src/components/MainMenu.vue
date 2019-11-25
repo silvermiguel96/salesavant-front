@@ -60,8 +60,8 @@ export default {
         },
         { 
           icon: "work", 
-          text: "Jobs", 
-          click: this.onJobs
+          text: "Batch",
+          click: this.onBatch
         },
         { 
           icon: "search", 
@@ -77,8 +77,8 @@ export default {
     toggleSearch() {
       this.$emit("toggleSearch", {expand: 0});
     },
-    onJobs() {
-      this.$router.push("/jobs").catch(err => {});
+    onBatch() {
+      this.$router.push("/batch").catch(err => {});
     },
     onPlaylists() {
       this.$router.push("/playlists").catch(err => {});
