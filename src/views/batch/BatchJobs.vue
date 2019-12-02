@@ -20,6 +20,7 @@
               label="Filter"
               single-line
               hide-details
+              @change="onSearch"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -63,8 +64,8 @@ export default {
     },
     loadData: function() {
       const salesavantJobs = gql`
-        query getAllJobs($first: Int, $offset: Int) {
-          salesavantJobs(first: $first, offset: $offset) {
+        query getAllJobs($search: String, $first: Int, $offset: Int) {
+          salesavantJobs(search: $search, first: $first, offset: $offset) {
             totalResults
             salesavantJobsList {
               uid
@@ -85,6 +86,7 @@ export default {
         .query({
           query: salesavantJobs,
           variables: {
+            search: this.search.length >= 3 ? this.search : "",
             first: this.itemsPerPage,
             offset: this.itemsPerPage * this.page - this.itemsPerPage
           },
@@ -96,10 +98,13 @@ export default {
             this.items = resp.data.salesavantJobs.salesavantJobsList;
           }
         });
+    },
+    onSearch: function(){
+      console.log('onSearch');
+      this.loadData();
     }
   },
   props: {
-    showSearch: { type: Boolean, default: false }
   },
   components: {
     JobsTable
