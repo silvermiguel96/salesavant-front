@@ -36,7 +36,7 @@
                 </v-btn>
               </div>
               <div class="mt-2 mr-2">
-                <jobs-menu
+                <button-menu
                   :items="[
                     {
                       title: 'Companies',
@@ -62,7 +62,7 @@
                   ]"
                 >
                   <template v-slot:label >Refresh</template>
-                </jobs-menu>
+                </button-menu>
               </div>
             </div>
           </v-col>
@@ -102,16 +102,14 @@
 
 <script>
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import JobModal from "../../components/batch/JobModal.vue";
-import JobsMenu from "../../components/batch/JobsMenu.vue";
+import ButtonMenu from "../../components/common/ButtonMenu";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 
 export default {
   components: {
     CompaniesTable,
-    JobModal,
-    JobsMenu
+    ButtonMenu
   },
   data() {
     return {

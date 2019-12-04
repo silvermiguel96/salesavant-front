@@ -1,11 +1,7 @@
 <template>
   <v-container fluid>
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-          {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-card>
-      <div class="apollo-example">
+      <div>
         <v-breadcrumbs
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :large="true"
@@ -68,9 +64,7 @@
         </ul>
           
         <!-- Apollo watched Graphql query -->
-        <template
-          v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
-        >
+        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'">
           <v-container fluid>
               <v-row>
                   <v-col cols="12" md="8">
@@ -88,21 +82,7 @@
           <ApolloQuery
             :query="require('./graphql/CompaniesAdvancedSearch.gql')"
             :variables="{ 
-              name: this.$route.query.name || '',
-              description: this.$route.query.description || '',
-              country: this.$route.query.country || '',
-              website: this.$route.query.website || '',
-              city: this.$route.query.city || '',
-              region: this.$route.query.region || '',
-              state: this.$route.query.state || '',
-              status: this.$route.query.status || '',
-              lessThanEmployees: Number.parseFloat(this.$route.query.lessThanEmployees || '0'),
-              moreThanEmployees: Number.parseFloat(this.$route.query.moreThanEmployees || '0'),
-              moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '-1'),
-              lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
-              playlistUid: this.$route.query.playlistUid || '',
-              signalId: this.$route.query.signalId || 0,
-              signalGroup: this.$route.query.signalGroup || '',
+              ...this.advancedSearch.companySearch,
               first: this.itemsPerPage,
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
@@ -195,31 +175,13 @@ import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
 export default {
   data() {
     return {
-      items: ["Companies"],
-      company: "",
       page: 1,
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
       search:"",
       searchField: "",
-      searchAdvance: {
-        country: "",
-        name: "",
-        description: "",
-        lessThanEmployees: 0,
-        moreThanEmployees: 0,
-        moreThanScore: 0,
-        lessThanScore: 0,
-        status: "",
-        region: "",
-        state: "",
-        city: ""
-      },
-      isFiltered: false,
-      snack: false,
-      snackColor: "",
-      snackText: ""
+      isFiltered: false
     };
   },
   components: {
@@ -233,7 +195,6 @@ export default {
     }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
-
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalScore":
@@ -256,12 +217,6 @@ export default {
         this.sortOrder = "";
       }
     },
-    toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 0
-      });
-    },
     checkIfIsFiltered() {
       let result = false;
       for (let key in this.$route.query) {
@@ -280,19 +235,6 @@ export default {
         "newPlaylistName =",
         newPlaylistName
       );
-      if (!this.checkIfIsFiltered()) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText =
-          "At least one company field search criteria is not empty!";
-        return;
-      }
-      if (!newPlaylistName) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "New Playlist Name can not be empty!";
-        return;
-      }
       if (this.checkIfIsFiltered() && !!newPlaylistName) {
         try {
           const result = await this.$apollo.mutate({
@@ -370,38 +312,15 @@ export default {
             "data.createPlaylistFromSearch.playlist",
             null
           );
-          if (!playlist) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "it seems that we created your playlist but couldn't check it, please check manually";
-            return;
-          }
           this.$router.push({
             path: `/playlists/${playlist.uid}/companies`
           });
         } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "oops we did something wrong!";
           console.log("error saving simple search as a play list", error);
         }
       }
     },
     async saveResultsAsSignal(signal = null) {
-      if (!this.checkIfIsFiltered()) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText =
-          "At least one company field search criteria is not empty!";
-        return;
-      }
-      if (!signal) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Please fill the signal form!";
-        return;
-      }
       console.log("signal", signal);
       if (this.checkIfIsFiltered() && !!signal) {
         const signalName = _get(signal, "name", "");
@@ -503,24 +422,19 @@ export default {
             "data.createSignalFromSearch.signal",
             null
           );
-          if (!signal) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "it seems that we created your signal but couldn't check it, please check manually";
-            return;
-          }
           console.log("finish");
           this.$router.push({
             path: `/signals/${signal.id}`
           });
         } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "oops we did something wrong!";
           console.log("error saving search results as signal", error);
         }
       }
+    }
+  },
+  computed: {
+    advancedSearch (){
+       return this.$store.state.advancedSearch;
     }
   },
   props: {

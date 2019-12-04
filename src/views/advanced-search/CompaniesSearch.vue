@@ -4,46 +4,44 @@
       <v-container grid-list-xs text-xs-center>
         <v-layout row wrap>
           <v-flex xs6>
-            <v-text-field name="name" v-model="company.name" label="Name"  @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="name" v-model="companySearch.name" label="Name"  autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="country" v-model="company.country" label="Country" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="country" v-model="companySearch.country" label="Country" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="description" label="Description" v-model="company.description" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="description" label="Description" v-model="companySearch.description" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="city" v-model="company.city" label="City" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="region" v-model="company.region" label="Region" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="state" v-model="company.state" label="State" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="state" v-model="companySearch.state" label="State" autocomplete="off"></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="website" v-model="company.website" label="Website Keywords" @input="changeData" autocomplete="off" ></v-text-field>
+            <v-text-field name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-text-field name="status" v-model="company.status" label="Status" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
           <v-flex xs6>
             <v-text-field
               name="moreThanEmployees"
-              v-model="company.moreThanEmployees"
+              v-model="companySearch.moreThanEmployees"
               label="More than employees"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
               name="lessThanEmployees"
-              v-model="company.lessThanEmployees"
+              v-model="companySearch.lessThanEmployees"
               label="Less than employees"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
@@ -51,18 +49,16 @@
             <v-flex xs6>
               <v-text-field
                 name="moreThanScore"
-                v-model="company.moreThanScore"
+                v-model="companySearch.moreThanScore"
                 label="More than score"
-                @input="changeData"
                 autocomplete="off"
               ></v-text-field>
             </v-flex>
             <v-flex xs6>
               <v-text-field
                 name="lessThanScore"
-                v-model="company.lessThanScore"
+                v-model="companySearch.lessThanScore"
                 label="Less than score"
-                @input="changeData"
                 autocomplete="off"
               ></v-text-field>
             </v-flex>
@@ -83,7 +79,7 @@
           <v-flex  d-flex align-end justify-center >
             <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
               <v-icon class="pr-1" small>search</v-icon>
-              {{" Companies Search"}}
+              {{"Companies Search"}}
             </v-btn>
           </v-flex>
         </v-layout>
@@ -96,13 +92,15 @@
 import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import PlaylistsAutocomplete from "../playlists/Autocomplete.vue";
-import SignalsAutocomplete from "../signals/Autocomplete.vue";
-import SignalsGroupsAutocomplete from "../signals/GroupsAutocomplete.vue";
+import PlaylistsAutocomplete from "../../components/playlists/Autocomplete.vue";
+import SignalsAutocomplete from "../../components/signals/Autocomplete.vue";
+import SignalsGroupsAutocomplete from "../../components/signals/GroupsAutocomplete.vue";
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
-      company: {
+      companySearch: {
         name: "",
         description: "",
         country: "",
@@ -111,50 +109,38 @@ export default {
         region: "",
         state: "",
         status: "",
+        moreThanEmployees: -1,
         lessThanEmployees: 0,
-        moreThanEmployees: 0,
-        moreThanScore: 0,
-        lessThanScore: 0,
-        playlistUid: "",
-        signalId: 0,
-        signalGroup: ""
-      },
-      snack: false,
-      snackColor: "",
-      snackText: "",
-      newPlaylistName: "",
-      showNewPlaylistName: false
+        moreThanScore: -1,
+        lessThanScore: 0
+      }
     };
+  },
+  methods: {
+    ...mapMutations([
+      'doCompanySearch'
+    ]),
+    search() {
+      if (this.$route.path !== "/companies"){
+        this.$router.push("/companies");
+      }
+      this.doCompanySearch({...this.companySearch})
+    },
+    onPlaylistAutocompleteChange(value) {
+      this.company = { ...this.company, ...value };
+    },
+    onSignalsAutocompleteChange(value) {
+      this.company = { ...this.company, signalId: _get(value, "signalId", "") };
+    },
+    onSignalsGroupAutocompleteChange(value) {
+      this.company = { ...this.company, ...value };
+    }
   },
   components: {
     PlaylistsAutocomplete,
     SignalsAutocomplete,
     SignalsGroupsAutocomplete
   },
-  methods: {
-    changeData() {
-      this.$emit("change", { ...this.company });
-    },
-    toggleSearch() {
-      this.$emit("toggleSearch");
-    },
-    search() {
-      this.toggleSearch();
-      this.$emit("search");
-    },
-    onPlaylistAutocompleteChange(value) {
-      this.company = { ...this.company, ...value };
-      this.changeData();
-    },
-    onSignalsAutocompleteChange(value) {
-      this.company = { ...this.company, signalId: _get(value, "signalId", "") };
-      this.changeData();
-    },
-    onSignalsGroupAutocompleteChange(value) {
-      this.company = { ...this.company, ...value };
-      this.changeData();
-    }
-  }
 };
 </script>
 

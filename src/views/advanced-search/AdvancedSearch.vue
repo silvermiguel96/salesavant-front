@@ -19,11 +19,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header>Companies</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <companies-search
-                @change="changeCompanySearchObject"
-                @toggleSearch="toggleSearch"
-                @search="onCompanySearch"
-              />
+              <companies-search/>
             </v-expansion-panel-content>
           </v-expansion-panel>
           
@@ -32,7 +28,6 @@
             <v-expansion-panel-content>
               <playlist-search
                 @change="changePlaylists"
-                @toggleSearch="toggleSearch"
                 @search="onPlaylistsSearch"
               />
             </v-expansion-panel-content>
@@ -43,7 +38,6 @@
             <v-expansion-panel-content>
               <signals-search 
               @change="changeSignals"
-              @toggleSearch="toggleSearch"
               @search="onSignalsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -53,7 +47,6 @@
             <v-expansion-panel-content>
               <news-search 
               @change="changeNews" 
-              @toggleSearch="toggleSearch" 
               @search="onNewsSearch" />
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -67,23 +60,6 @@ import CompaniesSearch from "./CompaniesSearch.vue";
 import NewsSearch from "./NewsSearch.vue";
 import PlaylistSearch from "./PlaylistSearch.vue";
 import SignalsSearch from "./SignalsSearch.vue";
-
-const defaultCompanySearchObject = {
-  name: "",
-  description: "",
-  country: "",
-  website: "",
-  city: "",
-  region: "",
-  state: "",
-  status: "",
-  lessThanEmployees: 0,
-  moreThanEmployees: 0,
-  moreThanScore: 0,
-  lessThanScore: 0,
-  playlistUid: "",
-  signalId: 0
-};
 
 const defaultSignalsSearchObject = {
   search: "",
@@ -101,7 +77,6 @@ export default {
   data() {
     return {
       searchType: null,
-      companySearchObject: { ...defaultCompanySearchObject },
       playlistsSearchObject: { ...defaultplaylistsSearchObject },
       signalsSearchObject: { ...defaultSignalsSearchObject },
       news: "",
@@ -118,29 +93,6 @@ export default {
     NewsSearch
   },
   methods: {
-    toggleSearch() {
-      this.$emit("toggleSearch", {});
-    },
-    search() {
-      switch (this.searchType) {
-        case "company":
-          this.onCompanySearch();
-          break;
-        case "news":
-          this.onNewsSearch();
-          break;
-        case "playlists":
-          this.onPlaylistsSearch();
-          break;
-        case "signals":
-          this.onSignalsSearch();
-          break;
-      }
-    },
-    changeCompanySearchObject(data) {
-      this.searchType = "company";
-      this.companySearchObject = { ...data };
-    },
     changeNews(data) {
       this.searchType = "news";
       this.news = data.news;
@@ -152,12 +104,6 @@ export default {
     changeSignals(data) {
       this.searchType = "signals";
       this.signalsSearchObject = { ...data };
-    },
-    onCompanySearch() {
-      this.$router.push({
-        path: "/companies",
-        query: { ...this.companySearchObject, searchType: "company" }
-      });
     },
     onNewsSearch() {
       this.$router.push({

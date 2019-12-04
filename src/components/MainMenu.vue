@@ -34,6 +34,7 @@
 </template>
 <script>
 import { AUTH_TOKEN } from "../vue-apollo";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -66,7 +67,7 @@ export default {
         { 
           icon: "search", 
           text: "Search", 
-          click: this.toggleSearch 
+          click: this.showSearch 
         }
       ]
     };
@@ -74,19 +75,26 @@ export default {
   props: {
   },
   methods: {
-    toggleSearch() {
-      this.$emit("toggleSearch", {expand: 0});
+     ...mapMutations([
+      'resetAdvancedSearch'
+    ]),
+    showSearch() {
+      return this.$store.commit('showSearchDialog');
     },
     onBatch() {
+      this.resetAdvancedSearch();
       this.$router.push("/batch").catch(err => {});
     },
     onPlaylists() {
+      this.resetAdvancedSearch();
       this.$router.push("/playlists").catch(err => {});
     },
     onCompanies() {
+      this.resetAdvancedSearch();
       this.$router.push("/companies").catch(err => {});
     },
     onNews() {
+      this.resetAdvancedSearch();
       this.$router.push("/news").catch(err => {});
     },
     exitApp() {
