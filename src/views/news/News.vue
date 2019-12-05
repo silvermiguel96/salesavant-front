@@ -63,7 +63,7 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <news-table
-                  v-if="data.newsArticles.newsList.length"
+                  v-if="data.newsArticles.newsList"
                   :items="data.newsArticles.newsList"
                   :totalResults="data.newsArticles.totalResults"
                   class="result apollo"
@@ -97,7 +97,7 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data.newsArticles) }}</div>-->
                 <news-table
-                  v-if="data.newsArticles.newsList.length"
+                  v-if="data.newsArticles.newsList"
                   :items="data.newsArticles.newsList"
                   :totalResults="data.newsArticles.totalResults"
                   class="result apollo"

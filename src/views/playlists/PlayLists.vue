@@ -65,7 +65,7 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <play-lists-table
-                  v-if="data.playlists.playlistsList.length"
+                  v-if="data.playlists.playlistsList"
                   :items="data.playlists.playlistsList"
                   :totalResults="data.playlists.totalResults"
                   class="result apollo"
@@ -115,7 +115,7 @@
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <play-lists-table
-                  v-if="data.playlists.playlistsList.length"
+                  v-if="data.playlists.playlistsList"
                   :items="data.playlists.playlistsList"
                   :totalResults="data.playlists.totalResults"
                   class="result apollo"
