@@ -175,7 +175,7 @@ export default {
     toggleSearch() {
       this.$emit("toggleSearch", {
         show: !this.$props.showSearch,
-        expand: 1
+        expand: 3
       });
     },
     checkIfIsFiltered() {
