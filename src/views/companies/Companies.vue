@@ -205,17 +205,6 @@ export default {
         this.sortOrder = "";
       }
     },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log("key", key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
-    },
     async saveResultsAsPlaylist(newPlaylistName = null) {
       console.log(
         "companies ",
@@ -223,7 +212,7 @@ export default {
         "newPlaylistName =",
         newPlaylistName
       );
-      if (this.checkIfIsFiltered() && !!newPlaylistName) {
+      if (!!this.advancedSearch.searchType && !!newPlaylistName) {
         try {
           const result = await this.$apollo.mutate({
             mutation: gql`
@@ -268,30 +257,9 @@ export default {
                 }
               }
             `,
-            // Parameters
             variables: {
-              name: _get(this.$route.query, "name", ""),
-              description: _get(this.$route.query, "description", ""),
-              country: _get(this.$route.query, "country", ""),
-              website: _get(this.$route.query, "website", ""),
-              city: _get(this.$route.query, "city", ""),
-              region: _get(this.$route.query, "region", ""),
-              state: _get(this.$route.query, "state", ""),
-              status: _get(this.$route.query, "status", ""),
-              lessThanEmployees: _get(
-                this.$route.query,
-                "lessThanEmployees",
-                "0"
-              ),
-              moreThanEmployees: _get(
-                this.$route.query,
-                "moreThanEmployees",
-                "0"
-              ),
-              playlistName: newPlaylistName,
-              playlistUid: _get(this.$route.query, "playlistUid", ""),
-              signalId: _get(this.$route.query, "signalId", 0),
-              signalGroup: _get(this.$route.query, "signalGroup", "")
+              ...this.advancedSearch.companySearch,
+              playlistName: newPlaylistName
             }
           });
           console.log("saving results as playlist success", result);
@@ -310,7 +278,7 @@ export default {
     },
     async saveResultsAsSignal(signal = null) {
       console.log("signal", signal);
-      if (this.checkIfIsFiltered() && !!signal) {
+      if (!!this.advancedSearch.searchType && !!signal) {
         const signalName = _get(signal, "name", "");
         const signalDescription = _get(signal, "description", "");
         const signalGroup = _get(signal, "group", "");
@@ -431,15 +399,6 @@ export default {
   props: {
     showSearch: { type: Boolean, default: false }
   },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
-  }
 };
 </script>
 <style>
