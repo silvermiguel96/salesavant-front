@@ -34,11 +34,10 @@ export default {
       'doNewsSearch'
     ]),
     search() {
-      console.log(this.$route.path);
       if (this.$route.path !== "/news"){
         this.$router.push("/news");
       }
-      this.doNewsSearch({...this.newsSearch});
+      this.doNewsSearch(this.newsSearch);
     }
   }
 };

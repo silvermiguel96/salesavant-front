@@ -95,25 +95,13 @@ import _get from "lodash.get";
 import PlaylistsAutocomplete from "../../components/playlists/Autocomplete.vue";
 import SignalsAutocomplete from "../../components/signals/Autocomplete.vue";
 import SignalsGroupsAutocomplete from "../../components/signals/GroupsAutocomplete.vue";
+import {defaultCompanySearch} from "../../store";
 import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      companySearch: {
-        name: "",
-        description: "",
-        country: "",
-        website: "",
-        city: "",
-        region: "",
-        state: "",
-        status: "",
-        moreThanEmployees: -1,
-        lessThanEmployees: 0,
-        moreThanScore: -1,
-        lessThanScore: 0
-      }
+      companySearch: {...defaultCompanySearch}
     };
   },
   methods: {

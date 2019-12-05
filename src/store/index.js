@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-const defaultCompanySearch = {
+export const defaultCompanySearch = {
   name: "",
   description: "",
   country: "",
@@ -12,19 +12,19 @@ const defaultCompanySearch = {
   region: "",
   state: "",
   status: "",
-  moreThanEmployees: -1,
+  moreThanEmployees: 0,
   lessThanEmployees: 0,
-  moreThanScore: -1,
+  moreThanScore: 0,
   lessThanScore: 0
 };
 
-const defaultPlaylistSearch = {
-  moreThanCompanies: -1,
+export const defaultPlaylistSearch = {
+  moreThanCompanies: 0,
   lessThanCompanies: 0,
   search: ""
 };
 
-const defaultSignalSearch = {
+export const defaultSignalSearch = {
   search: "",
   group: "",
   category: ""
@@ -45,11 +45,9 @@ const getters = {};
 
 const mutations = {
   showSearchDialog() {
-    console.log("store showSearchDialog");
     state.advancedSearch.showDialog = true;
   },
   hideSearchDialog() {
-    console.log("store hideSearchDialog");
     state.advancedSearch.showDialog = false;
   },
   resetAdvancedSearch() {
@@ -63,7 +61,7 @@ const mutations = {
     };
   },
   doCompanySearch(state, companySearch) {
-    console.log("store doCompanySearch");
+    console.log(companySearch);
     state.advancedSearch.searchType = "companies";
     state.advancedSearch.companySearch = companySearch;
     state.advancedSearch.showDialog = false;

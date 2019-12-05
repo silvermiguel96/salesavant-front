@@ -31,53 +31,35 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <span class="ml-6 body-1" v-if="!!isFiltered">Filtering by</span>
-        <ul class="ml-6 body-2" v-if="!!isFiltered">
-          <li v-if="this.$route.query.simpleSearch">Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
-          <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
-          <li v-if="this.$route.query.description">Company description: {{this.$route.query.description}}</li>
-          <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
-          <li v-if="this.$route.query.website">Company url: {{this.$route.query.website}}</li>
-          <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
-          <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
-          <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
-          <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
-          <li
-            v-if="!!this.$route.query.lessThanEmployees && this.$route.query.lessThanEmployees != 0"
-          >Less than {{this.$route.query.lessThanEmployees}} employees</li>
-          <li
-            v-if="!!this.$route.query.moreThanEmployees && this.$route.query.moreThanEmployees != 0"
-          >More than {{this.$route.query.moreThanEmployees}} employees</li>
-          <li
-            v-if="!!this.$route.query.moreThanScore && this.$route.query.moreThanScore != 0"
-          >Score more than {{this.$route.query.moreThanScore}}</li>
-          <li
-            v-if="!!this.$route.query.lessThanScore && this.$route.query.lessThanScore != 0"
-          >Score less than {{this.$route.query.lessThanScore}}</li>
-          <li v-if="this.$route.query.playlistUid">Playlist Id: {{this.$route.query.playlistUid}}</li>
-          <li
-            v-if="!!this.$route.query.signalId && this.$route.query.signalId != 0"
-          >Signal Id: {{this.$route.query.signalId}}</li>
-          <li
-            v-if="this.$route.query.signalGroup"
-          >Signal group name: {{this.$route.query.signalGroup}}</li>
-        </ul>
-          
-        <!-- Apollo watched Graphql query -->
-        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'">
-          <v-container fluid>
-              <v-row>
-                  <v-col cols="12" md="8">
-                    <div class="d-flex">
-                        <div class="mt-2 mr-2">
-                        <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
-                        </div>
-                        <div class="mt-2 mr-2">
-                        <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
-                        </div>
-                    </div>
-                    </v-col>
-              </v-row>
+        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'" >
+          <v-container fluid class="mx-1">
+            <v-row no-gutters>
+              <v-col cols="12" md="8">
+                <div class="mt-6">
+                  <span class="ml-2">Filtering by: </span>
+                  <v-chip 
+                    v-for="(value, key) in companySearchFilters" 
+                    :key="key" 
+                    class="mx-1 text-capitalize"
+                    color="blue-grey"
+                    @click:close="removeFilter(key)"
+                    outlined
+                    close
+                    small
+                  ><strong>{{key}}: </strong>{{value}}</v-chip>
+                </div>
+              </v-col>
+              <v-col cols="12" md="4">
+                <div class="d-flex justify-md-end">
+                  <div class="mr-2 mt-sm-3">
+                    <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+                  </div>
+                  <div class="mr-2 mt-sm-3">
+                    <create-signal-from-results @onSave="saveResultsAsSignal" />
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
           </v-container>
           <ApolloQuery
             :query="require('./graphql/CompaniesAdvancedSearch.gql')"
@@ -115,18 +97,18 @@
         </template>
         <template v-else>
           <v-container fluid class="mx-1">
-          <v-row no-gutters class="ml-2">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Filter"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
+            <v-row no-gutters class="ml-2">
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="search"
+                  append-icon="search"
+                  label="Filter"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/Companies.gql')"
             :variables="{
@@ -169,9 +151,12 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import _pickby from "lodash.pickby";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
+import {defaultCompanySearch} from "../../store";
+
 export default {
   data() {
     return {
@@ -179,7 +164,7 @@ export default {
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
-      search:"",
+      search: "",
       searchField: "",
       isFiltered: false
     };
@@ -190,6 +175,9 @@ export default {
     CreateSignalFromResults
   },
   methods: {
+    removeFilter(key){
+      this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -204,7 +192,7 @@ export default {
             this.sortBy = "employees";
             break;
         }
-      }else{
+      } else {
         this.sortBy = "";
       }
       if (sortDesc.length > 0) {
@@ -213,7 +201,7 @@ export default {
         } else {
           this.sortOrder = "asc";
         }
-      }else{
+      } else {
         this.sortOrder = "";
       }
     },
@@ -433,8 +421,11 @@ export default {
     }
   },
   computed: {
-    advancedSearch (){
-       return this.$store.state.advancedSearch;
+    advancedSearch() {
+      return this.$store.state.advancedSearch;
+    },
+    companySearchFilters(){
+      return _pickby(this.advancedSearch.companySearch);
     }
   },
   props: {

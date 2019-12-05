@@ -2,8 +2,8 @@
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn class="text-capitalize ma-2" color="primary" v-on="on">
-          <v-icon class="pr-1" small>add</v-icon>save as playlist
+        <v-btn color="primary" class="text-capitalize" v-on="on">
+          <v-icon small>add</v-icon>save as playlist
         </v-btn>
       </template>
       <v-card>

@@ -4,12 +4,12 @@
       max-width="530"
       hide-overlay
       transition="dialog-bottom-transition"
-      @keydown.esc="$emit('hideSearch')"
+      @keydown.esc="hideSearchDialog"
       persistent
       scrollable>
       <v-card>
-        <v-toolbar dark color="primary">
-          <v-btn icon @click.native="$emit('input')">
+        <v-toolbar dark color="primary" height="48px">
+          <v-btn icon @click.native="hideSearchDialog">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Advanced Search</v-toolbar-title>
@@ -19,37 +19,31 @@
           <v-expansion-panel>
             <v-expansion-panel-header>Companies</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <companies-search/>
+              <companies-search />
             </v-expansion-panel-content>
           </v-expansion-panel>
-          
+
           <v-expansion-panel>
             <v-expansion-panel-header>Playlists</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <playlist-search
-                @change="changePlaylists"
-                @search="onPlaylistsSearch"
-              />
+              <playlist-search />
             </v-expansion-panel-content>
           </v-expansion-panel>
 
           <v-expansion-panel>
             <v-expansion-panel-header>Signals</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <signals-search 
-              @change="changeSignals"
-              @search="onSignalsSearch" />
+              <signals-search />
             </v-expansion-panel-content>
           </v-expansion-panel>
 
           <v-expansion-panel>
             <v-expansion-panel-header>News</v-expansion-panel-header>
             <v-expansion-panel-content>
-              <news-search 
-              @change="changeNews" 
-              @search="onNewsSearch" />
+              <news-search />
             </v-expansion-panel-content>
           </v-expansion-panel>
+
         </v-expansion-panels>
       </v-card>
     </v-dialog>
@@ -60,26 +54,12 @@ import CompaniesSearch from "./CompaniesSearch.vue";
 import NewsSearch from "./NewsSearch.vue";
 import PlaylistSearch from "./PlaylistSearch.vue";
 import SignalsSearch from "./SignalsSearch.vue";
-
-const defaultSignalsSearchObject = {
-  search: "",
-  group: "",
-  category: ""
-};
-
-const defaultplaylistsSearchObject = {
-  lessThanCompanies: 0,
-  moreThanCompanies: 0,
-  playlistsSearch: ""
-};
+import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      searchType: null,
-      playlistsSearchObject: { ...defaultplaylistsSearchObject },
-      signalsSearchObject: { ...defaultSignalsSearchObject },
-      news: "",
+      searchType: null
     };
   },
   props: {
@@ -93,36 +73,9 @@ export default {
     NewsSearch
   },
   methods: {
-    changeNews(data) {
-      this.searchType = "news";
-      this.news = data.news;
-    },
-    changePlaylists(data) {
-      this.searchType = "playlists";
-      this.playlistsSearchObject = { ...data };
-    },
-    changeSignals(data) {
-      this.searchType = "signals";
-      this.signalsSearchObject = { ...data };
-    },
-    onNewsSearch() {
-      this.$router.push({
-        path: "/news",
-        query: { news: this.news, searchType: "news" }
-      });
-    },
-    onPlaylistsSearch() {
-      this.$router.push({
-        path: "/playlists",
-        query: { ...this.playlistsSearchObject, searchType: "playlists" }
-      });
-    },
-    onSignalsSearch() {
-      this.$router.push({
-        path: "/signals",
-        query: { ...this.signalsSearchObject, searchType: "signals" }
-      });
-    }
+    ...mapMutations([
+      'hideSearchDialog'
+    ]),
   },
   mounted: function() {
     console.log("AdvancedSearch mounted");

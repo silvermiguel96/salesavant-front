@@ -2,12 +2,12 @@
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="blue" class="text-capitalize ma-2" dark v-on="on">
-          <v-icon class="pr-1" small>add</v-icon>save as signal
+        <v-btn color="primary" class="text-capitalize" v-on="on">
+          <v-icon small>add</v-icon>save as signal
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Give the signal</v-card-title>
+        <v-card-title class="headline">Signal data</v-card-title>
         <v-card-text>
           <v-form v-model="isReady">
             <v-container grid-list-xs>
