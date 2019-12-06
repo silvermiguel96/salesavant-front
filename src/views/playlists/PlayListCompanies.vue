@@ -72,7 +72,8 @@
         :query="require('./graphql/PlaylistCompanies.gql')"
         :variables="{ 
           uid: $route.params.playlistUID, 
-          first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage 
+          first: this.itemsPerPage, 
+          offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
         }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
@@ -85,7 +86,8 @@
               <companies-table
                 v-if="data.playlistCompanies.companiesList"
                 :items="data.playlistCompanies.companiesList"
-                @updatePagination="updatePagination"
+                :totalResults="data.playlistCompanies.totalResults"
+                @updateOptions="updateOptions"
                 class="result apollo ma-2"
               ></companies-table>
             </div>
@@ -116,9 +118,8 @@ export default {
       name: "",
       descending: false,
       page: 1,
-      rowsPerPage: 25,
+      itemsPerPage: 10,
       sortBy: "",
-      totalItems: 10,
       search:"",
       isLoading: false,
       playlist: {
@@ -150,20 +151,11 @@ export default {
     }
   },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
       this.page = page;
-      this.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 5;
+      this.itemsPerPage = itemsPerPage;
     },
     createJob(jobType) {
       this.$emit("createJob", {

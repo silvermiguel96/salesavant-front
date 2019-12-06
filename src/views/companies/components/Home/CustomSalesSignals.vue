@@ -48,7 +48,9 @@
         <template v-slot:item="{ item, headers }">
           <tr>
             <td>{{ item.signal.group || "[empty group name]" }}</td>
-            <td>{{ item.signal.name || "[empty signal name]" }}</td>
+            <td>
+              <long-paragraph :text="item.signal.name " :maxLength="35"></long-paragraph>
+            </td>
             <td>{{ item.score || "--" }}</td>
             <td class="justify-center layout px-0">
               <v-icon
@@ -106,6 +108,7 @@
   </v-card>
 </template>
 <script>
+import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import gql from "graphql-tag";
 import SignalsAutocomplete from "../../../../components/signals/Autocomplete.vue";
 import _get from "lodash.get";
@@ -242,7 +245,8 @@ export default {
     }
   },
   components: {
-    SignalsAutocomplete
+    SignalsAutocomplete,
+    LongParagraph
   },
   created() {
     this.initialize();

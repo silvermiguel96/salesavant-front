@@ -45,11 +45,13 @@
         <template v-slot:item="{ item, headers }">
           <tr>
             <td>
-              <router-link :to="`/signals/${item.signal.id}`">{{
-                item.signal.name || "--"
-              }}</router-link>
+              <router-link :to="`/signals/${item.signal.id}`">
+                <long-paragraph :text="item.signal.description " :maxLength="45"></long-paragraph>
+              </router-link>
             </td>
-            <td>{{ item.signal.description || "--" }}</td>
+            <td>
+              <long-paragraph :text="item.signal.description " :maxLength="45"></long-paragraph>
+            </td>
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
             <td>{{ item.signal.defaultScore || "0" }}</td>

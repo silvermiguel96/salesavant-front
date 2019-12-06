@@ -213,7 +213,7 @@ export default {
     toggleSearch() {
       this.$emit("toggleSearch", {
         show: !this.$props.showSearch,
-        expand: 3
+        expand: 2
       });
     },
     checkIfIsFiltered() {
