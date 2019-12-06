@@ -1,4 +1,7 @@
 query CompaniesAdvancedSearch(
+  $playlistUid: String,
+  $signalId: Int,
+  $signalGroup: String,
   $name: String
   $website: String
   $description: String
@@ -17,6 +20,9 @@ query CompaniesAdvancedSearch(
   $sortOrder: String
 ) {
   companies(
+    playlistUid: $playlistUid
+    signalId: $signalId
+    signalGroup: $signalGroup
     searchName: $name
     searchWebsite: $website
     searchDescription: $description

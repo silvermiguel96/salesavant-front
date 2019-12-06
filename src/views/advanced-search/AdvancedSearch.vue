@@ -93,4 +93,7 @@ export default {
   padding-top: 30px;
   margin-left: 16px;
 }
+.v-expansion-panel-header {
+  min-height: 40px !important;
+}
 </style>

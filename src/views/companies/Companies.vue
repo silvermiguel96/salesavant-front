@@ -41,12 +41,13 @@
                     v-for="(value, key) in companySearchFilters" 
                     :key="key" 
                     class="mx-1 text-capitalize"
+                    style="padding: 0 8px;"
                     color="blue-grey"
                     @click:close="removeFilter(key)"
                     outlined
                     close
                     small
-                  ><strong>{{key}}: </strong>{{value}}</v-chip>
+                  ><strong>{{key}}:&nbsp;</strong>{{value}}</v-chip>
                 </div>
               </v-col>
               <v-col cols="12" md="4">
