@@ -5,7 +5,7 @@
         <v-layout >
           <v-flex>
             <v-text-field
-              name="playlistsSearch"
+              name="search"
               v-model="playlistSearch.search"
               label="Playlist name or description"
               autocomplete="off"
@@ -19,6 +19,7 @@
               v-model="playlistSearch.moreThanCompanies"
               label="More than companies"
               autocomplete="off"
+              number
             ></v-text-field>
           </v-flex>
           <v-flex xl6 xs6>
@@ -27,6 +28,7 @@
               v-model="playlistSearch.lessThanCompanies"
               label="Less than companies"
               autocomplete="off"
+              number
             ></v-text-field>
           </v-flex>
         </v-layout>
@@ -54,7 +56,7 @@ export default {
       playlistSearch: {
         moreThanCompanies: -1,
         lessThanCompanies: 0,
-        playlistsSearch: ""
+        search: ""
       }
     };
   },
