@@ -4,7 +4,7 @@ const port = process.env.PORT || 4000;
 const environment = process.env.NODE_ENV || "local";
 const history = require("connect-history-api-fallback");
 
-var now = Date(Date.now()).toString();
+let now = Date(Date.now()).toString();
 console.log(now, "process.env.NODE_ENV", process.env.NODE_ENV);
 console.log(now, "process.env.VUE", process.env.VUE);
 

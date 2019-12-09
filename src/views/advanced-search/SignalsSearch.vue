@@ -6,23 +6,26 @@
           <v-flex>
             <v-text-field
               name="search"
-              v-model="signal.search"
+              v-model="signalSearch.search"
               label="Signal name or description"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout>
           <v-flex xs6>
-            <v-text-field name="group" v-model="signal.group" label="Group" @input="changeData" autocomplete="off"></v-text-field>
+            <v-text-field 
+              name="group" 
+              v-model="signalSearch.group" 
+              label="Group" 
+              autocomplete="off"
+              ></v-text-field>
           </v-flex>
           <v-flex xs6>
             <v-text-field
               name="category"
-              v-model="signal.category"
+              v-model="signalSearch.category"
               label="Category"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
@@ -43,29 +46,27 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
-      signal: {
+      signalSearch: {
         search: "",
         group: "",
         category: ""
-      },
-      snack: false,
-      snackColor: "",
-      snackText: ""
+      }
     };
   },
   methods: {
-    changeData(data) {
-      this.$emit("change", { ...this.signal });
-    },
-    toggleSearch() {
-      this.$emit("toggleSearch");
-    },
+    ...mapMutations([
+      'doSignalsSearch'
+    ]),
     search() {
-      this.toggleSearch();
-      this.$emit("search");
+      if (this.$route.path !== "/signals"){
+        this.$router.push("/signals");
+      }
+      this.doSignalsSearch({...this.signalSearch});
     }
   }
 };

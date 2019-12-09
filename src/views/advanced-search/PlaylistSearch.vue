@@ -6,9 +6,8 @@
           <v-flex>
             <v-text-field
               name="playlistsSearch"
-              v-model="playlist.playlistsSearch"
+              v-model="playlistSearch.search"
               label="Playlist name or description"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
@@ -17,18 +16,16 @@
           <v-flex xl6 xs6>
             <v-text-field
               name="moreThanCompanies"
-              v-model="playlist.moreThanCompanies"
+              v-model="playlistSearch.moreThanCompanies"
               label="More than companies"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
           <v-flex xl6 xs6>
             <v-text-field
               name="lessThanCompanies"
-              v-model="playlist.lessThanCompanies"
+              v-model="playlistSearch.lessThanCompanies"
               label="Less than companies"
-              @input="changeData"
               autocomplete="off"
             ></v-text-field>
           </v-flex>
@@ -49,29 +46,27 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
-      playlist: {
+      playlistSearch: {
+        moreThanCompanies: -1,
         lessThanCompanies: 0,
-        moreThanCompanies: 0,
         playlistsSearch: ""
-      },
-      snack: false,
-      snackColor: "",
-      snackText: ""
+      }
     };
   },
   methods: {
-    changeData(data) {
-      this.$emit("change", { ...this.playlist });
-    },
-    toggleSearch() {
-      this.$emit("toggleSearch");
-    },
+    ...mapMutations([
+      'doPlaylistsSearch'
+    ]),
     search() {
-      this.toggleSearch();
-      this.$emit("search");
+      if (this.$route.path !== "/playlists"){
+        this.$router.push("/playlists");
+      }
+      this.doPlaylistsSearch({...this.playlistSearch});
     }
   }
 };

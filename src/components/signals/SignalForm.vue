@@ -92,9 +92,6 @@ export default {
             description: this.description
           }
         });
-        this.snack = true;
-        this.snackColor = "success";
-        this.snackText = "The signals are saving successfully!";
         console.log("saving signal success", result);
 
         const signal = _get(

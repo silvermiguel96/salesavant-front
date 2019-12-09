@@ -1,9 +1,5 @@
 <template>
   <v-card class="ma-3">
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-card-title>
       <h1 class="headline">Playlists</h1>
     </v-card-title>
@@ -198,29 +194,20 @@ export default {
           );
           console.log("newPlaylistId", newPlaylistId);
           if (!newPlaylistId) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "Oops!! we did something wrong when saving the company - playlist, please try again!!";
+            //this.snackText ="Oops!! we did something wrong when saving the company - playlist, please try again!!";
             return;
           }
-          this.snack = true;
-          this.snackColor = "success";
-          this.snackText = "The playlist is add to company";
+          //this.snackText = "The playlist is add to company";
           this.refreshData();
           return;
         } else {
           console.log("hola5");
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Select a playlist first";
+          //this.snackText = "Select a playlist first";
           return;
         }
       } catch (error) {
         console.log("Error");
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops we did something wrong!!";
+        //this.snackText = "Oops we did something wrong!!";
         console.log("error adding playlist to company", error);
       }
     },
@@ -229,9 +216,7 @@ export default {
       try {
         console.log("Ingreso en el try");
         if (!playlistUid) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Select a playlist to delete!!";
+          //this.snackText = "Select a playlist to delete!!";
           console.log("Error in delete playlist to company");
           return;
         }
@@ -256,27 +241,10 @@ export default {
           }
         });
         console.log("result", result);
-        // const newPlaylistId = _get(
-        //   result,
-        //   "data.addCompanyToPlaylist.playlist.uid",
-        //   null
-        // );
-        // console.log("newPlaylistId", newPlaylistId);
-        // if (!newPlaylistId) {
-        //   this.snack = true;
-        //   this.snackColor = "error";
-        //   this.snackText =
-        //     "Oops!! we did something wrong when saving the company - playlist, please try again!!";
-        //   return;
-        // }
-        this.snack = true;
-        this.snackColor = "success";
-        this.snackText = "The playlist is delete to company";
+        //this.snackText = "The playlist is delete to company";
         this.refreshData();
       } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops we did something wrong!!";
+        //this.snackText = "Oops we did something wrong!!";
         console.log("Error in delete playlist to company");
       }
     }

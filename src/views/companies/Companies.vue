@@ -1,11 +1,7 @@
 <template>
   <v-container fluid>
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-          {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-card>
-      <div class="apollo-example">
+      <div>
         <v-breadcrumbs
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :large="true"
@@ -35,74 +31,41 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <span class="ml-6 body-1" v-if="!!isFiltered">Filtering by</span>
-        <ul class="ml-6 body-2" v-if="!!isFiltered">
-          <li v-if="this.$route.query.simpleSearch">Companies with the words {{this.$route.query.simpleSearch}} in the name or description</li>
-          <li v-if="this.$route.query.name">Company name: {{this.$route.query.name}}</li>
-          <li v-if="this.$route.query.description">Company description: {{this.$route.query.description}}</li>
-          <li v-if="this.$route.query.country">Company country: {{this.$route.query.country}}</li>
-          <li v-if="this.$route.query.website">Company url: {{this.$route.query.website}}</li>
-          <li v-if="this.$route.query.city">Company city: {{this.$route.query.city}}</li>
-          <li v-if="this.$route.query.region">Company region: {{this.$route.query.region}}</li>
-          <li v-if="this.$route.query.state">Company state: {{this.$route.query.state}}</li>
-          <li v-if="this.$route.query.status">Company status: {{this.$route.query.status}}</li>
-          <li
-            v-if="!!this.$route.query.lessThanEmployees && this.$route.query.lessThanEmployees != 0"
-          >Less than {{this.$route.query.lessThanEmployees}} employees</li>
-          <li
-            v-if="!!this.$route.query.moreThanEmployees && this.$route.query.moreThanEmployees != 0"
-          >More than {{this.$route.query.moreThanEmployees}} employees</li>
-          <li
-            v-if="!!this.$route.query.moreThanScore && this.$route.query.moreThanScore != 0"
-          >Score more than {{this.$route.query.moreThanScore}}</li>
-          <li
-            v-if="!!this.$route.query.lessThanScore && this.$route.query.lessThanScore != 0"
-          >Score less than {{this.$route.query.lessThanScore}}</li>
-          <li v-if="this.$route.query.playlistUid">Playlist Id: {{this.$route.query.playlistUid}}</li>
-          <li
-            v-if="!!this.$route.query.signalId && this.$route.query.signalId != 0"
-          >Signal Id: {{this.$route.query.signalId}}</li>
-          <li
-            v-if="this.$route.query.signalGroup"
-          >Signal group name: {{this.$route.query.signalGroup}}</li>
-        </ul>
-          
-        <!-- Apollo watched Graphql query -->
-        <template
-          v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='company'"
-        >
-          <v-container fluid>
-              <v-row>
-                  <v-col cols="12" md="8">
-                    <div class="d-flex">
-                        <div class="mt-2 mr-2">
-                        <create-playlist-from-results v-if="isFiltered" @onSave="saveResultsAsPlaylist" />
-                        </div>
-                        <div class="mt-2 mr-2">
-                        <create-signal-from-results v-if="isFiltered" @onSave="saveResultsAsSignal" />
-                        </div>
-                    </div>
-                    </v-col>
-              </v-row>
+        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'" >
+          <v-container fluid class="mx-1">
+            <v-row no-gutters>
+              <v-col cols="12" md="8">
+                <div class="mt-6">
+                  <span class="ml-2">Filtering by: </span>
+                  <v-chip 
+                    v-for="(value, key) in companySearchFilters" 
+                    :key="key" 
+                    class="mx-1 text-capitalize"
+                    style="padding: 0 8px;"
+                    color="blue-grey"
+                    @click:close="removeFilter(key)"
+                    outlined
+                    close
+                    small
+                  ><strong>{{key}}:&nbsp;</strong>{{value}}</v-chip>
+                </div>
+              </v-col>
+              <v-col cols="12" md="4">
+                <div class="d-flex justify-md-end">
+                  <div class="mr-2 mt-sm-3">
+                    <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+                  </div>
+                  <div class="mr-2 mt-sm-3">
+                    <create-signal-from-results @onSave="saveResultsAsSignal" />
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
           </v-container>
           <ApolloQuery
             :query="require('./graphql/CompaniesAdvancedSearch.gql')"
             :variables="{ 
-              name: this.$route.query.name || '',
-              description: this.$route.query.description || '',
-              country: this.$route.query.country || '',
-              website: this.$route.query.website || '',
-              city: this.$route.query.city || '',
-              region: this.$route.query.region || '',
-              state: this.$route.query.state || '',
-              status: this.$route.query.status || '',
-              lessThanEmployees: Number.parseFloat(this.$route.query.lessThanEmployees || '0'),
-              moreThanEmployees: Number.parseFloat(this.$route.query.moreThanEmployees || '0'),
-              moreThanScore: Number.parseFloat(this.$route.query.moreThanScore || '-1'),
-              lessThanScore: Number.parseFloat(this.$route.query.lessThanScore || '0') ,
-              playlistUid: this.$route.query.playlistUid || '',
-              signalId: this.$route.query.signalId || 0,
-              signalGroup: this.$route.query.signalGroup || '',
+              ...this.advancedSearch.companySearch,
               first: this.itemsPerPage,
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
@@ -135,18 +98,18 @@
         </template>
         <template v-else>
           <v-container fluid class="mx-1">
-          <v-row no-gutters class="ml-2">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Filter"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
+            <v-row no-gutters class="ml-2">
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="search"
+                  append-icon="search"
+                  label="Filter"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/Companies.gql')"
             :variables="{
@@ -189,37 +152,22 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import _pickby from "lodash.pickby";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
+import {defaultCompanySearch} from "../../store";
+
 export default {
   data() {
     return {
-      items: ["Companies"],
-      company: "",
       page: 1,
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
-      search:"",
+      search: "",
       searchField: "",
-      searchAdvance: {
-        country: "",
-        name: "",
-        description: "",
-        lessThanEmployees: 0,
-        moreThanEmployees: 0,
-        moreThanScore: 0,
-        lessThanScore: 0,
-        status: "",
-        region: "",
-        state: "",
-        city: ""
-      },
-      isFiltered: false,
-      snack: false,
-      snackColor: "",
-      snackText: ""
+      isFiltered: false
     };
   },
   components: {
@@ -228,12 +176,14 @@ export default {
     CreateSignalFromResults
   },
   methods: {
+    removeFilter(key){
+      this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
-
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalScore":
@@ -243,7 +193,7 @@ export default {
             this.sortBy = "employees";
             break;
         }
-      }else{
+      } else {
         this.sortBy = "";
       }
       if (sortDesc.length > 0) {
@@ -252,26 +202,9 @@ export default {
         } else {
           this.sortOrder = "asc";
         }
-      }else{
+      } else {
         this.sortOrder = "";
       }
-    },
-    toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 0
-      });
-    },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log("key", key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
     },
     async saveResultsAsPlaylist(newPlaylistName = null) {
       console.log(
@@ -280,20 +213,7 @@ export default {
         "newPlaylistName =",
         newPlaylistName
       );
-      if (!this.checkIfIsFiltered()) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText =
-          "At least one company field search criteria is not empty!";
-        return;
-      }
-      if (!newPlaylistName) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "New Playlist Name can not be empty!";
-        return;
-      }
-      if (this.checkIfIsFiltered() && !!newPlaylistName) {
+      if (!!this.advancedSearch.searchType && !!newPlaylistName) {
         try {
           const result = await this.$apollo.mutate({
             mutation: gql`
@@ -338,30 +258,9 @@ export default {
                 }
               }
             `,
-            // Parameters
             variables: {
-              name: _get(this.$route.query, "name", ""),
-              description: _get(this.$route.query, "description", ""),
-              country: _get(this.$route.query, "country", ""),
-              website: _get(this.$route.query, "website", ""),
-              city: _get(this.$route.query, "city", ""),
-              region: _get(this.$route.query, "region", ""),
-              state: _get(this.$route.query, "state", ""),
-              status: _get(this.$route.query, "status", ""),
-              lessThanEmployees: _get(
-                this.$route.query,
-                "lessThanEmployees",
-                "0"
-              ),
-              moreThanEmployees: _get(
-                this.$route.query,
-                "moreThanEmployees",
-                "0"
-              ),
-              playlistName: newPlaylistName,
-              playlistUid: _get(this.$route.query, "playlistUid", ""),
-              signalId: _get(this.$route.query, "signalId", 0),
-              signalGroup: _get(this.$route.query, "signalGroup", "")
+              ...this.advancedSearch.companySearch,
+              playlistName: newPlaylistName
             }
           });
           console.log("saving results as playlist success", result);
@@ -370,40 +269,17 @@ export default {
             "data.createPlaylistFromSearch.playlist",
             null
           );
-          if (!playlist) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "it seems that we created your playlist but couldn't check it, please check manually";
-            return;
-          }
           this.$router.push({
             path: `/playlists/${playlist.uid}/companies`
           });
         } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "oops we did something wrong!";
           console.log("error saving simple search as a play list", error);
         }
       }
     },
     async saveResultsAsSignal(signal = null) {
-      if (!this.checkIfIsFiltered()) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText =
-          "At least one company field search criteria is not empty!";
-        return;
-      }
-      if (!signal) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Please fill the signal form!";
-        return;
-      }
       console.log("signal", signal);
-      if (this.checkIfIsFiltered() && !!signal) {
+      if (!!this.advancedSearch.searchType && !!signal) {
         const signalName = _get(signal, "name", "");
         const signalDescription = _get(signal, "description", "");
         const signalGroup = _get(signal, "group", "");
@@ -503,38 +379,27 @@ export default {
             "data.createSignalFromSearch.signal",
             null
           );
-          if (!signal) {
-            this.snack = true;
-            this.snackColor = "error";
-            this.snackText =
-              "it seems that we created your signal but couldn't check it, please check manually";
-            return;
-          }
           console.log("finish");
           this.$router.push({
             path: `/signals/${signal.id}`
           });
         } catch (error) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "oops we did something wrong!";
           console.log("error saving search results as signal", error);
         }
       }
     }
   },
+  computed: {
+    advancedSearch() {
+      return this.$store.state.advancedSearch;
+    },
+    companySearchFilters(){
+      return _pickby(this.advancedSearch.companySearch);
+    }
+  },
   props: {
     showSearch: { type: Boolean, default: false }
   },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
-  }
 };
 </script>
 <style>

@@ -3,7 +3,11 @@
     <v-container grid-list-md text-xs-center>
       <v-layout row wrap>
         <v-flex>
-          <v-text-field name="news" v-model="news" label="Search in news" @input="changeData" autocomplete="off"></v-text-field>
+          <v-text-field 
+            name="news" 
+            v-model="newsSearch" 
+            label="Search in news" 
+            autocomplete="off"></v-text-field>
         </v-flex>
         <v-flex d-flex align-center justify-center>
           <v-btn @click="search" small class="text-capitalize" type="submit" color="primary">
@@ -17,22 +21,23 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
-      news: ""
+      newsSearch: ""
     };
   },
   methods: {
-    changeData(data) {
-      this.$emit("change", { news: data });
-    },
-    toggleSearch() {
-      this.$emit("toggleSearch");
-    },
+    ...mapMutations([
+      'doNewsSearch'
+    ]),
     search() {
-      this.toggleSearch();
-      this.$emit("search");
+      if (this.$route.path !== "/news"){
+        this.$router.push("/news");
+      }
+      this.doNewsSearch(this.newsSearch);
     }
   }
 };

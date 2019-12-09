@@ -37,7 +37,6 @@ export default {
       query: gql`
         query getFilteredSignals($search: String) {
           signals(first: 25, search: $search) {
-            totalResults
             signalsList {
               id
               name
@@ -56,9 +55,6 @@ export default {
   watch: {
     search(val) {
       val && val !== this.select && this.querySignals();
-      this.$emit("onSearch", {
-        currentSignalSearch: val
-      });
     }
   },
   methods: {

@@ -40,12 +40,12 @@
 
         <!-- Apollo watched Graphql query -->
         <template
-          v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType==='news' && !!this.$route.query.news"
+          v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='news'"
         >
           <ApolloQuery
             :query="require('./graphql/NewsSearch.gql')"
             :variables="{ 
-              title: this.$route.query.news, 
+              title: this.advancedSearch.newsSearch, 
               first: this.itemsPerPage,
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
@@ -188,6 +188,11 @@ export default {
         }
       }
       return result;
+    }
+  },
+  computed: {
+    advancedSearch (){
+       return this.$store.state.advancedSearch;
     }
   },
   props: {

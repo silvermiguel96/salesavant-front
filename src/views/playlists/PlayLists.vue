@@ -38,16 +38,11 @@
           <li v-if="this.$route.query.lessThanCompanies">Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
           <li v-if="this.$route.query.moreThanCompanies" >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
         </ul>
-        <template
-          v-if="!!this.$route.query && !!this.$route.query.searchType && this.$route.query.searchType === 'playlists' ||
-      !!this.$route.query.playlistsSearch || !!this.$route.query.moreThanCompanies || !!this.$route.query.lessThanCompanies"
-        >
+        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='playlists'">
           <ApolloQuery
             :query="require('./graphql/PlaylistSearch.gql')"
             :variables="{ 
-              search: this.$route.query.playlistsSearch,
-              lessThanCompanies: Number.parseInt(this.$route.query.lessThanCompanies || 0) , 
-              moreThanCompanies: Number.parseInt(this.$route.query.moreThanCompanies) || 0 ,
+              ...this.advancedSearch.playlistSearch,
               first: this.itemsPerPage, 
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
@@ -55,15 +50,12 @@
             }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
-              <!-- Loading-->
               <div v-if="loading" class="loading apollo">Loading...</div>
 
-              <!-- Error -->
               <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
 
               <!-- Result -->
               <div v-else-if="data" class="result apollo">
-                <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <play-lists-table
                   v-if="data.playlists.playlistsList"
                   :items="data.playlists.playlistsList"
@@ -179,9 +171,6 @@ export default {
         this.sortOrder = "";
       }
     },
-    toggleSearch() {
-      this.$emit("toggleSearch", { expand: 1 });
-    },
     checkIfIsFiltered() {
       let result = false;
       for (let key in this.$route.query) {
@@ -192,6 +181,11 @@ export default {
         }
       }
       return result;
+    }
+  },
+  computed: {
+     advancedSearch (){
+       return this.$store.state.advancedSearch;
     }
   },
   beforeMount() {
