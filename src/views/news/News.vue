@@ -119,7 +119,6 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import NewsTable from "./components/NewsTable.vue";
 import { showSearchDialog } from "../../store";
-
 export default {
   data() {
     return {
