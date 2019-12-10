@@ -51,7 +51,15 @@ export default {
   },
   watch: {
     search(val) {
-      val && val !== this.select && this.queryPlaylists();
+      console.log("search val change", val);
+      if (val && val !== this.select){
+        this.queryPlaylists();
+      }
+    },
+    playlistSelected (val){
+      console.log("playlistSelected store val change", val);
+      this.select  = val;
+      this.$emit("change", { playlistUid: val });
     }
   },
   methods: {
@@ -64,9 +72,17 @@ export default {
         }, 300);
       }, 500);
     },
-    change(v = "") {
+    change(v) {
       this.$emit("change", { playlistUid: v });
     }
+  },
+  computed: {
+      playlistSelected (){
+        return this.$store.state.advancedSearch.companySearch.playlistUid;
+      }
+  },
+  destroyed() {
+    console.log("destroyed autocomplete");
   }
 };
 </script>

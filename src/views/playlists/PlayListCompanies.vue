@@ -10,12 +10,21 @@
               href: '/playlists'
             },
             {
-              text: playlist.name || $route.params.playlistUID,
+              text: playlist.name || $route.params.playlistUid,
               disabled: true
             }
           ]"
         divider=">"
-      ></v-breadcrumbs>
+      >
+        <template v-slot:item="props">
+          <v-breadcrumbs-item
+            :href="props.item.href"
+            :class="[props.item.disabled && 'disabled']"
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
+        </template>
+      </v-breadcrumbs>
       <v-container fluid class="mx-1">
         <v-row no-gutters>
           <v-col cols="12" md="4">
@@ -71,7 +80,7 @@
       <ApolloQuery
         :query="require('./graphql/PlaylistCompanies.gql')"
         :variables="{ 
-          uid: $route.params.playlistUID, 
+          uid: $route.params.playlistUid, 
           first: this.itemsPerPage, 
           offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
         }"
@@ -105,6 +114,7 @@ import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import ButtonMenu from "../../components/common/ButtonMenu";
 import _get from "lodash.get";
 import gql from "graphql-tag";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -142,13 +152,16 @@ export default {
       `,
       variables() {
         return {
-          uid: this.$route.params.playlistUID
+          uid: this.$route.params.playlistUid
         };
       },
       fetchPolicy: "cache-and-network"
     }
   },
   methods: {
+    ...mapMutations([
+      'updateCompanySearch'
+    ]),
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -168,6 +181,10 @@ export default {
   },
   beforeCreate() {
     this.$apollo.query.playlist;
+  },
+  mounted(){
+    console.log("playlist-companies update state ", this.$route.params.playlistUid);
+    this.$store.commit('updateCompanySearch', {playlistUid: this.$route.params.playlistUid});
   }
 };
 </script>

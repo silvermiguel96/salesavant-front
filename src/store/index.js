@@ -63,6 +63,12 @@ const mutations = {
       newsSearch: ""
     };
   },
+  updateCompanySearch(state, newCompanySearch) {
+    state.advancedSearch.companySearch = {
+      ...state.advancedSearch.companySearch,
+      ...newCompanySearch
+    };
+  },
   doCompanySearch(state, companySearch) {
     console.log(companySearch);
     state.advancedSearch.searchType = "companies";

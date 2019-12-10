@@ -76,12 +76,6 @@ export default {
     ...mapMutations([
       'hideSearchDialog'
     ]),
-  },
-  mounted: function() {
-    console.log("AdvancedSearch mounted");
-  },
-  beforeDestroy: function() {
-    console.log("AdvancedSearch beforeDestroy");
   }
 };
 </script>

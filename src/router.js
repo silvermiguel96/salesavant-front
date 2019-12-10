@@ -55,7 +55,7 @@ const router = new Router({
       }
     },
     {
-      path: "/playlists/:playlistUID/companies",
+      path: "/playlists/:playlistUid/companies",
       name: "playlist-companies",
       component: PlayListCompanies,
       meta: {
