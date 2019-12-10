@@ -2,7 +2,6 @@
   <v-container fluid>
     <v-card>
       <div class="apollo-example">
-        <!-- TODO: cuando cambio el número de registros por página no hace nada -->
         <v-breadcrumbs
           :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
@@ -32,12 +31,6 @@
           ]"
           divider=">"
         ></v-breadcrumbs>
-        <!-- <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
-        <ul class="ml-2" v-if="!!isFiltered">
-          <li v-if="this.$route.query.playlistsSearch">Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
-          <li v-if="this.$route.query.lessThanCompanies">Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
-          <li v-if="this.$route.query.moreThanCompanies" >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
-        </ul> -->
         <template
           v-if="
             !!this.advancedSearch.searchType &&
@@ -201,17 +194,6 @@ export default {
         this.sortOrder = "";
       }
     },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log("key", key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
-    }
   },
   computed: {
     advancedSearch() {
@@ -220,15 +202,6 @@ export default {
     playlistSearchFilters(){
       return _pickby(this.advancedSearch.playlistSearch);
     }
-  },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
   }
 };
 </script>
