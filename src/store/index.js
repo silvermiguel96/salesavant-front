@@ -83,6 +83,7 @@ const mutations = {
   doSignalsSearch(state, signalSearch) {
     state.advancedSearch.searchType = "signals";
     state.advancedSearch.signalSearch = signalSearch;
+    state.advancedSearch.showDialog = false;
   },
   doNewsSearch(state, newsSearch) {
     state.advancedSearch.searchType = "news";
