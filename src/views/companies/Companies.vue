@@ -228,10 +228,10 @@ export default {
                 $website: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
-                $playlistName: String!
                 $playlistUid: String
                 $signalId: Int
                 $signalGroup: String
+                $newPlaylistName: String!
               ) {
                 createPlaylistFromSearch(
                   companySearch: {
@@ -249,7 +249,7 @@ export default {
                     signalId: $signalId
                     signalGroup: $signalGroup
                   }
-                  playlistData: { name: $playlistName }
+                  playlistData: { name: $newPlaylistName }
                 ) {
                   playlist {
                     uid
@@ -260,7 +260,7 @@ export default {
             `,
             variables: {
               ...this.advancedSearch.companySearch,
-              playlistName: newPlaylistName
+              newPlaylistName: newPlaylistName
             }
           });
           console.log("saving results as playlist success", result);
@@ -280,17 +280,17 @@ export default {
     async saveResultsAsSignal(signal = null) {
       console.log("signal", signal);
       if (!!this.advancedSearch.searchType && !!signal) {
-        const signalName = _get(signal, "name", "");
-        const signalDescription = _get(signal, "description", "");
-        const signalGroup = _get(signal, "group", "");
-        const signalDefaultScore = parseFloat(
+        const newSignalName = _get(signal, "name", "");
+        const newSignalDescription = _get(signal, "description", "");
+        const newSignalGroup = _get(signal, "group", "");
+        const newSignalDefaultScore = parseFloat(
           _get(signal, "defaultScore", "0")
         );
         console.log("signal after if", {
-          signalName,
-          signalDescription,
-          signalGroup,
-          signalDefaultScore
+          newSignalName,
+          newSignalDescription,
+          newSignalGroup,
+          newSignalDefaultScore
         });
         try {
           const result = await this.$apollo.mutate({
@@ -306,13 +306,13 @@ export default {
                 $website: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
-                $signalName: String
-                $signalDescription: String
-                $signalGroup: String
-                $signalDefaultScore: Float
                 $playlistUid: String
                 $signalIdFilter: Int
                 $signalGroupFilter: String
+                $newSignalName: String
+                $newSignalDescription: String
+                $newSignalGroup: String
+                $newSignalDefaultScore: Float
               ) {
                 createSignalFromSearch(
                   companySearch: {
@@ -331,10 +331,10 @@ export default {
                     signalGroup: $signalGroupFilter
                   }
                   signalData: {
-                    name: $signalName
-                    description: $signalDescription
-                    defaultScore: $signalDefaultScore
-                    group: $signalGroup
+                    name: $newSignalName
+                    description: $newSignalDescription
+                    defaultScore: $newSignalDefaultScore
+                    group: $newSignalGroup
                   }
                 ) {
                   signal {
@@ -346,31 +346,11 @@ export default {
             `,
             // Parameters
             variables: {
-              name: _get(this.$route.query, "name", ""),
-              description: _get(this.$route.query, "description", ""),
-              country: _get(this.$route.query, "country", ""),
-              website: _get(this.$route.query, "website", ""),
-              city: _get(this.$route.query, "city", ""),
-              region: _get(this.$route.query, "region", ""),
-              state: _get(this.$route.query, "state", ""),
-              status: _get(this.$route.query, "status", ""),
-              lessThanEmployees: _get(
-                this.$route.query,
-                "lessThanEmployees",
-                "0"
-              ),
-              moreThanEmployees: _get(
-                this.$route.query,
-                "moreThanEmployees",
-                "0"
-              ),
-              signalName: signalName,
-              signalDescription: signalDescription,
-              signalGroup: signalGroup,
-              signalDefaultScore: signalDefaultScore,
-              playlistUid: _get(this.$route.query, "playlistUid", ""),
-              signalIdFilter: parseInt(_get(this.$route.query, "signalId", 0)),
-              signalGroupFilter: _get(this.$route.query, "signalGroup", "")
+              ...this.advancedSearch.companySearch,
+              newSignalName: newSignalName,
+              newSignalDescription: newSignalDescription,
+              newSignalGroup: newSignalGroup,
+              newSignalDefaultScore: newSignalDefaultScore,
             }
           });
           console.log("saving results as signal success", result);
