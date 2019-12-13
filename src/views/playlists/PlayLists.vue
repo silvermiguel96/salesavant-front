@@ -145,7 +145,7 @@
 <script>
 import _pickby from "lodash.pickby";
 import PlayListsTable from "./components/PlayListsTable.vue";
-import {defaultPlaylistSearch} from "../../store";
+import { mapMutations } from "../../store";
 
 export default {
   data() {
