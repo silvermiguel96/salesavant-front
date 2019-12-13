@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       playlistSearch: {
-        moreThanCompanies: -1,
+        moreThanCompanies: 0,
         lessThanCompanies: 0,
         search: ""
       }
