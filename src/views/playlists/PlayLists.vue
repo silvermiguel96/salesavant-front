@@ -6,28 +6,28 @@
           :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :items="[
-            {
-              text: 'Playlists',
-              disabled: false,
-              href: '/playlists'
-            },
-            {
-              text: `${this.$route.query.searchType} search`,
-              disabled: true,
-              href: '/playlists'
-            }
-          ]"
+           {
+             text: 'Playlists',
+             disabled: false,
+             href: '/playlists'
+           },
+           {
+             text: `${this.$route.query.searchType} search`,
+             disabled: true,
+             href: '/playlists'
+           }
+        ]"
           divider=">"
         ></v-breadcrumbs>
         <v-breadcrumbs
           v-else
           :large="true"
           :items="[
-            {
-              text: 'Playlists',
-              disabled: true,
-              href: '/news'
-            }
+           {
+             text: 'Playlists',
+             disabled: true,
+             href: '/news'
+          }
           ]"
           divider=">"
         ></v-breadcrumbs>

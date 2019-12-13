@@ -118,7 +118,7 @@
 <script>
 /* import PLAYLISTS from "./Playlists.gql"; */
 import NewsTable from "./components/NewsTable.vue";
-import { showSearchDialog } from "../../store";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
