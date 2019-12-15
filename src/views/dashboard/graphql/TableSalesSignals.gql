@@ -1,8 +1,9 @@
-query signalsAggs ($first: Int, $offset: Int) {
-    signalsAggs (first: $first, offset: $offset) {
+query companySignalsAggs ($first: Int, $offset: Int) {
+    companySignalsAggs (first: $first, offset: $offset) {
         signal {
             id
             name
+            description
             defaultScore
             group
         }

@@ -18,16 +18,15 @@
             <!-- <div>{{ JSON.stringify(data) }}</div> -->
             <v-data-table
               :headers="headers"
-              :items="data.signalsAggs"
+              :items="data.companySignalsAggs"
               class="elevation-4"
               @updatePagination="updatePagination"
             >
               <template v-slot:item="{ item, headers}">
                 <tr>
                   <td>
-                    <router-link
-                      :to="`/signals/${item.signal.id}`"
-                    >{{ item.signal.name || "--"}}</router-link>
+                    <router-link :to="`/signals/${item.signal.id}`"
+                    >{{ item.signal.name || item.signal.description }}</router-link>
                   </td>
                   <td>{{item.totalCompanies || "0"}}</td>
                   <td>{{item.signal.defaultScore || "0"}}</td>

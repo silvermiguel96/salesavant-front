@@ -1,7 +1,7 @@
-query signalsGroupAgg($first: Int, $offset: Int) {
-  signalsGroupAggs(first: $first, offset: $offset) {
+query companySignalsGroupAggs($first: Int, $offset: Int) {
+  companySignalsGroupAggs(first: $first, offset: $offset) {
     id
-    group
+    signalGroup
     creationTime
     totalCompanies
     modificationTime

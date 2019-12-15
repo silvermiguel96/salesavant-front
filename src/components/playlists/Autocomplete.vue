@@ -25,7 +25,7 @@ export default {
     return {
       loading: false,
       search: "",
-      select: { uid: "", name: "" },
+      select: { uid: this.playlistSelected, name: "" },
       playlists: []
     };
   },
