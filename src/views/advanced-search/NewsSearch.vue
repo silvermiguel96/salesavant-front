@@ -5,7 +5,7 @@
         <v-flex>
           <v-text-field 
             name="news" 
-            v-model="newsSearch" 
+            v-model="newsSearch.search" 
             label="Search in news" 
             autocomplete="off"></v-text-field>
         </v-flex>
@@ -26,7 +26,9 @@ import { mapMutations } from "vuex";
 export default {
   data() {
     return {
-      newsSearch: ""
+      newsSearch: {
+        search: ""
+      }
     };
   },
   methods: {

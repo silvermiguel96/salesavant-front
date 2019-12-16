@@ -29,23 +29,39 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
-        <ul v-if="!!isFiltered">
-          <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
-        </ul>
-
         <v-btn color="primary" class="text-capitalize ma-2" small dark @click="toggleSearch">
           <v-icon class="pr-1" small>search</v-icon>search
         </v-btn>
 
         <!-- Apollo watched Graphql query -->
-        <template
-          v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='news'"
-        >
+        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='news'">
+          <v-container fluid class="mx-1">
+            <v-row no-gutters>
+              <v-col cols="12">
+                <div class="mt-6">
+                  <span class="ml-2">Filtering by:</span>
+                  <v-chip
+                    v-for="(value, key) in newSearchFilters"
+                    :key="key"
+                    class="mx-1 text-capitalize"
+                    style="padding: 0 8px;"
+                    color="blue-grey"
+                    @click:close="removeFilter(key)"
+                    outlined
+                    close
+                    small
+                  >
+                    <strong>{{ key }}:&nbsp;</strong>
+                    {{ value }}
+                  </v-chip>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/NewsSearch.gql')"
             :variables="{ 
-              title: this.advancedSearch.newsSearch, 
+              title: this.advancedSearch.newsSearch.search, 
               first: this.itemsPerPage,
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
@@ -116,9 +132,9 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
+import _pickby from "lodash.pickby";
 import NewsTable from "./components/NewsTable.vue";
-import { mapMutations } from "vuex";
+import { mapMutations, defaultNewSearch } from "../../store";
 export default {
   data() {
     return {
@@ -130,14 +146,7 @@ export default {
       sortOrder: "",
       searchField: "",
       searchAdvance: {
-        country: "",
-        name: "",
-        lessThanEmployees: 0,
-        moreThanEmployees: 0,
-        status: "",
-        region: "",
-        state: "",
-        city: ""
+        search: "",
       },
       typeButton: "",
       isFiltered: false
@@ -145,6 +154,9 @@ export default {
   },
   components: { NewsTable },
   methods: {
+    removeFilter(key){
+      this.$store.commit('doNewsSearch', {...this.$store.state.advancedSearch.newsSearch, [key]: defaultNewSearch[key]})
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -191,6 +203,9 @@ export default {
   computed: {
     advancedSearch (){
        return this.$store.state.advancedSearch;
+    },
+    newSearchFilters(){
+      return _pickby(this.advancedSearch.newsSearch);
     }
   },
   props: {
