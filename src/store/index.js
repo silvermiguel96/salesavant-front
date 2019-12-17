@@ -33,9 +33,6 @@ export const defaultSignalSearch = {
   category: ""
 };
 
-export const defaultNewSearch = {
-  search: ""
-};
 
 const state = {
   advancedSearch: {
@@ -44,7 +41,7 @@ const state = {
     companySearch: { ...defaultCompanySearch },
     playlistSearch: { ...defaultPlaylistSearch },
     signalSearch: { ...defaultSignalSearch },
-    newsSearch: { ...defaultNewSearch }
+    newsSearch: ""
   }
 };
 
@@ -64,7 +61,7 @@ const mutations = {
       companySearch: { ...defaultCompanySearch },
       playlistSearch: { ...defaultPlaylistSearch },
       signalSearch: { ...defaultSignalSearch },
-      newsSearch: { ...defaultNewSearch }
+      newsSearch: ""
     };
   },
   updateCompanySearch(state, newCompanySearch) {

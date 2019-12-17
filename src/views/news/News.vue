@@ -41,18 +41,16 @@
                 <div class="mt-6">
                   <span class="ml-2">Filtering by:</span>
                   <v-chip
-                    v-for="(value, key) in newSearchFilters"
-                    :key="key"
                     class="mx-1 text-capitalize"
                     style="padding: 0 8px;"
                     color="blue-grey"
-                    @click:close="removeFilter(key)"
+                    @click:close="removeFilter()"
                     outlined
                     close
                     small
                   >
-                    <strong>{{ key }}:&nbsp;</strong>
-                    {{ value }}
+                    <strong>Search:&nbsp;</strong>
+                    {{ newSearchFilters }}
                   </v-chip>
                 </div>
               </v-col>
@@ -61,7 +59,7 @@
           <ApolloQuery
             :query="require('./graphql/NewsSearch.gql')"
             :variables="{ 
-              title: this.advancedSearch.newsSearch.search, 
+              title: this.advancedSearch.newsSearch, 
               first: this.itemsPerPage,
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
@@ -134,7 +132,7 @@
 <script>
 import _pickby from "lodash.pickby";
 import NewsTable from "./components/NewsTable.vue";
-import { mapMutations, defaultNewSearch } from "../../store";
+import store, { mapMutations, resetAdvancedSearch } from "../../store";
 export default {
   data() {
     return {
@@ -145,17 +143,15 @@ export default {
       sortBy: "",
       sortOrder: "",
       searchField: "",
-      searchAdvance: {
-        search: "",
-      },
+      newsSearch: "",
       typeButton: "",
       isFiltered: false
     };
   },
   components: { NewsTable },
   methods: {
-    removeFilter(key){
-      this.$store.commit('doNewsSearch', {...this.$store.state.advancedSearch.newsSearch, [key]: defaultNewSearch[key]})
+    removeFilter(){
+      this.$store.commit('resetAdvancedSearch' )
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
@@ -188,37 +184,14 @@ export default {
     toggleSearch() {
       this.$store.commit('showSearchDialog');
     },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log(key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
-    }
   },
   computed: {
     advancedSearch (){
        return this.$store.state.advancedSearch;
     },
     newSearchFilters(){
-      return _pickby(this.advancedSearch.newsSearch);
+      return this.advancedSearch.newsSearch;
     }
   },
-  props: {
-    showSearch: { type: Boolean, default: false }
-  },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
-  }
 };
 </script>
