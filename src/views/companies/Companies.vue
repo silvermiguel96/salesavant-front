@@ -5,32 +5,29 @@
         <v-breadcrumbs
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :large="true"
-          :items="[
-        {
-          text: 'Companies',
-          disabled: false,
-          href: '/companies'
-        },
-        {
-          text: `${this.$route.query.searchType} search`,
-          disabled: true,
-          href: '/companies'
-        }
-      ]"
-          divider=">"
-        ></v-breadcrumbs>
+        >
+          <template v-slot:item="props">
+            <v-breadcrumbs-item
+              :href="props.item.href"
+              :class="[props.item.disabled && 'disabled']"
+              @click.prevent="$router.push(props.item.href)">
+              {{ props.item.text }}
+            </v-breadcrumbs-item>
+          </template> 
+        </v-breadcrumbs>
         <v-breadcrumbs
           v-else
           :large="true"
-          :items="[
-        {
-          text: 'Companies',
-          disabled: true,
-          href: '/companies'
-        }
-      ]"
-          divider=">"
-        ></v-breadcrumbs>
+        >
+          <template v-slot:item="props">
+            <v-breadcrumbs-item
+              :href="props.item.href"
+              :class="[props.item.disabled && 'disabled']"
+              @click.prevent="$router.push(props.item.href)">
+              {{ props.item.text }}
+            </v-breadcrumbs-item>
+          </template> 
+        </v-breadcrumbs>
         <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'" >
           <v-container fluid class="mx-1">
             <v-row no-gutters>

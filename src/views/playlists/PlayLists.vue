@@ -5,32 +5,29 @@
         <v-breadcrumbs
           :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
-          :items="[
-           {
-             text: 'Playlists',
-             disabled: false,
-             href: '/playlists'
-           },
-           {
-             text: `${this.$route.query.searchType} search`,
-             disabled: true,
-             href: '/playlists'
-           }
-        ]"
-          divider=">"
-        ></v-breadcrumbs>
+        >
+          <template v-slot:item="props">
+          <v-breadcrumbs-item
+            :href="props.item.href"
+            :class="[props.item.disabled && 'disabled']"
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
+          </template>     
+        </v-breadcrumbs>
         <v-breadcrumbs
           v-else
           :large="true"
-          :items="[
-           {
-             text: 'Playlists',
-             disabled: true,
-             href: '/news'
-          }
-          ]"
-          divider=">"
-        ></v-breadcrumbs>
+        >
+        <template v-slot:item="props">
+          <v-breadcrumbs-item
+            :href="props.item.href"
+            :class="[props.item.disabled && 'disabled']"
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
+        </template>
+        </v-breadcrumbs>
         <template
           v-if="
             !!this.advancedSearch.searchType &&
