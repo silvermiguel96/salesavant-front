@@ -61,6 +61,8 @@
               ...this.advancedSearch.playlistSearch,
               first: this.itemsPerPage,
               offset: this.itemsPerPage * this.page - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder
             }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
