@@ -5,6 +5,19 @@
         <v-breadcrumbs
           :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
+          :items="[
+           {
+             text: 'Playlists',
+             disabled: false,
+             href: '/playlists'
+           },
+           {
+             text: `${this.$route.query.searchType} search`,
+             disabled: true,
+             href: '/playlists'
+           }	
+        ]"	
+          divider=">"
         >
           <template v-slot:item="props">
           <v-breadcrumbs-item
@@ -18,6 +31,14 @@
         <v-breadcrumbs
           v-else
           :large="true"
+          :items="[
+           {
+             text: 'Playlists',
+             disabled: true,
+             href: '/news'
+           }
+          ]"
+          divider=">"
         >
         <template v-slot:item="props">
           <v-breadcrumbs-item

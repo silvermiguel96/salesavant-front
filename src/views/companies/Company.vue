@@ -16,6 +16,28 @@
           <v-breadcrumbs
             :large="true"
             v-if="data && data.company && data.playlist"
+            :items="[
+              {
+                text: 'Playlists',
+                disabled: false,
+                href: '/playlists'
+              },	               
+              {	               
+                text: data.playlist.name || 'some playlist',
+                disabled: !$route.params.playlistId,
+                href: `/playlists/${$route.params.playlistId || ''}`
+              },	
+              {	
+                text: 'Companies',	
+                disabled: false,	
+                href: `/playlists/${$route.params.playlistId || ''}/companies`	
+              },	
+              {	
+                text: data.company.name || data.company.uid,	
+                disable: true	
+              }	
+            ]"	
+            divider=">"
           >
             <template v-slot:item="props">
               <v-breadcrumbs-item
@@ -54,6 +76,17 @@
           <v-breadcrumbs
             :large="true"
             v-else
+            :items="[
+              {
+                text: 'Companies',
+                disabled: false,
+                href: '/companies'
+              },
+              {
+                text: $route.params.companiesUid,
+                disable: true
+              }
+            ]"
           >
             <template v-slot:item="props">
               <v-breadcrumbs-item

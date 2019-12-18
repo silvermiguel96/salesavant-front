@@ -41,6 +41,7 @@
                 <div class="mt-6">
                   <span class="ml-2">Filtering by:</span>
                   <v-chip
+                    v-if="newSearchFilters"
                     class="mx-1 text-capitalize"
                     style="padding: 0 8px;"
                     color="blue-grey"
@@ -151,7 +152,7 @@ export default {
   components: { NewsTable },
   methods: {
     removeFilter(){
-      this.$store.commit('resetAdvancedSearch' )
+      this.$store.commit('doNewsSearch', "" )
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

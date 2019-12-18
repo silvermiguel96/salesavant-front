@@ -5,7 +5,20 @@
         <v-breadcrumbs
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :large="true"
-        >
+          :items="[
+           {	          
+             text: 'Companies',	            
+             disabled: false,	              
+             href: '/companies'	              
+            },	             
+            {	             
+              text: `${this.$route.query.searchType} search`,	           
+              disabled: true,	       
+              href: '/companies'	     
+            }	
+          ]"	
+            divider=">" 
+          >
           <template v-slot:item="props">
             <v-breadcrumbs-item
               :href="props.item.href"
@@ -18,6 +31,14 @@
         <v-breadcrumbs
           v-else
           :large="true"
+          :items="[
+            {	          
+            text: 'Companies',	            
+            disabled: true,	              
+            href: '/companies'	              
+            }
+          ]"
+          divider=">"
         >
           <template v-slot:item="props">
             <v-breadcrumbs-item
