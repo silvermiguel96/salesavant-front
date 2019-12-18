@@ -131,17 +131,18 @@ export default {
           sortable: true,
           value: "id"
         },
-        { text: "Name", value: "name", sortable: true },
+        { text: "Name", value: "name", sortable: false },
         {
           text: "Description",
           value: "description",
-          align: "left"
+          align: "left",
+          sortable: false 
         },
-        { text: "Group", value: "group", align: "left" },
-        { text: "Category", value: "category", align: "left" },
-        { text: "Default Score", value: "defaultScore", align: "left" },
-        { text: "Creation Time", value: "creationTime", align: "left" },
-        { text: "Modification Time", value: "modificationTime", align: "left" },
+        { text: "Group", value: "group", align: "left", sortable: false  },
+        { text: "Category", value: "category", align: "left", sortable: false  },
+        { text: "Default Score", value: "defaultScore", align: "left", sortable: false  },
+        { text: "Creation Time", value: "creationTime", align: "left", sortable: false  },
+        { text: "Modification Time", value: "modificationTime", align: "left", sortable: false  },
         { text: "Edit", value: "icon", align: "left", sortable: false },
         { text: "Delete", value: "icon", align: "left", sortable: false }
       ],

@@ -83,6 +83,8 @@
           uid: $route.params.playlistUid, 
           first: this.itemsPerPage, 
           offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+          sortBy: this.sortBy,
+          sortOrder: this.sortOrder
         }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
@@ -128,6 +130,7 @@ export default {
       page: 1,
       itemsPerPage: 10,
       sortBy: "",
+      sortOrder: "",
       search:"",
       isLoading: false,
       playlist: {
@@ -167,6 +170,27 @@ export default {
     }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
+      if (sortBy.length > 0) {
+        switch (sortBy[0]) {
+          case "totalScore":
+            this.sortBy = "score";
+            break;
+          case "numEmployees":
+            this.sortBy = "employees";
+            break;
+        }
+      } else {
+        this.sortBy = "";
+      }
+      if (sortDesc.length > 0) {
+        if (sortDesc[0]) {
+          this.sortOrder = "desc";
+        } else {
+          this.sortOrder = "asc";
+        }
+      } else {
+        this.sortOrder = "";
+      }
     },
     createJob(jobType) {
       this.$emit("createJob", {
