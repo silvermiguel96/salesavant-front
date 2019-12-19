@@ -1,157 +1,150 @@
 <template>
-  <v-layout align-start justify-center column>
-    <v-breadcrumbs
-      :items="[
+  <v-container fluid>
+    <v-card>
+      <v-breadcrumbs
+        :large="true"
+        :items="[
             {
               text: 'Playlists',
               disabled: false,
               href: '/playlists'
             },
             {
+              text: playlist.name || $route.params.playlistUid,
+              disabled: true
+            },
+            {
               text: 'Advanced',
-              disabled: true, 
-              href: '/advanced'
+              disabled: true
             }
           ]"
-      divider=">"
-    ></v-breadcrumbs>
-    <v-card class="ma-3">
-      <v-card-title>
-        <v-layout wrap>
-          <v-flex v-for="btn in buttons" :key="btn.text">
-            <v-btn class="success ma-2">{{ btn.text }}</v-btn>
-          </v-flex>
-        </v-layout>
-      </v-card-title>
-      <v-card-text>Identified contacts (Manager level and above) for 1 unique companies out of 2 total unique companies in this playlist.</v-card-text>
-      <v-card-text>
-        <div>
-          <v-toolbar flat color="white">
-            <v-toolbar-title>Contacts Found (Managers and Above)</v-toolbar-title>
-          </v-toolbar>
-          <v-data-table
-            :headers="headersContactsMAA"
-            :items="desserts"
-            class="elevation-3"
-            item-key="name"
-          >
-            <template v-slot:items="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.calories }}</td>
-              </tr>
-            </template>
-          </v-data-table>
-        </div>
-      </v-card-text>
-      <!-- Contacts Found (Junior / Below Managers) -->
-      <v-card-text>
-        <div>
-          <v-toolbar flat color="white">
-            <v-toolbar-title>Contacts Found (Junior / Below Managers)</v-toolbar-title>
-          </v-toolbar>
-          <v-data-table
-            :headers="headersContactsMAA"
-            :items="desserts"
-            class="elevation-3"
-            item-key="name"
-          >
-            <template v-slot:items="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.calories }}</td>
-              </tr>
-            </template>
-          </v-data-table>
-        </div>
-      </v-card-text>
-      <!-- Table Prospects by State -->
-      <v-card-text>
-        <div>
-          <v-toolbar flat color="white">
-            <v-toolbar-title>Prospects by State</v-toolbar-title>
-          </v-toolbar>
-          <v-data-table
-            :headers="headersContactsMAA"
-            :items="desserts"
-            class="elevation-3"
-            item-key="name"
-          >
-            <template v-slot:items="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.calories }}</td>
-              </tr>
-            </template>
-          </v-data-table>
-        </div>
-      </v-card-text>
-      <!--  Table Custom Signals for playlist / Accuracy -->
-      <v-card-text>
-        <div>
-          <v-toolbar flat color="white">
-            <v-toolbar-title>Custom Signals for playlist / Accuracy</v-toolbar-title>
-          </v-toolbar>
-          <v-data-table :headers="customSignalsForPlaylist" :items="desserts" class="elevation-3">
-            <template v-slot:items="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.calories }}</td>
-              </tr>
-            </template>
-          </v-data-table>
-        </div>
-      </v-card-text>
-      <!-- Table Custom Signals for playlist by Signal -->
-      <v-card-text>
-        <div>
-          <v-toolbar flat color="white">
-            <v-toolbar-title>Custom Signals for playlist by Signal</v-toolbar-title>
-          </v-toolbar>
-          <v-data-table :headers="customSignalsForPlaylistBySignal" :items="desserts" class="elevation-3">
-            <template v-slot:items="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
-                <td>{{ props.item.calories }}</td>
-              </tr>
-            </template>
-          </v-data-table>
-        </div>
-      </v-card-text>
+        divider=">"
+      >
+        <template v-slot:item="props">
+          <v-breadcrumbs-item
+            :href="props.item.href"
+            :class="[props.item.disabled && 'disabled']"
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
+        </template>
+      </v-breadcrumbs>
+      <v-tabs grow background-color="grey lighten-5" color="primary">
+        <!-- Tab Home -->
+        <v-tab>Companies</v-tab>
+        <v-tab-item>
+          <v-row wrap>
+            <v-flex xs12 md5 class="ma-2">
+              <company-profile />
+            </v-flex>
+            <v-flex xs12 md6 class="ma-2">
+              <custom-sales-signals />
+            </v-flex>
+          </v-row>
+        </v-tab-item>
+        <!-- tab signals -->
+        <v-tab>Signals</v-tab>
+        <v-tab-item>
+          <signals />
+        </v-tab-item>
+        <!-- Tab contacts -->
+        <v-tab>Contacts</v-tab>
+        <v-tab-item>
+          <contact></contact>
+        </v-tab-item>
+        <!-- Tab new signals -->
+        <v-tab>News</v-tab>
+        <v-tab-item>
+          <news />
+        </v-tab-item>
+        <!-- Tab Analytics -->
+        <v-tab>Advanced</v-tab>
+        <v-tab-item>
+          <analytics></analytics>
+        </v-tab-item>
+        <!-- Tab add to playlist -->
+        <v-tab>Add to playlist</v-tab>
+        <!-- {{ JSON.stringify(data.company.playlists)}} -->
+        <v-tab-item>
+          <add-to-playlist></add-to-playlist>
+        </v-tab-item>
+      </v-tabs>
     </v-card>
-  </v-layout>
+  </v-container>
 </template>
+
 <script>
+import _get from "lodash.get";
+import gql from "graphql-tag";
+import { mapMutations } from "vuex";
+
 export default {
+  components: {
+  },
   data() {
     return {
-      desserts: [],
-      buttons: [
-        { text: "Playlist" },
-        { text: "Stats" },
-        { text: "Comments" },
-        { text: "More News Signals" },
-        { text: "Keywords and Themes" },
-        { text: "Update Companies by Website" },
-        { text: "Update Companies by Account Name" },
-        { text: "Match with Corrent Lists" },
-        { text: "Refresh Keywords" },
-        { text: "Find Contacts" },
-        { text: "Team Tracker" }
-      ],
-      headersContactsMAA: [{ text: "Department" }, { text: "Total" }],
-      customSignalsForPlaylist: [
-        { text: "Total" },
-        { text: "Grand Total" },
-        { text: "Percentage" }
-      ],
-      customSignalsForPlaylistBySignal: [
-        { text: "Custom Signal" },
-        { text: "Total" },
-        { text: "Grand Total" },
-        { text: "Percentage" }
-      ]
+      name: "",
+      descending: false,
+      page: 1,
+      itemsPerPage: 10,
+      sortBy: "",
+      search:"",
+      isLoading: false,
+      playlist: {
+        uid: "",
+        name: "",
+        totalScore: 0,
+        description: null
+      }
     };
+  },
+  apollo: {
+    playlist: {
+      query: gql`
+        query getPlaylist($uid: String) {
+          playlist(uid: $uid) {
+            uid
+            name
+            totalScore
+            description
+          }
+        }
+      `,
+      variables() {
+        return {
+          uid: this.$route.params.playlistUid
+        };
+      },
+      fetchPolicy: "cache-and-network"
+    }
+  },
+  methods: {
+    ...mapMutations([
+      'updateCompanySearch'
+    ]),
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+    }) {
+      this.page = page;
+      this.itemsPerPage = itemsPerPage;
+    },
+    createJob(jobType) {
+      this.$emit("createJob", {
+        jobType: jobType,
+        additionalData: { 
+          playlist_uid: this.playlist.uid,
+          playlist_name: this.playlist.name
+        }
+      });
+      this.$emit("showSnack",`Job ${jobType} enqueed successfully`,"success");
+    }
+  },
+  beforeCreate() {
+    this.$apollo.query.playlist;
+  },
+  mounted(){
+    console.log("playlist-companies update state ", this.$route.params.playlistUid);
+    this.$store.commit('updateCompanySearch', {playlistUid: this.$route.params.playlistUid});
   }
 };
 </script>
