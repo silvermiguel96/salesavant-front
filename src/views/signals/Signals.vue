@@ -152,7 +152,7 @@ import SignalsTable from "./components/SignalsTable.vue";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
 import _pickby from "lodash.pickby";
-import { mapMutations } from "../../store";
+import { mapMutations, defaultSignalSearch } from "../../store";
 
 export default {
   data() {

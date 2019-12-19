@@ -39,15 +39,7 @@
             }
           ]"
           divider=">"
-        >
-          <template v-slot:item="props">
-            <v-breadcrumbs-item
-              :href="props.item.href"
-              :class="[props.item.disabled && 'disabled']"
-              @click.prevent="$router.push(props.item.href)">
-              {{ props.item.text }}
-            </v-breadcrumbs-item>
-          </template> 
+        > 
         </v-breadcrumbs>
         <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'" >
           <v-container fluid class="mx-1">
