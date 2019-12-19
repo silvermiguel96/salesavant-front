@@ -31,22 +31,6 @@
           ]"
           divider=">"
         ></v-breadcrumbs>
-        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">
-          filtering by
-        </h1>
-        <ul class="ml-2" v-if="!!isFiltered">
-          <li v-if="this.$route.query.search">
-            Companies with the words "{{ this.$route.query.search }}" in the
-            name or description
-          </li>
-          <li v-if="this.$route.query.group">
-            Company group: {{ this.$route.query.group }}
-          </li>
-          <li v-if="this.$route.query.category">
-            Company category: {{ this.$route.query.category }}
-          </li>
-        </ul>
-
         <v-btn
           small
           class="ma-2 text-capitalize"
@@ -62,21 +46,35 @@
 
         <template
           v-if="
-            !!this.$route.query &&
-              !!this.$route.query.searchType &&
-              this.$route.query.searchType === 'signals'
+            !!this.advancedSearch.searchType &&
+              this.advancedSearch.searchType == 'signals'
           "
         >
+          <v-container fluid class="mx-1">
+            <v-row no-gutters>
+              <v-col cols="12">
+                <div class="mt-6">
+                  <span class="ml-2">Filtering by: </span>
+                  <v-chip
+                    v-for="(value, key) in signalSearchFilters"
+                    :key="key"
+                    class="mx-1 text-capitalize"
+                    style="padding: 0 8px;"
+                    color="blue-grey"
+                    @click:close="removeFilter(key)"
+                    outlined
+                    close
+                    small
+                    ><strong>{{ key }}:&nbsp;</strong>{{ value }}</v-chip
+                  >
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/SearchsSignals.gql')"
             :variables="{
-              search: this.$route.query.search,
-              search: this.$route.query.search,
-              search: this.$route.query.search,
-              group: this.$route.query.group,
-              category: this.$route.query.category,
-              category: this.$route.query.category,
-              category: this.$route.query.category,
+              ...this.advancedSearch.signalSearch,
               first: this.itemsPerPage,
               offset: this.itemsPerPage * this.page - this.itemsPerPage  
             }"
@@ -150,10 +148,11 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
 import SignalsTable from "./components/SignalsTable.vue";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
+import _pickby from "lodash.pickby";
+import { mapMutations } from "../../store";
 
 export default {
   data() {
@@ -170,6 +169,9 @@ export default {
   },
   components: { SignalsTable },
   methods: {
+    removeFilter(key){
+      this.$store.commit('doSignalsSearch', {...this.$store.state.advancedSearch.signalSearch, [key]: defaultSignalSearch[key]})
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -211,34 +213,19 @@ export default {
       }
     },
     toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 2
-      });
+      this.$store.commit('showSearchDialog')
     },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log("key", key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
-    }
   },
   props: {
     showSearch: { type: Boolean, default: false }
   },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
+  computed: {
+    advancedSearch() {
+      return this.$store.state.advancedSearch;
+    },
+    signalSearchFilters(){
+      return _pickby(this.advancedSearch.signalSearch)
+    }
   }
 };
 </script>

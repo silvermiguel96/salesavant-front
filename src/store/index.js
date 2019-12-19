@@ -33,6 +33,7 @@ export const defaultSignalSearch = {
   category: ""
 };
 
+
 const state = {
   advancedSearch: {
     showDialog: false,
@@ -83,10 +84,12 @@ const mutations = {
   doSignalsSearch(state, signalSearch) {
     state.advancedSearch.searchType = "signals";
     state.advancedSearch.signalSearch = signalSearch;
+    state.advancedSearch.showDialog = false;
   },
   doNewsSearch(state, newsSearch) {
     state.advancedSearch.searchType = "news";
     state.advancedSearch.newsSearch = newsSearch;
+    state.advancedSearch.showDialog = false;
   }
 };
 

@@ -2,49 +2,86 @@
   <v-container fluid>
     <v-card>
       <div class="apollo-example">
-        <!-- TODO: cuando cambio el número de registros por página no hace nada -->
         <v-breadcrumbs
           :large="true"
           v-if="!!this.$route.query && !!this.$route.query.searchType"
           :items="[
-        {
-          text: 'Playlists',
-          disabled: false,
-          href: '/playlists'
-        },
-        {
-          text: `${this.$route.query.searchType} search`,
-          disabled: true,
-          href: '/playlists'
-        }
-      ]"
+           {
+             text: 'Playlists',
+             disabled: false,
+             href: '/playlists'
+           },
+           {
+             text: `${this.$route.query.searchType} search`,
+             disabled: true,
+             href: '/playlists'
+           }	
+        ]"	
           divider=">"
-        ></v-breadcrumbs>
+        >
+          <template v-slot:item="props">
+          <v-breadcrumbs-item
+            :href="props.item.href"
+            :class="[props.item.disabled && 'disabled']"
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
+          </template>     
+        </v-breadcrumbs>
         <v-breadcrumbs
           v-else
           :large="true"
           :items="[
-          {
-            text: 'Playlists',
-            disabled: true,
-            href: '/news'
-          }
+           {
+             text: 'Playlists',
+             disabled: true,
+             href: '/news'
+           }
           ]"
           divider=">"
-        ></v-breadcrumbs>
-        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
-        <ul class="ml-2" v-if="!!isFiltered">
-          <li v-if="this.$route.query.playlistsSearch">Searching playlist with "{{this.$route.query.playlistsSearch}}"</li>
-          <li v-if="this.$route.query.lessThanCompanies">Less than companies "{{this.$route.query.lessThanCompanies}}"</li>
-          <li v-if="this.$route.query.moreThanCompanies" >More than companies "{{this.$route.query.moreThanCompanies}}"</li>
-        </ul>
-        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='playlists'">
+        >
+        <template v-slot:item="props">
+          <v-breadcrumbs-item
+            :href="props.item.href"
+            :class="[props.item.disabled && 'disabled']"
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
+        </template>
+        </v-breadcrumbs>
+        <template
+          v-if="
+            !!this.advancedSearch.searchType &&
+              this.advancedSearch.searchType == 'playlists'
+          "
+        >
+          <v-container fluid class="mx-1">
+            <v-row no-gutters>
+              <v-col cols="12">
+                <div class="mt-6">
+                  <span class="ml-2">Filtering by: </span>
+                  <v-chip
+                    v-for="(value, key) in playlistSearchFilters"
+                    :key="key"
+                    class="mx-1 text-capitalize"
+                    style="padding: 0 8px;"
+                    color="blue-grey"
+                    @click:close="removeFilter(key)"
+                    outlined
+                    close
+                    small
+                    ><strong>{{ key }}:&nbsp;</strong>{{ value }}</v-chip
+                  >
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/PlaylistSearch.gql')"
-            :variables="{ 
+            :variables="{
               ...this.advancedSearch.playlistSearch,
-              first: this.itemsPerPage, 
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              first: this.itemsPerPage,
+              offset: this.itemsPerPage * this.page - this.itemsPerPage,
               sortBy: this.sortBy,
               sortOrder: this.sortOrder
             }"
@@ -89,12 +126,12 @@
             :query="require('./graphql/Playlists.gql')"
             :variables="{
               search: this.search,
-              first: this.itemsPerPage, 
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              first: this.itemsPerPage,
+              offset: this.itemsPerPage * this.page - this.itemsPerPage,
               sortBy: this.sortBy,
               sortOrder: this.sortOrder
             }"
-            :skip="search.length >0 && search.length<=2"
+            :skip="search.length > 0 && search.length <= 2"
           >
             <template slot-scope="{ result: { loading, error, data } }">
               <!-- Loading -->
@@ -126,7 +163,10 @@
 </template>
 
 <script>
+import _pickby from "lodash.pickby";
 import PlayListsTable from "./components/PlayListsTable.vue";
+import { mapMutations, defaultPlaylistSearch } from "../../store";
+
 export default {
   data() {
     return {
@@ -136,7 +176,7 @@ export default {
       sortBy: "",
       sortOrder: "",
       isFiltered: false,
-      search:""
+      search: ""
     };
   },
   props: {
@@ -144,6 +184,9 @@ export default {
   },
   components: { PlayListsTable },
   methods: {
+    removeFilter(key){
+      this.$store.commit('doPlaylistsSearch', {...this.$store.state.advancedSearch.playlistSearch, [key]: defaultPlaylistSearch[key]})
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -171,31 +214,14 @@ export default {
         this.sortOrder = "";
       }
     },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log("key", key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
-    }
   },
   computed: {
-     advancedSearch (){
-       return this.$store.state.advancedSearch;
+    advancedSearch() {
+      return this.$store.state.advancedSearch;
+    },
+    playlistSearchFilters(){
+      return _pickby(this.advancedSearch.playlistSearch);
     }
-  },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
   }
 };
 </script>

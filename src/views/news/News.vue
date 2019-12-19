@@ -29,19 +29,34 @@
       ]"
           divider=">"
         ></v-breadcrumbs>
-        <h1 class="ml-2 headline text-capitalize" v-if="!!isFiltered">filtering by</h1>
-        <ul v-if="!!isFiltered">
-          <li v-if="this.$route.query.news">Searching news with "{{this.$route.query.news}}"</li>
-        </ul>
-
         <v-btn color="primary" class="text-capitalize ma-2" small dark @click="toggleSearch">
           <v-icon class="pr-1" small>search</v-icon>search
         </v-btn>
 
         <!-- Apollo watched Graphql query -->
-        <template
-          v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='news'"
-        >
+        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='news'">
+          <v-container fluid class="mx-1">
+            <v-row no-gutters>
+              <v-col cols="12">
+                <div class="mt-6">
+                  <span class="ml-2">Filtering by:</span>
+                  <v-chip
+                    v-if="newSearchFilters"
+                    class="mx-1 text-capitalize"
+                    style="padding: 0 8px;"
+                    color="blue-grey"
+                    @click:close="removeFilter()"
+                    outlined
+                    close
+                    small
+                  >
+                    <strong>Search:&nbsp;</strong>
+                    {{ newSearchFilters }}
+                  </v-chip>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
           <ApolloQuery
             :query="require('./graphql/NewsSearch.gql')"
             :variables="{ 
@@ -116,8 +131,9 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
+import _pickby from "lodash.pickby";
 import NewsTable from "./components/NewsTable.vue";
+import store, { mapMutations, resetAdvancedSearch } from "../../store";
 export default {
   data() {
     return {
@@ -128,22 +144,16 @@ export default {
       sortBy: "",
       sortOrder: "",
       searchField: "",
-      searchAdvance: {
-        country: "",
-        name: "",
-        lessThanEmployees: 0,
-        moreThanEmployees: 0,
-        status: "",
-        region: "",
-        state: "",
-        city: ""
-      },
+      newsSearch: "",
       typeButton: "",
       isFiltered: false
     };
   },
   components: { NewsTable },
   methods: {
+    removeFilter(){
+      this.$store.commit('doNewsSearch', "" )
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -173,39 +183,16 @@ export default {
       }
     },
     toggleSearch() {
-      this.$emit("toggleSearch", {
-        show: !this.$props.showSearch,
-        expand: 3
-      });
+      this.$store.commit('showSearchDialog');
     },
-    checkIfIsFiltered() {
-      let result = false;
-      for (let key in this.$route.query) {
-        console.log(key);
-        if (!!this.$route.query[key] && key !== "searchType") {
-          result = true;
-          break;
-        }
-      }
-      return result;
-    }
   },
   computed: {
     advancedSearch (){
        return this.$store.state.advancedSearch;
+    },
+    newSearchFilters(){
+      return this.advancedSearch.newsSearch;
     }
   },
-  props: {
-    showSearch: { type: Boolean, default: false }
-  },
-  beforeMount() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  beforeUpdate() {
-    this.isFiltered = this.checkIfIsFiltered();
-  },
-  updated() {
-    this.isFiltered = this.checkIfIsFiltered();
-  }
 };
 </script>

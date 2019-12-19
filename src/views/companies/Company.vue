@@ -21,24 +21,33 @@
                 text: 'Playlists',
                 disabled: false,
                 href: '/playlists'
-              },
-              {
+              },	               
+              {	               
                 text: data.playlist.name || 'some playlist',
                 disabled: !$route.params.playlistId,
                 href: `/playlists/${$route.params.playlistId || ''}`
-              },
-              {
-                text: 'Companies',
-                disabled: false,
-                href: `/playlists/${$route.params.playlistId || ''}/companies`
-              },
-              {
-                text: data.company.name || data.company.uid,
-                disable: true
-              }
-            ]"
+              },	
+              {	
+                text: 'Companies',	
+                disabled: false,	
+                href: `/playlists/${$route.params.playlistId || ''}/companies`	
+              },	
+              {	
+                text: data.company.name || data.company.uid,	
+                disable: true	
+              }	
+            ]"	
             divider=">"
-          ></v-breadcrumbs>
+          >
+            <template v-slot:item="props">
+              <v-breadcrumbs-item
+                :href="props.item.href"
+                :class="[props.item.disabled && 'disabled']"
+                @click.prevent="$router.push(props.item.href)">
+                {{ props.item.text }}
+              </v-breadcrumbs-item>
+            </template>
+          </v-breadcrumbs>
           <v-breadcrumbs
             :large="true"
             v-else-if="data && data.company"
@@ -54,7 +63,16 @@
               }
             ]"
             divider=">"
-          ></v-breadcrumbs>
+          >
+            <template v-slot:item="props">
+              <v-breadcrumbs-item
+                :href="props.item.href"
+                :class="[props.item.disabled && 'disabled']"
+                @click.prevent="$router.push(props.item.href)">
+                {{ props.item.text }}
+            </v-breadcrumbs-item>
+            </template>
+          </v-breadcrumbs>
           <v-breadcrumbs
             :large="true"
             v-else
@@ -69,7 +87,16 @@
                 disable: true
               }
             ]"
-          ></v-breadcrumbs>
+          >
+            <template v-slot:item="props">
+              <v-breadcrumbs-item
+                :href="props.item.href"
+                :class="[props.item.disabled && 'disabled']"
+                @click.prevent="$router.push(props.item.href)">
+                {{ props.item.text }}
+              </v-breadcrumbs-item>
+            </template> 
+          </v-breadcrumbs>
         </div>
         <!-- Loading -->
         <div v-if="loading" class="loading apollo">Loading...</div>
