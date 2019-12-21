@@ -9,51 +9,21 @@
       scrollable>
       <v-card>
         <v-toolbar dark color="primary" height="48px">
-          <v-btn icon @click.native="hideSearchDialog">
+          <v-toolbar-title>Advanced Search</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click.native="hideSearchDialog" align-end>
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Advanced Search</v-toolbar-title>
         </v-toolbar>
-        <v-expansion-panels accordion :value="expand">
-
-          <v-expansion-panel>
-            <v-expansion-panel-header>Companies</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <companies-search />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <v-expansion-panel-header>Playlists</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <playlist-search />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <v-expansion-panel-header>Signals</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <signals-search />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-
-          <v-expansion-panel>
-            <v-expansion-panel-header>News</v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <news-search />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-
-        </v-expansion-panels>
+        <v-content>
+          <companies-search />
+        </v-content>
       </v-card>
     </v-dialog>
 </template>
 
 <script>
 import CompaniesSearch from "./CompaniesSearch.vue";
-import NewsSearch from "./NewsSearch.vue";
-import PlaylistSearch from "./PlaylistSearch.vue";
-import SignalsSearch from "./SignalsSearch.vue";
 import { mapMutations } from "vuex";
 
 export default {
@@ -63,14 +33,10 @@ export default {
     };
   },
   props: {
-    value: { type: Boolean, default: false },
-    expand: { type: Number, default: 0 }
+    value: { type: Boolean, default: false }
   },
   components: {
-    CompaniesSearch,
-    PlaylistSearch,
-    SignalsSearch,
-    NewsSearch
+    CompaniesSearch
   },
   methods: {
     ...mapMutations([

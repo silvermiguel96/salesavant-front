@@ -5,13 +5,18 @@
       :loading="loading"
       :item-text="'group'"
       :item-value="'group'"
-      :items="signalsGroupAggs"
+      :items="signalsGroup"
+      label="Has Signal Group"
+      @change="change"
+      outlined
       cache-items
-      text
+      dense
+      chips
+      small-chips
+      deletable-chips
+      multiple
       hide-no-data
       hide-details
-      label="In signal group"
-      @change="change"
       clearable
     ></v-autocomplete>
   </div>
@@ -25,21 +30,21 @@ export default {
       loading: false,
       search: "",
       select: null,
-      signalsGroupAggs: []
+      signalsGroup: []
     };
   },
   apollo: {
     signalsGroupAggs: {
       query: gql`
         query getAllSignalsGroups($first: Int) {
-          signalsGroupAggs(first: $first) {
+          companySignalsGroupAggs(first: $first) {
             group
           }
         }
       `,
       variables() {
         return {
-          first: 1000000000
+          first: 1000
         };
       },
       fetchPolicy: "cache-and-network"
@@ -47,7 +52,7 @@ export default {
   },
   methods: {
     change(v = "") {
-      this.$emit("change", { signalGroup: v });
+      this.$emit("change", { signalGroups: v });
     }
   },
   beforeCreate() {

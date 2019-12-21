@@ -18,7 +18,6 @@
           <router-link :to="`playlists/${item.uid}/companies`">{{item.name}}</router-link>
         </td>
         <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
-        <td>{{ item.totalScore ? item.totalScore.toLocaleString() : "0" }}</td>
         <td>{{ changeTimeHuman(item.creationTime) }}</td>
         <td>
           <router-link :to="`/advanced/${item.uid}`">Advanced</router-link>
@@ -41,7 +40,6 @@ export default {
       headers: [
         { text: "Name", value: "name", width: "40%", sortable: false },
         { text: "Size", value: "totalCompanies", width: "10%", sortable: true },
-        { text: "Score", value: "totalScore", width: "10%", sortable: true },
         { text: "Creation Time", value: "creationTime", width: "16%", sortable: false},
         { text: "Advanced", value: "advanced", width: "8%", sortable: false },
         { text: "Favorite", value: "favorite", width: "8%", sortable: false },

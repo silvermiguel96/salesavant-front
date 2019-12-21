@@ -112,8 +112,8 @@ export default {
   mounted: function() {
     this.loadData();
     this.interval = setInterval(function() {
-        this.loadData();
-      }.bind(this), 3000);
+      this.loadData();
+    }.bind(this), 3000);
   },
   beforeDestroy: function() {
     clearInterval(this.interval);

@@ -6,7 +6,7 @@
     <template>
       <!-- Apollo watched Graphql query -->
       <ApolloQuery
-        :query="require('../graphql/signalsGroupAggs.gql')"
+        :query="require('../graphql/SignalsGroupAggs.gql')"
         :variables="{ first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
@@ -21,7 +21,7 @@
             <!-- <div>{{ JSON.stringify(data) }}</div> -->
             <v-data-table
               :headers="headers"
-              :items="data.signalsGroupAggs"
+              :items="data.companySignalsGroupAggs"
               class="elevation-4"
               @updatePagination="updatePagination"
             >
@@ -29,8 +29,8 @@
                 <tr>
                   <td>
                     <router-link
-                      :to="`/signals?search=&group=${item.group}&category=&searchType=signals`"
-                    >{{ item.group }}</router-link>
+                      :to="`/signals?search=&group=${item.signalGroup}&category=&searchType=signals`"
+                    >{{ item.signalGroup }}asd</router-link>
                   </td>
                   <td>{{ item.totalCompanies }}</td>
                 </tr>
