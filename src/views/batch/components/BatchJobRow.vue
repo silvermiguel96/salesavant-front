@@ -59,6 +59,7 @@ export default {
         if (!!this.job && !! this.job.additionalData){
             return JSON.parse(this.job.additionalData);
         }
+        return {}
     }
   },
   components:{

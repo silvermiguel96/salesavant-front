@@ -8,7 +8,7 @@
           :items="[
            {	          
              text: 'Companies',	            
-             disabled: false,	              
+             disabled: true,	              
              href: '/companies'	              
             },	             
             {	             
@@ -392,7 +392,10 @@ export default {
       return this.$store.state.advancedSearch;
     },
     companySearchFilters(){
-      return _pickby(this.advancedSearch.companySearch);
+      let filteredObject = _pickby(this.advancedSearch.companySearch, (value, key)=>{
+        return value && value.length > 0;
+      });
+      return filteredObject;
     }
   },
   props: {

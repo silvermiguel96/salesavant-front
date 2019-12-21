@@ -110,7 +110,7 @@
 <script>
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import gql from "graphql-tag";
-import SignalsAutocomplete from "../../../../components/signals/Autocomplete.vue";
+import SignalsAutocomplete from "../../../../components/signals/SignalsAutocomplete.vue";
 import _get from "lodash.get";
 export default {
   data() {
