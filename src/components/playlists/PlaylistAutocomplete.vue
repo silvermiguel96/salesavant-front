@@ -79,12 +79,14 @@ export default {
       }, 500);
     },
     change(v) {
-      if (v){
+      if (v && v.length>0){
         let idSplit = v.split(">>>");
         this.$emit("change", { 
           playlistUid: idSplit[0], 
           displayPlaylistUid: idSplit[1] 
-        });
+        });  
+      }else{
+        this.$emit("change", {});
       }
     }
   },

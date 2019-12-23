@@ -3,9 +3,8 @@
     <v-autocomplete
       v-model="select"
       :loading="loading"
-      :item-text="'group'"
-      :item-value="'group'"
-      :items="signalsGroup"
+      :items="items"
+      :search-input.sync="search"
       label="Has Signal Group"
       @change="change"
       outlined
@@ -29,29 +28,65 @@ export default {
     return {
       loading: false,
       search: "",
-      select: null,
-      signalsGroup: []
+      signalGroups: [],
+      select: [],
+      nameLimit: 30
     };
   },
-  apollo: {
-    signalsGroupAggs: {
-      query: gql`
-        query getAllSignalsGroups($first: Int) {
-          companySignalsGroupAggs(first: $first) {
-            group
-          }
-        }
-      `,
-      variables() {
-        return {
-          first: 1000
-        };
-      },
-      fetchPolicy: "cache-and-network"
+  computed: {
+    items() {
+      return this.signalGroups.map(sg => {
+        return sg.length > this.nameLimit
+          ? sg.slice(0, this.nameLimit) + "..."
+          : sg;
+      });
+    }
+  },
+  watch: {
+    search(val) {
+      if (this.signalGroups.length > 0) return;
+
+      if (this.loading) return;
+
+      this.querySignalGroups();
     }
   },
   methods: {
-    change(v = "") {
+    querySignalGroups() {
+      this.loading = true;
+      setTimeout(() => {
+        this.$apollo
+          .query({
+            query: gql`
+              query getSignals($signalGroupSearch: String) {
+                signals(first: 15, searchGroup: $signalGroupSearch) {
+                  signalsList {
+                    id
+                    name
+                    group
+                  }
+                }
+              }
+            `,
+            variables: {
+              signalGroupSearch: this.search ? this.search : ""
+            },
+            fetchPolicy: "no-cache"
+          })
+          .then(resp => {
+            if (!!resp.data && !!resp.data.signals) {
+              let signalGroupsSet = new Set(resp.data.signals.signalsList.map(signal =>{
+                return signal.group
+              }));
+              this.signalGroups = Array.from(signalGroupsSet);
+            }
+          });
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+      }, 500);
+    },
+    change(v) {
       this.$emit("change", { signalGroups: v });
     }
   },

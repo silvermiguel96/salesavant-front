@@ -64,7 +64,7 @@ export default {
           .query({
             query: gql`
               query getSignals($signalSearch: String) {
-                signals(first: 25, search: $signalSearch) {
+                signals(first: 10, search: $signalSearch) {
                   signalsList {
                     id
                     name
@@ -104,6 +104,8 @@ export default {
           displaySignals.push(idSplit[1]);
         });
         this.$emit("change", { signals, displaySignals });
+      }else{
+        this.$emit("change", {});  
       }
     }
   }

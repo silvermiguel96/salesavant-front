@@ -409,9 +409,7 @@ export default {
     },
     companySearchFilters(){
       let filterObjects = [];
-      console.log(this);
       Object.keys(this.advancedSearch.companySearch).forEach(key => {
-        
         let value = this.advancedSearch.companySearch[key];
         if (!key.startsWith('display') && value && value.length > 0){
           if (key=='signals'){
@@ -423,7 +421,6 @@ export default {
               });
             });
           }else if (key=='playlistUid'){
-            console.log(this);
             filterObjects.push({
               key: key,
               labelKey: 'Playlist',
