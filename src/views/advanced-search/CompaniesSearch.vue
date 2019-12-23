@@ -126,10 +126,18 @@ export default {
       this.doCompanySearch({...this.companySearch})
     },
     onPlaylistAutocompleteChange(value) {
-      this.companySearch = { ...this.companySearch, playlist: _get(value, "playlist", {}) };
+      this.companySearch = {
+        ...this.companySearch, 
+        playlistUid: _get(value, "playlistUid", ""),
+        displayPlaylistUid: _get(value, "displayPlaylistUid", "") 
+      };
     },
     onSignalsAutocompleteChange(value) {
-      this.companySearch = { ...this.companySearch, signals: _get(value, "signals", []) };
+      this.companySearch = { 
+        ...this.companySearch, 
+        signals: _get(value, "signals", []),
+        displaySignals: _get(value, "displaySignals", [])
+      };
     },
     onSignalsGroupAutocompleteChange(value) {
       this.companySearch = { ...this.companySearch, signalGroups: _get(value, "signalGroups", [])};

@@ -56,16 +56,16 @@
                 <div class="mt-6">
                   <span class="ml-2">Filtering by: </span>
                   <v-chip 
-                    v-for="(value, key) in companySearchFilters" 
-                    :key="key" 
+                    v-for="obj in companySearchFilters" 
+                    :key="obj.key" 
                     class="mx-1 text-capitalize"
                     style="padding: 0 8px;"
                     color="blue-grey"
-                    @click:close="removeFilter(key)"
+                    @click:close="removeFilter(obj.key)"
                     outlined
                     close
                     small
-                  ><strong>{{key}}:&nbsp;</strong>{{value}}</v-chip>
+                  ><strong>{{obj.labelKey}}:&nbsp;</strong>{{obj.labelVal}}</v-chip>
                 </div>
               </v-col>
               <v-col cols="12" md="4">
@@ -87,7 +87,7 @@
               first: this.itemsPerPage,
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
-              sortOrder: this.sortOrder
+              sortOrder: this.sortOrder,
             }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
@@ -195,7 +195,23 @@ export default {
   },
   methods: {
     removeFilter(key){
-      this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
+      console.log("removeFilter", key);
+      if (key.startsWith("signals")){
+        let index = key.split(">>>")[1];
+        this.$store.commit('doCompanySearch', {
+          ...this.$store.state.advancedSearch.companySearch, 
+          signals: this.$store.state.advancedSearch.companySearch.signals.splice(index, 1),
+          displaySignals: this.$store.state.advancedSearch.companySearch.displaySignals.splice(index, 1)
+        })
+      }else if (key.startsWith("playlist")){
+        this.$store.commit('doCompanySearch', {
+          ...this.$store.state.advancedSearch.companySearch, 
+          playlistUid: "",
+          displayPlaylistUid: "",
+        })
+      }else{
+        this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
+      }
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
@@ -392,10 +408,37 @@ export default {
       return this.$store.state.advancedSearch;
     },
     companySearchFilters(){
-      let filteredObject = _pickby(this.advancedSearch.companySearch, (value, key)=>{
-        return value && value.length > 0;
+      let filterObjects = [];
+      console.log(this);
+      Object.keys(this.advancedSearch.companySearch).forEach(key => {
+        
+        let value = this.advancedSearch.companySearch[key];
+        if (!key.startsWith('display') && value && value.length > 0){
+          if (key=='signals'){
+            value.forEach((entry, index) => {
+              filterObjects.push({
+                key: 'signals>>>'+index,
+                labelKey: key,
+                labelVal: this.advancedSearch.companySearch.displaySignals[index]
+              });
+            });
+          }else if (key=='playlistUid'){
+            console.log(this);
+            filterObjects.push({
+              key: key,
+              labelKey: 'Playlist',
+              labelVal: this.advancedSearch.companySearch.displayPlaylistUid
+            });
+          }else{
+            filterObjects.push({
+              key: key,
+              labelKey: key,
+              labelVal: value
+            });
+          }
+        }
       });
-      return filteredObject;
+      return filterObjects;
     }
   },
   props: {

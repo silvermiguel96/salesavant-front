@@ -32,16 +32,17 @@ export default {
       search: "",
       signals: [],
       select: [],
-      nameLimit: 20
+      nameLimit: 30
     };
   },
   computed: {
     items() {
       return this.signals.map(signal => {
+        let groupStr = signal.group ? ` (${signal.group})`: "";
         let name =
           signal.name.length > this.nameLimit
-            ? signal.name.slice(0, this.nameLimit) + "..."
-            : signal.name;
+            ? signal.name.slice(0, this.nameLimit) + "..." + groupStr
+            : signal.name + groupStr;
         return Object.assign({}, signal, { name });
       });
     }
@@ -67,6 +68,7 @@ export default {
                   signalsList {
                     id
                     name
+                    group
                   }
                 }
               }
@@ -78,8 +80,12 @@ export default {
           })
           .then(resp => {
             if (!!resp.data && !!resp.data.signals) {
-              this.signals = resp.data.signals.signalsList.map(s =>{
-                return {id: parseInt(s.id), name: s.name};
+              this.signals = resp.data.signals.signalsList.map(signal =>{
+                return {
+                  id: signal.id + ">>>" + signal.name, 
+                  name: signal.name,
+                  group: signal.group
+                };
               });
             }
           });
@@ -88,8 +94,17 @@ export default {
         }, 300);
       }, 500);
     },
-    change(v = "") {
-      this.$emit("change", { signals: v });
+    change(v) {
+      if (v && v.length>0){
+        let signals = [];
+        let displaySignals = [];
+        v.forEach(s => {
+          let idSplit = s.split(">>>");
+          signals.push(parseInt(idSplit[0]));
+          displaySignals.push(idSplit[1]);
+        });
+        this.$emit("change", { signals, displaySignals });
+      }
     }
   }
 };

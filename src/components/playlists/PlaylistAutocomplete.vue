@@ -7,12 +7,12 @@
       :item-value="'uid'"
       :items="playlists"
       :search-input.sync="search"
+      label="Belongs to Playlist"
+      @change="change"
       cache-items
       text
       hide-no-data
       hide-details
-      label="Belongs to Playlist"
-      @change="change"
       clearable
     ></v-autocomplete>
   </div>
@@ -25,7 +25,7 @@ export default {
     return {
       loading: false,
       search: "",
-      select: { uid: this.playlistSelected, name: "" },
+      select: "",
       playlists: []
     };
   },
@@ -65,7 +65,12 @@ export default {
           })
           .then(resp => {
             if (!!resp.data && !!resp.data.playlists) {
-              this.playlists = resp.data.playlists.playlistsList;
+              this.playlists = resp.data.playlists.playlistsList.map(playlist=>{
+                return {
+                  uid: playlist.uid + ">>>" + playlist.name,
+                  name: playlist.name
+                }
+              });
             }
           });
         setTimeout(() => {
@@ -74,20 +79,18 @@ export default {
       }, 500);
     },
     change(v) {
-      let selectedPlaylist = this.playlists.filter(playlist => {
-        if (v === playlist.uid){
-          return playlist;
-        }
-      })[0];
-      if (selectedPlaylist){
-        this.$emit("change", { uid:selectedPlaylist.uid, name: selectedPlaylist.name });
+      if (v){
+        let idSplit = v.split(">>>");
+        this.$emit("change", { 
+          playlistUid: idSplit[0], 
+          displayPlaylistUid: idSplit[1] 
+        });
       }
-      
     }
   },
   computed: {
     playlistSelected (){
-      return this.$store.state.advancedSearch.companySearch.playlist.uid;
+      return this.$store.state.advancedSearch.companySearch.playlistUid;
     }
   },
   destroyed() {

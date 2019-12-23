@@ -16,8 +16,10 @@ export const defaultCompanySearch = {
   lessThanEmployees: 0,
   moreThanScore: 0,
   lessThanScore: 0,
-  playlist: {},
+  playlistUid: "",
+  displayPlaylistUid: "",
   signals: [],
+  displaySignals: [],
   signalGroups: []
 };
 
