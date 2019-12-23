@@ -13,6 +13,7 @@ import PlaylistAdvanced from "./views/playlists/components/PlaylistAdvanced.vue"
 import Login from "./views/Login.vue";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
+import Upload from "./components/upload/Upload.vue"
 import { AUTH_TOKEN } from "./vue-apollo";
 
 Vue.use(Router);
@@ -130,6 +131,14 @@ const router = new Router({
       path: "/signals/:signalId",
       name: "signal",
       component: Signal,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/upload",
+      name: "Upload",
+      component: Upload,
       meta: {
         requiresAuth: true
       }
