@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Company", value: "name", width: "20%", sortable: false  },
+        { text: "Company", value: "name", width: "20%", sortable: false },
         { text: "Score", value: "totalScore", width: "10%", sortable: true },
         { text: "Employees", value: "numEmployees", width: "12%", sortable: true, divider: true },
         { text: "State", value: "state", width: "15%", sortable: false },

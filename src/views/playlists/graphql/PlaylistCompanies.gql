@@ -1,5 +1,5 @@
-query SinglePlaylist($uid: String $first: Int $offset: Int) {
-  playlistCompanies(playlistUid: $uid first: $first offset: $offset){
+query SinglePlaylist($uid: String $first: Int $offset: Int   $sortBy: String $sortOrder: String) {
+  playlistCompanies(playlistUid: $uid first: $first offset: $offset sortBy: $sortBy sortOrder: $sortOrder){
     totalResults,
     companiesList{
       uid

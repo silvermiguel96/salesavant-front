@@ -57,7 +57,7 @@ export default {
           text: "Published Date",
           value: "publishDate",
           align: "left",
-          sortable: true
+          sortable: false
         },
         {
           text: "Company",

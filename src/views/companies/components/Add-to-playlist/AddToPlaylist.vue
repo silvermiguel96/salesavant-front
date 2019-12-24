@@ -28,13 +28,14 @@
       <v-data-table
         :headers="headers"
         :items="companyPlaylists.companyPlaylistsList"
-        class="elevation-1"
-        :items-per-page="pagination.rowsPerPage"
+        :server-items-length="companyPlaylists.totalResults"
+        class="elevation-1 mx-2"
+        :items-per-page="options.itemsPerPage"
         :footer-props="{
-          'items-per-page-options': pagination.rowsPerPageItems
+          'items-per-page-options': [10, 20, 50]
         }"
-        @updatepagination="updatePagination"
-        :server-items-length="totalItems"
+        :options.sync="options"
+        @updateOptions="updateOptions"
       >
         <template v-slot:item="{ item, headers }">
           <tr>
@@ -73,15 +74,13 @@ export default {
       snackColor: "",
       snackText: "",
       updatePagination: "",
-      pagination: {
+      options: {
         page: 1,
-        rowsPerPage: 25,
-        rowsPerPageItems: [25, 50, 100]
+        itemsPerPage: 10
       },
       companySignals: [],
       descending: false,
       sortBy: "",
-      totalItems: 10000000,
       headers: [
         { text: "Name", value: "name" },
         { text: "Delete", value: "action" }
@@ -90,23 +89,6 @@ export default {
   },
   components: {
     playlistsAutocomplete
-  },
-  methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 5,
-        sortBy = "",
-        totalItems = 10000000
-      }
-    }) {
-      this.descending = descending;
-      this.pagination.page = page;
-      this.pagination.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = totalItems;
-    }
   },
   apollo: {
     companyPlaylists: {
@@ -132,16 +114,22 @@ export default {
       variables() {
         return {
           companyUid: this.$route.params.companiesUid ,
-          first: this.pagination.rowsPerPage,
+          first: this.options.itemsPerPage,
           offset:
-            this.pagination.rowsPerPage * this.pagination.page -
-            this.pagination.rowsPerPage
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
     }
   },
   methods: {
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+    }) {
+      this.options.page = options.page;
+      this.options.itemsPerPage = options.itemsPerPage;
+    },
     onPlaylistAutoCompleteChange(playlistResults) {
       this.playlistUid = _get(playlistResults, "playlistUid", null);
       this.currentPlaylistSearch = _get(

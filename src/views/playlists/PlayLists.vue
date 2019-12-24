@@ -35,20 +35,11 @@
            {
              text: 'Playlists',
              disabled: true,
-             href: '/news'
+             href: '/Playlists'
            }
           ]"
           divider=">"
-        >
-        <template v-slot:item="props">
-          <v-breadcrumbs-item
-            :href="props.item.href"
-            :class="[props.item.disabled && 'disabled']"
-            @click.prevent="$router.push(props.item.href)">
-            {{ props.item.text }}
-          </v-breadcrumbs-item>
-        </template>
-        </v-breadcrumbs>
+        ></v-breadcrumbs>
         <template
           v-if="
             !!this.advancedSearch.searchType &&

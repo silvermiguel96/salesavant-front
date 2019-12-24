@@ -17,7 +17,16 @@
         }
       ]"
           divider=">"
-        ></v-breadcrumbs>
+        >
+        <template v-slot:item="props">
+            <v-breadcrumbs-item
+              :href="props.item.href"
+              :class="[props.item.disabled && 'disabled']"
+              @click.prevent="$router.push(props.item.href)">
+              {{ props.item.text }}
+            </v-breadcrumbs-item>
+          </template> 
+        </v-breadcrumbs>
         <v-breadcrumbs
           v-else
           :items="[
