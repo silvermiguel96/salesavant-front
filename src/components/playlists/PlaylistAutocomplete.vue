@@ -7,7 +7,7 @@
       :item-value="'uid'"
       :items="playlists"
       :search-input.sync="search"
-      label="Belongs to Playlist"
+      label="Select Playlist"
       @change="change"
       cache-items
       text

@@ -7,7 +7,7 @@
       :item-value="'id'"
       :item-text="'name'"
       :search-input.sync="search"
-      label="Has Signal"
+      label="Select Signal"
       @change="change"
       outlined
       cache-items

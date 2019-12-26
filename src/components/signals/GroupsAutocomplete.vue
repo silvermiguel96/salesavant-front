@@ -5,7 +5,7 @@
       :loading="loading"
       :items="items"
       :search-input.sync="search"
-      label="Has Signal Group"
+      label="Select Signal Group"
       @change="change"
       outlined
       cache-items

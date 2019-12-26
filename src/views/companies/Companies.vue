@@ -186,25 +186,6 @@ export default {
     CreateSignalFromResults
   },
   methods: {
-    removeFilter(key){
-      console.log("removeFilter", key);
-      if (key.startsWith("signals")){
-        let index = key.split(">>>")[1];
-        this.$store.commit('doCompanySearch', {
-          ...this.$store.state.advancedSearch.companySearch, 
-          signals: this.$store.state.advancedSearch.companySearch.signals.splice(index, 1),
-          displaySignals: this.$store.state.advancedSearch.companySearch.displaySignals.splice(index, 1)
-        })
-      }else if (key.startsWith("playlist")){
-        this.$store.commit('doCompanySearch', {
-          ...this.$store.state.advancedSearch.companySearch, 
-          playlistUid: "",
-          displayPlaylistUid: "",
-        })
-      }else{
-        this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
-      }
-    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -393,6 +374,29 @@ export default {
           console.log("error saving search results as signal", error);
         }
       }
+    },
+    removeFilter(key){
+      if (key.startsWith("signals")){
+        let index = key.split(">>>")[1];
+        let currentSignals = this.$store.state.advancedSearch.companySearch.signals.slice();
+        let currentDisplaySignals = this.$store.state.advancedSearch.companySearch.displaySignals.slice();
+
+        currentSignals.splice(index, 1);
+        currentDisplaySignals.splice(index, 1);
+        this.$store.commit('doCompanySearch', {
+          ...this.$store.state.advancedSearch.companySearch,
+          signals: currentSignals,
+          displaySignals: currentDisplaySignals
+        })
+      }else if (key.startsWith("playlist")){
+        this.$store.commit('doCompanySearch', {
+          ...this.$store.state.advancedSearch.companySearch,
+          playlistUid: "",
+          displayPlaylistUid: "",
+        })
+      }else{
+        this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
+      }
     }
   },
   computed: {
@@ -428,7 +432,7 @@ export default {
         }
       });
       return filterObjects;
-    }
+    },
   },
   props: {
     showSearch: { type: Boolean, default: false }
