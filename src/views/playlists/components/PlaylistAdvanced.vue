@@ -24,9 +24,8 @@
           <v-breadcrumbs-item
             :href="props.item.href"
             :class="[props.item.disabled && 'disabled']"
-            @click.prevent="$router.push(props.item.href)">
-            {{ props.item.text }}
-          </v-breadcrumbs-item>
+            @click.prevent="$router.push(props.item.href)"
+          >{{ props.item.text }}</v-breadcrumbs-item>
         </template>
       </v-breadcrumbs>
       <v-tabs grow background-color="grey lighten-5" color="primary">
@@ -79,8 +78,7 @@ import gql from "graphql-tag";
 import { mapMutations } from "vuex";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       name: "",
@@ -88,7 +86,7 @@ export default {
       page: 1,
       itemsPerPage: 10,
       sortBy: "",
-      search:"",
+      search: "",
       isLoading: false,
       playlist: {
         uid: "",
@@ -119,9 +117,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations([
-      'updateCompanySearch'
-    ]),
+    ...mapMutations(["updateCompanySearch"]),
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -131,20 +127,25 @@ export default {
     createJob(jobType) {
       this.$emit("createJob", {
         jobType: jobType,
-        additionalData: { 
+        additionalData: {
           playlist_uid: this.playlist.uid,
           playlist_name: this.playlist.name
         }
       });
-      this.$emit("showSnack",`Job ${jobType} enqueed successfully`,"success");
+      this.$emit("showSnack", `Job ${jobType} enqueed successfully`, "success");
     }
   },
   beforeCreate() {
     this.$apollo.query.playlist;
   },
-  mounted(){
-    console.log("playlist-companies update state ", this.$route.params.playlistUid);
-    this.$store.commit('updateCompanySearch', {playlistUid: this.$route.params.playlistUid});
+  mounted() {
+    console.log(
+      "playlist-companies update state ",
+      this.$route.params.playlistUid
+    );
+    this.$store.commit("updateCompanySearch", {
+      playlistUid: this.$route.params.playlistUid
+    });
   }
 };
 </script>
