@@ -6,10 +6,10 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-select :items="items" label="Job Type"></v-select>
+                <v-select :items="items" v-model="jobType" label="Job Type"></v-select>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="Description"></v-text-field>
+                <v-text-field v-model="description" label="Description"></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-file-input
@@ -34,8 +34,19 @@ import { getAuthToken } from "../../util";
 export default {
   data() {
     return {
-      items: ["ORB refresh", "Contacts", "Keywords"],
-      file: null,
+      items: [
+        {
+          value: "contact_finder",
+          text: "Contact Finder"
+        },
+        {
+          value: "linkedin_finder",
+          text: "LinkedIn Finder"
+        }
+      ],
+      jobType: "",
+      description: "",
+      file: null
     };
   },
   props: {
@@ -46,10 +57,10 @@ export default {
     submitFiles() {
       if (this.file) {
         let formData = new FormData();
-        formData.append("files", this.file, this.file.name);
-        formData.append("test1", "test1");
-        formData.append("test2", "test2");
-        fetch(this.salesavantAPI + "/files/upload?JWT="+getAuthToken(), {
+        formData.append("file", this.file, this.file.name);
+        formData.append("jobType", this.jobType);
+        formData.append("description", this.description);
+        fetch(this.salesavantAPI + "/launch-job?jwt="+getAuthToken(), {
           method: "POST",
           body: formData
         })
