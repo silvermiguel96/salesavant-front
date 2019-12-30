@@ -33,7 +33,7 @@
   </nav>
 </template>
 <script>
-import { AUTH_TOKEN } from "../vue-apollo";
+import { AUTH_TOKEN } from "../util";
 import { mapMutations } from "vuex";
 
 export default {
@@ -75,7 +75,7 @@ export default {
   props: {
   },
   methods: {
-     ...mapMutations([
+    ...mapMutations([
       'resetAdvancedSearch'
     ]),
     showSearch() {

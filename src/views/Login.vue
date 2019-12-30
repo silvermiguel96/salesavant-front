@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { AUTH_TOKEN } from '../vue-apollo';
+import { AUTH_TOKEN } from '../util';
 export default {
   name: "login",
   data() {

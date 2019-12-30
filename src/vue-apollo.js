@@ -4,12 +4,10 @@ import {
   createApolloClient,
   restartWebsockets
 } from "vue-cli-plugin-apollo/graphql-client";
+import { AUTH_TOKEN, getAuthHeader } from "./util";
 
 // Install the vue plugin
 Vue.use(VueApollo);
-
-// Name of the localStorage item
-export const AUTH_TOKEN = "apollo-token";
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_API_URL;
@@ -27,16 +25,12 @@ const defaultOptions = {
     freezeResults: false
   },
   wsEndpoint: null,
+  $loadingKey: "loading",
   tokenName: AUTH_TOKEN,
+  getAuth: getAuthHeader(),
   persisting: false,
   websocketsOnly: false,
-  ssr: false,
-  $loadingKey: "loading",
-  getAuth: () => {
-    // AuthToken
-    let token = localStorage.getItem(AUTH_TOKEN);
-    return `JWT ${token}`;
-  }
+  ssr: false
 };
 
 // Call this in the Vue app file

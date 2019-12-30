@@ -1,16 +1,6 @@
 <template>
   <v-container fluid>
     <v-card>
-      <v-breadcrumbs
-        :large="true"
-        :items="[
-              {
-                text: 'Upload',
-                disabled: true,
-                href: '/Upload'
-              },
-            ]"
-      ></v-breadcrumbs>
       <v-card-text>
         <v-form>
           <v-container>
@@ -25,7 +15,7 @@
                 <v-file-input
                   v-model="file"
                   accept=".csv"
-                  label="Document upload"
+                  label="Upload Input File"
                 ></v-file-input>
               </v-col>
               <v-col cols="12">
@@ -40,6 +30,7 @@
 </template>
 
 <script>
+import { getAuthToken } from "../../util";
 export default {
   data() {
     return {
@@ -56,7 +47,9 @@ export default {
       if (this.file) {
         let formData = new FormData();
         formData.append("files", this.file, this.file.name);
-        fetch(this.salesavantAPI + "/files/upload", {
+        formData.append("test1", "test1");
+        formData.append("test2", "test2");
+        fetch(this.salesavantAPI + "/files/upload?JWT="+getAuthToken(), {
           method: "POST",
           body: formData
         })
