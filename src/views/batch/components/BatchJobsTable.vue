@@ -61,7 +61,10 @@ export default {
         case "refresh_orb": return "Refresh ORB";
         case "export_companies": return "Export Companies";
         case "refresh_news": return "Refresh News";
+        case "contact_finder": return "Contact Finder";
+        case "linkedin_finder": return "LinkedIn Finder";
       }
+      return jobType;
     }
   },
   props: {
