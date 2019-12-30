@@ -5,5 +5,5 @@ export function getAuthToken(){
 }
 
 export function getAuthHeader(){
-  return `JWT ${getAuthToken()}`;
+  return `Bearer ${getAuthToken()}`;
 }

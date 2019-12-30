@@ -27,7 +27,7 @@ const defaultOptions = {
   wsEndpoint: null,
   $loadingKey: "loading",
   tokenName: AUTH_TOKEN,
-  getAuth: getAuthHeader(),
+  getAuth: getAuthHeader,
   persisting: false,
   websocketsOnly: false,
   ssr: false
@@ -41,7 +41,6 @@ export function createProvider(options = {}) {
     ...options
   });
   apolloClient.wsClient = wsClient;
-
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,

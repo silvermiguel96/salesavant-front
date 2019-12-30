@@ -59,7 +59,7 @@ export default {
       show1: false
     };
   },
-   methods: {
+  methods: {
     async login() {
       const dataUser = this.userlogin;
       const Body = JSON.stringify(dataUser);
@@ -74,7 +74,7 @@ export default {
       const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/auth`, fecthDetails)
         .then(res => res.json())
         .catch(error => console.error("Error:", error))
-      console.log('token', result)
+      console.log('access_token', result)
 
       if(!!result.access_token){
         localStorage.setItem(AUTH_TOKEN, result.access_token)
