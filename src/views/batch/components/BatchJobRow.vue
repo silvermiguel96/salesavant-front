@@ -4,7 +4,7 @@
       <div>
         <router-link
           :to="`/playlists/${additionalDataParsed.playlist_uid}/companies`"
-        >{{ additionalDataParsed.playlist_name }}</router-link>
+        >{{ jobSubtitle }}</router-link>
       </div>
       <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
     </td>
@@ -53,7 +53,14 @@ export default {
           return "Export Companies";
         case "refresh_news":
           return "Refresh News";
+        case "refresh_news":
+          return "Refresh News";
+        case "contact_finder":
+          return "Contact Finder";
+        case "linkedin_finder":
+          return "LinkedIn Finder";
       }
+      return jobType;
     }
   },
   props: {
@@ -63,6 +70,15 @@ export default {
     additionalDataParsed: function() {
       if (!!this.job && !!this.job.additionalData) {
         return JSON.parse(this.job.additionalData);
+      }
+      return "";
+    },
+    jobSubtitle: function() {
+      if (this.additionalDataParsed.hasOwnProperty("playlist_name")) {
+        return this.additionalDataParsed.playlist_name;
+      }
+      if (this.additionalDataParsed.hasOwnProperty("original_filename")) {
+        return this.additionalDataParsed.original_filename;
       }
       return "";
     }
