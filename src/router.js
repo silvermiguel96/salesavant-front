@@ -8,13 +8,14 @@ import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 import News from "./views/news/News.vue";
 import BatchJobs from "./views/batch/BatchJobs.vue";
+import LaunchJob from "./views/batch/LaunchJob.vue";
 import SingleNews from "./views/news/components/SingleNews.vue";
 import PlaylistAdvanced from "./views/playlists/components/PlaylistAdvanced.vue";
 import Login from "./views/Login.vue";
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
-import Upload from "./components/upload/Upload.vue"
-import { AUTH_TOKEN } from "./vue-apollo";
+
+import { AUTH_TOKEN } from "./util";
 
 Vue.use(Router);
 
@@ -136,9 +137,9 @@ const router = new Router({
       }
     },
     {
-      path: "/upload",
-      name: "Upload",
-      component: Upload,
+      path: "/launch-job",
+      name: "launch-job",
+      component: LaunchJob,
       meta: {
         requiresAuth: true
       }

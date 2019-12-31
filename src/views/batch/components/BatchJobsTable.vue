@@ -54,24 +54,11 @@ export default {
       let HumanDate = time.split(".", 1).toString();
       let HumanTime = HumanDate.split("T", 2).join(" ");
       return HumanTime;
-    },
-    getJobName(jobType){
-      switch(jobType){
-        case "extract_keywords": return "Extract Keywords";
-        case "refresh_orb": return "Refresh ORB";
-        case "export_companies": return "Export Companies";
-        case "refresh_news": return "Refresh News";
-      }
     }
   },
   props: {
     items: Array,
     totalResults: Number
-  },
-  computed:{
-    additionalDataParsed: function(){
-
-    }
   },
   components:{
     JobRow
