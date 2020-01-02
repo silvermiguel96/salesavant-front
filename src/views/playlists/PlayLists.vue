@@ -6,7 +6,7 @@
         :items="[
           {
             text: 'Playlists',
-            disabled: false,
+            disabled: true,
             href: '/playlists'
           }
       ]"
