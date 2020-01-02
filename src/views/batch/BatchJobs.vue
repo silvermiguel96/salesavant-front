@@ -23,6 +23,15 @@
               @change="onSearch"
             ></v-text-field>
           </v-col>
+          <v-col cols="12" md="8">
+            <div class="d-flex justify-md-end">
+              <div class="mt-3 mr-2">
+                <v-btn class="text-capitalize"  color="primary"  min-width="150" to="/launch-job">
+                  <v-icon size="18" class="mr-2">add</v-icon>new job
+                </v-btn>
+              </div>
+            </div>
+          </v-col>
         </v-row>
       </v-container>
       <div>
