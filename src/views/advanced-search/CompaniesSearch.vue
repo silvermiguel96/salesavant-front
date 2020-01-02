@@ -78,7 +78,7 @@
         </v-row>
         <v-row wrap>
           <v-col cols="12">
-            <signals-autocomplete @change="onSignalsAutocompleteChange" />
+            <signals-autocomplete-multi @change="onSignalsAutocompleteChange" />
           </v-col>
         </v-row>
         <v-row wrap>
@@ -104,7 +104,7 @@ import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import PlaylistsAutocomplete from "../../components/playlists/PlaylistAutocomplete.vue";
-import SignalsAutocomplete from "../../components/signals/SignalsAutocomplete.vue";
+import SignalsAutocompleteMulti from "../../components/signals/SignalsAutocompleteMulti.vue";
 import SignalsGroupsAutocomplete from "../../components/signals/GroupsAutocomplete.vue";
 import {defaultCompanySearch} from "../../store";
 import { mapMutations } from "vuex";
@@ -145,7 +145,7 @@ export default {
   },
   components: {
     PlaylistsAutocomplete,
-    SignalsAutocomplete,
+    SignalsAutocompleteMulti,
     SignalsGroupsAutocomplete
   },
 };

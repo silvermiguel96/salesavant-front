@@ -9,9 +9,16 @@
       :search-input.sync="search"
       label="Select Signal"
       @change="change"
+      outlined
       cache-items
+      dense
+      chips
+      small-chips
+      deletable-chips
+      multiple
       hide-no-data
       hide-details
+      clearable
     ></v-autocomplete>
   </div>
 </template>
@@ -23,8 +30,8 @@ export default {
     return {
       loading: false,
       search: "",
-      signals:[],
-      select: "",
+      signals: [],
+      select: [],
       nameLimit: 30
     };
   },
@@ -42,10 +49,6 @@ export default {
   },
   watch: {
     search(val) {
-      this.$emit("onSearch", {
-        currentSignalSearch: val
-      });
-
       if (this.signals.length > 0) return;
 
       if (this.loading) return;
@@ -93,8 +96,14 @@ export default {
     },
     change(v) {
       if (v && v.length>0){
-        let idSplit = v.split(">>>");
-        this.$emit("change", { signalId: parseInt(idSplit[0]) });
+        let signals = [];
+        let displaySignals = [];
+        v.forEach(s => {
+          let idSplit = v.split(">>>");
+          signals.push(parseInt(idSplit[0]));
+          displaySignals.push(idSplit[1]);
+        });
+        this.$emit("change", { signals, displaySignals });
       }else{
         this.$emit("change", {});  
       }

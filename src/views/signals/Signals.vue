@@ -50,27 +50,6 @@
               this.advancedSearch.searchType == 'signals'
           "
         >
-          <v-container fluid class="mx-1">
-            <v-row no-gutters>
-              <v-col cols="12">
-                <div class="mt-6">
-                  <span class="ml-2">Filtering by: </span>
-                  <v-chip
-                    v-for="(value, key) in signalSearchFilters"
-                    :key="key"
-                    class="mx-1 text-capitalize"
-                    style="padding: 0 8px;"
-                    color="blue-grey"
-                    @click:close="removeFilter(key)"
-                    outlined
-                    close
-                    small
-                    ><strong>{{ key }}:&nbsp;</strong>{{ value }}</v-chip
-                  >
-                </div>
-              </v-col>
-            </v-row>
-          </v-container>
           <ApolloQuery
             :query="require('./graphql/SearchsSignals.gql')"
             :variables="{
@@ -151,8 +130,7 @@
 import SignalsTable from "./components/SignalsTable.vue";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
-import _pickby from "lodash.pickby";
-import { mapMutations, defaultSignalSearch } from "../../store";
+import { mapMutations } from "../../store";
 
 export default {
   data() {
@@ -169,9 +147,6 @@ export default {
   },
   components: { SignalsTable },
   methods: {
-    removeFilter(key){
-      this.$store.commit('doSignalsSearch', {...this.$store.state.advancedSearch.signalSearch, [key]: defaultSignalSearch[key]})
-    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -218,14 +193,6 @@ export default {
   },
   props: {
     showSearch: { type: Boolean, default: false }
-  },
-  computed: {
-    advancedSearch() {
-      return this.$store.state.advancedSearch;
-    },
-    signalSearchFilters(){
-      return _pickby(this.advancedSearch.signalSearch)
-    }
   }
 };
 </script>

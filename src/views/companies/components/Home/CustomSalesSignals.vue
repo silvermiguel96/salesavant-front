@@ -9,8 +9,8 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-actions default>
-      <v-icon large color="blue">info</v-icon>
-      <h2 class="headline font-weight-bold">Custome Score:</h2>
+      <v-icon color="blue">info</v-icon>
+      <h2 class="headline">Custome Score:</h2>
       <h2 class="headline mx-1">{{ company.totalScore || "--" }}</h2>
     </v-card-actions>
     <v-card-text>
@@ -23,7 +23,7 @@
         hide-default-footer
       >
         <template v-slot:items="props">
-          <td>{{ props.item.groupName || "[empty group name]" }}</td>
+          <td>{{ props.item.groupName || "--" }}</td>
           <td>{{ props.item.count }}</td>
           <td class="text-xs-right">{{ props.item.score }}</td>
         </template>
@@ -47,7 +47,7 @@
       >
         <template v-slot:item="{ item, headers }">
           <tr>
-            <td>{{ item.signal.group || "[empty group name]" }}</td>
+            <td>{{ item.signal.group || "--" }}</td>
             <td>
               <long-paragraph :text="item.signal.name " :maxLength="35"></long-paragraph>
             </td>
