@@ -77,12 +77,6 @@
       </h3>
     </v-card-text>
     <v-card-text>
-      <h3 class="caption font-weight-bold">
-        More key words:
-        <v-btn small color="info" :disabled="true">Analyze website</v-btn>
-      </h3>
-    </v-card-text>
-    <v-card-text>
       <h3 class="subtitle-2 font-weight-bold">
         City:
         <span class="caption">{{ company.city || "--" }}</span>
@@ -130,7 +124,7 @@
     </v-card-text>
     <v-card-text>
       <h3 class="subtitle-2 font-weight-bold">
-        Funding ???:
+        Funding:
         <span class="caption">--</span>
       </h3>
     </v-card-text>
