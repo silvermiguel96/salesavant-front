@@ -75,10 +75,16 @@ export default {
           })
           .then(resp => {
             if (!!resp.data && !!resp.data.signals) {
-              let signalGroupsSet = new Set(resp.data.signals.signalsList.map(signal =>{
-                return signal.group
-              }));
-              this.signalGroups = Array.from(signalGroupsSet);
+              let signalGroups = resp.data.signals.signalsList
+                .filter(signal =>{
+                  if (signal.group){
+                    return true;
+                  }
+                })
+                .map(signal =>{
+                  return signal.group;
+                });
+              this.signalGroups = Array.from(new Set(signalGroups));
             }
           });
         setTimeout(() => {
