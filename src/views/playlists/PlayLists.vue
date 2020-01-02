@@ -35,7 +35,7 @@
           sortBy: this.sortBy,
           sortOrder: this.sortOrder
         }"
-        :skip="search.length > 0 && search.length <= 2"
+        :skip="search.length > 0 && search.length < 2"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
@@ -76,14 +76,12 @@ export default {
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
-      isFiltered: false,
       search: ""
     };
   },
-  props: {
-    showSearch: { type: Boolean, default: false }
+  components: { 
+    PlayListsTable 
   },
-  components: { PlayListsTable },
   methods: {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

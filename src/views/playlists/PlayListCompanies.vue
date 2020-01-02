@@ -26,7 +26,7 @@
         </template>
       </v-breadcrumbs>
       <v-container fluid class="mx-1">
-        <v-row no-gutters>
+        <v-row no-gutters class="ml-2">
           <v-col cols="12" md="4">
             <v-text-field
               v-model="search"
@@ -38,13 +38,13 @@
           </v-col>
           <v-col cols="12" md="8">
             <div class="d-flex justify-md-end">
-              <div class="mt-2 mr-2">
+              <div class="mt-3 mr-2">
                 <v-btn class="text-capitalize" color="primary" outlined min-width="150" @click="createJob('export_companies')">
                   <v-icon size="18" class="mr-2">cloud_download</v-icon>
                   Export
                 </v-btn>
               </div>
-              <div class="mt-2 mr-2">
+              <div class="mt-3 mr-2">
                 <button-menu
                   :items="[
                     {
