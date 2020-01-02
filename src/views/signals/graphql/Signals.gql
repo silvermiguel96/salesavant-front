@@ -1,5 +1,5 @@
-query AllSignals($first: Int, $offset: Int) {
-  signals(first: $first offset: $offset) {
+query AllSignals($search: String, $first: Int, $offset: Int) {
+  signals(search: $search first: $first offset: $offset) {
     totalResults
     signalsList{
       id
