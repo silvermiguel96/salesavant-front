@@ -99,7 +99,7 @@ export default {
         let signals = [];
         let displaySignals = [];
         v.forEach(s => {
-          let idSplit = v.split(">>>");
+          let idSplit = s.split(">>>");
           signals.push(parseInt(idSplit[0]));
           displaySignals.push(idSplit[1]);
         });
