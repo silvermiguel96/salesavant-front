@@ -51,19 +51,6 @@
               <long-paragraph :text="item.signal.name " :maxLength="35"></long-paragraph>
             </td>
             <td>{{ item.score || "--" }}</td>
-            <td class="justify-center layout px-0">
-              <v-icon
-                small
-                color="red"
-                @click="
-                  deleteItem({
-                    item: item,
-                    signalId: item.signal.id
-                  })
-                "
-                >delete</v-icon
-              >
-            </td>
           </tr>
         </template>
       </v-data-table>
@@ -83,7 +70,7 @@ export default {
       },
       signalId: null,
       currentSignalSearch: null,
-      company: [],
+      company: "",
       signalGroupAggs: null,
       companySignals: null,
       snack: false,
@@ -91,54 +78,14 @@ export default {
       snackText: "",
       keywords: [],
       headersTable1: [
-        {
-          text: "Group",
-          value: "groupName",
-          sortable: true
-        },
-        {
-          text: "Total",
-          value: "count",
-          sortable: true
-        },
-        {
-          text: "Score",
-          value: "score",
-          sortable: true
-        }
+        { text: "Group", value: "groupName", sortable: true },
+        { text: "Total", value: "count", sortable: true },
+        { text: "Score", value: "score", sortable: true }
       ],
       headers: [
-        {
-          text: "Group",
-          value: "signal.group",
-          sortable: true
-        },
-        {
-          text: "Signal",
-          value: "signal.name",
-          sortable: true
-        },
-        {
-          text: "Score",
-          value: "score",
-          sortable: true
-        },
-        {
-          text: "Actions",
-          value: "name",
-          sortable: false
-        }
-      ],
-      desserts: [],
-      Hkeywords: [
-        {
-          text: "Keywords",
-          value: "ketwords"
-        },
-        {
-          text: "Score",
-          value: "score"
-        }
+        { text: "Group", value: "signal.group", sortable: true },
+        { text: "Signal", value: "signal.name", sortable: true },
+        { text: "Score", value: "score", sortable: true },
       ]
     };
   },
@@ -213,69 +160,11 @@ export default {
     this.initialize();
   },
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          group: "None",
-          signal: "High Momentum",
-          score: 1
-        },
-        {
-          group: "None",
-          signal: "High Momentum",
-          score: 2
-        }
-      ];
-    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
-    },
-    async deleteItem({ item = null, signalId = null }) {
-      try {
-        console.log({ item, signalId });
-        const index = this.companySignals.companySignalsList.indexOf(item);
-        const isConfirmed = confirm(
-          "Are you sure you want to delete this item?"
-        );
-        if (isConfirmed) {
-          const result = await this.$apollo.mutate({
-            mutation: gql`
-              mutation($signalId: Int!, $companyUid: String!) {
-                deleteCompanySignal(
-                  companyUid: $companyUid
-                  signalId: $signalId
-                ) {
-                  companySignal {
-                    id
-                  }
-                }
-              }
-            `,
-            // Parameters
-            variables: {
-              signalId,
-              companyUid: this.$route.params.companiesUid
-            }
-          });
-          console.log("result", result);
-          const companySignalId = _get(
-            result,
-            "data.deleteCompanySignal.companySignal.id",
-            null
-          );
-          this.companySignals.companySignalsList.splice(index, 1);
-          this.refreshData();
-        }
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText =
-          "Oops!! we did something wrong when removing the company - signal, please try again!!";
-        return;
-      }
     },
     onSignalAutoCompleteChange(signalResults) {
       this.signalId = _get(signalResults, "signalId", null);
@@ -475,8 +364,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.v-card__actions {
-  margin: 1em;
-}
-</style>

@@ -132,15 +132,15 @@
             <v-tab-item>
               <contact></contact>
             </v-tab-item>
-            <!-- Tab new signals -->
-            <v-tab>News</v-tab>
-            <v-tab-item>
-              <news />
-            </v-tab-item>
             <!-- Tab add to playlist -->
             <v-tab>Playlists</v-tab>
             <v-tab-item>
               <add-to-playlist></add-to-playlist>
+            </v-tab-item>
+            <!-- Tab new signals -->
+            <v-tab>News</v-tab>
+            <v-tab-item>
+              <news />
             </v-tab-item>
             <!-- Tab Analytics -->
             <v-tab>Analytics</v-tab>

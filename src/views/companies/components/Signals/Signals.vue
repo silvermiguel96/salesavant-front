@@ -1,35 +1,6 @@
 <template>
-  <v-card class="ma-3">
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
-    <v-card-title>
-      <h1 class="headline">Signals</h1>
-    </v-card-title>
-    <v-divider></v-divider>
-    <v-card-text>
-      <v-layout class="ma-2">
-        <v-flex xs11 md11 lg10>
-          <signals-autocomplete
-            :placeholder="'Add signal'"
-            @change="onSignalAutoCompleteChange"
-            @onSearch="onSignalAutoCompleteSearch"
-          />
-        </v-flex>
-        <v-flex d-flex align-end xs1 sm2 lg2>
-          <v-btn
-            class="text-capitalize mx-2"
-            small
-            @click="addSignalToCompany"
-            :disabled="!signalId && !currentSignalSearch"
-          >
-            <v-icon small>add</v-icon>Add
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </v-card-text>
-    <v-card-text>
+  <v-card>
+    <v-card-text class="mx-2">
       <v-data-table
         :headers="headers"
         :items="companySignals.companySignalsList"
@@ -39,7 +10,6 @@
           'items-per-page-options': [10, 20, 50]
         }"
         :options.sync="options"
-        class="mx-2"
         @updateOptions="updateOptions"
       >
         <template v-slot:item="{ item, headers }">
@@ -55,15 +25,48 @@
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
             <td>{{ item.signal.defaultScore || "0" }}</td>
+            <td class="justify-center layout px-0">
+              <v-icon
+                small
+                color="red"
+                @click="
+                  deleteItem({
+                    item: item,
+                    signalId: item.signal.id
+                  })
+                "
+                >delete</v-icon
+              >
+            </td>
           </tr>
         </template>
       </v-data-table>
+    </v-card-text>
+    <v-card-text class="mx-2">
+      <v-row>
+        <v-col md="9" xs="12">
+          <signals-autocomplete
+            :placeholder="'Add signal'"
+            @change="onSignalAutoCompleteChange"
+            @onSearch="onSignalAutoCompleteSearch"
+          />
+        </v-col>
+        <v-col md="3" xs="12">
+          <v-btn
+            color="primary"
+            class="text-capitalize mt-3"
+            @click="addSignalToCompany"
+            :disabled="!signalId && !currentSignalSearch"
+          >
+            <v-icon small>add</v-icon>Add Signal
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-
 import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import SignalsAutocomplete from "../../../../components/signals/SignalsAutocomplete.vue";
@@ -87,7 +90,8 @@ export default {
         { text: "Description", value: "description" },
         { text: "Group", value: "group" },
         { text: "Category", value: "category" },
-        { text: "Default Score", value: "defaultScore" }
+        { text: "Default Score", value: "defaultScore" },
+        { text: "Actions", value: "name", sortable: false }
       ]
     };
   },
@@ -352,7 +356,51 @@ export default {
         this.snackText = "Oops we did something wrong!!";
         console.log("error adding signal to company", error);
       }
-    }
+    },
+    async deleteItem({ item = null, signalId = null }) {
+      try {
+        console.log({ item, signalId });
+        const index = this.companySignals.companySignalsList.indexOf(item);
+        const isConfirmed = confirm(
+          "Are you sure you want to delete this item?"
+        );
+        if (isConfirmed) {
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation($signalId: Int!, $companyUid: String!) {
+                deleteCompanySignal(
+                  companyUid: $companyUid
+                  signalId: $signalId
+                ) {
+                  companySignal {
+                    id
+                  }
+                }
+              }
+            `,
+            // Parameters
+            variables: {
+              signalId,
+              companyUid: this.$route.params.companiesUid
+            }
+          });
+          console.log("result", result);
+          const companySignalId = _get(
+            result,
+            "data.deleteCompanySignal.companySignal.id",
+            null
+          );
+          this.companySignals.companySignalsList.splice(index, 1);
+          this.refreshData();
+        }
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText =
+          "Oops!! we did something wrong when removing the company - signal, please try again!!";
+        return;
+      }
+    },
   },
   components: {
     LongParagraph,
