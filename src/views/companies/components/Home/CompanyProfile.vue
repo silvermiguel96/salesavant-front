@@ -4,130 +4,317 @@
       <div class="headline">Profile</div>
     </v-card-title>
     <v-divider></v-divider>
-    <v-card-text>
-      <div class="subtitle-2 font-weight-bold">
-        Company:
-        <span class="caption">{{ company.name || "[empty name]" }}</span>
-      </div>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Momentum:
-        <span class="caption">{{ company.momentum || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Signals Score:
-        <span class="caption">{{ company.totalScore || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Total signals:
-        <span class="caption">{{ company.totalSignals || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Website keywords
-        <span class="caption">{{ company.website || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Vertical Groups:
-        <span class="caption">{{ company.vertical || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Industry:
-        <span class="caption">{{ company.industry || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Other Vertical ???:
-        <span class="caption">--</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Description:
-        <long-paragraph
-          class="caption text-justify"
-          :text="company.description"
-          :maxLength="100"
-        ></long-paragraph>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <td></td>
-      <h3 class="caption font-weight-bold">
-        Website:
-        <a
-          v-if="company.url"
-          :key="`news-external-link${company.url || ''}`"
-          :href="httpCompany"
-          target="_blank"
-          >{{ company.url }}</a
-        >
-        <span v-else>--</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        City:
-        <span class="caption">{{ company.city || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        State:
-        <span class="caption">{{ company.state || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Country:
-        <span class="caption">{{ company.country || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Num Employess:
-        <span class="caption">{{ company.numEmployees || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Status :
-        <span class="caption">{{ company.status || "--" }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        NAICS code :
-        <span class="caption" v-if="company.naics">{{
-          company.naics.code || "--"
-        }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        NAICS description :
-        <span class="caption" v-if="company.naics">{{
-          company.naics.description || "--"
-        }}</span>
-      </h3>
-    </v-card-text>
-    <v-card-text>
-      <h3 class="subtitle-2 font-weight-bold">
-        Funding:
-        <span class="caption">--</span>
-      </h3>
-    </v-card-text>
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Company</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.name || "[empty name]" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Company:</span>
+                <span class="body-2 float-right">{{ company.name || "[empty name]" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Website</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <a
+                v-if="company.url"
+                :key="`news-external-link${company.url || ''}`"
+                :href="httpCompany"
+                target="_blank"
+              >{{ company.url }}</a>
+              <span v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Website:</span>
+                <span class="body-2 float-right">
+                  <a
+                    v-if="company.url"
+                    :key="`news-external-link${company.url || ''}`"
+                    :href="httpCompany"
+                    target="_blank"
+                  >{{ company.url }}</a>
+                  <span v-else>--</span>
+                </span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Vertical Groups</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.vertical || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Vertical Groups:</span>
+                <span class="body-2 float-right">{{ company.vertical || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Industry</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.industry || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Industry:</span>
+                <span class="body-2 float-right">{{ company.industry || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Status</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.status || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Status:</span>
+                <span class="body-2 float-right">{{ company.status || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Momentum</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.momentum || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Momentum:</span>
+                <span class="body-2 float-right">{{ company.momentum || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Country</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.country || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Country:</span>
+                <span class="body-2 float-right">{{ company.country || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">State</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.state || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">State:</span>
+                <span class="body-2 float-right">{{ company.state || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">City</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.city || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">City:</span>
+                <span class="body-2 float-right">{{ company.city || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Employees</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2">{{ company.numEmployees || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Employees:</span>
+                <span class="body-2 float-right">{{ company.numEmployees || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">NAICS Code</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2" v-if="company.naics">{{ company.naics.code || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">NAICS Code:</span>
+                <span
+                  class="body-2 float-right"
+                  v-if="company.naics"
+                >{{ company.naics.code || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">NAICS Description:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="body-2" v-if="company.naics">{{ company.naics.description || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-sm-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Employees:</span>
+                <span
+                  class="body-2 float-right"
+                  v-if="company.naics"
+                >{{ company.naics.description || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-card-text>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <div class="subtitle-2 font-weight-medium">Description:</div>
+            </v-col>
+            <v-col cols="12">
+              <long-paragraph
+                class="body-2 text-justify"
+                :text="company.description"
+                :maxLength="100"
+              ></long-paragraph>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-card-text>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <div class="subtitle-2 font-weight-medium">Keywords:</div>
+            </v-col>
+            <v-col cols="12">
+              <long-paragraph class="body-2 text-justify" :text="company.website" :maxLength="100"></long-paragraph>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
