@@ -15,7 +15,7 @@
               <span class="body-2">{{ company.name || "[empty name]" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Company:</span>
@@ -41,7 +41,7 @@
               <span v-else>--</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Website:</span>
@@ -72,7 +72,7 @@
               <span class="body-2">{{ company.vertical || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Vertical Groups:</span>
@@ -92,7 +92,7 @@
               <span class="body-2">{{ company.industry || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Industry:</span>
@@ -115,7 +115,7 @@
               <span class="body-2">{{ company.status || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Status:</span>
@@ -135,7 +135,7 @@
               <span class="body-2">{{ company.momentum || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Momentum:</span>
@@ -158,7 +158,7 @@
               <span class="body-2">{{ company.country || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Country:</span>
@@ -178,7 +178,7 @@
               <span class="body-2">{{ company.state || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">State:</span>
@@ -201,7 +201,7 @@
               <span class="body-2">{{ company.city || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">City:</span>
@@ -221,7 +221,7 @@
               <span class="body-2">{{ company.numEmployees || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Employees:</span>
@@ -244,7 +244,7 @@
               <span class="body-2" v-if="company.naics">{{ company.naics.code || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">NAICS Code:</span>
@@ -267,7 +267,7 @@
               <span class="body-2" v-if="company.naics">{{ company.naics.description || "--" }}</span>
             </v-col>
           </v-row>
-          <v-row class="d-block d-sm-none" no-gutters>
+          <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Employees:</span>
