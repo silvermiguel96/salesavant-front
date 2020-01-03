@@ -12,10 +12,6 @@
             {
               text: playlist.name || $route.params.playlistUid,
               disabled: true
-            },
-            {
-              text: 'Advanced',
-              disabled: true
             }
           ]"
         divider=">"
@@ -24,48 +20,35 @@
           <v-breadcrumbs-item
             :href="props.item.href"
             :class="[props.item.disabled && 'disabled']"
-            @click.prevent="$router.push(props.item.href)"
-          >{{ props.item.text }}</v-breadcrumbs-item>
+            @click.prevent="$router.push(props.item.href)">
+            {{ props.item.text }}
+          </v-breadcrumbs-item>
         </template>
       </v-breadcrumbs>
       <v-tabs grow background-color="grey lighten-5" color="primary">
-        <!-- Tab Home -->
+        <!-- Tab Companies -->
         <v-tab>Companies</v-tab>
         <v-tab-item>
-          <v-row wrap>
-            <v-flex xs12 md5 class="ma-2">
-              <company-profile />
-            </v-flex>
-            <v-flex xs12 md6 class="ma-2">
-              <custom-sales-signals />
-            </v-flex>
-          </v-row>
+          <companies />
         </v-tab-item>
         <!-- tab signals -->
         <v-tab>Signals</v-tab>
         <v-tab-item>
-          <signals />
+          <div>
+            <h4>Coming soon</h4>
+          </div>
         </v-tab-item>
         <!-- Tab contacts -->
         <v-tab>Contacts</v-tab>
         <v-tab-item>
+          <div>
+            <h4>Coming soon</h4>
+          </div>
+        </v-tab-item>
+        <!-- Tab analytics -->
+        <v-tab>Analytics</v-tab>
+        <v-tab-item>
           <contact></contact>
-        </v-tab-item>
-        <!-- Tab new signals -->
-        <v-tab>News</v-tab>
-        <v-tab-item>
-          <news />
-        </v-tab-item>
-        <!-- Tab Analytics -->
-        <v-tab>Advanced</v-tab>
-        <v-tab-item>
-          <analytics></analytics>
-        </v-tab-item>
-        <!-- Tab add to playlist -->
-        <v-tab>Add to playlist</v-tab>
-        <!-- {{ JSON.stringify(data.company.playlists)}} -->
-        <v-tab-item>
-          <add-to-playlist></add-to-playlist>
         </v-tab-item>
       </v-tabs>
     </v-card>
@@ -75,10 +58,14 @@
 <script>
 import _get from "lodash.get";
 import gql from "graphql-tag";
+import Companies from "./components/Companies.vue";
 import { mapMutations } from "vuex";
 
+
 export default {
-  components: {},
+  components: {
+    Companies
+  },
   data() {
     return {
       name: "",

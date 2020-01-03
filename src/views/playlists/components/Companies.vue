@@ -1,40 +1,9 @@
 <template>
-  <v-container fluid>
+  <v-container class="pa-0" fluid>
     <v-card>
-      <v-breadcrumbs
-        :large="true"
-        :items="[
-            {
-              text: 'Playlists',
-              disabled: false,
-              href: '/playlists'
-            },
-            {
-              text: playlist.name || $route.params.playlistUid,
-              disabled: true
-            }
-          ]"
-        divider=">"
-      >
-        <template v-slot:item="props">
-          <v-breadcrumbs-item
-            :href="props.item.href"
-            :class="[props.item.disabled && 'disabled']"
-            @click.prevent="$router.push(props.item.href)">
-            {{ props.item.text }}
-          </v-breadcrumbs-item>
-        </template>
-      </v-breadcrumbs>
       <v-container fluid class="mx-1">
         <v-row no-gutters class="ml-2">
           <v-col cols="12" md="4">
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Filter"
-              single-line
-              hide-details
-            ></v-text-field>
           </v-col>
           <v-col cols="12" md="8">
             <div class="d-flex justify-md-end">
@@ -78,7 +47,7 @@
         </v-row>
       </v-container>
       <ApolloQuery
-        :query="require('./graphql/PlaylistCompanies.gql')"
+        :query="require('../graphql/PlaylistCompanies.gql')"
         :variables="{ 
           uid: $route.params.playlistUid, 
           first: this.itemsPerPage, 
@@ -112,8 +81,8 @@
 </template>
 
 <script>
-import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import ButtonMenu from "../../components/common/ButtonMenu";
+import CompaniesTable from "../../../components/companies/CompaniesTable.vue";
+import ButtonMenu from "../../../components/common/ButtonMenu";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 import { mapMutations } from "vuex";
@@ -131,7 +100,6 @@ export default {
       itemsPerPage: 10,
       sortBy: "",
       sortOrder: "",
-      search:"",
       isLoading: false,
       playlist: {
         uid: "",
