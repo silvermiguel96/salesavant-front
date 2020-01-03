@@ -159,9 +159,6 @@ export default {
   components: {
     LongParagraph
   },
-  created() {
-    this.initialize();
-  },
   methods: {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

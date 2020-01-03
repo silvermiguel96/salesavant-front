@@ -122,6 +122,11 @@
               </v-row>
               </v-container>
             </v-tab-item>
+            <!-- tab comments -->
+            <v-tab>Comments</v-tab>
+            <v-tab-item>
+              <company-comments />
+            </v-tab-item>
             <!-- tab signals -->
             <v-tab>Signals</v-tab>
             <v-tab-item>
