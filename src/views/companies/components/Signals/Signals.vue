@@ -24,7 +24,7 @@
             </td>
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
-            <td>{{ item.signal.defaultScore || "0" }}</td>
+            <td>{{ item.score || "0" }}</td>
             <td class="justify-center layout px-0">
               <v-icon
                 small
@@ -86,42 +86,19 @@ export default {
       currentSignalSearch: null,
       descending: false,
       headers: [
-        { text: "Name", value: "name" },
-        { text: "Description", value: "description" },
-        { text: "Group", value: "group" },
-        { text: "Category", value: "category" },
-        { text: "Default Score", value: "defaultScore" },
-        { text: "Actions", value: "name", sortable: false }
+        { text: "Name"},
+        { text: "Description"},
+        { text: "Group"},
+        { text: "Category"},
+        { text: "Score"},
+        { text: "Actions", sortable: false }
       ]
     };
   },
   apollo: {
-    company: {
-      query: gql`
-        query getSingleCompany($uid: String) {
-          company(uid: $uid) {
-            uid
-            name
-            totalScore
-            totalSignals
-            signalGroupAggs {
-              count
-              score
-              groupName
-            }
-          }
-        }
-      `,
-      variables() {
-        return {
-          uid: this.$route.params.companiesUid
-        };
-      },
-      fetchPolicy: "no-cache"
-    },
     companySignals: {
       query: gql`
-        query searchCompanyPlaylist(
+        query searchCompanySignals(
           $companyUid: String
           $first: Int
           $offset: Int
@@ -151,9 +128,7 @@ export default {
         return {
           companyUid: this.$route.params.companiesUid,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
