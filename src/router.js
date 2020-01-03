@@ -2,7 +2,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/dashboard/Dashboard.vue";
-import PlayLists from "./views/playlists/PlayLists.vue";
+import Playlists from "./views/playlists/Playlists.vue";
 import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
@@ -51,7 +51,7 @@ const router = new Router({
     {
       path: "/playlists",
       name: "playlists",
-      component: PlayLists,
+      component: Playlists,
       meta: {
         requiresAuth: true
       }
