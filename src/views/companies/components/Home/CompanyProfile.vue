@@ -1,8 +1,8 @@
 <template>
-  <v-card v-if="company">
-    <v-card-title>
+  <v-card v-if="company" style="height:100%;">
+    <v-card-subtitle>
       <div class="headline">Profile</div>
-    </v-card-title>
+    </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
       <v-col cols="12" md="6">
@@ -286,10 +286,10 @@
       <v-col cols="12">
         <v-card-text>
           <v-row no-gutters>
-            <v-col cols="12">
+            <v-col cols="12" >
               <div class="subtitle-2 font-weight-medium">Description:</div>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" class="pr-2">
               <long-paragraph
                 class="body-2 text-justify"
                 :text="company.description"
@@ -308,8 +308,8 @@
             <v-col cols="12">
               <div class="subtitle-2 font-weight-medium">Keywords:</div>
             </v-col>
-            <v-col cols="12">
-              <long-paragraph class="body-2 text-justify" :text="company.website" :maxLength="100"></long-paragraph>
+            <v-col cols="12" class="pr-2">
+              <long-paragraph class="body-2 text-justify" :text="company.description" :maxLength="100"></long-paragraph>
             </v-col>
           </v-row>
         </v-card-text>
