@@ -109,16 +109,18 @@
           <!-- {{ JSON.stringify(data.company) }} -->
           <v-tabs grow background-color="grey lighten-5" color="primary">
             <!-- Tab Home -->
-            <v-tab>Home</v-tab>
+            <v-tab>Summary</v-tab>
             <v-tab-item>
-              <v-layout wrap justify-space-around class="mt-3">
-                <v-flex xs12 md5 class="ma-2">
+              <v-container fluid>
+              <v-row>
+                <v-col md="6" xs="12" class="pt-0">
                   <company-profile />
-                </v-flex>
-                <v-flex xs12 md6 class="ma-2">
-                  <custom-sales-signals />
-                </v-flex>
-              </v-layout>
+                </v-col>
+                <v-col md="6" xs="12" class="pt-0">
+                  <company-signals />
+                </v-col>
+              </v-row>
+              </v-container>
             </v-tab-item>
             <!-- tab signals -->
             <v-tab>Signals</v-tab>
@@ -135,16 +137,15 @@
             <v-tab-item>
               <news />
             </v-tab-item>
+            <!-- Tab add to playlist -->
+            <v-tab>Playlists</v-tab>
+            <v-tab-item>
+              <add-to-playlist></add-to-playlist>
+            </v-tab-item>
             <!-- Tab Analytics -->
             <v-tab>Analytics</v-tab>
             <v-tab-item>
               <analytics></analytics>
-            </v-tab-item>
-            <!-- Tab add to playlist -->
-            <v-tab>Add to playlist</v-tab>
-            <!-- {{ JSON.stringify(data.company.playlists)}} -->
-            <v-tab-item>
-              <add-to-playlist></add-to-playlist>
             </v-tab-item>
           </v-tabs>
         </div>
@@ -159,7 +160,7 @@
 <script>
 // Home
 import CompanyProfile from "./components/Home/CompanyProfile.vue";
-import CustomSalesSignals from "./components/Home/CustomSalesSignals.vue";
+import CompanySignals from "./components/Home/CompanySignals.vue";
 // News
 import News from "./components/News/News.vue";
 // Signals
@@ -176,7 +177,7 @@ export default {
   },
   components: {
     CompanyProfile,
-    CustomSalesSignals,
+    CompanySignals,
     News,
     Signals,
     Contact,
