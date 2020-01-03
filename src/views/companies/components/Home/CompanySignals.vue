@@ -18,42 +18,45 @@
 
     <v-card-text>
       <!-- The first table -->
-      <div class="title">Groups</div>
-      <v-data-table
-        v-if="company && company.signalGroupAggs"
-        :headers="headersTable1"
-        :items="company.signalGroupAggs"
-        dense
-        hide-default-footer
-      >
-        <template v-slot:items="props">
-          <td>{{ props.item.groupName || "--" }}</td>
-          <td>{{ props.item.count }}</td>
-          <td class="text-xs-right">{{ props.item.score }}</td>
-        </template>
-      </v-data-table>
-
-      <v-divider></v-divider>
+      <div>
+        <div class="title">Groups</div>
+        <v-data-table
+          v-if="company && company.signalGroupAggs"
+          :headers="headersTable1"
+          :items="company.signalGroupAggs"
+          dense
+          hide-default-footer
+        >
+          <template v-slot:items="props">
+            <td>{{ props.item.groupName || "--" }}</td>
+            <td>{{ props.item.count }}</td>
+            <td class="text-xs-right">{{ props.item.score }}</td>
+          </template>
+        </v-data-table>
+      </div>
 
       <!-- Second Table -->
-      <div class="title mt-4">Signals</div>
-      <v-data-table
-        v-if="companySignals"
-        :headers="headers"
-        :items="companySignals.companySignalsList"
-        dense
-        hide-default-footer
-      >
-        <template v-slot:item="{ item, headers }">
-          <tr>
-            <td>{{ item.signal.group || "--" }}</td>
-            <td>
-              <long-paragraph :text="item.signal.name " :maxLength="35"></long-paragraph>
-            </td>
-            <td>{{ item.score || "--" }}</td>
-          </tr>
-        </template>
-      </v-data-table>
+      <div class="mt-8">
+        <div class="title">Signals</div>
+        <v-data-table
+          v-if="companySignals"
+          :headers="headers"
+          :items="companySignals.companySignalsList"
+          dense
+          hide-default-footer
+        >
+          <template v-slot:item="{ item, headers }">
+            <tr>
+              <td>{{ item.signal.group || "--" }}</td>
+              <td>
+                <long-paragraph :text="item.signal.name " :maxLength="35"></long-paragraph>
+              </td>
+              <td>{{ item.score || "--" }}</td>
+            </tr>
+          </template>
+        </v-data-table>
+      </div>
+      
     </v-card-text>
   </v-card>
 </template>
