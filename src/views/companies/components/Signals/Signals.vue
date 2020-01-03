@@ -1,6 +1,28 @@
 <template>
   <v-card>
     <v-card-text class="mx-2">
+      <v-row>
+        <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
+          <signals-autocomplete
+            :placeholder="'Add signal'"
+            @change="onSignalAutoCompleteChange"
+            @onSearch="onSignalAutoCompleteSearch"
+          />
+        </v-col>
+        <v-col xl="1" lg="2" md="2" xs="12" sm="3" cols="12">
+          <v-btn
+            color="primary"
+            block
+            class="text-capitalize mt-3"
+            @click="addSignalToCompany"
+            :disabled="!signalId && !currentSignalSearch"
+          >
+            <v-icon small>add</v-icon>Add Signal
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card-text>
+    <v-card-text class="mx-2">
       <v-data-table
         :headers="headers"
         :items="companySignals.companySignalsList"
@@ -35,33 +57,11 @@
                     signalId: item.signal.id
                   })
                 "
-                >delete</v-icon
-              >
+              >delete</v-icon>
             </td>
           </tr>
         </template>
       </v-data-table>
-    </v-card-text>
-    <v-card-text class="mx-2">
-      <v-row>
-        <v-col md="9" xs="12">
-          <signals-autocomplete
-            :placeholder="'Add signal'"
-            @change="onSignalAutoCompleteChange"
-            @onSearch="onSignalAutoCompleteSearch"
-          />
-        </v-col>
-        <v-col md="3" xs="12">
-          <v-btn
-            color="primary"
-            class="text-capitalize mt-3"
-            @click="addSignalToCompany"
-            :disabled="!signalId && !currentSignalSearch"
-          >
-            <v-icon small>add</v-icon>Add Signal
-          </v-btn>
-        </v-col>
-      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -86,11 +86,11 @@ export default {
       currentSignalSearch: null,
       descending: false,
       headers: [
-        { text: "Name"},
-        { text: "Description"},
-        { text: "Group"},
-        { text: "Category"},
-        { text: "Score"},
+        { text: "Name" },
+        { text: "Description" },
+        { text: "Group" },
+        { text: "Category" },
+        { text: "Score" },
         { text: "Actions", sortable: false }
       ]
     };
@@ -128,7 +128,9 @@ export default {
         return {
           companyUid: this.$route.params.companiesUid,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
@@ -375,7 +377,7 @@ export default {
           "Oops!! we did something wrong when removing the company - signal, please try again!!";
         return;
       }
-    },
+    }
   },
   components: {
     LongParagraph,

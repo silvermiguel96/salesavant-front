@@ -1,35 +1,31 @@
 <template>
   <v-card class="ma-3">
-    <v-card-title>
-      <h1 class="headline">Playlists</h1>
-    </v-card-title>
-    <v-divider></v-divider>
     <v-card-text>
-      <v-layout d-flex class="m-1">
-        <v-flex xs10 md11 lg11>
+      <v-row>
+        <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
           <playlists-autocomplete
             @change="onPlaylistAutoCompleteChange"
             @onSearch="onSignalAutoCompleteSearch"
           />
-        </v-flex>
-        <v-flex d-flex align-end xs2 sm1 lg1>
+        </v-col>
+        <v-col xl="1" lg="2" md="2" xs="12" sm="3" cols="12">
           <v-btn
+            color="primary"
+            block
+            class="text-capitalize mt-3"
             @click="addPlaylistToCompany"
-            small
             :disabled="!playlistUid && !currentPlaylistSearch"
-            class="mx-2"
           >
-            <v-icon small>add</v-icon>Add
+            <v-icon small>add</v-icon>Add to playlist
           </v-btn>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-card-text>
     <v-card-text>
       <v-data-table
         :headers="headers"
         :items="companyPlaylists.companyPlaylistsList"
         :server-items-length="companyPlaylists.totalResults"
-        class="elevation-1 mx-2"
         :items-per-page="options.itemsPerPage"
         :footer-props="{
           'items-per-page-options': [10, 20, 50]
@@ -40,17 +36,22 @@
         <template v-slot:item="{ item, headers }">
           <tr>
             <td>
-              <router-link :to="`/playlists/${item.uid}/companies`">{{
+              <router-link :to="`/playlists/${item.uid}/companies`">
+                {{
                 item.name || "--"
-              }}</router-link>
+                }}
+              </router-link>
             </td>
             <td>
-              <v-icon
+              <a
                 @click="deleteCompanyPlaylist(item.uid)"
-                color="red lighten-2"
-                size="20"
-                >delete</v-icon
+                class="red--text text-capitalize"
               >
+                 Remove from playlist
+              </a>
+              <!-- <v-icon
+                size="20"
+              >delete</v-icon> -->
             </td>
           </tr>
         </template>
@@ -113,7 +114,7 @@ export default {
       `,
       variables() {
         return {
-          companyUid: this.$route.params.companiesUid ,
+          companyUid: this.$route.params.companiesUid,
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
