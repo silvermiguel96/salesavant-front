@@ -26,7 +26,6 @@
         :headers="headers"
         :items="companyPlaylists.companyPlaylistsList"
         :server-items-length="companyPlaylists.totalResults"
-        class="elevation-1 mx-2"
         :items-per-page="options.itemsPerPage"
         :footer-props="{
           'items-per-page-options': [10, 20, 50]
