@@ -166,22 +166,26 @@
 // Home
 import CompanyProfile from "./components/Home/CompanyProfile.vue";
 import CompanySignals from "./components/Home/CompanySignals.vue";
-// News
-import News from "./components/News/News.vue";
+// Comments
+import CompanyComments from "./components/comments/comments.vue";
 // Signals
 import Signals from "./components/Signals/Signals.vue";
 // Contacts
 import Contact from "./components/Contact/Contact.vue";
-// Analytics
-import Analytics from "./components/Analytics/Analytics.vue";
 // Add To Playlist
 import AddToPlaylist from "./components/Add-to-playlist/AddToPlaylist.vue";
+// News
+import News from "./components/News/News.vue";
+// Analytics
+import Analytics from "./components/Analytics/Analytics.vue";
+
 export default {
   data() {
     return {};
   },
   components: {
     CompanyProfile,
+    CompanyComments,
     CompanySignals,
     News,
     Signals,
