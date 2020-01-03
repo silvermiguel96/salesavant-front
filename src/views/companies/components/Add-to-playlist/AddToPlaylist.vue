@@ -45,13 +45,11 @@
             <td>
               <a
                 @click="deleteCompanyPlaylist(item.uid)"
-                class="red--text text-capitalize"
-              >
-                 Remove from playlist
-              </a>
+                class="blue--text text-capitalize"
+              >Remove from playlist</a>
               <!-- <v-icon
                 size="20"
-              >delete</v-icon> -->
+              >delete</v-icon>-->
             </td>
           </tr>
         </template>
@@ -83,8 +81,8 @@ export default {
       descending: false,
       sortBy: "",
       headers: [
-        { text: "Name", value: "name" },
-        { text: "Delete", value: "action" }
+        { text: "Name", value: "name", sortable: false },
+        { text: "Remove", value: "action", sortable: false }
       ]
     };
   },
