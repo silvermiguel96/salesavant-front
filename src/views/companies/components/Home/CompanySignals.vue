@@ -6,7 +6,7 @@
             <div class="d-inline-block float-left">
               <span class="headline">Sales Signals Summary</span>
             </div>
-            <div class="d-inline-block float-right">
+            <div class="d-inline-block float-md-right">
               <v-icon color="blue" style="margin-top:-8px;">check_circle</v-icon>
               <span class="headline">Total Score: </span>
               <span class="headline">{{ company.totalScore || "--" }}</span>
