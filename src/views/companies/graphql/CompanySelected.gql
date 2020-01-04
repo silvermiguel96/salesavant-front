@@ -1,5 +1,5 @@
-query SelecteCompany($company: String){
-  company(uid: $company){
+query SelecteCompany($companyUid: String){
+  company(uid: $companyUid){
     creationTime
     modificationTime
     uid
