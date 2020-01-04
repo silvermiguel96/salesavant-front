@@ -23,7 +23,7 @@
           <p >Coming soon</p>
         </td>
         <td>
-          <p >Coming soon</p>
+          <p>Coming soon</p>
         </td>
       </tr>
     </template>
