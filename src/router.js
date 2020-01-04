@@ -14,8 +14,7 @@ import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 
 import News from "./views/news/News.vue";
-import SingleNews from "./views/news/components/SingleNews.vue";
-
+import Contants from "./views/contacts/Contacts.vue";
 import BatchJobs from "./views/batch/BatchJobs.vue";
 import LaunchJob from "./views/batch/LaunchJob.vue";
 
@@ -61,9 +60,9 @@ const router = new Router({
       }
     },
     {
-      path: "/playlists",
-      name: "playlists",
-      component: Playlists,
+      path: "/contants",
+      name: "contants",
+      component: Contants,
       meta: {
         requiresAuth: true
       }
@@ -112,14 +111,6 @@ const router = new Router({
       path: "/news",
       name: "news",
       component: News,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/news/:newsId",
-      name: "oneNews",
-      component: SingleNews,
       meta: {
         requiresAuth: true
       }
