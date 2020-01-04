@@ -29,13 +29,6 @@
                       callback: () => {
                         this.createJob('extract_keywords');
                       }
-                    },
-                    {
-                      title: 'Contacts',
-                      icon: 'update',
-                      callback: () => {
-                        this.createJob('ContactsRefresh');
-                      }
                     }
                   ]"
                 >
