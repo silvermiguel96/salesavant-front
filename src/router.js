@@ -1,19 +1,23 @@
 /* eslint-disable no-extra-boolean-cast */
 import Vue from "vue";
 import Router from "vue-router";
+import Login from "./views/Login.vue";
 import Home from "./views/dashboard/Dashboard.vue";
-import Playlists from "./views/playlists/PlayLists.vue";
-import PlayListCompanies from "./views/playlists/PlayListCompanies.vue";
+
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
-import News from "./views/news/News.vue";
-import BatchJobs from "./views/batch/BatchJobs.vue";
-import LaunchJob from "./views/batch/LaunchJob.vue";
-import SingleNews from "./views/news/components/SingleNews.vue";
-import PlaylistAdvanced from "./views/playlists/components/PlaylistAdvanced.vue";
-import Login from "./views/Login.vue";
+
+import Playlists from "./views/playlists/Playlists.vue";
+import Playlist from "./views/playlists/Playlist.vue";
+
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
+
+import News from "./views/news/News.vue";
+import SingleNews from "./views/news/components/SingleNews.vue";
+
+import BatchJobs from "./views/batch/BatchJobs.vue";
+import LaunchJob from "./views/batch/LaunchJob.vue";
 
 import { AUTH_TOKEN } from "./util";
 
@@ -41,49 +45,9 @@ const router = new Router({
       }
     },
     {
-      path: "/batch",
-      name: "batch",
-      component: BatchJobs,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/playlists",
-      name: "playlists",
-      component: Playlists,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/playlists/:playlistUid/companies",
-      name: "playlist-companies",
-      component: PlayListCompanies,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
       path: "/companies",
       name: "companies",
       component: Companies,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/news",
-      name: "news",
-      component: News,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/news/:newsId",
-      name: "oneNews",
-      component: SingleNews,
       meta: {
         requiresAuth: true
       }
@@ -97,17 +61,25 @@ const router = new Router({
       }
     },
     {
-      path: "/playlists/:playlistId/companies/:companiesUid",
-      name: "playlist-company",
-      component: Company,
+      path: "/playlists",
+      name: "playlists",
+      component: Playlists,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: "/advanced/:playlistId",
-      name: "advanced",
-      component: PlaylistAdvanced,
+      path: "/playlists/:playlistUid",
+      name: "playlist",
+      component: Playlist,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/playlists/:playlistId/companies/:companiesUid",
+      name: "playlist-company",
+      component: Company,
       meta: {
         requiresAuth: true
       }
@@ -132,6 +104,30 @@ const router = new Router({
       path: "/signals/:signalId",
       name: "signal",
       component: Signal,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/news",
+      name: "news",
+      component: News,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/news/:newsId",
+      name: "oneNews",
+      component: SingleNews,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/batch",
+      name: "batch",
+      component: BatchJobs,
       meta: {
         requiresAuth: true
       }

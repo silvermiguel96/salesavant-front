@@ -15,18 +15,15 @@
     <template v-slot:item="{ item, headers }">
       <tr>
         <td>
-          <router-link :to="`playlists/${item.uid}/companies`">{{item.name}}</router-link>
+          <router-link :to="`playlists/${item.uid}`">{{item.name}}</router-link>
         </td>
         <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
         <td>{{ changeTimeHuman(item.creationTime) }}</td>
         <td>
-          <router-link :to="`/advanced/${item.uid}`">Advanced</router-link>
-        </td>
-        <td>
           <p >Coming soon</p>
         </td>
         <td>
-          <p >Coming soon</p>
+          <p>Coming soon</p>
         </td>
       </tr>
     </template>
@@ -41,7 +38,6 @@ export default {
         { text: "Name", value: "name", width: "40%", sortable: true },
         { text: "Size", value: "totalCompanies", width: "10%", sortable: true },
         { text: "Creation Time", value: "creationTime", width: "16%", sortable: false},
-        { text: "Advanced", value: "advanced", width: "8%", sortable: false },
         { text: "Favorite", value: "favorite", width: "8%", sortable: false },
         { text: "Remove", width: "8%", sortable: false }
       ],
