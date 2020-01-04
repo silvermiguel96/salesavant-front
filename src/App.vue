@@ -11,7 +11,7 @@
         v-model="showSearchDialog"
         :expand="expand"
       ></advanced-search>
-      <router-view @createJob="createJob" @showSnack="showSnack"></router-view>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
@@ -48,6 +48,9 @@ export default {
       this.$store.commit("hideSearchDialog");
       console.log("AUTH_TOKEN", AUTH_TOKEN);
     }
+    this.$eventBus.$on("createJob", this.createJob);
+    this.$eventBus.$on("showSnack", this.showSnack);
+    this.$eventBus.$on("hideSnack", this.hideSnack);
   },
   methods: {
     ...mapMutations([

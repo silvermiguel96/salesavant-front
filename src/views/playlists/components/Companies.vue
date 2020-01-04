@@ -154,14 +154,14 @@ export default {
       }
     },
     createJob(jobType) {
-      this.$emit("createJob", {
+      this.$eventBus.$emit("createJob", {
         jobType: jobType,
         additionalData: { 
           playlist_uid: this.playlist.uid,
           playlist_name: this.playlist.name
         }
       });
-      this.$emit("showSnack",`Job ${jobType} enqueed successfully`,"success");
+      this.$eventBus.$emit("showSnack", `Job ${jobType} enqueed successfully`, "success");
     }
   },
   beforeCreate() {
