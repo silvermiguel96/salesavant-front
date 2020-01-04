@@ -48,10 +48,10 @@ export default {
       currentSignalSearch: null,
       descending: false,
       headers: [
-        { text: "Comment"},
-        { text: "User"},
-        { text: "Creation Time"},
-        { text: "Actions"}
+        { text: "Comment", sortable: false},
+        { text: "User",sortable: false},
+        { text: "Creation Time", sortable: false},
+        { text: "Actions", sortable: false}
       ]
     };
   },

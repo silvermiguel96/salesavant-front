@@ -86,11 +86,11 @@ export default {
       currentSignalSearch: null,
       descending: false,
       headers: [
-        { text: "Name" },
-        { text: "Description" },
-        { text: "Group" },
-        { text: "Category" },
-        { text: "Score" },
+        { text: "Name", sortable: false },
+        { text: "Description", sortable: false },
+        { text: "Group", sortable: false },
+        { text: "Category",sortable: false },
+        { text: "Score",sortable: false },
         { text: "Actions", sortable: false }
       ]
     };
