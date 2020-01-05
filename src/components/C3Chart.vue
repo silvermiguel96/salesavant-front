@@ -1,5 +1,5 @@
 <template>
-  <div ref="root" class="chart-root" style="max-height:240px;"></div>
+  <div ref="root" class="chart-root"></div>
 </template>
 
 <script>
@@ -26,11 +26,6 @@ export default {
       const config = this.getConfig()
       return defaultsDeep({ data }, config)
     },
-    getData () {
-      const { type } = this
-      const data = cloneDeep(this.data)
-      return defaultsDeep({ type }, data)
-    },
     getConfig () {
       const config = cloneDeep(this.config)
       const color = {
@@ -53,8 +48,12 @@ export default {
           }
         }
       }
-
       return defaultsDeep({ axis, color }, config)
+    },
+    getData () {
+      const { type } = this
+      const data = cloneDeep(this.data)
+      return defaultsDeep({ type }, data)
     },
     update: debounce(function update () {
       const data = this.getData()
@@ -80,7 +79,7 @@ export default {
       ...args
     })
 
-    this.$emit("init", args)
+    this.$emit("init", args);
   },
   beforeDestroy () {
     this.$chart = this.$chart.destroy()
@@ -89,3 +88,9 @@ export default {
 </script>
 
 <style src="../../node_modules/c3/c3.css"></style>
+
+<style scoped>
+  .chart-root{
+    max-height: 240px !important;
+  }
+</style>
