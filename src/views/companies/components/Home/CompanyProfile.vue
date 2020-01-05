@@ -12,14 +12,14 @@
               <div class="subtitle-2 font-weight-medium">Company</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.name || "[empty name]" }}</span>
+              <span class="font-weight-light">{{ company.name || "[empty name]" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Company:</span>
-                <span class="body-2 float-right">{{ company.name || "[empty name]" }}</span>
+                <span class="font-weight-light float-right">{{ company.name || "[empty name]" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -45,7 +45,7 @@
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Website:</span>
-                <span class="body-2 float-right">
+                <span class="font-weight-light float-right">
                   <a
                     v-if="company.url"
                     :key="`news-external-link${company.url || ''}`"
@@ -69,14 +69,14 @@
               <div class="subtitle-2 font-weight-medium">Vertical Groups</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.vertical || "--" }}</span>
+              <span class="font-weight-light">{{ company.vertical || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Vertical Groups:</span>
-                <span class="body-2 float-right">{{ company.vertical || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.vertical || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -89,14 +89,14 @@
               <div class="subtitle-2 font-weight-medium">Industry</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.industry || "--" }}</span>
+              <span class="font-weight-light">{{ company.industry || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Industry:</span>
-                <span class="body-2 float-right">{{ company.industry || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.industry || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -112,14 +112,14 @@
               <div class="subtitle-2 font-weight-medium">Status</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.status || "--" }}</span>
+              <span class="font-weight-light">{{ company.status || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Status:</span>
-                <span class="body-2 float-right">{{ company.status || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.status || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -132,14 +132,14 @@
               <div class="subtitle-2 font-weight-medium">Momentum</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.momentum || "--" }}</span>
+              <span class="font-weight-light">{{ company.momentum || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Momentum:</span>
-                <span class="body-2 float-right">{{ company.momentum || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.momentum || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -155,14 +155,14 @@
               <div class="subtitle-2 font-weight-medium">Country</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.country || "--" }}</span>
+              <span class="font-weight-light">{{ company.country || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Country:</span>
-                <span class="body-2 float-right">{{ company.country || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.country || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -175,14 +175,14 @@
               <div class="subtitle-2 font-weight-medium">State</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.state || "--" }}</span>
+              <span class="font-weight-light">{{ company.state || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">State:</span>
-                <span class="body-2 float-right">{{ company.state || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.state || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -198,14 +198,14 @@
               <div class="subtitle-2 font-weight-medium">City</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.city || "--" }}</span>
+              <span class="font-weight-light">{{ company.city || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">City:</span>
-                <span class="body-2 float-right">{{ company.city || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.city || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -218,14 +218,14 @@
               <div class="subtitle-2 font-weight-medium">Employees</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2">{{ company.numEmployees || "--" }}</span>
+              <span class="font-weight-light">{{ company.numEmployees || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Employees:</span>
-                <span class="body-2 float-right">{{ company.numEmployees || "--" }}</span>
+                <span class="font-weight-light float-right">{{ company.numEmployees || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -241,7 +241,7 @@
               <div class="subtitle-2 font-weight-medium">NAICS Code</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2" v-if="company.naics">{{ company.naics.code || "--" }}</span>
+              <span class="font-weight-light" v-if="company.naics">{{ company.naics.code || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
@@ -249,7 +249,7 @@
               <div>
                 <span class="subtitle-2 font-weight-medium">NAICS Code:</span>
                 <span
-                  class="body-2 float-right"
+                  class="font-weight-light float-right"
                   v-if="company.naics"
                 >{{ company.naics.code || "--" }}</span>
               </div>
@@ -264,7 +264,7 @@
               <div class="subtitle-2 font-weight-medium">NAICS Description:</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="body-2" v-if="company.naics">{{ company.naics.description || "--" }}</span>
+              <span class="font-weight-light" v-if="company.naics">{{ company.naics.description || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
@@ -272,7 +272,7 @@
               <div>
                 <span class="subtitle-2 font-weight-medium">Employees:</span>
                 <span
-                  class="body-2 float-right"
+                  class="font-weight-light float-right"
                   v-if="company.naics"
                 >{{ company.naics.description || "--" }}</span>
               </div>
@@ -291,7 +291,7 @@
             </v-col>
             <v-col cols="12" class="pr-2">
               <long-paragraph
-                class="body-2 text-justify"
+                class="font-weight-light text-justify"
                 :text="company.description"
                 :maxLength="100"
               ></long-paragraph>
@@ -309,7 +309,7 @@
               <div class="subtitle-2 font-weight-medium">Keywords:</div>
             </v-col>
             <v-col cols="12" class="pr-2">
-              <long-paragraph class="body-2 text-justify" :text="company.description" :maxLength="100"></long-paragraph>
+              <long-paragraph class="font-weight-light text-justify" :text="company.description" :maxLength="100"></long-paragraph>
             </v-col>
           </v-row>
         </v-card-text>
