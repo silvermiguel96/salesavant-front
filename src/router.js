@@ -3,11 +3,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import Home from "./views/dashboard/Dashboard.vue";
-
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
-
-import Playlists from "./views/playlists/Playlists.vue";
 import Playlist from "./views/playlists/Playlist.vue";
 
 import Signals from "./views/signals/Signals.vue";
