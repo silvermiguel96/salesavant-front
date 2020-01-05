@@ -64,7 +64,7 @@ export default {
           .query({
             query: gql`
               query getSignals($signalSearch: String) {
-                signals(first: 10, search: $signalSearch) {
+                signals(search: $signalSearch, first: 10, offset:0) {
                   signalsList {
                     id
                     name

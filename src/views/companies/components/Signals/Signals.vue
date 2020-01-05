@@ -38,11 +38,11 @@
           <tr>
             <td>
               <router-link :to="`/signals/${item.signal.id}`">
-                <long-paragraph :text="item.signal.description " :maxLength="45"></long-paragraph>
+                <long-paragraph :text="item.signal.name" :maxLength="45"></long-paragraph>
               </router-link>
             </td>
             <td>
-              <long-paragraph :text="item.signal.description " :maxLength="45"></long-paragraph>
+              <long-paragraph :text="item.signal.description" :maxLength="45"></long-paragraph>
             </td>
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
