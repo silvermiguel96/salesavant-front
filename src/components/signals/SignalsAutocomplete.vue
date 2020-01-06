@@ -46,8 +46,6 @@ export default {
         currentSignalSearch: val
       });
 
-      if (this.signals.length > 0) return;
-
       if (this.loading) return;
 
       this.querySignals();
@@ -56,45 +54,45 @@ export default {
   methods: {
     querySignals() {
       this.loading = true;
-      setTimeout(() => {
-        this.$apollo
-          .query({
-            query: gql`
-              query getSignals($signalSearch: String) {
-                signals(first: 10, search: $signalSearch) {
-                  signalsList {
-                    id
-                    name
-                    group
-                  }
+      this.$apollo
+        .query({
+          query: gql`
+            query getSignals($signalSearch: String) {
+              signals(first: 10, search: $signalSearch) {
+                signalsList {
+                  id
+                  name
+                  group
                 }
               }
-            `,
-            variables: {
-              signalSearch: this.search ? this.search : ""
-            },
-            fetchPolicy: "no-cache"
-          })
-          .then(resp => {
-            if (!!resp.data && !!resp.data.signals) {
-              this.signals = resp.data.signals.signalsList.map(signal =>{
-                return {
-                  id: signal.id + ">>>" + signal.name, 
-                  name: signal.name,
-                  group: signal.group
-                };
-              });
             }
-          });
-        setTimeout(() => {
+          `,
+          variables: {
+            signalSearch: this.search ? this.search : ""
+          },
+          fetchPolicy: "no-cache"
+        })
+        .then(resp => {
+          if (!!resp.data && !!resp.data.signals) {
+            this.signals = resp.data.signals.signalsList.map(signal =>{
+              return {
+                id: signal.id + ">>>" + signal.name, 
+                name: signal.name,
+                group: signal.group
+              };
+            });
+          }
           this.loading = false;
-        }, 300);
-      }, 500);
+        })
+        .catch(error => {
+          this.loading = false;
+        });
     },
     change(v) {
       if (v && v.length>0){
         let idSplit = v.split(">>>");
         this.$emit("change", { signalId: parseInt(idSplit[0]) });
+        this.search = "";
       }else{
         this.$emit("change", {});  
       }
