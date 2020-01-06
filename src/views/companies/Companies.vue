@@ -303,6 +303,10 @@ export default {
           const result = await this.$apollo.mutate({
             mutation: gql`
               mutation(
+                $newSignalName: String
+                $newSignalDescription: String
+                $newSignalGroup: String
+                $newSignalDefaultScore: Float
                 $name: String
                 $description: String
                 $city: String
@@ -314,14 +318,16 @@ export default {
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $playlistUid: String
-                $signalIdFilter: Int
-                $signalGroupFilter: String
-                $newSignalName: String
-                $newSignalDescription: String
-                $newSignalGroup: String
-                $newSignalDefaultScore: Float
+                $signals: [Int]
+                $signalGroups: [String],
               ) {
                 createSignalFromSearch(
+                  signalData: {
+                    name: $newSignalName
+                    description: $newSignalDescription
+                    defaultScore: $newSignalDefaultScore
+                    group: $newSignalGroup
+                  }
                   companySearch: {
                     searchName: $name
                     searchDescription: $description
@@ -334,14 +340,8 @@ export default {
                     moreThanEmployees: $moreThanEmployees
                     searchWebsite: $website
                     playlistUid: $playlistUid
-                    signalId: $signalIdFilter
-                    signalGroup: $signalGroupFilter
-                  }
-                  signalData: {
-                    name: $newSignalName
-                    description: $newSignalDescription
-                    defaultScore: $newSignalDefaultScore
-                    group: $newSignalGroup
+                    signals: $signals
+                    signalGroups: $signalGroups
                   }
                 ) {
                   signal {
