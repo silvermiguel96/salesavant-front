@@ -236,8 +236,8 @@ export default {
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $playlistUid: String
-                $signalId: Int
-                $signalGroup: String
+                $signals: [Int]
+                $signalGroups: [String],
                 $newPlaylistName: String!
               ) {
                 createPlaylistFromSearch(
@@ -253,8 +253,8 @@ export default {
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
                     playlistUid: $playlistUid
-                    signalId: $signalId
-                    signalGroup: $signalGroup
+                    signals: $signals
+                    signalGroups: $signalGroups
                   }
                   playlistData: { name: $newPlaylistName }
                 ) {
@@ -277,7 +277,7 @@ export default {
             null
           );
           this.$router.push({
-            path: `/playlists/${playlist.uid}/companies`
+            path: `/playlists/${playlist.uid}`
           });
         } catch (error) {
           console.log("error saving simple search as a play list", error);
