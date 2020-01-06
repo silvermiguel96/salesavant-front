@@ -57,7 +57,7 @@ export default {
           icon: "assessment",
           text: "Contacts",
           router: "/contacts",
-          click: this.onContants
+          click: this.onContacts
         },
         { 
           icon: "work", 
@@ -93,9 +93,9 @@ export default {
       this.resetAdvancedSearch();
       this.$router.push("/companies").catch(err => {});
     },
-    onContants() {
+    onContacts() {
       this.resetAdvancedSearch();
-      this.$router.push("/contants").catch(err => {});
+      this.$router.push("/contacts").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);

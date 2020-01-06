@@ -32,9 +32,9 @@
           :large="true"
           :items="[
         {
-          text: 'Contants',
+          text: 'Contacts',
           disabled: true,
-          href: '/Contants'
+          href: '/Contacts'
         }
       ]"
           divider=">"
