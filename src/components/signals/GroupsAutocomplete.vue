@@ -44,56 +44,53 @@ export default {
   },
   watch: {
     search(val) {
-      if (this.signalGroups.length > 0) return;
-
       if (this.loading) return;
-
       this.querySignalGroups();
     }
   },
   methods: {
     querySignalGroups() {
       this.loading = true;
-      setTimeout(() => {
-        this.$apollo
-          .query({
-            query: gql`
-              query getSignals($signalGroupSearch: String) {
-                signals(first: 15, searchGroup: $signalGroupSearch) {
-                  signalsList {
-                    id
-                    name
-                    group
-                  }
+      this.$apollo
+        .query({
+          query: gql`
+            query getSignals($signalGroupSearch: String) {
+              signals(first: 15, searchGroup: $signalGroupSearch) {
+                signalsList {
+                  id
+                  name
+                  group
                 }
               }
-            `,
-            variables: {
-              signalGroupSearch: this.search ? this.search : ""
-            },
-            fetchPolicy: "no-cache"
-          })
-          .then(resp => {
-            if (!!resp.data && !!resp.data.signals) {
-              let signalGroups = resp.data.signals.signalsList
-                .filter(signal =>{
-                  if (signal.group){
-                    return true;
-                  }
-                })
-                .map(signal =>{
-                  return signal.group;
-                });
-              this.signalGroups = Array.from(new Set(signalGroups));
             }
-          });
-        setTimeout(() => {
+          `,
+          variables: {
+            signalGroupSearch: this.search ? this.search : ""
+          },
+          fetchPolicy: "no-cache"
+        })
+        .then(resp => {
+          if (!!resp.data && !!resp.data.signals) {
+            let signalGroups = resp.data.signals.signalsList
+              .filter(signal =>{
+                if (signal.group){
+                  return true;
+                }
+              })
+              .map(signal =>{
+                return signal.group;
+              });
+            this.signalGroups = Array.from(new Set(signalGroups));
+          }
           this.loading = false;
-        }, 300);
-      }, 500);
+        })
+        .catch(error => {
+          this.loading = false;
+        });
     },
     change(v) {
       this.$emit("change", { signalGroups: v });
+      this.search = "";
     }
   },
   beforeCreate() {
