@@ -38,7 +38,7 @@ export default {
   computed: {
     items() {
       return this.signals.map(signal => {
-        let groupStr = signal.group ? ` (${signal.group})`: "";
+        let groupStr = signal.group ? ` (${signal.group})` : "";
         let name =
           signal.name.length > this.nameLimit
             ? signal.name.slice(0, this.nameLimit) + "..." + groupStr
@@ -49,8 +49,6 @@ export default {
   },
   watch: {
     search(val) {
-      if (this.signals.length > 0) return;
-
       if (this.loading) return;
 
       this.querySignals();
@@ -59,43 +57,42 @@ export default {
   methods: {
     querySignals() {
       this.loading = true;
-      setTimeout(() => {
-        this.$apollo
-          .query({
-            query: gql`
-              query getSignals($signalSearch: String) {
-                signals(search: $signalSearch, first: 10, offset:0) {
-                  signalsList {
-                    id
-                    name
-                    group
-                  }
+      this.$apollo
+        .query({
+          query: gql`
+            query getSignals($signalSearch: String) {
+              signals(search: $signalSearch, first: 10, offset: 0) {
+                signalsList {
+                  id
+                  name
+                  group
                 }
               }
-            `,
-            variables: {
-              signalSearch: this.search ? this.search : ""
-            },
-            fetchPolicy: "no-cache"
-          })
-          .then(resp => {
-            if (!!resp.data && !!resp.data.signals) {
-              this.signals = resp.data.signals.signalsList.map(signal =>{
-                return {
-                  id: signal.id + ">>>" + signal.name, 
-                  name: signal.name,
-                  group: signal.group
-                };
-              });
             }
-          });
-        setTimeout(() => {
+          `,
+          variables: {
+            signalSearch: this.search ? this.search : ""
+          },
+          fetchPolicy: "no-cache"
+        })
+        .then(resp => {
+          if (!!resp.data && !!resp.data.signals) {
+            this.signals = resp.data.signals.signalsList.map(signal => {
+              return {
+                id: signal.id + ">>>" + signal.name,
+                name: signal.name,
+                group: signal.group
+              };
+            });
+          }
           this.loading = false;
-        }, 300);
-      }, 500);
+        })
+        .catch(error => {
+          this.loading = false;
+        });
     },
     change(v) {
-      if (v && v.length>0){
+      if (v && v.length > 0) {
         let signals = [];
         let displaySignals = [];
         v.forEach(s => {
@@ -104,8 +101,9 @@ export default {
           displaySignals.push(idSplit[1]);
         });
         this.$emit("change", { signals, displaySignals });
-      }else{
-        this.$emit("change", {});  
+        this.search = "";
+      } else {
+        this.$emit("change", {});
       }
     }
   }
