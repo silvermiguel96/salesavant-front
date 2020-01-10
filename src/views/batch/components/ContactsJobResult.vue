@@ -65,65 +65,8 @@ export default {
   },
   methods: {
     _get: _get,
-    async saveSignal(signalData) {
-      try {
-        const result = await this.$apollo.mutate({
-          mutation: gql`
-            mutation(
-              $jobUid: String!
-              $keyword: String!
-              $defaultScore: Int
-              $group: String
-              $description: String
-            ) {
-              createSignalFromPlaylistKeyword(
-                jobUid: $jobUid
-                keyword: $keyword
-                defaultScore: $defaultScore
-                group: $group
-                description: $description
-              ) {
-                signal {
-                  id
-                  name
-                  group
-                  userId
-                  category
-                  accountId
-                  description
-                  creationTime
-                  defaultScore
-                  modificationTime
-                }
-              }
-            }
-          `,
-          // Parameters
-          variables: {
-            jobUid: this.job.uid,
-            keyword: _get(signalData, "keyword"),
-            defaultScore: parseInt(_get(signalData, "score") | 1)
-          }
-        });
-      } catch (error) {
-        console.log("error saving signal", error);
-      }
-    }
   },
   computed: {
-    keywords: function() {
-      let result = JSON.parse(this.job.result);
-      let keywords = [];
-      if (!!result.keywords) {
-        keywords = result.keywords.map((item, idx) => ({
-          idx: idx,
-          keyword: item[0] || "",
-          total: parseInt(item[1] || 0),
-          score: parseFloat(item[2] || 0).toFixed(2)
-        }));
-      }
-      return keywords;
-    },
     headers() {
       return [
         {
@@ -147,20 +90,6 @@ export default {
           width: "30%",
           sortable: false
         }
-        // {
-        //   text: "Linkedin",
-        //   value: "linkedin_handle",
-        //   align: "left",
-        //   width: "16%",
-        //   sortable: false
-        // },
-        // {
-        //   text: "Score",
-        //   value: "score",
-        //   align: "center",
-        //   width: "20%",
-        //   sortable: false
-        // }
       ];
     },
     constacts() {
