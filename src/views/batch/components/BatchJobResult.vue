@@ -9,11 +9,15 @@
     <div v-else-if="job.jobType=='export_companies'">
       <a v-if="resultParsed" target="_blank" :href="salesavantAPI + resultParsed.fileName">Download</a>
     </div>
+    <div v-else-if="job.jobType=='extract_contacts'">
+      <ContactsJobResult :job="job" />
+    </div>
   </div>
 </template>
 
 <script>
 import KeywordsJobResult from "./KeywordsJobResult";
+import ContactsJobResult from "./ContactsJobResult";
 export default {
   data() {
     return {
@@ -29,11 +33,12 @@ export default {
       if (!!this.job && !!this.job.result) {
         return JSON.parse(this.job.result);
       }
-      return ""; 
+      return "";
     }
   },
   components: {
-    KeywordsJobResult
+    KeywordsJobResult,
+    ContactsJobResult
   }
 };
 </script>
