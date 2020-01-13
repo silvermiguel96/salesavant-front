@@ -3,15 +3,19 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import Home from "./views/dashboard/Dashboard.vue";
+
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
+
+import Playlists from "./views/playlists/Playlists.vue";
 import Playlist from "./views/playlists/Playlist.vue";
 
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 
 import News from "./views/news/News.vue";
-import Contacts from "./views/contacts/Contacts.vue";
+import SingleNews from "./views/news/components/SingleNews.vue";
+
 import BatchJobs from "./views/batch/BatchJobs.vue";
 import LaunchJob from "./views/batch/LaunchJob.vue";
 
@@ -57,9 +61,9 @@ const router = new Router({
       }
     },
     {
-      path: "/contacts",
-      name: "Contacts",
-      component: Contacts,
+      path: "/playlists",
+      name: "playlists",
+      component: Playlists,
       meta: {
         requiresAuth: true
       }
@@ -108,6 +112,14 @@ const router = new Router({
       path: "/news",
       name: "news",
       component: News,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/news/:newsId",
+      name: "oneNews",
+      component: SingleNews,
       meta: {
         requiresAuth: true
       }
