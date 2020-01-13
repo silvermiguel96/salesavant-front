@@ -2,7 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    class="elevation-1 mx-2"
     :server-items-length="totalResults"
     :items-per-pag="options.itemsPerPage"
     :footer-props="{
@@ -18,6 +17,12 @@
             item.name || "--"
           }}</router-link>
         </td>
+        <td>
+          {{ item.totalScore || 0}}
+        </td>
+        <td>
+          {{ item.numEmployees || 0}}
+        </td>
       </tr>
     </template>
   </v-data-table>
@@ -32,7 +37,16 @@ export default {
           text: "Company name",
           sortable: false,
           value: "name"
+        },
+        {
+          text: "Score",
+          value: "totalScore"
+        },
+        {
+          text: "Employes",
+          value: "numEmployees"
         }
+         
       ],
       options: {
         page: 1,

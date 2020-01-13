@@ -1,9 +1,11 @@
-query getSignalsById($signalId: Int, $first: Int, $offset: Int) {
-  signalCompanies(signalId: $signalId, first:$first , offset: $offset) {
+query getSignalsById($signalId: Int, $first: Int, $offset: Int, $sortBy: String,  $sortOrder: String) {
+  signalCompanies(signalId: $signalId, first:$first , offset: $offset,  sortBy: $sortBy, sortOrder: $sortOrder) {
     totalResults
     companiesList{
       uid
       name
+      numEmployees
+      totalScore
     }
   }
 }
