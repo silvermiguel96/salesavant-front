@@ -6,6 +6,9 @@ query getSignalsById($signalId: Int, $first: Int, $offset: Int, $sortBy: String,
       name
       numEmployees
       totalScore
+      country
+      state
+      creationTime
     }
   }
 }

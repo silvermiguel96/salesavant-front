@@ -10,7 +10,7 @@
     :options.sync="options"
     @update:options="updateOptions"
   >
-    <template v-slot:item="{ item, headers }">
+    <template v-slot:item="{ item }">
       <tr>
         <td>
           <router-link :to="`/companies/${item.uid}`">{{
@@ -22,6 +22,15 @@
         </td>
         <td>
           {{ item.numEmployees || 0}}
+        </td>
+        <td>
+          {{ item.country }}
+        </td>
+        <td>
+          {{ item.state }}
+        </td>
+        <td>
+          {{ changeTimeHuman(item.creationTime) }}
         </td>
       </tr>
     </template>
@@ -45,8 +54,23 @@ export default {
         {
           text: "Employes",
           value: "numEmployees"
-        }
-         
+        },
+        {
+          text: "Country",
+          sortable: false,
+          value: "country"
+        },
+        {
+          text: "State",
+          sortable: false,
+          value: "state"
+        },
+        {
+          text: "Creation Time",
+          sortable: false,
+          width: "11%",
+          value: "creationTime"
+        },
       ],
       options: {
         page: 1,
@@ -61,6 +85,11 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
+    },
+    changeTimeHuman(time) {
+      let HumanDate = time.split(".", 1).toString();
+      let HumanTime = HumanDate.split("T", 2).join(" ");
+      return HumanTime;
     }
   }
 };

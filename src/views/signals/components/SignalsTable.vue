@@ -21,7 +21,7 @@
         color="blue"
         indeterminate
       ></v-progress-linear>
-      <template v-slot:item="{ item, headers }">
+      <template v-slot:item="{ item }">
         <tr>
           <td>
             <long-paragraph
