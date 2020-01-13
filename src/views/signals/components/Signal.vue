@@ -27,39 +27,37 @@
           <v-card-subtitle>
             <h1 class="headline my-4 text-capitalize">Signal details</h1>
           </v-card-subtitle>
-          <v-layout wrap>
-            <v-flex xs12 sm6 md6 class="px-1">
+          <v-row wrap class="px-3">
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.name"
                 label="Name"
                 required
                 :disabled="!canModifySignalName"
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md6 class="px-1">
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.description"
                 label="Description"
                 required
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md6 class="px-1">
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.defaultScore"
                 label="Score"
                 required
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md6 class="px-1">
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.group"
                 label="Group"
                 required
               ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex xs12 md2 lg2>
+            </v-col>
+            <v-col xs="12" sm="4" md="2" lg="2">
               <v-btn
                 v-if="canModifySignalName"
                 type="submit"
@@ -80,8 +78,8 @@
                 @click="saveKeyWordsAsSignal"
                 >Save from playlist keywords</v-btn
               >
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-form>
       <v-container fluid v-if="canModifySignalName">
