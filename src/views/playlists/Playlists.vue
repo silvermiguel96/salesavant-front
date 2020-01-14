@@ -90,9 +90,6 @@ export default {
       this.itemsPerPage = itemsPerPage;
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
-          case "totalScore":
-            this.sortBy = "score";
-            break;
           case "totalCompanies":
             this.sortBy = "companies";
             break;
