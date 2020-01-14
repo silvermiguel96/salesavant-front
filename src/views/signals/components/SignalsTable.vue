@@ -21,9 +21,8 @@
         color="blue"
         indeterminate
       ></v-progress-linear>
-      <template v-slot:item="{ item, headers }">
+      <template v-slot:item="{ item }">
         <tr>
-          <td>{{ item.id || "" }}</td>
           <td>
             <long-paragraph
               class="wrapping-td"
@@ -92,7 +91,6 @@
             </v-edit-dialog>
           </td>
           <td>{{ changeTimeHuman(item.creationTime) || "" }}</td>
-          <td>{{ changeTimeHuman(item.modificationTime) || "" }}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
@@ -125,12 +123,6 @@ export default {
         itemsPerPage: 10
       },
       headers: [
-        {
-          text: "ID",
-          align: "left",
-          sortable: true,
-          value: "id"
-        },
         { text: "Name", value: "name", sortable: false },
         {
           text: "Description",
@@ -142,7 +134,6 @@ export default {
         { text: "Category", value: "category", align: "left", sortable: false  },
         { text: "Default Score", value: "defaultScore", align: "left", sortable: false  },
         { text: "Creation Time", value: "creationTime", align: "left", sortable: false  },
-        { text: "Modification Time", value: "modificationTime", align: "left", sortable: false  },
         { text: "Edit", value: "icon", align: "left", sortable: false },
         { text: "Delete", value: "icon", align: "left", sortable: false }
       ],

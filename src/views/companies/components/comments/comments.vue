@@ -19,7 +19,7 @@
               <long-paragraph :text="item.comments" :maxLength="45"></long-paragraph>
             </td>
             <td>{{ item.user.email || "--" }}</td>
-            <td>{{ item.creationTime || "--" }}</td>
+            <td>{{ changeTimeHuman(item.creationTime) || "--" }}</td>
             <td>--</td>
           </tr>
         </template>
@@ -98,6 +98,11 @@ export default {
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
+    },
+    changeTimeHuman(time) {
+      let HumanDate = time.split(".", 1).toString();
+      let HumanTime = HumanDate.split("T", 2).join(" ");
+      return HumanTime;
     }
   },
   components: {

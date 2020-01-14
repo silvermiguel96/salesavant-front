@@ -2,7 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    class="elevation-1 mx-2"
     :server-items-length="totalResults"
     :items-per-pag="options.itemsPerPage"
     :footer-props="{
@@ -11,12 +10,27 @@
     :options.sync="options"
     @update:options="updateOptions"
   >
-    <template v-slot:item="{ item, headers }">
+    <template v-slot:item="{ item }">
       <tr>
         <td>
           <router-link :to="`/companies/${item.uid}`">{{
             item.name || "--"
           }}</router-link>
+        </td>
+        <td>
+          {{ item.totalScore || 0}}
+        </td>
+        <td>
+          {{ item.numEmployees || 0}}
+        </td>
+        <td>
+          {{ item.country }}
+        </td>
+        <td>
+          {{ item.state }}
+        </td>
+        <td>
+          {{ changeTimeHuman(item.creationTime) }}
         </td>
       </tr>
     </template>
@@ -32,7 +46,31 @@ export default {
           text: "Company name",
           sortable: false,
           value: "name"
-        }
+        },
+        {
+          text: "Score",
+          value: "totalScore"
+        },
+        {
+          text: "Employes",
+          value: "numEmployees"
+        },
+        {
+          text: "Country",
+          sortable: false,
+          value: "country"
+        },
+        {
+          text: "State",
+          sortable: false,
+          value: "state"
+        },
+        {
+          text: "Creation Time",
+          sortable: false,
+          width: "11%",
+          value: "creationTime"
+        },
       ],
       options: {
         page: 1,
@@ -47,6 +85,11 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
+    },
+    changeTimeHuman(time) {
+      let HumanDate = time.split(".", 1).toString();
+      let HumanTime = HumanDate.split("T", 2).join(" ");
+      return HumanTime;
     }
   }
 };

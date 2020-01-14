@@ -23,51 +23,53 @@
         divider=">"
       ></v-breadcrumbs>
       <v-form @submit.prevent>
-        <v-container>
-          <h1 class="display-1 my-4 text-capitalize">Signal details</h1>
-          <v-layout wrap>
-            <v-flex xs12 sm6 md3 class="px-1">
+        <v-container fluid >
+          <v-card-subtitle>
+            <h1 class="headline my-4 text-capitalize">Signal details</h1>
+          </v-card-subtitle>
+          <v-row wrap class="px-3">
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.name"
                 label="Name"
                 required
                 :disabled="!canModifySignalName"
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md3 class="px-1">
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.description"
                 label="Description"
                 required
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md3 class="px-1">
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.defaultScore"
                 label="Score"
                 required
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md3 class="px-1">
+            </v-col>
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.group"
                 label="Group"
                 required
               ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex xs12 md4>
+            </v-col>
+            <v-col xs="12" sm="4" md="2" lg="2">
               <v-btn
                 v-if="canModifySignalName"
                 type="submit"
                 @click="save"
                 class="text-capitalize"
+                color="primary"
+                block
               >
                 <v-icon small class="pr-1">{{
-                  !!signal.id ? "update" : "add"
+                  !!signal.id ? "save" : "add"
                 }}</v-icon>
-                {{ !!signal.id ? "Update" : "Create" }}
+                {{ !!signal.id ? "Save" : "Create" }}
               </v-btn>
               <v-btn
                 v-else
@@ -76,14 +78,14 @@
                 @click="saveKeyWordsAsSignal"
                 >Save from playlist keywords</v-btn
               >
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-form>
-    </v-card>
-    <v-card v-if="canModifySignalName">
-      <v-container>
-        <h1 class="headline my-4 text-capitalize">Related companies</h1>
+      <v-container fluid v-if="canModifySignalName">
+        <v-card-subtitle>
+          <h1 class="headline my-4 text-capitalize">Related companies</h1>
+        </v-card-subtitle>
         <template
           v-if="
             !!this.$route.params.signalId &&
@@ -96,6 +98,8 @@
               signalId: parseInt(this.$route.params.signalId),
               first: this.itemsPerPage, 
               offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              sortBy: this.sortBy,
+              sortOrder: this.sortOrder,
             }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
@@ -152,9 +156,10 @@ export default {
       snackColor: "",
       snackText: "",
       descending: false,
+      sortBy: "",
+      sortOrder: "",
       page: 1,
       itemsPerPage: 10,
-      sortBy: "",
       signal: { ...defaultSignal },
       companySignals: []
     };
@@ -197,6 +202,27 @@ export default {
     }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
+      if (sortBy.length > 0) {
+        switch (sortBy[0]) {
+          case "totalScore":
+            this.sortBy = "score";
+            break;
+          case "numEmployees":
+            this.sortBy = "employees";
+            break;
+        }
+      } else {
+        this.sortBy = "";
+      }
+      if (sortDesc.length > 0) {
+        if (sortDesc[0]) {
+          this.sortOrder = "desc";
+        } else {
+          this.sortOrder = "asc";
+        }
+      } else {
+        this.sortOrder = "";
+      }
     },
     async save() {
       if (!this.signal) {
