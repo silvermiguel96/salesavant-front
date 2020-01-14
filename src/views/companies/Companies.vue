@@ -248,6 +248,8 @@ export default {
                 $website: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
+                $lessThanEmployees: Int
+                $moreThanEmployees: Int
                 $playlistUid: String
                 $signals: [Int]
                 $signalGroups: [String],
@@ -265,6 +267,8 @@ export default {
                     status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
+                    lessThanScore: $lessThanScore
+                    moreThanScore: $moreThanScore
                     playlistUid: $playlistUid
                     signals: $signals
                     signalGroups: $signalGroups
@@ -330,6 +334,8 @@ export default {
                 $website: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
+                $lessThanScore: Int
+                $moreThanScore: Int
                 $playlistUid: String
                 $signals: [Int]
                 $signalGroups: [String],
@@ -351,6 +357,8 @@ export default {
                     status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
+                    lessThanScore: $lessThanScore
+                    moreThanScore: $moreThanScore
                     searchWebsite: $website
                     playlistUid: $playlistUid
                     signals: $signals
