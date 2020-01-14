@@ -14,10 +14,11 @@ query CompaniesAdvancedSearch(
   $moreThanEmployees: Int
   $moreThanScore: Float
   $lessThanScore: Float
-  $first: Int
-  $offset: Int,
   $sortBy: String,
   $sortOrder: String
+  $first: Int
+  $offset: Int,
+  $totalResults: Int
 ) {
   companies(
     playlistUid: $playlistUid
@@ -35,10 +36,11 @@ query CompaniesAdvancedSearch(
     moreThanEmployees: $moreThanEmployees
     moreThanScore: $moreThanScore
     lessThanScore: $lessThanScore
-    first: $first
-    offset: $offset
     sortBy: $sortBy
     sortOrder: $sortOrder
+    first: $first
+    offset: $offset
+    totalResults: $totalResults
   ) {
     totalResults
     companiesList {

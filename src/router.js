@@ -10,6 +10,8 @@ import Company from "./views/companies/Company.vue";
 import Playlists from "./views/playlists/Playlists.vue";
 import Playlist from "./views/playlists/Playlist.vue";
 
+import Contacts from "./views/contacts/Contacts.vue";
+
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
 
@@ -80,6 +82,14 @@ const router = new Router({
       path: "/playlists/:playlistId/companies/:companiesUid",
       name: "playlist-company",
       component: Company,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/contacts",
+      name: "Contacts",
+      component: Contacts,
       meta: {
         requiresAuth: true
       }

@@ -76,10 +76,15 @@
             :query="require('./graphql/CompaniesAdvancedSearch.gql')"
             :variables="{ 
               ...this.advancedSearch.companySearch,
-              first: this.itemsPerPage,
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
               sortBy: this.sortBy,
               sortOrder: this.sortOrder,
+              first: this.itemsPerPage,
+              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
+              totalResults: this.totalResults
+            }"
+            :update="data => {
+              this.totalResults = data.companies.totalResults
+              return data;
             }"
           >
             <template slot-scope="{ result: { loading, error, data } }">
@@ -171,6 +176,7 @@ import {defaultCompanySearch} from "../../store";
 export default {
   data() {
     return {
+      totalResults: 0,
       page: 1,
       itemsPerPage: 10,
       sortBy: "",
@@ -184,6 +190,13 @@ export default {
     CompaniesTable,
     CreatePlaylistFromResults,
     CreateSignalFromResults
+  },
+  watch:{
+    companySearchFilters: function(val){
+      console.log('total results to zero');
+      this.totalResults = 0;
+      this.page = 1;
+    }
   },
   methods: {
     updateOptions({
