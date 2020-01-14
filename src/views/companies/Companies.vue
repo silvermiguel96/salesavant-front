@@ -248,8 +248,8 @@ export default {
                 $website: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
-                $lessThanEmployees: Int
-                $moreThanEmployees: Int
+                $lessThanScore: Int
+                $moreThanScore: Int
                 $playlistUid: String
                 $signals: [Int]
                 $signalGroups: [String],
