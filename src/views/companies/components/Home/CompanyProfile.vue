@@ -301,7 +301,7 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+    <!--v-row no-gutters>
       <v-col cols="12">
         <v-card-text>
           <v-row no-gutters>
@@ -314,7 +314,7 @@
           </v-row>
         </v-card-text>
       </v-col>
-    </v-row>
+    </v-row-->
   </v-card>
 </template>
 
