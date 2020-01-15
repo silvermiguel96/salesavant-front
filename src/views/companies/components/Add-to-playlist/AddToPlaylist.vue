@@ -36,7 +36,7 @@
         <template v-slot:item="{ item, headers }">
           <tr>
             <td>
-              <router-link :to="`/playlists/${item.uid}/companies`">
+              <router-link :to="`/playlists/${item.uid}`">
                 {{
                 item.name || "--"
                 }}
