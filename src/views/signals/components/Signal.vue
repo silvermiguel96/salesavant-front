@@ -24,8 +24,8 @@
       ></v-breadcrumbs>
       <v-form @submit.prevent>
         <v-container fluid >
-          <v-row wrap class="px-3">
-            <v-col cols="12" sm="6">
+          <v-row class="px-3" dense>
+            <v-col sm="6">
               <v-text-field
                 v-model="signal.name"
                 label="Name"
@@ -33,21 +33,21 @@
                 :disabled="!canModifySignalName"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col sm="6">
               <v-text-field
                 v-model="signal.description"
                 label="Description"
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col sm="6">
               <v-text-field
                 v-model="signal.defaultScore"
                 label="Score"
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col sm="6">
               <v-text-field
                 v-model="signal.group"
                 label="Group"
@@ -80,9 +80,6 @@
         </v-container>
       </v-form>
       <v-container fluid v-if="canModifySignalName">
-        <v-card-subtitle>
-          <h1 class="headline my-4 text-capitalize">Related companies</h1>
-        </v-card-subtitle>
         <template
           v-if="
             !!this.$route.params.signalId &&
