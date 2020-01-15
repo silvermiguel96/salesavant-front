@@ -30,7 +30,7 @@
                   <td>
                     <router-link
                       :to="`/signals?search=&group=${item.signalGroup}&category=&searchType=signals`"
-                    >{{ item.signalGroup }}asd</router-link>
+                    >{{ item.signalGroup }}</router-link>
                   </td>
                   <td>{{ item.totalCompanies }}</td>
                 </tr>
