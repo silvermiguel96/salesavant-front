@@ -32,7 +32,7 @@
                       :to="`/signals?search=&group=${item.signalGroup}&category=&searchType=signals`"
                     >{{ item.signalGroup }}</router-link>
                   </td>
-                  <td>{{ item.totalCompanies }}</td>
+                  <td>{{ item.totalCompanies.toLocaleString() }}</td>
                 </tr>
               </template>
             </v-data-table>

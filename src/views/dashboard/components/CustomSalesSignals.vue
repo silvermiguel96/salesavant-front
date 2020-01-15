@@ -28,8 +28,8 @@
                     <router-link :to="`/signals/${item.signal.id}`"
                     >{{ item.signal.name || item.signal.description }}</router-link>
                   </td>
-                  <td>{{item.totalCompanies || "0"}}</td>
-                  <td>{{item.signal.defaultScore || "0"}}</td>
+                  <td>{{item.totalCompanies.toLocaleString() || "0"}}</td>
+                  <td>{{item.signal.defaultScore.toLocaleString() || "0"}}</td>
                   <td>{{item.signal.group || "-"}}</td>
                 </tr>
               </template>
