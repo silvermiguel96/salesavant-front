@@ -24,9 +24,6 @@
       ></v-breadcrumbs>
       <v-form @submit.prevent>
         <v-container fluid >
-          <v-card-subtitle>
-            <h1 class="headline my-4 text-capitalize">Signal details</h1>
-          </v-card-subtitle>
           <v-row wrap class="px-3">
             <v-col cols="12" sm="6">
               <v-text-field
