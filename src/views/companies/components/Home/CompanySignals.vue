@@ -24,6 +24,8 @@
           v-if="company && company.signalGroupAggs"
           :headers="headersTable1"
           :items="company.signalGroupAggs"
+          :sort-by="['score']"
+          :sort-desc="[true]"
           dense
           hide-default-footer
         >
@@ -42,6 +44,8 @@
           v-if="companySignals"
           :headers="headers"
           :items="companySignals.companySignalsList"
+          :sort-by="['score']"
+          :sort-desc="[true]"
           dense
           hide-default-footer
         >
