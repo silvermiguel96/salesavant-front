@@ -30,9 +30,9 @@ export default {
       const config = cloneDeep(this.config)
       const color = {
         pattern: [
-          "#0a4f8a", 
           "#0a88c2", 
           "#75bcdd", 
+          "#0a4f8a", 
           "#31CCEC"
         ]
       }
