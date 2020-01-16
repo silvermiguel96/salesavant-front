@@ -81,8 +81,6 @@
         </v-card-text>
       </v-flex>
     </v-layout>
-    <!-- Buttons Dashboard  -->
-    <buttons-dashboard></buttons-dashboard>
     <!-- Custom Signal Groups -->
     <custom-signal-groups />
     <!-- Custom Sales Signals -->
@@ -91,12 +89,10 @@
 </template>
 
 <script>
-import ButtonsDashboard from "../../components/dashboard/ButtonsDashboard.vue";
 import TableCustomSalesSignals from "./components/CustomSalesSignals.vue";
 import CustomSignalGroups from "./components/CustomSignalGroups.vue";
 export default {
   components: {
-    ButtonsDashboard,
     TableCustomSalesSignals,
     CustomSignalGroups
   },
