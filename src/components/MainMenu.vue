@@ -54,6 +54,12 @@ export default {
           click: this.onCompanies
         },
         {
+          icon: "gps_fixed",
+          text: "Signals",
+          router: "/signals",
+          click: this.onSignals
+        },
+        {
           icon: "assessment",
           text: "Contacts",
           router: "/contacts",
@@ -88,6 +94,10 @@ export default {
     onPlaylists() {
       this.resetAdvancedSearch();
       this.$router.push("/playlists").catch(err => {});
+    },
+    onSignals() {
+      this.resetAdvancedSearch();
+      this.$router.push("/signals").catch(err => {});
     },
     onCompanies() {
       this.resetAdvancedSearch();
