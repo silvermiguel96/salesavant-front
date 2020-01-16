@@ -81,13 +81,13 @@ export default {
       snackText: "",
       keywords: [],
       headersTable1: [
-        { text: "Group", value: "groupName", sortable: true },
-        { text: "Total", value: "count", sortable: true },
+        { text: "Group", value: "groupName", sortable: false },
+        { text: "Total", value: "count", sortable: false },
         { text: "Score", value: "score", sortable: true }
       ],
       headers: [
-        { text: "Group", value: "signal.group", sortable: true },
-        { text: "Signal", value: "signal.name", sortable: true },
+        { text: "Group", value: "signal.group", sortable: false },
+        { text: "Signal", value: "signal.name", sortable: false },
         { text: "Score", value: "score", sortable: true },
       ]
     };
