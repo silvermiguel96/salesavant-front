@@ -58,6 +58,9 @@ export default {
     aggs_top_signals_config: function() {
       if (this.aggs_data.hasOwnProperty("aggs_top_signals")) {
         return {
+          tooltip: {
+            show: false
+          },
           bar: {
             space: 0.05
           },
