@@ -73,7 +73,7 @@
             <!-- Result -->
             <div v-else-if="data" class="result apollo">
               <Contacts-Table
-                 v-if="data.contacts.totalResults.length"
+                 v-if="data.contacts.totalResults"
                 :items="data.contacts.contactsList"
                 :totalResults="data.contacts.totalResults"
                 class="result apollo"
