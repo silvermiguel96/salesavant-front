@@ -48,10 +48,10 @@ export default {
     return {
       data: [],
       headers: [
-        { text: "Custom Signal", value: "customsignal" },
-        { text: "Count", value: "count" },
-        { text: "Score", value: "score" },
-        { text: "Group", align: "left", value: "group" }
+        { text: "Custom Signal", value: "customsignal", sortable: false },
+        { text: "Count", value: "count", sortable: false },
+        { text: "Score", value: "score", sortable: false },
+        { text: "Group", align: "left", value: "group", sortable: false }
       ],
       descending: false,
       page: 1,
