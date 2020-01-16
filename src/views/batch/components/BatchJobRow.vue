@@ -3,7 +3,7 @@
     <td>
       <div>
         <router-link
-          :to="`/playlists/${additionalDataParsed.playlist_uid}/companies`"
+          :to="`/playlists/${additionalDataParsed.playlist_uid}`"
         >{{ jobSubtitle }}</router-link>
       </div>
       <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
