@@ -17,49 +17,58 @@
         <c3-chart :type="'bar'" :config="config" :data="aggs_top_naics_code" />
       </v-card-text>
     </v-card>
+
+    <v-card v-if="aggs_employees_dist">
+      <v-card-subtitle>
+        <div class="headline">Employees Distribution</div>
+      </v-card-subtitle>
+      <v-card-text>
+        <c3-chart :type="'bar'" :config="aggs_employees_dist_config" :data="aggs_employees_dist" />
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
 <script>
 import C3Chart from "../../../components/C3Chart";
 export default {
-  data() {
-    return {
-      topSignalsCategories: []
-    };
-  },
   props: {
     aggs_data: { type: Object, default: () => {} }
   },
   methods: {
-    parse_aggs_top_signals: function(agg_string) {
-      let temp = [];
-      let counts = agg_string.split("||").map(entry => {
-        let entrySplit = entry.split(">>");
-        temp.push(entrySplit[1]);
-        return parseInt(entrySplit[2]);
+    parse_agg_string: function(agg_string) {
+      return agg_string.split("||").map(entry => {
+        return entry.split(">>");
       });
-      this.topSignalsCategories = temp;
-      return counts;
     }
   },
   computed: {
     aggs_top_signals: function() {
       if (this.aggs_data.hasOwnProperty("aggs_top_signals")) {
+        let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_top_signals);
+        let cols = agg_string_parsed.map(entry=>{
+          return parseInt(entry[2])
+        });
         return {
-          columns: [
-            this.parse_aggs_top_signals(this.aggs_data.aggs_top_signals)
-          ]
+          columns: [cols]
         };
       }
       return null;
     },
-
     aggs_top_signals_config: function() {
       if (this.aggs_data.hasOwnProperty("aggs_top_signals")) {
+        let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_top_signals);
         return {
           tooltip: {
-            show: false
+            horizontal: true,
+            contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+              return `<div style="background-color:#FFF; padding:0px 6px; border:1px solid #888; border-radius: 4px;">Value: ${d[0].value}</div>`;
+            }
+          },
+          grid: {
+            focus: {
+              show: false
+            }
           },
           bar: {
             space: 0.05
@@ -67,7 +76,9 @@ export default {
           axis: {
             x: {
               type: "category",
-              categories: this.topSignalsCategories,
+              categories: agg_string_parsed.map(entry=>{
+                return entry[1]
+              })
             }
           },
           legend: {
@@ -81,6 +92,58 @@ export default {
       if (this.aggs_data.hasOwnProperty("aggs_top_naics_code")) {
         return {
           columns: this.parse_agg_string(this.aggs_data.aggs_top_naics_code)
+        };
+      }
+      return null;
+    },
+    aggs_employees_dist: function(){
+      if (this.aggs_data.hasOwnProperty("aggs_employees_dist")) {
+        let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_employees_dist);
+        let cols = agg_string_parsed.map(entry=>{
+          return parseInt(entry[1]);
+        });
+        cols.unshift("x");
+        return {
+          columns: [cols]
+        };
+      }
+      return null;
+    },
+    aggs_employees_dist_config: function(){
+      if (this.aggs_data.hasOwnProperty("aggs_employees_dist")) {
+        let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_employees_dist);
+        return {
+          tooltip: {
+            horizontal: true,
+            contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+              return `<div style="background-color:#FFF; padding:0px 6px; border:1px solid #888; border-radius: 4px;">Value: ${d[0].value}</div>`;
+            }
+          },
+          bar: {
+            space: 0.05
+          },
+          grid: {
+            focus: {
+              show: false
+            }
+          },
+          axis: {
+            x: {
+              type: "category",
+              categories: agg_string_parsed.map(entry=>{
+                switch(entry[0]){
+                  case "0_50": return "<50";
+                  case "50_100": return "50-100";
+                  case "100_1000": return "100-1000";
+                  case "1000_5000": return "1000-5000";
+                  case "5000_": return ">5000";
+                }
+              })
+            }
+          },
+          legend: {
+            hide: true
+          }
         };
       }
       return null;
