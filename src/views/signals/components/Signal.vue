@@ -168,9 +168,7 @@ export default {
     canModifySignalName: { type: Boolean, default: true }
   },
   apollo: {
-    // Query with parameters
     signal: {
-      // gql query
       query: gql`
         query getSignalsById($signalId: Int) {
           signal(id: $signalId) {
