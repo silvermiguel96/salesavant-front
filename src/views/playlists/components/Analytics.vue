@@ -20,7 +20,7 @@
 
     <v-card v-if="aggs_employees_dist">
       <v-card-subtitle>
-        <div class="headline">Num Employees Distribution</div>
+        <div class="headline">Employees Distribution</div>
       </v-card-subtitle>
       <v-card-text>
         <c3-chart :type="'bar'" :config="aggs_employees_dist_config" :data="aggs_employees_dist" />
