@@ -8,7 +8,9 @@
       <!-- Apollo watched Graphql query -->
       <ApolloQuery
         :query="require('../graphql/TableSalesSignals.gql')"
-        :variables="{ first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+        :variables="{              
+          first: this.itemsPerPage, 
+          offset: (this.itemsPerPage * this.page) - this.itemsPerPage, }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
@@ -26,7 +28,8 @@
               <template v-slot:item="{ item, headers}">
                 <tr>
                   <td>
-                    <router-link :to="`/signals/${item.signal.id}`"
+                    <router-link
+                      :to="`/signals/${item.signal.id}`"
                     >{{ item.signal.name || item.signal.description }}</router-link>
                   </td>
                   <td>{{item.totalCompanies.toLocaleString() || "0"}}</td>
@@ -56,9 +59,8 @@ export default {
       ],
       descending: false,
       page: 1,
-      rowsPerPage: 25,
+      itemsPerPage: 10,
       sortBy: "",
-      totalItems: 25,
       isFiltered: false
     };
   },
@@ -66,8 +68,8 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.options.page = options.page;
-      this.options.itemsPerPage = options.itemsPerPage;
+      this.page = page;
+      this.itemsPerPage = itemsPerPage;
     }
   }
 };

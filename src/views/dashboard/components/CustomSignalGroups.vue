@@ -7,7 +7,9 @@
       <!-- Apollo watched Graphql query -->
       <ApolloQuery
         :query="require('../graphql/SignalsGroupAggs.gql')"
-        :variables="{ first: rowsPerPage, offset: (rowsPerPage * page) - rowsPerPage }"
+        :variables="{              
+          first: this.itemsPerPage, 
+          offset: (this.itemsPerPage * this.page) - this.itemsPerPage, }"
       >
         <template slot-scope="{ result: { loading, error, data } }">
           <!-- Loading -->
@@ -56,9 +58,8 @@ export default {
       ],
       descending: false,
       page: 1,
-      rowsPerPage: 5,
+      itemsPerPage: 10,
       sortBy: "",
-      totalItems: 5,
       isFiltered: false
     };
   },
@@ -66,8 +67,8 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.options.page = options.page;
-      this.options.itemsPerPage = options.itemsPerPage;
+      this.page = page;
+      this.itemsPerPage = itemsPerPage;
     }
   }
 };
