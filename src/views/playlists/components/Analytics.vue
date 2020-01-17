@@ -60,8 +60,14 @@ export default {
         let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_top_signals);
         return {
           tooltip: {
+            horizontal: true,
             contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
               return `<div style="background-color:#FFF; padding:0px 6px; border:1px solid #888; border-radius: 4px;">Value: ${d[0].value}</div>`;
+            }
+          },
+          grid: {
+            focus: {
+              show: false
             }
           },
           bar: {
@@ -108,12 +114,18 @@ export default {
         let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_employees_dist);
         return {
           tooltip: {
+            horizontal: true,
             contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
               return `<div style="background-color:#FFF; padding:0px 6px; border:1px solid #888; border-radius: 4px;">Value: ${d[0].value}</div>`;
             }
           },
           bar: {
             space: 0.05
+          },
+          grid: {
+            focus: {
+              show: false
+            }
           },
           axis: {
             x: {
