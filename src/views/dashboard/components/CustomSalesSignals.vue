@@ -19,8 +19,9 @@
             <v-data-table
               :headers="headers"
               :items="data.companySignalsAggs"
-              class="elevation-4"
-              @updatePagination="updatePagination"
+              :sort-by="['totalCompanies']"
+              :sort-desc="[true]"
+              @updateOptions="updateOptions"
             >
               <template v-slot:item="{ item, headers}">
                 <tr>
@@ -48,10 +49,10 @@ export default {
     return {
       data: [],
       headers: [
-        { text: "Custom Signal", value: "customsignal" },
-        { text: "Count", value: "count" },
-        { text: "Score", value: "score" },
-        { text: "Group", align: "left", value: "group" }
+        { text: "Custom Signal", value: "customsignal", sortable: false },
+        { text: "Count", value: "totalCompanies", sortable: true },
+        { text: "Score", value: "score", sortable: false },
+        { text: "Group", align: "left", value: "group", sortable: false }
       ],
       descending: false,
       page: 1,
@@ -62,20 +63,11 @@ export default {
     };
   },
   methods: {
-    updatePagination({
-      dataFromEvent: {
-        descending = false,
-        page = 1,
-        rowsPerPage = 25,
-        sortBy = "",
-        totalItems = 25
-      }
+    updateOptions({
+      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.descending = descending;
-      this.page = page;
-      this.rowsPerPage = rowsPerPage;
-      this.sortBy = sortBy;
-      this.totalItems = 25;
+      this.options.page = options.page;
+      this.options.itemsPerPage = options.itemsPerPage;
     }
   }
 };
