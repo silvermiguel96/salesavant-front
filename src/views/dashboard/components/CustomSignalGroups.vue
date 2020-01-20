@@ -50,8 +50,8 @@ export default {
     return {
       data: [],
       headers: [
-        { text: "Group", align: "left", value: "group", sortable: false },
-        { text: "Total Companies", value: "totalCompanies", sortable: false }
+        { text: "Group", align: "left", value: "group" },
+        { text: "Total Companies", value: "totalCompanies" }
       ],
       descending: false,
       page: 1,
