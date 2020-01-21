@@ -1,5 +1,8 @@
 <template>
   <div style="text-align: center;">
+    <div v-if="job.jobType=='playlist_from_file'">
+      <div class="green--text text--lighten-1">Done</div>
+    </div>
     <div v-if="job.jobType=='refresh_orb'">
       <div class="green--text text--lighten-1">Done</div>
     </div>
