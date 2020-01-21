@@ -73,13 +73,22 @@ export default {
         let formData = new FormData();
         formData.append("file", this.file, this.file.name);
         formData.append("jobType", this.jobType);
-        formData.append("description", this.description);
+        if (this.jobType=="playlist_from_file"){
+          formData.append("playlistName", this.playlistName);
+          formData.append("playlistDescription", this.playlistDescription);
+        }else{
+          formData.append("description", this.description);
+        }
         fetch(this.salesavantAPI + "/launch-job?jwt=" + getAuthToken(), {
           method: "POST",
           body: formData
         })
           .then(response => {
             console.log(response.json());
+            this.$eventBus.$emit("showSnack", `Job ${this.jobType} enqueed successfully`, "success");
+            this.$router.push({
+              path: `/batch`
+            });
           })
           .catch(error => {
             console.error(error);
