@@ -12,14 +12,12 @@
                 <v-text-field v-model="description" label="Description"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-file-input
-                  v-model="file"
-                  accept=".csv"
-                  label="Upload Input File"
-                ></v-file-input>
+                <v-file-input v-model="file" accept=".csv" label="Upload Input File"></v-file-input>
               </v-col>
-              <v-col cols="12">
-                <v-btn color="primary" class="text-capitalize" @click.prevent="submitFiles">Save</v-btn>
+              <v-col cols="12" sm="4" md="4" lg="3">
+                <v-btn color="primary" class="text-capitalize" block @click.prevent="submitFiles">
+                  <v-icon class="pr-1">backup</v-icon>Created
+                </v-btn>
               </v-col>
             </v-row>
           </v-container>
@@ -60,7 +58,7 @@ export default {
         formData.append("file", this.file, this.file.name);
         formData.append("jobType", this.jobType);
         formData.append("description", this.description);
-        fetch(this.salesavantAPI + "/launch-job?jwt="+getAuthToken(), {
+        fetch(this.salesavantAPI + "/launch-job?jwt=" + getAuthToken(), {
           method: "POST",
           body: formData
         })

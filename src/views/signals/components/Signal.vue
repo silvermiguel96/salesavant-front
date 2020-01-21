@@ -25,7 +25,7 @@
       <v-form @submit.prevent>
         <v-container fluid >
           <v-row class="px-3" dense>
-            <v-col sm="6">
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.name"
                 label="Name"
@@ -33,28 +33,28 @@
                 :disabled="!canModifySignalName"
               ></v-text-field>
             </v-col>
-            <v-col sm="6">
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.description"
                 label="Description"
                 required
               ></v-text-field>
             </v-col>
-            <v-col sm="6">
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.defaultScore"
                 label="Score"
                 required
               ></v-text-field>
             </v-col>
-            <v-col sm="6">
+            <v-col cols="12" sm="6">
               <v-text-field
                 v-model="signal.group"
                 label="Group"
                 required
               ></v-text-field>
             </v-col>
-            <v-col xs="12" sm="4" md="2" lg="2">
+            <v-col cols="12" sm="4" md="2" lg="2">
               <v-btn
                 v-if="canModifySignalName"
                 type="submit"
