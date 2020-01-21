@@ -8,15 +8,25 @@
               <v-col cols="12">
                 <v-select :items="items" v-model="jobType" label="Job Type"></v-select>
               </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="description" label="Description"></v-text-field>
-              </v-col>
+              <template v-if="jobType=='playlist_from_file'">
+                <v-col cols="12">
+                  <v-text-field v-model="playlistName" label="Playlist Name"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="playlistDescription" label="Playlist Description"></v-text-field>
+                </v-col>
+              </template>
+              <template v-else>
+                <v-col cols="12">
+                  <v-text-field v-model="description" label="Description"></v-text-field>
+                </v-col>
+              </template>
               <v-col cols="12">
                 <v-file-input v-model="file" accept=".csv" label="Upload Input File"></v-file-input>
               </v-col>
               <v-col cols="12" sm="4" md="4" lg="3">
                 <v-btn color="primary" class="text-capitalize" block @click.prevent="submitFiles">
-                  <v-icon class="pr-1">backup</v-icon>Created
+                  <v-icon class="pr-1">backup</v-icon>Launch
                 </v-btn>
               </v-col>
             </v-row>
@@ -40,10 +50,16 @@ export default {
         {
           value: "linkedin_finder",
           text: "LinkedIn Finder"
+        },
+        {
+          value: "playlist_from_file",
+          text: "Playlist From File"
         }
       ],
       jobType: "",
       description: "",
+      playlistName:"",
+      playlistDescription:"",
       file: null
     };
   },
