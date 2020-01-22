@@ -15,12 +15,12 @@
             <v-text-field name="description" label="Description" v-model="companySearch.description" autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
+            <v-text-field name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
+            <v-text-field name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
             <v-text-field name="state" v-model="companySearch.state" label="State" autocomplete="off"></v-text-field>
@@ -31,7 +31,7 @@
             <v-text-field name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
+            <v-text-field name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
@@ -125,6 +125,15 @@ export default {
       }
       if (!this.companySearch.moreThanEmployees) {
         this.companySearch.moreThanEmployees = 0
+      }
+      if (!this.companySearch.lessThanEmployees) {
+        this.companySearch.lessThanEmployees = 0
+      }
+      if (!this.companySearch.moreThanScore) {
+        this.companySearch.moreThanScore = 0
+      }
+      if (!this.companySearch.lessThanScore) {
+        this.companySearch.lessThanScore = 0
       }
       console.log("this.company", this.companySearch)
       this.doCompanySearch({...this.companySearch})
