@@ -123,6 +123,10 @@ export default {
       if (this.$route.path !== "/companies"){
         this.$router.push("/companies");
       }
+      if (!this.companySearch.moreThanEmployees) {
+        this.companySearch.moreThanEmployees = 0
+      }
+      console.log("this.company", this.companySearch)
       this.doCompanySearch({...this.companySearch})
     },
     onPlaylistAutocompleteChange(value) {
