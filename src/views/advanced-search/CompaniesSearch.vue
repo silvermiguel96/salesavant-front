@@ -4,39 +4,40 @@
       <v-container fluid>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field name="name" v-model="companySearch.name" label="Name"  autocomplete="off"></v-text-field>
+            <v-text-field dense name="name" v-model="companySearch.name" label="Name"  autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field name="country" v-model="companySearch.country" label="Country" autocomplete="off"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field name="description" label="Description" v-model="companySearch.description" autocomplete="off"></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
+            <v-text-field dense name="country" v-model="companySearch.country" label="Country" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
+            <v-text-field dense name="description" label="Description" v-model="companySearch.description" autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field name="state" v-model="companySearch.state" label="State" autocomplete="off"></v-text-field>
+            <v-text-field dense name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
+            <v-text-field dense name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
+            <v-text-field dense name="state" v-model="companySearch.state" label="State" autocomplete="off"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row wrap>
+          <v-col cols="6">
+            <v-text-field dense name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field dense name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
             <v-text-field
+              dense
               name="moreThanEmployees"
               v-model="companySearch.moreThanEmployees"
               label="More than Employees"
@@ -45,6 +46,7 @@
           </v-col>
           <v-col cols="6">
             <v-text-field
+              dense
               name="lessThanEmployees"
               v-model="companySearch.lessThanEmployees"
               label="Less than Employees"
@@ -55,6 +57,7 @@
         <v-row wrap>
           <v-col cols="6">
             <v-text-field
+              dense
               name="moreThanScore"
               v-model="companySearch.moreThanScore"
               label="More than Score"
@@ -63,6 +66,7 @@
           </v-col>
           <v-col cols="6">
             <v-text-field
+              dense
               name="lessThanScore"
               v-model="companySearch.lessThanScore"
               label="Less than Score"
