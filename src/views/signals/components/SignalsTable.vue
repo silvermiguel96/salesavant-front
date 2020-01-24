@@ -1,5 +1,20 @@
 <template>
   <v-container fluid>
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title class="headline">Delete signal</v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <h1 class="subtitle-1"> Do you want to eliminate the signal?</h1>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
+          <v-btn color="red darken-1" class="text-capitalize" text @click="deleteSignal">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
       {{ snackText }}
       <v-btn text @click="snack = false">Close</v-btn>
@@ -98,7 +113,7 @@
           </td>
           <td>
             <v-icon
-              @click="deleteSignal(item.id)"
+              @click="selectedSignals(item.id)"
               color="red lighten-2"
               size="20"
               >delete</v-icon
@@ -118,29 +133,32 @@ import LongParagraph from "../../../components/common/LongParagraph";
 export default {
   data() {
     return {
+      dialog: false,
       options: {
         page: 1,
         itemsPerPage: 10
       },
       headers: [
-        { text: "Name", value: "name", sortable: false },
+        { text: "Name", value: "name", sortable: false, width: "20%" },
         {
           text: "Description",
           value: "description",
           align: "left",
-          sortable: false 
+          sortable: false,
+          width: "20%"
         },
-        { text: "Group", value: "group", align: "left", sortable: false  },
-        { text: "Category", value: "category", align: "left", sortable: false  },
-        { text: "Default Score", value: "defaultScore", align: "left", sortable: false  },
-        { text: "Creation Time", value: "creationTime", align: "left", sortable: false  },
-        { text: "Edit", value: "icon", align: "left", sortable: false },
-        { text: "Delete", value: "icon", align: "left", sortable: false }
+        { text: "Group", value: "group", align: "left", sortable: false, width: "20%"  },
+        { text: "Category", value: "category", align: "left", sortable: false, width: "10%" },
+        { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
+        { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "10%"   },
+        { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
+        { text: "Delete", value: "icon", align: "left", sortable: false, width: "5%"  }
       ],
       snack: false,
       snackColor: "",
       snackText: "",
-      signal: {}
+      signal: {},
+      selectedSignal: ""
     };
   },
   components: {
@@ -156,8 +174,14 @@ export default {
         return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
       }
     },
-    deleteSignal(signalId) {
-      this.$emit("deleteSignal", signalId);
+    selectedSignals(signalId) {
+      this.selectedSignal = signalId
+      this.dialog = true
+    },
+    deleteSignal() {
+      console.log("this.selectedSignal", this.selectedSignal)
+      this.$emit("deleteSignal", this.selectedSignal);
+      this.dialog = false
     },
     changeTimeHuman(time) {
       let HumanDate = time.split(".", 1).toString();

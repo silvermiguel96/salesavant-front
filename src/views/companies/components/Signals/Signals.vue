@@ -47,17 +47,36 @@
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
             <td>{{ item.score || "0" }}</td>
-            <td class="justify-center layout px-0">
-              <v-icon
-                small
-                color="red"
-                @click="
-                  deleteItem({
-                    item: item,
-                    signalId: item.signal.id
-                  })
-                "
-              >delete</v-icon>
+            <td>
+              <v-dialog v-model="dialog" max-width="600px">
+                <v-card>
+                  <v-card-title class="headline">Delete signal</v-card-title>
+                  <v-card-text>
+                    <v-container grid-list-md>
+                      <h1 class="subtitle-1">Do you want to eliminate the signal?</h1>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="grey darken-1"
+                      class="text-capitalize"
+                      text
+                      @click="dialog = false"
+                    >Close</v-btn>
+                    <v-btn
+                      color="red darken-1"
+                      class="text-capitalize"
+                      text
+                      @click="deleteItem({
+                        item: item,
+                        signalId: item.signal.id
+                      })"
+                    >Delete</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+              <v-icon @click="dialog = true" small color="red">delete</v-icon>
             </td>
           </tr>
         </template>
@@ -86,13 +105,14 @@ export default {
       currentSignalSearch: null,
       descending: false,
       headers: [
-        { text: "Name", sortable: false },
-        { text: "Description", sortable: false },
-        { text: "Group", sortable: false },
-        { text: "Category",sortable: false },
-        { text: "Score",sortable: false },
-        { text: "Actions", sortable: false }
-      ]
+        { text: "Name", sortable: false, width: "20%" },
+        { text: "Description", sortable: false, width: "20%" },
+        { text: "Group", sortable: false, width: "20%" },
+        { text: "Category", sortable: false, width: "20%" },
+        { text: "Score", sortable: false, width: "10%" },
+        { text: "Actions", sortable: false, align: "left", width: "10%" }
+      ],
+      dialog: ""
     };
   },
   apollo: {
@@ -338,12 +358,8 @@ export default {
       try {
         console.log({ item, signalId });
         const index = this.companySignals.companySignalsList.indexOf(item);
-        const isConfirmed = confirm(
-          "Are you sure you want to delete this item?"
-        );
-        if (isConfirmed) {
-          const result = await this.$apollo.mutate({
-            mutation: gql`
+        const result = await this.$apollo.mutate({
+          mutation: gql`
               mutation($signalId: Int!, $companyUid: String!) {
                 deleteCompanySignal(
                   companyUid: $companyUid
@@ -355,21 +371,20 @@ export default {
                 }
               }
             `,
-            // Parameters
-            variables: {
-              signalId,
-              companyUid: this.$route.params.companiesUid
-            }
-          });
-          console.log("result", result);
-          const companySignalId = _get(
-            result,
-            "data.deleteCompanySignal.companySignal.id",
-            null
-          );
-          this.companySignals.companySignalsList.splice(index, 1);
-          this.refreshData();
-        }
+          // Parameters
+          variables: {
+            signalId,
+            companyUid: this.$route.params.companiesUid
+          }
+        });
+        console.log("result", result);
+        const companySignalId = _get(
+          result,
+          "data.deleteCompanySignal.companySignal.id",
+          null
+        );
+        this.companySignals.companySignalsList.splice(index, 1);
+        this.refreshData();
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
