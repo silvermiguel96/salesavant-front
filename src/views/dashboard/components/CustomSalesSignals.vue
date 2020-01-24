@@ -52,10 +52,10 @@ export default {
     return {
       data: [],
       headers: [
-        { text: "Custom Signal", value: "customsignal", sortable: false },
-        { text: "Count", value: "totalCompanies", sortable: true },
-        { text: "Score", value: "score", sortable: false },
-        { text: "Group", align: "left", value: "group", sortable: false }
+        { text: "Custom Signal", value: "customsignal", sortable: false, width: "20%" },
+        { text: "Count", value: "totalCompanies", sortable: true, width: "20%" },
+        { text: "Score", value: "score", sortable: false, width: "20%" },
+        { text: "Group", align: "left", value: "group", sortable: false, width: "20%" }
       ],
       descending: false,
       page: 1,
