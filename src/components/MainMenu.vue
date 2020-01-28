@@ -54,16 +54,16 @@ export default {
           click: this.onCompanies
         },
         {
-          icon: "gps_fixed",
-          text: "Signals",
-          router: "/signals",
-          click: this.onSignals
-        },
-        {
           icon: "assessment",
           text: "Contacts",
           router: "/contacts",
           click: this.onContacts
+        },
+        {
+          icon: "gps_fixed",
+          text: "Signals",
+          router: "/signals",
+          click: this.onSignals
         },
         { 
           icon: "work", 
@@ -95,10 +95,6 @@ export default {
       this.resetAdvancedSearch();
       this.$router.push("/playlists").catch(err => {});
     },
-    onSignals() {
-      this.resetAdvancedSearch();
-      this.$router.push("/signals").catch(err => {});
-    },
     onCompanies() {
       this.resetAdvancedSearch();
       this.$router.push("/companies").catch(err => {});
@@ -106,6 +102,10 @@ export default {
     onContacts() {
       this.resetAdvancedSearch();
       this.$router.push("/contacts").catch(err => {});
+    },
+    onSignals() {
+      this.resetAdvancedSearch();
+      this.$router.push("/signals").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);

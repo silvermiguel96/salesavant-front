@@ -26,6 +26,15 @@
         <c3-chart :type="'bar'" :config="aggs_employees_dist_config" :data="aggs_employees_dist" />
       </v-card-text>
     </v-card>
+
+     <v-card v-if="revenue_per_category">
+      <v-card-subtitle>
+        <div class="headline">Revenue per Category</div>
+      </v-card-subtitle>
+      <v-card-text>
+        <c3-chart :type="'pie'" :config="revenue_per_category_config" :data="revenue_per_category" />
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
@@ -96,19 +105,6 @@ export default {
       }
       return null;
     },
-    aggs_employees_dist: function(){
-      if (this.aggs_data.hasOwnProperty("aggs_employees_dist")) {
-        let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_employees_dist);
-        let cols = agg_string_parsed.map(entry=>{
-          return parseInt(entry[1]);
-        });
-        cols.unshift("x");
-        return {
-          columns: [cols]
-        };
-      }
-      return null;
-    },
     aggs_employees_dist_config: function(){
       if (this.aggs_data.hasOwnProperty("aggs_employees_dist")) {
         let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_employees_dist);
@@ -144,6 +140,30 @@ export default {
           legend: {
             hide: true
           }
+        };
+      }
+      return null;
+    },
+    aggs_employees_dist: function(){
+      if (this.aggs_data.hasOwnProperty("aggs_employees_dist")) {
+        let agg_string_parsed = this.parse_agg_string(this.aggs_data.aggs_employees_dist);
+        let cols = agg_string_parsed.map(entry=>{
+          return parseInt(entry[1]);
+        });
+        cols.unshift("x");
+        return {
+          columns: [cols]
+        };
+      }
+      return null;
+    },
+    revenue_per_category_config: function(){
+      return {};
+    },
+    revenue_per_category: function(){
+      if (this.aggs_data.hasOwnProperty("revenue_per_category")) {
+        return {
+          columns: this.parse_agg_string(this.aggs_data.revenue_per_category)
         };
       }
       return null;
