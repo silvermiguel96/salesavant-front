@@ -4,40 +4,40 @@
       <v-container fluid>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field dense name="name" v-model="companySearch.name" label="Name"  autocomplete="off"></v-text-field>
+            <v-text-field :dense="denseForm" name="name" v-model="companySearch.name" label="Name"  autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field dense name="country" v-model="companySearch.country" label="Country" autocomplete="off"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field dense name="description" label="Description" v-model="companySearch.description" autocomplete="off"></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field dense name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
+            <v-text-field :dense="denseForm" name="country" v-model="companySearch.country" label="Country" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field dense name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
+            <v-text-field :dense="denseForm" name="description" label="Description" v-model="companySearch.description" autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field dense name="state" v-model="companySearch.state" label="State" autocomplete="off"></v-text-field>
+            <v-text-field :dense="denseForm" name="region" v-model="companySearch.region" label="Region" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field dense name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
+            <v-text-field :dense="denseForm" name="status" v-model="companySearch.status" label="Status" autocomplete="off"></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field dense name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
+            <v-text-field :dense="denseForm" name="state" v-model="companySearch.state" label="State" autocomplete="off"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row wrap>
+          <v-col cols="6">
+            <v-text-field :dense="denseForm" name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field :dense="denseForm" name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="6">
             <v-text-field
-              dense
+              :dense="denseForm"
               name="moreThanEmployees"
               v-model="companySearch.moreThanEmployees"
               label="More than Employees"
@@ -46,7 +46,7 @@
           </v-col>
           <v-col cols="6">
             <v-text-field
-              dense
+              :dense="denseForm"
               name="lessThanEmployees"
               v-model="companySearch.lessThanEmployees"
               label="Less than Employees"
@@ -57,7 +57,7 @@
         <v-row wrap>
           <v-col cols="6">
             <v-text-field
-              dense
+              :dense="denseForm"
               name="moreThanScore"
               v-model="companySearch.moreThanScore"
               label="More than Score"
@@ -66,7 +66,7 @@
           </v-col>
           <v-col cols="6">
             <v-text-field
-              dense
+              :dense="denseForm"
               name="lessThanScore"
               v-model="companySearch.lessThanScore"
               label="Less than Score"
@@ -110,13 +110,18 @@ import _get from "lodash.get";
 import PlaylistsAutocomplete from "../../components/playlists/PlaylistAutocomplete.vue";
 import SignalsAutocompleteMulti from "../../components/signals/SignalsAutocompleteMulti.vue";
 import SignalsGroupsAutocomplete from "../../components/signals/GroupsAutocomplete.vue";
-import {defaultCompanySearch} from "../../store";
+import {defaultCompanySearch, defaultDenseForm} from "../../store";
 import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      companySearch: {...defaultCompanySearch}
+      companySearch: {...defaultCompanySearch},
+      // denseForm: defaultDenseForm,
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   methods: {
@@ -158,6 +163,10 @@ export default {
     },
     onSignalsGroupAutocompleteChange(value) {
       this.companySearch = { ...this.companySearch, signalGroups: _get(value, "signalGroups", [])};
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
     }
   },
   components: {
@@ -165,6 +174,19 @@ export default {
     SignalsAutocompleteMulti,
     SignalsGroupsAutocomplete
   },
+  created() {
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize)
+  },
+  computed: {
+    denseForm() {
+      return this.window.width > 768 ? false : true;
+    }
+  }
+
 };
 </script>
 
