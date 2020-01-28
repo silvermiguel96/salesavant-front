@@ -23,15 +23,12 @@ export const defaultCompanySearch = {
   signalGroups: []
 };
 
-export const defaultDenseForm = true;
-
 const state = {
   advancedSearch: {
     showDialog: false,
     searchType: null,
     companySearch: { ...defaultCompanySearch },
-  },
-  denseForm: defaultDenseForm
+  }
 };
 
 const getters = {};

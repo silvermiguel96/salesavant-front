@@ -110,14 +110,13 @@ import _get from "lodash.get";
 import PlaylistsAutocomplete from "../../components/playlists/PlaylistAutocomplete.vue";
 import SignalsAutocompleteMulti from "../../components/signals/SignalsAutocompleteMulti.vue";
 import SignalsGroupsAutocomplete from "../../components/signals/GroupsAutocomplete.vue";
-import {defaultCompanySearch, defaultDenseForm} from "../../store";
+import {defaultCompanySearch} from "../../store";
 import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
       companySearch: {...defaultCompanySearch},
-      // denseForm: defaultDenseForm,
       window: {
         width: 0,
         height: 0
