@@ -1,5 +1,29 @@
 <template>
   <v-card>
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title class="headline">Delete signal</v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <h1
+              class="subtitle-1"
+            >Confirm want to eliminate the signal {{selectedItem.signal.name}}?</h1>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
+          <v-btn
+            color="red darken-1"
+            class="text-capitalize"
+            text
+            @click="deleteItem({ 
+              item: selectedItem,
+              signalId: selectedSignalId} )"
+          >Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-card-text class="mx-2">
       <v-row>
         <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
@@ -48,35 +72,14 @@
             <td>{{ item.signal.category || "--" }}</td>
             <td>{{ item.score || "0" }}</td>
             <td>
-              <v-dialog v-model="dialog" max-width="600px">
-                <v-card>
-                  <v-card-title class="headline">Delete signal</v-card-title>
-                  <v-card-text>
-                    <v-container grid-list-md>
-                      <h1 class="subtitle-1">Do you want to eliminate the signal?</h1>
-                    </v-container>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="grey darken-1"
-                      class="text-capitalize"
-                      text
-                      @click="dialog = false"
-                    >Close</v-btn>
-                    <v-btn
-                      color="red darken-1"
-                      class="text-capitalize"
-                      text
-                      @click="deleteItem({
-                        item: item,
-                        signalId: item.signal.id
-                      })"
-                    >Delete</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-icon @click="dialog = true" small color="red">delete</v-icon>
+              <v-icon
+                @click="selectedSignal({
+                  item: item,
+                  signalId: item.signal.id
+              })"
+                small
+                color="red"
+              >delete</v-icon>
             </td>
           </tr>
         </template>
@@ -112,7 +115,13 @@ export default {
         { text: "Score", sortable: false, width: "10%" },
         { text: "Actions", sortable: false, align: "left", width: "10%" }
       ],
-      dialog: ""
+      dialog: "",
+      selectedSignalId: "",
+      selectedItem: {
+        signal: {
+          name: ""
+        }
+      }
     };
   },
   apollo: {
@@ -354,23 +363,28 @@ export default {
         console.log("error adding signal to company", error);
       }
     },
+    selectedSignal({ item, signalId }) {
+      this.selectedItem = item;
+      this.selectedSignalId = signalId;
+      this.dialog = true;
+    },
     async deleteItem({ item = null, signalId = null }) {
       try {
         console.log({ item, signalId });
         const index = this.companySignals.companySignalsList.indexOf(item);
         const result = await this.$apollo.mutate({
           mutation: gql`
-              mutation($signalId: Int!, $companyUid: String!) {
-                deleteCompanySignal(
-                  companyUid: $companyUid
-                  signalId: $signalId
-                ) {
-                  companySignal {
-                    id
-                  }
+            mutation($signalId: Int!, $companyUid: String!) {
+              deleteCompanySignal(
+                companyUid: $companyUid
+                signalId: $signalId
+              ) {
+                companySignal {
+                  id
                 }
               }
-            `,
+            }
+          `,
           // Parameters
           variables: {
             signalId,
@@ -384,6 +398,7 @@ export default {
           null
         );
         this.companySignals.companySignalsList.splice(index, 1);
+        this.dialog = false
         this.refreshData();
       } catch (error) {
         this.snack = true;

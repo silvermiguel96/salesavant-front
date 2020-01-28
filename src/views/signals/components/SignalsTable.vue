@@ -5,7 +5,9 @@
         <v-card-title class="headline">Delete signal</v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <h1 class="subtitle-1"> Do you want to eliminate the signal?</h1>
+            <h1
+              class="subtitle-1"
+            >Confirm want to eliminate the signal {{selectedItem.name}}?</h1>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -31,24 +33,14 @@
       class="mx-2"
       @update:options="updateOptions"
     >
-      <v-progress-linear
-        v-slot:progress
-        color="blue"
-        indeterminate
-      ></v-progress-linear>
+      <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:item="{ item }">
         <tr>
           <td>
-            <long-paragraph
-              class="wrapping-td"
-              :text="item.name"
-            ></long-paragraph>
+            <long-paragraph class="wrapping-td" :text="item.name"></long-paragraph>
           </td>
           <td>
-            <long-paragraph
-              class="wrapping-td"
-              :text="item.description"
-            ></long-paragraph>
+            <long-paragraph class="wrapping-td" :text="item.description"></long-paragraph>
           </td>
           <td>
             <v-edit-dialog
@@ -113,11 +105,12 @@
           </td>
           <td>
             <v-icon
-              @click="selectedSignals(item.id)"
+              @click="selectedSignal({
+                item: item ,
+                signalId: item.id})"
               color="red lighten-2"
               size="20"
-              >delete</v-icon
-            >
+            >delete</v-icon>
           </td>
         </tr>
       </template>
@@ -158,7 +151,8 @@ export default {
       snackColor: "",
       snackText: "",
       signal: {},
-      selectedSignal: ""
+      selectedSignalId: "",
+      selectedItem: {}
     };
   },
   components: {
@@ -174,14 +168,15 @@ export default {
         return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
       }
     },
-    selectedSignals(signalId) {
-      this.selectedSignal = signalId
-      this.dialog = true
+    selectedSignal({ item, signalId }) {
+      this.selectedItem = item;
+      this.selectedSignalId = signalId;
+      this.dialog = true;
     },
     deleteSignal() {
-      console.log("this.selectedSignal", this.selectedSignal)
-      this.$emit("deleteSignal", this.selectedSignal);
-      this.dialog = false
+      console.log("this.selectedSignalId", this.selectedSignalId);
+      this.$emit("deleteSignal", this.selectedSignalId);
+      this.dialog = false;
     },
     changeTimeHuman(time) {
       let HumanDate = time.split(".", 1).toString();
