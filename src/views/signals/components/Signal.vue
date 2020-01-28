@@ -22,6 +22,18 @@
         ]"
         divider=">"
       ></v-breadcrumbs>
+      <v-breadcrumbs
+      :large="true"
+        v-else
+        :items="[
+          {
+            text: 'Signals',
+            disabled: false,
+            href: '/signals'
+          }
+        ]"
+        divider=">"
+      ></v-breadcrumbs>
       <v-form @submit.prevent>
         <v-container fluid >
           <v-row class="px-3" dense>
@@ -362,7 +374,7 @@ export default {
         }
         this.signal = signal;
         this.$router.push({
-          path: `/signals/${signal.id}`
+          path: `/signals`
         });
         this.$apollo.queries.signal;
         this.$apollo.queries.companySignals;
@@ -446,7 +458,7 @@ export default {
         this.snackColor = "success";
         this.snackText = "The signals are saving successfully!";
         console.log("saving signal success", result);
-
+        this.$router.push("/signal");
         const signal = _get(
           result,
           "data.createSignalFromPlaylistKeyword.signal",
