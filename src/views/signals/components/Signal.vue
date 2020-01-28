@@ -66,7 +66,7 @@
                 <v-icon small class="pr-1">{{
                   !!signal.id ? "save" : "add"
                 }}</v-icon>
-                {{ !!signal.id ? "Save" : "Create" }}
+                {{ !!signal.id ? "Updated" : "Create" }}
               </v-btn>
               <v-btn
                 v-else
