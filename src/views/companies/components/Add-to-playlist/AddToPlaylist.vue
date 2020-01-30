@@ -73,7 +73,7 @@
               <v-icon
                 color="red lighten-2"
                 size="20"
-                @click="selectedPlaylist({
+                @click="selectPlaylist({
                   item: item,
                   playlistId: item.uid
               })"
