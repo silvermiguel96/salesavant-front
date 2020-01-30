@@ -9,7 +9,7 @@
               Confirm you want to eliminate the playlist
               <span
                 class="font-weight-bold"
-              >{{selectedItem.name}}</span>?
+              >{{selectedIPlaylist.name}}</span>?
             </h1>
           </v-container>
         </v-card-text>
@@ -120,7 +120,7 @@ export default {
         },
         { text: "Remove", value: "action", width: "10%", sortable: false }
       ],
-      selectedItem: "",
+      selectedIPlaylist: "",
       selectedPlaylistId: {}
     };
   },
@@ -170,9 +170,9 @@ export default {
       this.options.itemsPerPage = options.itemsPerPage;
     },
     changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
+      let humanDate = time.split(".", 1).toString();
+      let humanTime = HumanDate.split("T", 2).join(" ");
+      return humanTime;
     },
     onPlaylistAutoCompleteChange(playlistResults) {
       this.playlistUid = _get(playlistResults, "playlistUid", null);
@@ -243,8 +243,8 @@ export default {
         console.log("error adding playlist to company", error);
       }
     },
-    selectedPlaylist({ item, playlistId }) {
-      this.selectedItem = item;
+    selectPlaylist({ item, playlistId }) {
+      this.selectedIPlaylist = item;
       this.selectedPlaylistId = playlistId;
       this.dialog = true;
     },
