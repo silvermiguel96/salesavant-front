@@ -47,7 +47,6 @@ export default {
       });
 
       if (this.loading) return;
-
       this.querySignals();
     }
   },

@@ -31,10 +31,7 @@ export default {
   },
   watch: {
     search(val) {
-      if (this.playlists.length > 0) return;
-
       if (this.loading) return;
-
       this.queryPlaylists();
     },
     playlistSelected (val){

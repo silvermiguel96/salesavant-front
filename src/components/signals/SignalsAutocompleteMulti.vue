@@ -50,7 +50,6 @@ export default {
   watch: {
     search(val) {
       if (this.loading) return;
-
       this.querySignals();
     }
   },
