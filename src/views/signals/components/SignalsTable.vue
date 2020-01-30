@@ -7,7 +7,7 @@
           <v-container grid-list-md>
             <h1
               class="subtitle-1"
-            >Confirm you want to eliminate the signal <span class="font-weight-bold">{{selectedItem.singal.name}}</span>?</h1>
+            >Confirm you want to eliminate the signal <span class="font-weight-bold">{{selectedItem.name}}</span>?</h1>
           </v-container>
         </v-card-text>
         <v-card-actions>
