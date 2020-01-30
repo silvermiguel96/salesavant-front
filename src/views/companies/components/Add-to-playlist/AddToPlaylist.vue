@@ -1,5 +1,30 @@
 <template>
   <v-card class="ma-3">
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title class="headline">Delete playlist</v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <h1 class="subtitle-1">
+              Confirm you want to eliminate the playlist
+              <span
+                class="font-weight-bold"
+              >{{selectedItem.name}}</span>?
+            </h1>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
+          <v-btn
+            color="red darken-1"
+            class="text-capitalize"
+            text
+            @click="deleteCompanyPlaylist(selectedPlaylistId)"
+          >Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-card-text>
       <v-row>
         <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
@@ -42,14 +67,17 @@
                 }}
               </router-link>
             </td>
+            <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
+            <td>{{ changeTimeHuman(item.creationTime) }}</td>
             <td>
-              <a
-                @click="deleteCompanyPlaylist(item.uid)"
-                class="blue--text text-capitalize"
-              >Remove from playlist</a>
-              <!-- <v-icon
+              <v-icon
+                color="red lighten-2"
                 size="20"
-              >delete</v-icon>-->
+                @click="selectedPlaylist({
+                  item: item,
+                  playlistId: item.uid
+              })"
+              >delete</v-icon>
             </td>
           </tr>
         </template>
@@ -80,10 +108,20 @@ export default {
       companySignals: [],
       descending: false,
       sortBy: "",
+      dialog: false,
       headers: [
-        { text: "Name", value: "name", sortable: false },
-        { text: "Remove", value: "action", sortable: false }
-      ]
+        { text: "Name", value: "name", width: "30%", sortable: false },
+        { text: "Size", value: "totalCompanies", width: "30%", sortable: true },
+        {
+          text: "Creation Time",
+          value: "creationTime",
+          width: "30%",
+          sortable: false
+        },
+        { text: "Remove", value: "action", width: "10%", sortable: false }
+      ],
+      selectedItem: "",
+      selectedPlaylistId: {}
     };
   },
   components: {
@@ -106,6 +144,8 @@ export default {
             companyPlaylistsList {
               uid
               name
+              totalCompanies
+              creationTime
             }
           }
         }
@@ -128,6 +168,11 @@ export default {
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
+    },
+    changeTimeHuman(time) {
+      let HumanDate = time.split(".", 1).toString();
+      let HumanTime = HumanDate.split("T", 2).join(" ");
+      return HumanTime;
     },
     onPlaylistAutoCompleteChange(playlistResults) {
       this.playlistUid = _get(playlistResults, "playlistUid", null);
@@ -198,6 +243,11 @@ export default {
         console.log("error adding playlist to company", error);
       }
     },
+    selectedPlaylist({ item, playlistId }) {
+      this.selectedItem = item;
+      this.selectedPlaylistId = playlistId;
+      this.dialog = true;
+    },
     async deleteCompanyPlaylist(playlistUid) {
       console.log("playlistUid", playlistUid);
       try {
@@ -228,6 +278,7 @@ export default {
           }
         });
         console.log("result", result);
+        this.dialog = false;
         //this.snackText = "The playlist is delete to company";
         this.refreshData();
       } catch (error) {
