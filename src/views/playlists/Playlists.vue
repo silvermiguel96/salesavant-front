@@ -53,6 +53,7 @@
               :totalResults="data.playlists.totalResults"
               class="result apollo"
               @updateOptions="updateOptions"
+              @deletePlaylist="deletePlaylist"
             ></play-lists-table>
           </div>
 
@@ -65,6 +66,7 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
 import PlayListsTable from "./components/PlayListsTable.vue";
 import { mapMutations } from "../../store";
 
@@ -107,6 +109,34 @@ export default {
         this.sortOrder = "";
       }
     },
-  }
+    async deletePlaylist(playlistUid) {
+      console.log("Delete Id", playlistUid);
+      try {
+        let result = null;
+        result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($playlistUid: String!) {
+              deletePlaylist(playlistUid: $playlistUid) {
+                playlist {
+                  uid
+                }
+              }
+            }
+          `,
+          variables: {
+            playlistUid: playlistUid
+          }
+        });
+        console.log("Result", result);
+        this.$router.go(this.$router.currentRoute);
+        console.log(this.$apollo.queries);
+        return;
+      } catch (error) {
+        console.log("error delete playlist", error);
+      } finally {
+        this.showTable = true;
+      }
+    }
+  } 
 };
 </script>

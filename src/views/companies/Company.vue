@@ -53,20 +53,20 @@
       <v-tab-item>
         <company-comments />
       </v-tab-item>
-      <!-- tab signals -->
-      <v-tab>Signals</v-tab>
+      <!-- Tab add to playlist -->
+      <v-tab>Playlists</v-tab>
       <v-tab-item>
-        <signals />
+        <add-to-playlist></add-to-playlist>
       </v-tab-item>
       <!-- Tab contacts -->
       <v-tab>Contacts</v-tab>
       <v-tab-item>
         <contact></contact>
       </v-tab-item>
-      <!-- Tab add to playlist -->
-      <v-tab>Playlists</v-tab>
+      <!-- tab signals -->
+      <v-tab>Signals</v-tab>
       <v-tab-item>
-        <add-to-playlist></add-to-playlist>
+        <signals />
       </v-tab-item>
       <!-- Tab new signals -->
       <v-tab>News</v-tab>
