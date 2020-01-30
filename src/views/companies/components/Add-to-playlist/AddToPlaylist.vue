@@ -171,7 +171,7 @@ export default {
     },
     changeTimeHuman(time) {
       let humanDate = time.split(".", 1).toString();
-      let humanTime = HumanDate.split("T", 2).join(" ");
+      let humanTime = humanDate.split("T", 2).join(" ");
       return humanTime;
     },
     onPlaylistAutoCompleteChange(playlistResults) {
