@@ -182,7 +182,7 @@ export default {
   },
   computed: {
     denseForm() {
-      return this.window.width > 768 ? false : true;
+      return this.window.width > 1024 ? false : true;
     }
   }
 
