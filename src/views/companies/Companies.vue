@@ -87,18 +87,26 @@
               return data;
             }"
           >
-            <template slot-scope="{ result: { loading, error, data } }">
+            <template v-slot="{ result: { loading, error, data }, isLoading }">
               <!-- Loading -->
-              <div v-if="loading" class="loading apollo">Loading...</div>
+              <v-row v-if="isLoading" :justify="center" no-gutters>
+                <v-col cols="12" class="text-center">
+                  Loading...
+                </v-col>
+                <v-col cols="12">
+                  <v-progress-linear v-slot:progress color="blue" active indeterminate></v-progress-linear>
+                </v-col>
+              </v-row>
 
               <!-- Error -->
-              <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+              <div v-else-if="error" class="error apollo">An error occured</div>
 
               <!-- Result -->
               <div v-else-if="data" class="result apollo">
                 <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <companies-table
                   v-if="data.companies"
+                  :loading="loading"
                   :items="data.companies.companiesList"
                   :totalResults="data.companies.totalResults"
                   class="result apollo"
@@ -107,7 +115,7 @@
               </div>
 
               <!-- No result -->
-              <div v-else class="no-result apollo">Loading...</div>
+              <div v-else>No data was returned</div>
             </template>
           </ApolloQuery>
         </template>
@@ -136,12 +144,19 @@
             }"
             :skip="search.length >0 && search.length<=2"
           >
-            <template slot-scope="{ result: { loading, error, data } }">
+            <template v-slot="{ result: { loading, error, data }, isLoading }">
               <!-- Loading -->
-              <div v-if="loading" class="loading apollo">Loading...</div>
+              <v-row v-if="isLoading" :justify="center" no-gutters>
+                <v-col cols="12" class="text-center">
+                  Loading...
+                </v-col>
+                <v-col cols="12">
+                  <v-progress-linear v-slot:progress color="blue" active indeterminate></v-progress-linear>
+                </v-col>
+              </v-row>
 
               <!-- Error -->
-              <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
+              <div v-else-if="error" class="error apollo">An error occured</div>
 
               <!-- Result -->
               <div v-else-if="data" class="result apollo">
@@ -155,7 +170,7 @@
               </div>
 
               <!-- No result -->
-              <div v-else class="no-result apollo">Loading...</div>
+              <div v-else>No data was returned</div>
             </template>
           </ApolloQuery>
         </template>
