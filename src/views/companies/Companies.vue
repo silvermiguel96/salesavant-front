@@ -88,34 +88,33 @@
             }"
           >
             <template v-slot="{ result: { loading, error, data }, isLoading }">
-              <!-- Loading -->
-              <v-row v-if="isLoading" :justify="center" no-gutters>
-                <v-col cols="12" class="text-center">
-                  Loading...
-                </v-col>
-                <v-col cols="12">
-                  <v-progress-linear v-slot:progress color="blue" active indeterminate></v-progress-linear>
-                </v-col>
-              </v-row>
-
-              <!-- Error -->
-              <div v-else-if="error" class="error apollo">An error occured</div>
-
               <!-- Result -->
-              <div v-else-if="data" class="result apollo">
-                <!---<div>{{ JSON.stringify(data) }}</div>-->
-                <companies-table
-                  v-if="data.companies"
-                  :loading="loading"
-                  :items="data.companies.companiesList"
-                  :totalResults="data.companies.totalResults"
-                  class="result apollo"
-                  @updateOptions="updateOptions"
-                ></companies-table>
-              </div>
+              <companies-table
+                v-if="data.companies.companiesList.length"
+                :items="data.companies.companiesList"
+                :totalResults="data.companies.totalResults"
+                class="result apollo"
+                @updateOptions="updateOptions"
+              ></companies-table>
+
+
 
               <!-- No result -->
               <div v-else>No data was returned</div>
+
+              <!-- Loading -->
+              <v-row  :justify="center" no-gutters>
+                <v-col  cols="12">
+                  <v-progress-linear
+                  :active="isLoading"
+                  color="blue"
+                  indeterminate
+                  absolute
+                  bottom
+                  query
+                  ></v-progress-linear>
+                </v-col>
+              </v-row>
             </template>
           </ApolloQuery>
         </template>
