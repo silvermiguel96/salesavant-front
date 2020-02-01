@@ -72,6 +72,7 @@
             <td>{{ item.signal.category || "--" }}</td>
             <td>{{ item.score || "0" }}</td>
             <td>
+              <div class="d-flex align-center justify-center">
               <v-icon
                 @click="selectedSignal({
                   item: item,
@@ -80,6 +81,7 @@
                 small
                 color="red"
               >delete</v-icon>
+              </div>
             </td>
           </tr>
         </template>
@@ -113,7 +115,7 @@ export default {
         { text: "Group", sortable: false, width: "20%" },
         { text: "Category", sortable: false, width: "20%" },
         { text: "Score", sortable: false, width: "10%" },
-        { text: "Actions", sortable: false, align: "left", width: "10%" }
+        { text: "Actions", sortable: false, align: "center", width: "10%" }
       ],
       dialog: "",
       selectedSignalId: "",

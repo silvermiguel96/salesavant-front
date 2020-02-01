@@ -1,7 +1,8 @@
 <template>
   <v-card v-if="company" style="height:100%;">
     <v-card-subtitle>
-      <div class="headline">Profile</div>
+      <div class="headline">Profiled</div>
+      <div class="caption">Updated : {{ changeTimeHuman(company.modificationTime)}}</div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
@@ -11,7 +12,7 @@
             <v-col cols="12" xs="6">
               <div class="subtitle-2 font-weight-medium">Company</div>
             </v-col>
-            <v-col cols="12" xs="6">
+            <v-col cols="12" xs="6">getSingleCompany
               <span class="font-weight-light">{{ company.name || "[empty name]" }}</span>
             </v-col>
           </v-row>
@@ -337,6 +338,13 @@ export default {
         : `http://${this.company.url}`;
     }
   },
+  methods: {
+    changeTimeHuman(time) {
+      let humanDate = time.split(".", 1).toString();
+      let humanTime = humanDate.split("T", 2).join(" ");
+      return humanTime;
+    },
+  },
   apollo: {
     company: {
       query: gql`
@@ -358,6 +366,7 @@ export default {
             industry
             naicsCode
             website
+            modificationTime
             naics {
               search
               description

@@ -3,10 +3,14 @@
     <v-card>
       <v-container fluid class="mx-1">
         <v-row no-gutters class="ml-2">
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="4"  sm="6">
+          <v-card-subtitle>
+              <div class="headline">Playlist</div>
+              <div class="caption">Updated : {{ changeTimeHuman(playlist.modificationTime)}}</div>
+            </v-card-subtitle>
           </v-col>
-          <v-col cols="12" md="8">
-            <div class="d-flex justify-md-end">
+          <v-col cols="12" md="8" sm="6">
+            <div class="d-flex justify-md-end align-end">
               <div class="mt-3 mr-2">
                 <v-btn class="text-capitalize" color="primary" outlined min-width="150" @click="createJob('export_companies')">
                   <v-icon size="18" class="mr-2">cloud_download</v-icon>
@@ -111,6 +115,7 @@ export default {
             name
             totalScore
             description
+            modificationTime
           }
         }
       `,
@@ -152,6 +157,11 @@ export default {
       } else {
         this.sortOrder = "";
       }
+    },
+    changeTimeHuman(time) {
+      let humanDate = time.split(".", 1).toString();
+      let humanTime = humanDate.split("T", 2).join(" ");
+      return humanTime;
     },
     createJob(jobType) {
       this.$eventBus.$emit("createJob", {

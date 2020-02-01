@@ -11,6 +11,7 @@
       @change="change"
       cache-items
       text
+      dense
       hide-no-data
       hide-details
       clearable
