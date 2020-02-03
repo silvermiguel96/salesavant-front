@@ -68,7 +68,7 @@ export default {
           width: "30%",
           sortable: false
         },
-        { text: "Remove", width: "10%", sortable: false,  align: "center" }
+        { text: "Delete", width: "10%", sortable: false,  align: "center" }
       ],
       options: {
         page: 1,

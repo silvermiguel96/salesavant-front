@@ -120,7 +120,7 @@ export default {
           width: "30%",
           sortable: false
         },
-        { text: "Remove", value: "action", width: "10%", sortable: false,  align: "center" }
+        { text: "Delete", value: "action", width: "10%", sortable: false,  align: "center" }
       ],
       selectedIPlaylist: "",
       selectedPlaylistId: {}

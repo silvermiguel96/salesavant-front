@@ -115,7 +115,7 @@ export default {
         { text: "Group", sortable: false, width: "20%" },
         { text: "Category", sortable: false, width: "20%" },
         { text: "Score", sortable: false, width: "10%" },
-        { text: "Actions", sortable: false, align: "center", width: "10%" }
+        { text: "Remove", sortable: false, align: "center", width: "10%" }
       ],
       dialog: "",
       selectedSignalId: "",
