@@ -17,7 +17,7 @@
         <!-- Result -->
           <v-data-table
             :headers="headers"
-            v-if="data.companyNews.totalResults.length"
+            v-if="data"
             :items="data.companyNews.companyNewsList"
             :server-items-length="data.companyNews.totalResults"
             :items-per-page="options.itemsPerPage"
@@ -53,10 +53,10 @@
           <div v-else>No data was returned</div>
 
           <!-- Loading -->
-          <v-row  :justify="center" no-gutters>
-            <v-col  cols="12">
+          <v-row justify="center" no-gutters>
+            <v-col cols="12">
               <v-progress-linear
-              :active="isLoading"
+              :active="!!isLoading"
               color="blue"
               indeterminate
               absolute

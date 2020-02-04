@@ -81,7 +81,7 @@
           <template v-slot="{ result: { loading, error, data }, isLoading  }">
             <!-- Result -->
               <signals-table
-                v-if="data.signals.totalResults"
+                v-if="data"
                 @deleteSignal="deleteSignal"
                 :items="data.signals.signalsList"
                 :totalResults="data.signals.totalResults"
@@ -93,10 +93,10 @@
             <div v-else >No data was returned</div>
 
             <!-- Loading -->
-            <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute
@@ -123,7 +123,7 @@
 
           <!-- Result -->
             <signals-table
-              v-if="data.signals.totalResults"
+              v-if="data"
               @deleteSignal="deleteSignal"
               :items="data.signals.signalsList"
               :totalResults="data.signals.totalResults"
@@ -135,10 +135,10 @@
             <div v-else >No data was returned</div>
 
             <!-- Loading -->
-            <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute

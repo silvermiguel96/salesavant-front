@@ -16,7 +16,7 @@
         <!-- Result -->
             <v-data-table
               :headers="headers"
-              v-if="data.companySignalsAggs"
+              v-if="data"
               :items="data.companySignalsAggs"
               :sort-by="['totalCompanies']"
               :sort-desc="[true]"
@@ -40,10 +40,10 @@
               <div v-else>No data was returned</div>
 
               <!-- Loading -->
-              <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+              <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute

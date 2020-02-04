@@ -57,7 +57,7 @@
           <div class="apollo-example">
           <!-- Result -->
               <companies-table
-                v-if="data.playlistCompanies.companiesList"
+                v-if="data"
                 :items="data.playlistCompanies.companiesList"
                 :totalResults="data.playlistCompanies.totalResults"
                 @updateOptions="updateOptions"
@@ -68,10 +68,10 @@
             <div v-else >No data was returned</div>
 
             <!-- Loading -->
-            <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute

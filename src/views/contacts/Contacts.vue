@@ -67,7 +67,7 @@
 
             <!-- Result -->
               <Contacts-Table
-                 v-if="data.contacts.totalResults"
+                 v-if="data"
                 :items="data.contacts.contactsList"
                 :totalResults="data.contacts.totalResults"
                 class="result apollo"
@@ -78,10 +78,10 @@
             <div v-else >No data was returned</div>
 
             <!-- Loading -->
-            <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute

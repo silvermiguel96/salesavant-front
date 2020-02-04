@@ -40,7 +40,7 @@
         <template  v-slot="{ result: { loading, error, data }, isLoading }">
           <!-- Result -->
             <play-lists-table
-              v-if="data.playlists.playlistsList"
+              v-if="data"
               :items="data.playlists.playlistsList"
               :totalResults="data.playlists.totalResults"
               class="result apollo"
@@ -52,10 +52,10 @@
             <div v-else >No data was returned</div>
 
             <!-- Loading -->
-            <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute

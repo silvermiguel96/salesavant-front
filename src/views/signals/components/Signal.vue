@@ -111,7 +111,7 @@
             <template  v-slot="{ result: { loading, error, data }, isLoading }">
               <!-- Result -->
                 <company-signals
-                  v-if="data.signalCompanies.totalResults"
+                  v-if="data"
                   :items="data.signalCompanies.companiesList"
                   :totalResults="data.signalCompanies.totalResults"
                   class="result apollo"
@@ -122,10 +122,10 @@
             <div v-else >No data was returned</div>
 
             <!-- Loading -->
-            <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute
