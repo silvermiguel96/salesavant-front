@@ -142,23 +142,21 @@
             :skip="search.length >0 && search.length<=2"
           >
             <template v-slot="{ result: { loading, error, data }, isLoading }">
+              
               <!-- Result -->
               <companies-table
-                v-if="data.companies.companiesList.length"
+                v-if="data"
                 :items="data.companies.companiesList"
                 :totalResults="data.companies.totalResults"
                 class="result apollo"
                 @updateOptions="updateOptions"
               ></companies-table>
 
-              <!-- No result -->
-              <div v-else>No data was returned</div>
-
               <!-- Loading -->
-              <v-row  :justify="center" no-gutters>
-                <v-col  cols="12">
+              <v-row justify="center" no-gutters>
+                <v-col cols="12">
                   <v-progress-linear
-                  :active="isLoading"
+                  :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute
