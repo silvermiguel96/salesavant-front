@@ -108,27 +108,33 @@
               sortOrder: this.sortOrder,
             }"
           >
-            <template slot-scope="{ result: { loading, error, data } }">
-              <!-- Loading -->
-              <div v-if="loading" class="loading apollo">Loading...</div>
-
-              <!-- Error -->
-              <!--<div v-else-if="error" class="error apollo">An error occured</div>-->
-
+            <template  v-slot="{ result: { loading, error, data }, isLoading }">
               <!-- Result -->
-              <div v-else-if="data" class="result apollo">
-                <!---<div>{{ JSON.stringify(data) }}</div>-->
                 <company-signals
-                  v-if="data.signalCompanies.totalResults"
+                  v-if="data"
                   :items="data.signalCompanies.companiesList"
                   :totalResults="data.signalCompanies.totalResults"
                   class="result apollo"
                   @updateOptions="updateOptions"
                 ></company-signals>
-              </div>
 
-              <!-- No result -->
-              <div v-else class="no-result apollo">Loading...</div>
+            <!-- No result -->
+            <div v-else >No data was returned</div>
+
+            <!-- Loading -->
+            <v-row justify="center" no-gutters>
+                <v-col cols="12">
+                  <v-progress-linear
+                  :active="!!isLoading"
+                  color="blue"
+                  indeterminate
+                  absolute
+                  bottom
+                  query
+                  ></v-progress-linear>
+                </v-col>
+            </v-row>
+
             </template>
           </ApolloQuery>
         </template>
