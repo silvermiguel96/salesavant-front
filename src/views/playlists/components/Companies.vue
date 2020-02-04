@@ -6,7 +6,7 @@
           <v-col cols="12" md="4"  sm="6">
           <v-card-subtitle>
               <div class="headline">Playlist</div>
-              <div class="caption">Updated : {{ changeTimeHuman(playlist.modificationTime)}}</div>
+              <div class="caption">Last Update: {{ changeTimeHuman(playlist.modificationTime)}}</div>
             </v-card-subtitle>
           </v-col>
           <v-col cols="12" md="8" sm="6">
