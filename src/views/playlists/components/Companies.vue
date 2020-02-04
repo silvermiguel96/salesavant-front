@@ -53,13 +53,9 @@
           sortOrder: this.sortOrder
         }"
       >
-        <template slot-scope="{ result: { loading, error, data } }">
+        <template  v-slot="{ result: { loading, error, data }, isLoading }">
           <div class="apollo-example">
-            <div v-if="loading" class="loading apollo">Loading...</div>
-
-            <div v-else-if="error" class="error apollo">An error occured</div>
-
-            <div v-else-if="data" class="result apollo">
+          <!-- Result -->
               <companies-table
                 v-if="data.playlistCompanies.companiesList"
                 :items="data.playlistCompanies.companiesList"
@@ -67,9 +63,24 @@
                 @updateOptions="updateOptions"
                 class="result apollo ma-2"
               ></companies-table>
-            </div>
 
-            <div v-else class="no-result apollo">Loading...</div>
+            <!-- No result -->
+            <div v-else >No data was returned</div>
+
+            <!-- Loading -->
+            <v-row  :justify="center" no-gutters>
+                <v-col  cols="12">
+                  <v-progress-linear
+                  :active="isLoading"
+                  color="blue"
+                  indeterminate
+                  absolute
+                  bottom
+                  query
+                  ></v-progress-linear>
+                </v-col>
+            </v-row>
+
           </div>
         </template>
       </ApolloQuery>
