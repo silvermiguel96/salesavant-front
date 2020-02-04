@@ -97,8 +97,6 @@
                 @updateOptions="updateOptions"
               ></companies-table>
 
-
-
               <!-- No result -->
               <div v-else>No data was returned</div>
 
