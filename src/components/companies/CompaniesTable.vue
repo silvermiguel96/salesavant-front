@@ -37,14 +37,14 @@ import LongParagraph from "../../components/common/LongParagraph.vue";
 export default {
   data() {
     return {
-      headers: [
+      headers: [ 
         { text: "Company", value: "name", width: "20%", sortable: false },
         { text: "Score", value: "totalScore", width: "10%", sortable: true },
-        { text: "Employees", value: "numEmployees", width: "12%", sortable: true, divider: true },
+        { text: "Employees", value: "numEmployees", width: "10%", sortable: true, divider: true },
         { text: "State", value: "state", width: "15%", sortable: false },
         { text: "Country", value: "country", width: "15%", sortable: false },
         { text: "Momentum", value: "momentum", width: "12%", sortable: false },
-        { text: "Vertical", value: "vertical", width: "12%", sortable: false }
+        { text: "Vertical", value: "vertical", width: "18%", sortable: false }
       ],
       options: {
         page: 1,

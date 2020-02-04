@@ -22,12 +22,14 @@
               </v-toolbar>
               <v-card-text>
                 <v-text-field v-model="userlogin.username" 
+                autocomplete="off"
                 label="Email" 
                 type="email" 
                 name="email" 
                 append-icon="mail"></v-text-field>
                 <v-text-field
                   v-model="userlogin.password"
+                  autocomplete="off"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
@@ -35,7 +37,7 @@
                 ></v-text-field>
               </v-card-text>
               <v-card-actions class="ma-2">
-                <v-btn block color="secondary" v-on:click="login()">Login</v-btn>
+                <v-btn block color="primary" v-on:click="login()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>

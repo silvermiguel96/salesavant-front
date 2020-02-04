@@ -2,6 +2,7 @@
   <v-card v-if="company" style="height:100%;">
     <v-card-subtitle>
       <div class="headline">Profile</div>
+      <div class="caption">Last update : {{ changeTimeHuman(company.modificationTime)}}</div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
@@ -337,6 +338,13 @@ export default {
         : `http://${this.company.url}`;
     }
   },
+  methods: {
+    changeTimeHuman(time) {
+      let humanDate = time.split(".", 1).toString();
+      let humanTime = humanDate.split("T", 2).join(" ");
+      return humanTime;
+    },
+  },
   apollo: {
     company: {
       query: gql`
@@ -358,6 +366,7 @@ export default {
             industry
             naicsCode
             website
+            modificationTime
             naics {
               search
               description

@@ -104,6 +104,7 @@
             </router-link>
           </td>
           <td>
+            <div class="d-flex align-center justify-center">
             <v-icon
               @click="selectedSignal({
                 item: item ,
@@ -111,6 +112,7 @@
               color="red lighten-2"
               size="20"
             >delete</v-icon>
+            </div>
           </td>
         </tr>
       </template>
@@ -132,7 +134,7 @@ export default {
         itemsPerPage: 10
       },
       headers: [
-        { text: "Name", value: "name", sortable: false, width: "20%" },
+        { text: "Name", value: "name", sortable: false, width: "15%" },
         {
           text: "Description",
           value: "description",
@@ -140,12 +142,12 @@ export default {
           sortable: false,
           width: "20%"
         },
-        { text: "Group", value: "group", align: "left", sortable: false, width: "20%"  },
+        { text: "Group", value: "group", align: "left", sortable: false, width: "15%"  },
         { text: "Category", value: "category", align: "left", sortable: false, width: "10%" },
         { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
-        { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "10%"   },
+        { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "20%"   },
         { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
-        { text: "Delete", value: "icon", align: "left", sortable: false, width: "5%"  }
+        { text: "Delete", value: "icon", align: "center", sortable: false, width: "5%"  }
       ],
       snack: false,
       snackColor: "",

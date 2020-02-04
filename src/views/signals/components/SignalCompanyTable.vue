@@ -24,11 +24,11 @@
           {{ item.numEmployees || 0}}
         </td>
         <td>
-          {{ item.country }}
+          {{ item.country || "--" }}
         </td>
         <td>
-          {{ item.state }}
-        </td>
+          {{ item.state || "--"}}
+        </td> 
         <td>
           {{ changeTimeHuman(item.creationTime) }}
         </td>

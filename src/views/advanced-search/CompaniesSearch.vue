@@ -77,17 +77,17 @@
         <v-divider></v-divider>
         <v-row wrap>
           <v-col cols="12">
-            <playlists-autocomplete @change="onPlaylistAutocompleteChange" />
+            <playlists-autocomplete :dense="denseForm" @change="onPlaylistAutocompleteChange" />
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="12">
-            <signals-autocomplete-multi @change="onSignalsAutocompleteChange" />
+            <signals-autocomplete-multi :dense="denseForm" @change="onSignalsAutocompleteChange" />
           </v-col>
         </v-row>
         <v-row wrap>
           <v-col cols="12">
-            <signals-groups-autocomplete @change="onSignalsGroupAutocompleteChange" />
+            <signals-groups-autocomplete :dense="denseForm" @change="onSignalsGroupAutocompleteChange" />
           </v-col>
         </v-row>
         <v-row wrap>

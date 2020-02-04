@@ -39,6 +39,7 @@
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
           <td>{{ changeTimeHuman(item.creationTime) }}</td>
           <td>
+            <div class="d-flex align-center justify-center">
             <v-icon
               @click="selectedPlaylist({
                 item: item,
@@ -46,6 +47,7 @@
               color="red lighten-2"
               size="20"
             >delete</v-icon>
+          </div>
           </td>
         </tr>
       </template>
@@ -66,7 +68,7 @@ export default {
           width: "30%",
           sortable: false
         },
-        { text: "Remove", width: "10%", sortable: false }
+        { text: "Delete", width: "10%", sortable: false,  align: "center" }
       ],
       options: {
         page: 1,
