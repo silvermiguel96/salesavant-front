@@ -99,9 +99,6 @@ export default {
       playlistsList: [],
       companyPlaylists: [],
       currentPlaylistSearch: null,
-      snack: false,
-      snackColor: "",
-      snackText: "",
       updatePagination: "",
       options: {
         page: 1,
@@ -228,20 +225,16 @@ export default {
           );
           console.log("newPlaylistId", newPlaylistId);
           if (!newPlaylistId) {
-            //this.snackText ="Oops!! we did something wrong when saving the company - playlist, please try again!!";
             return;
           }
-          //this.snackText = "The playlist is add to company";
           this.refreshData();
           return;
         } else {
           console.log("hola5");
-          //this.snackText = "Select a playlist first";
           return;
         }
       } catch (error) {
         console.log("Error");
-        //this.snackText = "Oops we did something wrong!!";
         console.log("error adding playlist to company", error);
       }
     },
@@ -255,7 +248,6 @@ export default {
       try {
         console.log("Ingreso en el try");
         if (!playlistUid) {
-          //this.snackText = "Select a playlist to delete!!";
           console.log("Error in delete playlist to company");
           return;
         }
@@ -281,10 +273,8 @@ export default {
         });
         console.log("result", result);
         this.dialog = false;
-        //this.snackText = "The playlist is delete to company";
         this.refreshData();
       } catch (error) {
-        //this.snackText = "Oops we did something wrong!!";
         console.log("Error in delete playlist to company");
       }
     }

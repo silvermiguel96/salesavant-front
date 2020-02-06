@@ -80,9 +80,6 @@ export default {
       company: "",
       signalGroupAggs: null,
       companySignals: null,
-      snack: false,
-      snackColor: "",
-      snackText: "",
       keywords: [],
       headersTable1: [
         { text: "Group", value: "groupName", sortable: false },
@@ -232,16 +229,11 @@ export default {
             );
             console.log("newSignalId", newSignalId);
             if (!newSignalId) {
-              this.snack = true;
-              this.snackColor = "error";
-              this.snackText =
-                "Oops!! we did something wrong when saving the company - signal, please try again!!";
+              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when saving the company - signal, please try again!!", "error");
               return;
             }
             this.refreshData();
-            this.snack = true;
-            this.snackColor = "success";
-            this.snackText = `New signal successfully created!!`;
+            this.$eventBus.$emit("showSnack", "New signal successfully created!!", "success");
             return;
           } else {
             const result = await this.$apollo.mutate({
@@ -290,10 +282,7 @@ export default {
             const newSignal = _get(result, "data.createSignal.signal", null);
             if (!newSignal) {
               console.log("hola5");
-              this.snack = true;
-              this.snackColor = "error";
-              this.snackText =
-                "Oops!! we did something wrong when creating a new signal!!!";
+              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when creating a new signal!!!", "error");
               return;
             }
             console.log("newSignal", newSignal);
@@ -335,29 +324,20 @@ export default {
               null
             );
             if (!newCompanySignal) {
-              this.snack = true;
-              this.snackColor = "error";
-              this.snackText =
-                "Oops!! we did something wrong when creating the new CompanySignal, please try again!!";
+              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when creating the new CompanySignal, please try again!!", "error");
               return;
             }
             this.refreshData();
-            this.snack = true;
-            this.snackColor = "success";
-            this.snackText = `New signal successfully created!!`;
+            this.$eventBus.$emit("showSnack", "New signal successfully created!!", "success");
             return;
           }
         } else {
           console.log("hola5");
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = "Select a signal first";
+          this.$eventBus.$emit("showSnack", "Select a signal first", "error");
           return;
         }
       } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Oops we did something wrong!!";
+        this.$eventBus.$emit("showSnack", "Oops we did something wrong!!", "error");
         console.log("error adding signal to company", error);
       }
     }

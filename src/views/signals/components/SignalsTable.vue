@@ -17,10 +17,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -149,9 +145,6 @@ export default {
         { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
         { text: "Delete", value: "icon", align: "center", sortable: false, width: "5%"  }
       ],
-      snack: false,
-      snackColor: "",
-      snackText: "",
       signal: {},
       selectedSignalId: "",
       selectedItem: {}
@@ -187,33 +180,23 @@ export default {
     },
     async save() {
       if (!this.signal) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "There's something wrong with the signal saving!";
+        this.$eventBus.$emit("showSnack", "There's something wrong with the signal saving!", "error");
         return;
       }
       if (!this.signal.name) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Name can not be empty!";
+        this.$eventBus.$emit("showSnack", "Name can not be empty!", "error");
         return;
       }
       if (!this.signal.description) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Description can not be empty!";
+        this.$eventBus.$emit("showSnack", "Description can not be empty!", "error");
         return;
       }
       if (!this.signal.defaultScore) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Score can not be empty!";
+        this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
         return;
       }
       if (!this.signal.group) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Group can not be empty!";
+        this.$eventBus.$emit("showSnack", "Group can not be empty!", "error");
         return;
       }
       try {
@@ -266,34 +249,23 @@ export default {
         });
         const signal = _get(result, "data.updateSignal.signal", null);
         if (!signal) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText =
-            "it seems that we created/updated the signal but couldn't check it, please check manually";
+          this.$eventBus.$emit("showSnack", "it seems that we created/updated the signal but couldn't check it, please check manually", "error");
           return;
         }
         this.signal = signal;
-        this.snack = true;
-        this.snackColor = "success";
-        this.snackText = "Signal successfully updated";
+        this.$eventBus.$emit("showSnack", "Signal successfully updated", "success");
       } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "oops we did something wrong!";
+        this.$eventBus.$emit("showSnack", "oops we did something wrong!", "error");
         console.log("error saving signal", error);
       }
     },
     cancel() {
       this.signal = {};
-      this.snack = true;
-      this.snackColor = "error";
-      this.snackText = "Canceled";
+      this.$eventBus.$emit("showSnack", "Canceled", "error");
     },
     open() {
       this.signal = {};
-      this.snack = true;
-      this.snackColor = "info";
-      this.snackText = "You're editing a signal";
+      this.$eventBus.$emit("showSnack", "You're editing a signal", "info");
     },
     close(closeInput) {
       console.log({ closeInput });
