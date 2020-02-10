@@ -1,9 +1,5 @@
 <template>
   <v-layout row>
-    <v-snackbar top v-model="snack" :timeout="10000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
     <v-dialog v-model="dialogMerge" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn class="grey darken-1 text-capitalize" width="150" dark small v-on="on">
@@ -53,9 +49,6 @@ export default {
     return {
       dialogMerge: false,
       selectedPlaylists: [],
-      snack: false,
-      snackColor: "",
-      snackText: "",
       newPlaylistName: "",
       requiredRules: [v => !!v || "this field is required"]
     };
@@ -75,21 +68,15 @@ export default {
     async save() {
       console.log("this.selectedPlaylists", this.selectedPlaylists);
       if (!this.newPlaylistName) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Please type a playlist name";
+        this.$eventBus.$emit("showSnack", "Please type a playlist name" , "error");
         return;
       }
       if (!this.selectedPlaylists.length) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "At least one playlist needs to be selected";
+        this.$eventBus.$emit("showSnack", "At least one playlist needs to be selected" , "error");
         return;
       }
       if (!this.$props.playlist || !this.$props.playlist.uid) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "Error getting current playlist uid";
+        this.$eventBus.$emit("showSnack", "Error getting current playlist uid" , "error");
         return;
       }
       try {
@@ -113,24 +100,16 @@ export default {
         console.log("saving playlists merge result", result);
         const playlist = _get(result, "data.mergePlaylist.playlist", null);
         if (!playlist) {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText =
-            "it seems that we created your playlist but couldn't check it, please check manually";
+          this.$eventBus.$emit("showSnack", "it seems that we created your playlist but couldn't check it, please check manually" , "error");
           return;
         }
-        this.snack = true;
-        this.snackColor = "success";
-        this.snackText = "New playlist was created successfully!!!";
-
+        this.$eventBus.$emit("showSnack", "New playlist was created successfully!!!" , "success");
         this.dialogMerge = false;
         this.$router.push({
           path: `/playlists/${playlist.uid}/companies`
         });
       } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = "oops we did something wrong!";
+        this.$eventBus.$emit("showSnack", "oops we did something wrong!" , "error");
         console.log("error saving playlists merge", error);
       }
     },

@@ -42,9 +42,6 @@ export default {
       },
       companyComments: [],
       signalId: null,
-      snack: false,
-      snackColor: "",
-      snackText: "",
       currentSignalSearch: null,
       descending: false,
       headers: [
