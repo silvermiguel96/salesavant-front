@@ -1,5 +1,19 @@
 <template>
   <v-card class="ma-3">
+    <v-card-text></v-card-text>
+    <v-container fluid class="mx-1">
+      <v-row no-gutters class="ml-2">
+        <v-col cols="12" md="4">
+        </v-col>
+        <v-col cols="12" md="8">
+          <div class="d-flex justify-md-end">
+            <div class="mt-3 mr-2">
+              <add-modal @onSave="saveComments" />
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-card-text>
       <v-data-table
         :headers="headers"
@@ -29,9 +43,9 @@
 </template>
 
 <script>
-
 import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
+import AddModal from "./components/addModal.vue";
 import gql from "graphql-tag";
 export default {
   data() {
@@ -45,10 +59,10 @@ export default {
       currentSignalSearch: null,
       descending: false,
       headers: [
-        { text: "Comment", sortable: false},
-        { text: "User",sortable: false},
-        { text: "Creation Time", sortable: false},
-        { text: "Actions", sortable: false}
+        { text: "Comment", sortable: false },
+        { text: "User", sortable: false },
+        { text: "Creation Time", sortable: false },
+        { text: "Actions", sortable: false }
       ]
     };
   },
@@ -70,7 +84,7 @@ export default {
               id
               creationTime
               comments
-              user{
+              user {
                 email
               }
             }
@@ -100,10 +114,14 @@ export default {
       let HumanDate = time.split(".", 1).toString();
       let HumanTime = HumanDate.split("T", 2).join(" ");
       return HumanTime;
+    },
+    saveComments() {
+
     }
   },
   components: {
-    LongParagraph
+    LongParagraph,
+    AddModal
   },
   beforeUpdate() {
     this.$apollo.queries.companyComments;
