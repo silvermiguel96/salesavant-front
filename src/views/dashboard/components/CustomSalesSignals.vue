@@ -36,10 +36,7 @@
               </template>
             </v-data-table>
 
-              <!-- No result -->
-              <div v-else>No data was returned</div>
-
-              <!-- Loading -->
+             <!-- Loading -->
               <v-row justify="center" no-gutters>
                 <v-col cols="12">
                   <v-progress-linear
