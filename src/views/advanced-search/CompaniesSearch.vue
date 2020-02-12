@@ -97,11 +97,10 @@
               {{"Companies Search"}}
             </v-btn>
           </v-col>
-          <v-col  cols="6" justify-center >
-            <v-btn @click="clearAll" class="text-capitalize" block type="submit" color="primary">
-              <v-icon class="pr-1">clear_all</v-icon>
-              {{"clear all"}}
-            </v-btn>
+          <v-col  cols="6" class="d-flex justify-center align-center">
+            <a @click="clearAll" class="text-capitalize" block type="submit" color="primary">
+              clear all
+            </a>
           </v-col>
         </v-row>
       </v-container>
