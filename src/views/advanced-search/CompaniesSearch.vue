@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-form ref="simpleSearchForm" @submit.prevent>
+    <v-form ref="simpleSearchForm" @submit.prevent class="pt-2">
       <v-container fluid>
         <v-row wrap>
           <v-col cols="6">
@@ -28,7 +28,7 @@
         </v-row>
         <v-row wrap>
           <v-col cols="6">
-            <v-text-field :dense="denseForm" name="website" v-model="companySearch.website" label="Website Keywords" autocomplete="off" ></v-text-field>
+            <v-text-field :dense="denseForm" name="website" v-model="companySearch.website" label="Website" autocomplete="off" ></v-text-field>
           </v-col>
           <v-col cols="6">
             <v-text-field :dense="denseForm" name="city" v-model="companySearch.city" label="City" autocomplete="off"></v-text-field>
@@ -90,17 +90,18 @@
             <signals-groups-autocomplete :dense="denseForm" @change="onSignalsGroupAutocompleteChange" />
           </v-col>
         </v-row>
+        <v-divider></v-divider>
         <v-row wrap>
-          <v-col  cols="6" justify-center >
-            <v-btn @click="search" class="text-capitalize" block type="submit" color="primary">
-              <v-icon class="pr-1">search</v-icon>
-              {{"Companies Search"}}
-            </v-btn>
-          </v-col>
-          <v-col  cols="6" class="d-flex justify-center align-center">
-            <a @click.prevent="clearAll" class="text-capitalize" block type="submit" color="primary">
+          <v-col cols="12" md="6" class="d-flex justify-start align-center">
+            <a @click.prevent="clearAll" class="text-capitalize body-2" block color="primary">
               clear all
             </a>
+          </v-col>
+          <v-col cols="12" md="6" class="d-flex justify-center align-center">
+            <v-btn @click="search" class="text-capitalize" block type="submit" color="primary">
+              <v-icon class="pr-1">search</v-icon>
+              {{"Search"}}
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -130,6 +131,7 @@ export default {
   },
   methods: {
     ...mapMutations([
+      'updateCompanySearch',
       'doCompanySearch'
     ]),
     search() {
@@ -152,7 +154,7 @@ export default {
       this.doCompanySearch({...this.companySearch})
     },
     clearAll() {
-      this.doCompanySearch({ ...defaultCompanySearch})
+      this.updateCompanySearch({ ...defaultCompanySearch})
       this.companySearch = {...defaultCompanySearch}
     },
     onPlaylistAutocompleteChange(value) {
