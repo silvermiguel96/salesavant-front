@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn color="primary" class="text-capitalize ma-2" v-on="on">
-          <v-icon size="18" class="mr-2">add</v-icon>new commets
+          <v-icon size="18" class="mr-2">add</v-icon>Add comment
         </v-btn>
       </template>
       <v-card>
