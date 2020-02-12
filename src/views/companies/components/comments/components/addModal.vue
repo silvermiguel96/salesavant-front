@@ -7,12 +7,12 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Comments</v-card-title>
+        <v-card-title class="headline">Add comment</v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field v-model="commetsName" label="Name" required></v-text-field>
+                <v-text-field v-model="description" label="description" required></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -20,7 +20,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn color="green darken-1" class="text-capitalize" :disabled="!commetsName" text @click="save">Save</v-btn>
+          <v-btn color="green darken-1" class="text-capitalize" :disabled="!description" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -31,12 +31,12 @@
 export default {
   data: () => ({
     dialog: false,
-    commetsName: ""
+    description: ""
   }),
   methods: {
     save() {
-      if (!!this.commetsName) {
-        this.$emit("onSave", this.commetsName);
+      if (!!this.description) {
+        this.$emit("onSave", this.description);
         this.dialog = false;
       }
     }
