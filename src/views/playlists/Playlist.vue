@@ -29,13 +29,6 @@
       <v-tab-item>
         <companies />
       </v-tab-item>
-      <!-- tab signals -->
-      <v-tab>Signals</v-tab>
-      <v-tab-item>
-        <div>
-          <h4>Coming soon</h4>
-        </div>
-      </v-tab-item>
       <!-- Tab contacts -->
       <v-tab>Contacts</v-tab>
       <v-tab-item>
