@@ -1,0 +1,14 @@
+query searchCompanyNewTrue($companyUid: String, $first: Int, $offset: Int, $notCategorized: Boolean) {
+  companyNews(companyUid: $companyUid, first: $first, offset: $offset, notCategorized: $notCategorized) {
+    totalResults
+    companyNewsList{
+			id
+      creationTime
+      url
+      title
+      publishDate
+      category
+      companyUid
+    }
+  }
+}

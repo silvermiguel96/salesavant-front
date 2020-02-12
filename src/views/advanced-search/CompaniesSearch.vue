@@ -91,11 +91,16 @@
           </v-col>
         </v-row>
         <v-row wrap>
-          <v-col  cols="12" justify-center >
-            <v-btn @click="search" class="text-capitalize" type="submit" color="primary">
+          <v-col  cols="6" justify-center >
+            <v-btn @click="search" class="text-capitalize" block type="submit" color="primary">
               <v-icon class="pr-1">search</v-icon>
               {{"Companies Search"}}
             </v-btn>
+          </v-col>
+          <v-col  cols="6" class="d-flex justify-center align-center">
+            <a @click.prevent="clearAll" class="text-capitalize" block type="submit" color="primary">
+              clear all
+            </a>
           </v-col>
         </v-row>
       </v-container>
@@ -145,6 +150,10 @@ export default {
       }
       console.log("this.company", this.companySearch)
       this.doCompanySearch({...this.companySearch})
+    },
+    clearAll() {
+      this.doCompanySearch({ ...defaultCompanySearch})
+      this.companySearch = {...defaultCompanySearch}
     },
     onPlaylistAutocompleteChange(value) {
       this.companySearch = {
