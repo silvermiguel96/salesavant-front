@@ -98,7 +98,7 @@
             </v-btn>
           </v-col>
           <v-col  cols="6" class="d-flex justify-center align-center">
-            <a @click="clearAll" class="text-capitalize" block type="submit" color="primary">
+            <a @click.prevent="clearAll" class="text-capitalize" block type="submit" color="primary">
               clear all
             </a>
           </v-col>
