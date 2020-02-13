@@ -1,10 +1,34 @@
 <template>
   <v-card class="ma-3">
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title class="headline">Delete comment</v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <h1 class="subtitle-1">
+              Confirm you want to eliminate the comment
+              <span
+                class="font-weight-bold"
+              >{{selectedComment.comments}}</span>?
+            </h1>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
+          <v-btn
+            color="red darken-1"
+            class="text-capitalize"
+            text
+            @click="deleteComment(selectedCommentId)"
+          >Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-card-text></v-card-text>
     <v-container fluid class="mx-1">
       <v-row no-gutters class="ml-2">
-        <v-col cols="12" md="4">
-        </v-col>
+        <v-col cols="12" md="4"></v-col>
         <v-col cols="12" md="8">
           <div class="d-flex justify-md-end">
             <div class="mt-3 mr-2">
@@ -34,7 +58,18 @@
             </td>
             <td>{{ item.user.email || "--" }}</td>
             <td>{{ changeTimeHuman(item.creationTime) || "--" }}</td>
-            <td>--</td>
+            <td>
+              <div class="d-flex align-center justify-center">
+                <v-icon
+                  color="red lighten-2"
+                  size="20"
+                  @click="selectComment({
+                  item: item,
+                  commentsId: item.id
+              })"
+                >delete</v-icon>
+              </div>
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -63,7 +98,10 @@ export default {
         { text: "User", sortable: false },
         { text: "Creation Time", sortable: false },
         { text: "Actions", sortable: false }
-      ]
+      ],
+      dialog: false,
+      selectedComment: "",
+      selectedCommentId: {}
     };
   },
   apollo: {
@@ -143,13 +181,65 @@ export default {
               description: description
             }
           });
-          this.$eventBus.$emit("showSnack", 'New commet successfully created!!', "success");
+          this.$eventBus.$emit(
+            "showSnack",
+            "New comment successfully created!!",
+            "success"
+          );
           console.log("saving result comments", result);
           this.refreshData();
           return;
         } catch (error) {
           console.log("error saving simple search as a commet list", error);
         }
+      }
+    },
+    selectComment({ item, commentsId }) {
+      this.selectedComment = item;
+      this.selectedCommentId = commentsId;
+      this.dialog = true;
+    },
+    async deleteComment(selectedCommentId) {
+      console.log("selectedCommentId", selectedCommentId);
+      try {
+        if (!selectedCommentId) {
+          this.$eventBus.$emit(
+            "showSnack",
+            "Error in delete comments!!",
+            "error"
+          );
+          return;
+        }
+        const result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($commentId: Int!) {
+              deleteCompanyComment(companyCommentId: $commentId) {
+                companyComment {
+                  id
+                  comments
+                }
+              }
+            }
+          `,
+          // Parameters
+          variables: {
+            commentId: selectedCommentId
+          }
+        });
+        console.log("result", result);
+        this.$eventBus.$emit(
+          "showSnack",
+          "The comment successfully delete!!",
+          "success"
+        );
+        this.dialog = false;
+        this.refreshData();
+      } catch (error) {
+        this.$eventBus.$emit(
+          "showSnack",
+          "Error in delete comments!!",
+          "error"
+        );
       }
     }
   },
