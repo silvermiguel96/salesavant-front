@@ -115,8 +115,42 @@ export default {
       let HumanTime = HumanDate.split("T", 2).join(" ");
       return HumanTime;
     },
-    saveComments() {
-
+    refreshData() {
+      this.$apollo.queries.companyComments.refresh();
+    },
+    async saveComments(description = null) {
+      console.log("description", description);
+      if (!!description) {
+        try {
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation($companyUid: String!, $description: String!) {
+                createCompanyComment(
+                  companyUid: $companyUid
+                  description: $description
+                ) {
+                  companyComment {
+                    creationTime
+                    id
+                    comments
+                  }
+                }
+              }
+            `,
+            // Parameters
+            variables: {
+              companyUid: this.$route.params.companiesUid,
+              description: description
+            }
+          });
+          this.$eventBus.$emit("showSnack", 'New commet successfully created!!', "success");
+          console.log("saving result comments", result);
+          this.refreshData();
+          return;
+        } catch (error) {
+          console.log("error saving simple search as a commet list", error);
+        }
+      }
     }
   },
   components: {

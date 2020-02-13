@@ -37,6 +37,7 @@ export default {
     save() {
       if (!!this.description) {
         this.$emit("onSave", this.description);
+        this.description = ""
         this.dialog = false;
       }
     }
