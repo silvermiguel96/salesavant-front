@@ -273,6 +273,11 @@ export default {
         });
         console.log("result", result);
         this.dialog = false;
+        this.$eventBus.$emit(
+          "showSnack",
+          "The playlist successfully delete!!",
+          "success"
+        );
         this.refreshData();
       } catch (error) {
         console.log("Error in delete playlist to company");
