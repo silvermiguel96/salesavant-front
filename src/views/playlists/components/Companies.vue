@@ -64,9 +64,6 @@
                 class="result apollo ma-2"
               ></companies-table>
 
-            <!-- No result -->
-            <div v-else >No data was returned</div>
-
             <!-- Loading -->
             <v-row justify="center" no-gutters>
                 <v-col cols="12">
