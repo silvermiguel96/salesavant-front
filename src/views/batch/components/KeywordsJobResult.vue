@@ -1,10 +1,5 @@
 <template>
-  <v-dialog 
-    v-model="dialog" 
-    scrollable 
-    persistent 
-    max-width="600"
-    @keydown.esc="dialog=false">
+  <v-dialog v-model="dialog" scrollable persistent max-width="600" @keydown.esc="dialog=false">
     <template v-slot:activator="{ on }">
       <a v-on="on" href="#">View</a>
     </template>
@@ -27,8 +22,11 @@
               <td>{{ item.total }}</td>
               <td>{{ item.score }}</td>
               <td>
-                <v-btn text icon color="primary" @click="saveSignal(item)">
-                  <v-icon >add_circle_outline</v-icon>
+                <div v-if="item.saved" class="d-flex justify-center">
+                  <v-icon color="green">check_circle_outline</v-icon>
+                </div>
+                <v-btn v-else text icon color="primary" @click="saveSignal(item)">
+                  <v-icon>add_circle_outline</v-icon>
                 </v-btn>
               </td>
             </tr>
@@ -53,11 +51,11 @@ export default {
     return {
       dialog: false,
       headers: [
-        { text: "Keyword", align: "left", width: "60%",  sortable: false },
+        { text: "Keyword", align: "left", width: "60%", sortable: false },
         { text: "Total", align: "left", width: "16%", sortable: true },
         { text: "Score", align: "left", width: "16%", sortable: true },
         { text: "Save Signal", align: "center", width: "10%", sortable: false }
-      ],
+      ]
     };
   },
   props: {
@@ -65,24 +63,17 @@ export default {
   },
   methods: {
     _get: _get,
-    async saveSignal(signalData) {
-      try {
-        const result = await this.$apollo.mutate({
+    saveSignal(signalData) {
+      this.$apollo
+        .mutate({
           mutation: gql`
-            mutation(
-              $jobUid: String!
-              $keyword: String!
-              $defaultScore: Int
-              $group: String
-              $description: String
-            ) {
+            mutation($jobUid: String!, $keyword: String!) {
               createSignalFromPlaylistKeyword(
                 jobUid: $jobUid
                 keyword: $keyword
-                defaultScore: $defaultScore
-                group: $group
-                description: $description
               ) {
+                ok
+                message
                 signal {
                   id
                   name
@@ -104,30 +95,52 @@ export default {
             keyword: _get(signalData, "keyword"),
             defaultScore: parseInt(_get(signalData, "score") | 1)
           }
+        })
+        .then(data => {
+          const response = data.data.createSignalFromPlaylistKeyword;
+          if (response.ok) {
+            let keyword = _get(signalData, "keyword");
+            this.$eventBus.$emit(
+              "showSnack",
+              `Signal "${keyword}" created successfully`,
+              "success"
+            );
+            localStorage.setItem("keyword::" + keyword, "saved");
+          } else {
+            console.log(signalData, "not success", response.message);
+          }
+        })
+        .catch(error => {
+          console.log("error saving signal", error);
         });
-      } catch (error) {
-        console.log("error saving signal", error);
+    },
+    keywordIsSaved(keyword) {
+      if (localStorage.getItem("keyword::" + keyword)) {
+        return true;
       }
+      return false;
     }
   },
   computed: {
-    keywords: function(){
+    keywords: function() {
       let result = JSON.parse(this.job.result);
-      let keywords = []
-      if (!!result.keywords){
-          keywords = result.keywords.map((item, idx) => ({
-            idx: idx,
-            keyword: item[0] || "",
-            total: parseInt(item[1] || 0),
-            score: parseFloat(item[2] || 0).toFixed(2)
-          }));
+      let keywords = [];
+      if (!!result.keywords) {
+        keywords = result.keywords.map((item, idx) => ({
+          idx: idx,
+          keyword: item[0],
+          total: parseInt(item[1] || 0),
+          score: parseFloat(item[2] || 0).toFixed(2),
+          saved: this.keywordIsSaved(item[0])
+        }));
       }
       return keywords;
     },
-    additionalDataParsed: function(){
-        if (!!this.job && !! this.job.additionalData){
-            return JSON.parse(this.job.additionalData);
-        }
+    additionalDataParsed: function() {
+      if (!!this.job && !!this.job.additionalData) {
+        return JSON.parse(this.job.additionalData);
+      }
+      return "";
     }
   }
 };

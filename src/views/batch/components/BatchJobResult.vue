@@ -6,7 +6,7 @@
     <div v-if="job.jobType=='refresh_orb'">
       <div class="green--text text--lighten-1">Done</div>
     </div>
-    <div v-else-if="job.jobType=='extract_keywords'">
+    <div v-else-if="job.jobType=='refresh_keywords'">
       <KeywordsJobResult :job="job" />
     </div>
     <div v-else-if="job.jobType=='export_companies'">

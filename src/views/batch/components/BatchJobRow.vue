@@ -45,8 +45,10 @@ export default {
     },
     getJobName(jobType) {
       switch (jobType) {
-        case "extract_keywords":
-          return "Extract Keywords";
+        case "refresh_keywords":
+          return "Refresh Keywords";
+        case "refresh_companies":
+          return "Refresh Companies";
         case "refresh_orb":
           return "Refresh ORB";
         case "export_companies":

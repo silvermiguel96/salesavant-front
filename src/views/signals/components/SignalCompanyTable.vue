@@ -68,7 +68,7 @@ export default {
         {
           text: "Creation Time",
           sortable: false,
-          width: "11%",
+          width: "20%",
           value: "creationTime"
         },
       ],

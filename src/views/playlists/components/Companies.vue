@@ -24,14 +24,14 @@
                       title: 'Companies',
                       icon: 'update',
                       callback: () => {
-                        this.createJob('refresh_orb');
+                        this.createJob('refresh_companies');
                       }
                     },
                     {
                       title: 'Keywords',
                       icon: 'update',
                       callback: () => {
-                        this.createJob('extract_keywords');
+                        this.createJob('refresh_keywords');
                       }
                     }
                   ]"
@@ -170,9 +170,11 @@ export default {
       }
     },
     changeTimeHuman(time) {
-      let humanDate = time.split(".", 1).toString();
-      let humanTime = humanDate.split("T", 2).join(" ");
-      return humanTime;
+      if (time){
+        let humanDate = time.split(".", 1).toString();
+        let humanTime = humanDate.split("T", 2).join(" ");
+        return humanTime;
+      }
     },
     createJob(jobType) {
       this.$eventBus.$emit("createJob", {
