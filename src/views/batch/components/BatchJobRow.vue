@@ -2,9 +2,16 @@
   <tr>
     <td>
       <div>
-        <router-link
-          :to="`/playlists/${additionalDataParsed.playlist_uid}`"
-        >{{ jobSubtitle }}</router-link>
+        <div v-if="job.jobType=='playlist_from_file' || job.jobType=='export_companies' || job.jobType=='refresh_keywords'">
+          <router-link
+            :to="`/playlists/${additionalDataParsed.playlist_uid}`"
+          >{{ additionalDataParsed.playlist_name }}</router-link>
+        </div>
+        <div v-else-if="job.jobType=='export_companies' || job.jobType=='contact_finder'">
+          <a
+            :href="`${salesavantAPI}/files/download/${additionalDataParsed.storage_filename}`"
+          >{{ additionalDataParsed.original_filename }}</a>
+        </div>
       </div>
       <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
     </td>
@@ -66,6 +73,7 @@ export default {
     }
   },
   props: {
+    salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL },
     job: Object
   },
   computed: {
