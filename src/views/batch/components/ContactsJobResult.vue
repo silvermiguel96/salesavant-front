@@ -4,7 +4,7 @@
       <a v-on="on" href="#">View</a>
     </template>
     <v-card>
-      <v-card-title style="padding-left:16px;">Contacts</v-card-title>
+      <v-card-title style="padding-left:16px;">Contact Finder Results</v-card-title>
       <v-card-subtitle>{{ additionalDataParsed.playlist_name }}</v-card-subtitle>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
@@ -12,7 +12,7 @@
           v-if="!!job"
           show-expand
           :headers="headers"
-          :items="constacts"
+          :items="contactFinderResults.inputCompaniesList"
           :footer-props="{
             'items-per-page-options': [10, 20, 50]
           }"
@@ -55,9 +55,11 @@ import { setTimeout } from "timers";
 export default {
   data() {
     return {
+      dialog: false,
+      contactFinderResults: [],
       expanded: [],
-      singleExpand: true,
-      dialog: false
+      first: 10,
+      offset: 0
     };
   },
   props: {
@@ -66,178 +68,56 @@ export default {
   methods: {
     _get: _get,
   },
+  apollo: {
+    contactFinderResults: {
+      query: gql`
+        query contactFinderResults($jobUid: String, $first: Int, $offset: Int) {
+          contactFinderResults(jobUid: $jobUid, first: $first, offset: $offset ) {
+            totalResults
+            inputCompaniesList{
+              id
+              name
+              additionalData
+              candidates{
+                fullName
+                title
+                candidateType
+                linkedinHandle
+                score
+              }
+            } 
+          }
+        }
+      `,
+      variables() {
+        return {
+          jobUid: this.job.uid,
+          first: this.first,
+          offset: this.offset
+        };
+      }
+    }
+  },
   computed: {
     headers() {
       return [
         {
-          text: "Full name",
-          value: "fullname",
+          text: "Company name",
           align: "left",
           width: "30%",
           sortable: false
         },
         {
-          text: "Title",
-          value: "title",
+          text: "Titles",
           align: "left",
           width: "30%",
           sortable: false
         },
         {
           text: "Company",
-          value: "company",
           align: "left",
           width: "30%",
           sortable: false
-        }
-      ];
-    },
-    constacts() {
-      return [
-        {
-          fullname: " Roberto Centeno",
-          title: "Mr. Cooper",
-          company: "Mortgage Professional Ii",
-          candidates: [
-            {
-              fullname: " Roberto Centeno",
-              title: "Mr. Cooper",
-              company: "Mortgage Professional Ii",
-              linkedin_handle:
-                "https://linkedin.com/in/roberto-centeno-77aba2101",
-              score: "52"
-            },
-            {
-              fullname: "Joel Hopkins",
-              title: "Lit Mortgage",
-              company: "Residential Mortgage Loan Advisor",
-              linkedin_handle: "https://linkedin.com/in/joel-hopkins-89436933",
-              score: "67"
-            },
-            {
-              fullname: "Shaundra Ramer",
-              title: "Midwest Region",
-              company:
-                "Senior Loan Consultant-Nmls 954749 - New American Funding",
-              linkedin_handle:
-                "https://linkedin.com/in/shaundra-ramer-58117361",
-              score: "80"
-            },
-            {
-              fullname: "Tyler Burns",
-              title: "Altius Mortgage Group",
-              company: "Mortgage Consultant",
-              linkedin_handle: "https://linkedin.com/in/tyler-burns-92844052",
-              score: "78"
-            },
-            {
-              fullname: "Chris Morrow",
-              title: "Delmar Financial Company",
-              company: "Senior Loan Consultant",
-              linkedin_handle: "https://linkedin.com/in/chris-morrow-38449052",
-              score: "70"
-            }
-          ]
-        },
-        {
-          fullname: "Joel Hopkins",
-          title: "Lit Mortgage",
-          company: "Residential Mortgage Loan Advisor",
-          candidates: [
-            {
-              fullname: " Roberto Centeno",
-              title: "Mr. Cooper",
-              company: "Mortgage Professional Ii",
-              linkedin_handle:
-                "https://linkedin.com/in/roberto-centeno-77aba2101",
-              score: "52"
-            },
-            {
-              fullname: "Joel Hopkins",
-              title: "Lit Mortgage",
-              company: "Residential Mortgage Loan Advisor",
-              linkedin_handle: "https://linkedin.com/in/joel-hopkins-89436933",
-              score: "67"
-            },
-            {
-              fullname: "Shaundra Ramer",
-              title: "Midwest Region",
-              company:
-                "Senior Loan Consultant-Nmls 954749 - New American Funding",
-              linkedin_handle:
-                "https://linkedin.com/in/shaundra-ramer-58117361",
-              score: "80"
-            },
-            {
-              fullname: "Tyler Burns",
-              title: "Altius Mortgage Group",
-              company: "Mortgage Consultant",
-              linkedin_handle: "https://linkedin.com/in/tyler-burns-92844052",
-              score: "78"
-            },
-            {
-              fullname: "Chris Morrow",
-              title: "Delmar Financial Company",
-              company: "Senior Loan Consultant",
-              linkedin_handle: "https://linkedin.com/in/chris-morrow-38449052",
-              score: "70"
-            }
-          ]
-        },
-        {
-          fullname: "Shaundra Ramer",
-          title: "Midwest Region",
-          company: "Senior Loan Consultant-Nmls 954749 - New American Funding",
-          candidates: [
-            {
-              fullname: " Roberto Centeno",
-              title: "Mr. Cooper",
-              company: "Mortgage Professional Ii",
-              linkedin_handle:
-                "https://linkedin.com/in/roberto-centeno-77aba2101",
-              score: "52"
-            },
-            {
-              fullname: "Joel Hopkins",
-              title: "Lit Mortgage",
-              company: "Residential Mortgage Loan Advisor",
-              linkedin_handle: "https://linkedin.com/in/joel-hopkins-89436933",
-              score: "67"
-            },
-            {
-              fullname: "Shaundra Ramer",
-              title: "Midwest Region",
-              company:
-                "Senior Loan Consultant-Nmls 954749 - New American Funding",
-              linkedin_handle:
-                "https://linkedin.com/in/shaundra-ramer-58117361",
-              score: "80"
-            },
-            {
-              fullname: "Tyler Burns",
-              title: "Altius Mortgage Group",
-              company: "Mortgage Consultant",
-              linkedin_handle: "https://linkedin.com/in/tyler-burns-92844052",
-              score: "78"
-            },
-            {
-              fullname: "Chris Morrow",
-              title: "Delmar Financial Company",
-              company: "Senior Loan Consultant",
-              linkedin_handle: "https://linkedin.com/in/chris-morrow-38449052",
-              score: "70"
-            }
-          ]
-        },
-        {
-          fullname: "Tyler Burns",
-          title: "Altius Mortgage Group",
-          company: "Mortgage Consultant"
-        },
-        {
-          fullname: "Chris Morrow",
-          title: "Delmar Financial Company",
-          company: "Senior Loan Consultant"
         }
       ];
     },
@@ -245,6 +125,7 @@ export default {
       if (!!this.job && !!this.job.additionalData) {
         return JSON.parse(this.job.additionalData);
       }
+      return "";
     }
   }
 };
