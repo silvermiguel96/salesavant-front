@@ -10,31 +10,35 @@
       <v-card-text>
         <v-data-table
           v-if="!!job"
-          show-expand
           :headers="headers"
           :items="contactFinderResultsParsed"
           :footer-props="{
-            'items-per-page-options': [10, 20, 50]
+            'items-per-page-options': [5]
           }"
-          item-key="fullname"
+          :single-expand="true"
           expanded.sync="expanded"
+          item-key="id"
+          show-expand
         >
-          <template v-slot:expanded-item="{ headers,item }">
-            <td :colspan="headers.length">
-              <v-row v-for="person in item.candidates" :key="person.fullname" class="ma-0 pa-0">
-                <v-col cols="1"></v-col>
-                <v-col cols="4" class="mt-1 pa-0 pl-3">
-                  <p class="ma-0 pa-0">{{ person.fullname }}</p>
-                  <a :href="person.linkedin_handle" target="_black">Linkedin</a>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length" >
+              <div  v-for="candidate in item.candidates" :key="candidate.id">
+              <v-row class="ma-2" no-gutters>
+                <v-col cols="4">
+                  <div>Name: {{ candidate.fullName }}</div>
+                  LinkedIn: <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
                 </v-col>
-                <v-col cols="6" class="ma-0 pa-0">
-                  <p></p>
-                  <p>{{ person.company }}</p>
+                <v-col cols="4">
+                  <div>Title: {{ candidate.title }}</div>
+                  <div>Company: {{ candidate.company }}</div>
                 </v-col>
-                <v-col cols="1">
-                  <v-icon v-if="person.score > 70" color="success">check</v-icon>
+                <v-col cols="4">
+                  <div>Score: {{ candidate.score }}</div>
+                  <v-icon v-if="candidate.score > 70" color="success">check</v-icon>
                 </v-col>
               </v-row>
+              <v-divider></v-divider>
+              </div>
             </td>
           </template>
         </v-data-table>
@@ -83,7 +87,9 @@ export default {
               name
               additionalData
               candidates {
+                id
                 fullName
+                company
                 title
                 candidateType
                 linkedinHandle
@@ -113,18 +119,22 @@ export default {
           sortable: false
         },
         {
-          text: "Titles",
+          text: "Query Titles",
           value: "additionalDataParsed.titles",
+          class: "text-capitalize",
           align: "left",
           width: "60%",
           sortable: false
-        }
+        },
+        { text: '', value: 'data-table-expand' },
       ];
     },
     contactFinderResultsParsed() {
       if (!!this.contactFinderResults.inputCompaniesList){
         return this.contactFinderResults.inputCompaniesList.map(res => {
-          return {...res, additionalDataParsed: JSON.parse(res.additionalData)};
+          let additionalDataParsed = JSON.parse(res.additionalData);
+          additionalDataParsed.titles = additionalDataParsed.titles.split("|").join(", ");
+          return {...res, additionalDataParsed: additionalDataParsed};
         });
       }
       return [];
