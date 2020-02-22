@@ -12,7 +12,7 @@
           v-if="!!job"
           show-expand
           :headers="headers"
-          :items="contactFinderResults.inputCompaniesList"
+          :items="contactFinderResultsParsed"
           :footer-props="{
             'items-per-page-options': [10, 20, 50]
           }"
@@ -66,26 +66,30 @@ export default {
     job: Object
   },
   methods: {
-    _get: _get,
+    _get: _get
   },
   apollo: {
     contactFinderResults: {
       query: gql`
         query contactFinderResults($jobUid: String, $first: Int, $offset: Int) {
-          contactFinderResults(jobUid: $jobUid, first: $first, offset: $offset ) {
+          contactFinderResults(
+            jobUid: $jobUid
+            first: $first
+            offset: $offset
+          ) {
             totalResults
-            inputCompaniesList{
+            inputCompaniesList {
               id
               name
               additionalData
-              candidates{
+              candidates {
                 fullName
                 title
                 candidateType
                 linkedinHandle
                 score
               }
-            } 
+            }
           }
         }
       `,
@@ -102,24 +106,28 @@ export default {
     headers() {
       return [
         {
-          text: "Company name",
+          text: "Company",
+          value: "name",
           align: "left",
           width: "30%",
           sortable: false
         },
         {
           text: "Titles",
+          value: "additionalDataParsed.titles",
           align: "left",
-          width: "30%",
-          sortable: false
-        },
-        {
-          text: "Company",
-          align: "left",
-          width: "30%",
+          width: "60%",
           sortable: false
         }
       ];
+    },
+    contactFinderResultsParsed() {
+      if (!!this.contactFinderResults.inputCompaniesList){
+        return this.contactFinderResults.inputCompaniesList.map(res => {
+          return {...res, additionalDataParsed: JSON.parse(res.additionalData)};
+        });
+      }
+      return [];
     },
     additionalDataParsed: function() {
       if (!!this.job && !!this.job.additionalData) {
