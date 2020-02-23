@@ -12,6 +12,8 @@
           v-if="!!job"
           :headers="headers"
           :items="contactFinderResultsParsed"
+          :server-items-length="contactFinderResults.totalResults"
+          :options.sync="options"
           :footer-props="{
             'items-per-page-options': [5]
           }"
@@ -25,15 +27,15 @@
               <div  v-for="candidate in item.candidates" :key="candidate.id">
                 <v-row class="ma-2" no-gutters>
                   <v-col cols="4">
-                    <div><strong>Name:</strong> {{ candidate.fullName }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ candidate.fullName }}</div>
                     <div>
-                      <span class="body-1">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
                     </div>
-                    <div><strong>Score:</strong> {{ candidate.score }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Score: </span> {{ candidate.score }}</div>
                   </v-col>
                   <v-col cols="6">
-                    <div><strong>Title:</strong> {{ candidate.title }}</div>
-                    <div><strong>Company:</strong> {{ candidate.company }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ candidate.title }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ candidate.company }}</div>
                   </v-col>
                 </v-row>
                 <v-divider></v-divider>
@@ -61,15 +63,16 @@ export default {
       dialog: false,
       contactFinderResults: [],
       expanded: [],
-      first: 10,
-      offset: 0
+      options: {
+        page: 1,
+        itemsPerPage: 5
+      },
     };
   },
   props: {
     job: Object
   },
   methods: {
-    _get: _get
   },
   apollo: {
     contactFinderResults: {
@@ -101,8 +104,8 @@ export default {
       variables() {
         return {
           jobUid: this.job.uid,
-          first: this.first,
-          offset: this.offset
+          first: this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       }
     }
@@ -120,9 +123,9 @@ export default {
         {
           text: "Query Titles",
           value: "additionalDataParsed.titles",
-          class: "text-capitalize",
+          class: "text-capitalized",
           align: "left",
-          width: "60%",
+          width: "50%",
           sortable: false
         },
         { text: '', value: 'data-table-expand' },

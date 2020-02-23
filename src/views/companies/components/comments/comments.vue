@@ -95,9 +95,7 @@ export default {
         return {
           companyUid: this.$route.params.companiesUid,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
