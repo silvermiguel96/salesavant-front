@@ -23,21 +23,20 @@
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" >
               <div  v-for="candidate in item.candidates" :key="candidate.id">
-              <v-row class="ma-2" no-gutters>
-                <v-col cols="4">
-                  <div>Name: {{ candidate.fullName }}</div>
-                  LinkedIn: <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
-                </v-col>
-                <v-col cols="4">
-                  <div>Title: {{ candidate.title }}</div>
-                  <div>Company: {{ candidate.company }}</div>
-                </v-col>
-                <v-col cols="4">
-                  <div>Score: {{ candidate.score }}</div>
-                  <v-icon v-if="candidate.score > 70" color="success">check</v-icon>
-                </v-col>
-              </v-row>
-              <v-divider></v-divider>
+                <v-row class="ma-2" no-gutters>
+                  <v-col cols="4">
+                    <div><strong>Name:</strong> {{ candidate.fullName }}</div>
+                    <div>
+                      <span class="body-1">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                    </div>
+                    <div><strong>Score:</strong> {{ candidate.score }}</div>
+                  </v-col>
+                  <v-col cols="6">
+                    <div><strong>Title:</strong> {{ candidate.title }}</div>
+                    <div><strong>Company:</strong> {{ candidate.company }}</div>
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
               </div>
             </td>
           </template>
