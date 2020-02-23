@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import _get from "lodash.get";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
 
