@@ -24,8 +24,8 @@
         >
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" >
-              <div  v-for="candidate in item.candidates" :key="candidate.id">
-                <v-row class="ma-2" no-gutters>
+              <div class="ma-3" v-for="candidate in item.candidates" :key="candidate.id">
+                <v-row  no-gutters>
                   <v-col cols="4">
                     <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ candidate.fullName }}</div>
                     <div>
