@@ -34,8 +34,8 @@
                     <div><span class="subtitle-2 font-weight-medium">Score: </span> {{ candidate.score }}</div>
                   </v-col>
                   <v-col cols="6">
-                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ candidate.title }}</div>
-                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ candidate.company }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ candidate.title || "--" }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ candidate.company || "--" }}</div>
                   </v-col>
                 </v-row>
                 <v-divider></v-divider>
