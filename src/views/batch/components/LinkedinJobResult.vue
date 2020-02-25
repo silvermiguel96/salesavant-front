@@ -4,15 +4,15 @@
       <a v-on="on" href="#">View</a>
     </template>
     <v-card>
-      <v-card-title style="padding-left:16px;">Contact Finder Results</v-card-title>
+      <v-card-title style="padding-left:16px;">LinkedIn Finder Results</v-card-title>
       <v-card-subtitle>{{ additionalDataParsed.original_filename }}</v-card-subtitle>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
         <v-data-table
           v-if="!!job"
           :headers="headers"
-          :items="contactFinderResultsParsed"
-          :server-items-length="contactFinderResults.totalResults"
+          :items="linkedinFinderResultsParsed"
+          :server-items-length="linkedinFinderResults.totalResults"
           :options.sync="options"
           :footer-props="{
             'items-per-page-options': [5]
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       dialog: false,
-      contactFinderResults: [],
+      linkedinFinderResults: [],
       expanded: [],
       options: {
         page: 1,
@@ -79,18 +79,20 @@ export default {
   methods: {
   },
   apollo: {
-    contactFinderResults: {
+    linkedinFinderResults: {
       query: gql`
-        query contactFinderResults($jobUid: String, $first: Int, $offset: Int) {
-          contactFinderResults(
+        query linkedinFinderResults($jobUid: String, $first: Int, $offset: Int) {
+          linkedinFinderResults(
             jobUid: $jobUid
             first: $first
             offset: $offset
           ) {
             totalResults
-            inputCompaniesList {
+            inputPersonsList {
               id
-              name
+              fullName
+              title
+              company
               additionalData
               candidates {
                 id
@@ -118,28 +120,33 @@ export default {
     headers() {
       return [
         {
-          text: "Company",
-          value: "name",
+          text: "Name",
+          value: "fullName",
           align: "left",
           width: "30%",
           sortable: false
         },
         {
-          text: "Query Titles",
-          value: "additionalDataParsed.titles",
-          class: "text-capitalized",
+          text: "Company",
+          value: "company",
           align: "left",
-          width: "50%",
+          width: "30%",
+          sortable: false
+        },
+        {
+          text: "Title",
+          value: "title",
+          align: "left",
+          width: "30%",
           sortable: false
         },
         { text: '', value: 'data-table-expand' },
       ];
     },
-    contactFinderResultsParsed() {
-      if (!!this.contactFinderResults.inputCompaniesList){
-        return this.contactFinderResults.inputCompaniesList.map(res => {
+    linkedinFinderResultsParsed() {
+      if (!!this.linkedinFinderResults.inputPersonsList){
+        return this.linkedinFinderResults.inputPersonsList.map(res => {
           let additionalDataParsed = JSON.parse(res.additionalData);
-          additionalDataParsed.titles = additionalDataParsed.titles.split("|").join(", ");
           return {...res, additionalDataParsed: additionalDataParsed};
         });
       }

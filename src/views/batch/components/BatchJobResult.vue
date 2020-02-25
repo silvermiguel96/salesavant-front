@@ -19,6 +19,7 @@
       <ContactsJobResult :job="job" />
     </div>
     <div v-else-if="job.jobType=='linkedin_finder'">
+      <LinkedinJobResult :job="job" />
     </div>
   </div>
 </template>
@@ -26,6 +27,7 @@
 <script>
 import KeywordsJobResult from "./KeywordsJobResult";
 import ContactsJobResult from "./ContactsJobResult";
+import LinkedinJobResult from "./LinkedinJobResult";
 export default {
   data() {
     return {
@@ -46,7 +48,8 @@ export default {
   },
   components: {
     KeywordsJobResult,
-    ContactsJobResult
+    ContactsJobResult,
+    LinkedinJobResult
   }
 };
 </script>
