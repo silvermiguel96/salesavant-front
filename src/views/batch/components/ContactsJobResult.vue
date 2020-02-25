@@ -22,6 +22,9 @@
           item-key="id"
           show-expand
         >
+          <template v-slot:item.actions="{ item }">
+               <a target="_blank" @click.prevent="openCandidateProfiles(item)" >Open Profiles</a>
+          </template>
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" >
               <div class="ma-3" v-for="candidate in item.candidates" :key="candidate.id">
@@ -77,6 +80,11 @@ export default {
     job: Object
   },
   methods: {
+    openCandidateProfiles(item){
+      item.candidates.forEach(candidate => {
+        window.open(`https://linkedin.com/in/${candidate.linkedinHandle}`, "_blank", );
+      });
+    }
   },
   apollo: {
     contactFinderResults: {
@@ -117,6 +125,7 @@ export default {
   computed: {
     headers() {
       return [
+        { text: '', value: 'data-table-expand' },
         {
           text: "Company",
           value: "name",
@@ -127,12 +136,17 @@ export default {
         {
           text: "Query Titles",
           value: "additionalDataParsed.titles",
-          class: "text-capitalized",
           align: "left",
           width: "50%",
           sortable: false
         },
-        { text: '', value: 'data-table-expand' },
+        {
+          text: "Actions",
+          value: "actions",
+          align: "center",
+          width: "20%",
+          sortable: false
+        },
       ];
     },
     contactFinderResultsParsed() {

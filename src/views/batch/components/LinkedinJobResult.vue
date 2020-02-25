@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" scrollable persistent max-width="1000" @keydown.esc="dialog=false">
+  <v-dialog v-model="dialog" persistent max-width="1000" @keydown.esc="dialog=false">
     <template v-slot:activator="{ on }">
       <a v-on="on" href="#">View</a>
     </template>
@@ -8,41 +8,61 @@
       <v-card-subtitle>{{ additionalDataParsed.original_filename }}</v-card-subtitle>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
-        <v-data-table
+        <v-data-iterator
           v-if="!!job"
-          :headers="headers"
           :items="linkedinFinderResultsParsed"
+          :items-per-page="options.itemsPerPage"
           :server-items-length="linkedinFinderResults.totalResults"
           :options.sync="options"
-          :footer-props="{
-            'items-per-page-options': [5]
-          }"
-          :single-expand="true"
-          expanded.sync="expanded"
           item-key="id"
-          show-expand
         >
-          <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length" >
-              <div class="ma-3" v-for="candidate in item.candidates" :key="candidate.id">
-                <v-row  no-gutters>
-                  <v-col cols="4">
-                    <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ candidate.fullName }}</div>
+          <template v-slot:default="props">
+            <div v-for="item in props.items" :key="item.id">
+              <v-card class="ma-2">
+                <v-row  no-gutters >
+                  <v-col cols="6">
+                    <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ item.fullName }}</div>
                     <div>
-                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${item.linkedinHandle}`" target="_blank">{{ item.linkedinHandle }}</a>
                     </div>
-                    <div><span class="subtitle-2 font-weight-medium">Score: </span> {{ candidate.score }}</div>
                   </v-col>
                   <v-col cols="6">
-                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ candidate.title || "--" }}</div>
-                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ candidate.company || "--" }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ item.title || "--" }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ item.company || "--" }}</div>
                   </v-col>
                 </v-row>
-                <v-divider></v-divider>
+              </v-card>
+              <v-simple-table v-if="item.candidates">
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">Name</th>
+                      <th class="text-left">Title/Company</th>
+                      <th class="text-left">LinkedIn</th>
+                      <th class="text-left">Score</th>
+                      <th class="text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="candidate in item.candidates" :key="candidate.id">
+                      <td>{{ candidate.fullName }}</td>
+                      <td>
+                        <div>{{ candidate.title || "--" }}</div>
+                        <div class="subtitle-2">{{ candidate.company || "--" }}</div>
+                      </td>
+                      <td><a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a></td>
+                      <td>{{ candidate.score || "--" }}</td>
+                      <td>Select</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <div v-else>
+                Not results found
               </div>
-            </td>
+            </div>
           </template>
-        </v-data-table>
+        </v-data-iterator>
       </v-card-text>
       <v-card-actions class="mx-4">
         <v-spacer></v-spacer>
@@ -68,7 +88,7 @@ export default {
       expanded: [],
       options: {
         page: 1,
-        itemsPerPage: 5
+        itemsPerPage: 1
       },
     };
   },
@@ -93,6 +113,7 @@ export default {
               fullName
               title
               company
+              linkedinHandle
               additionalData
               candidates {
                 id
@@ -117,32 +138,6 @@ export default {
     }
   },
   computed: {
-    headers() {
-      return [
-        {
-          text: "Name",
-          value: "fullName",
-          align: "left",
-          width: "30%",
-          sortable: false
-        },
-        {
-          text: "Company",
-          value: "company",
-          align: "left",
-          width: "30%",
-          sortable: false
-        },
-        {
-          text: "Title",
-          value: "title",
-          align: "left",
-          width: "30%",
-          sortable: false
-        },
-        { text: '', value: 'data-table-expand' },
-      ];
-    },
     linkedinFinderResultsParsed() {
       if (!!this.linkedinFinderResults.inputPersonsList){
         return this.linkedinFinderResults.inputPersonsList.map(res => {
