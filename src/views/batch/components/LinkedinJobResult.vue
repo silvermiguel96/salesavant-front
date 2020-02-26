@@ -15,18 +15,22 @@
           :server-items-length="linkedinFinderResults.totalResults"
           :options.sync="options"
           item-key="id"
+          hide-default-footer
         >
           <template v-slot:default="props">
             <div v-for="item in props.items" :key="item.id">
-              <v-card class="ma-2">
+              <v-card class="pa-3">
                 <v-row  no-gutters >
-                  <v-col cols="6">
+                  <v-col cols="12" md="6">
                     <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ item.fullName }}</div>
                     <div>
-                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${item.linkedinHandle}`" target="_blank">{{ item.linkedinHandle }}</a>
+                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span>
+                      <a :href="`https://linkedin.com/in/${item.linkedinHandle}`" target="_blank">
+                        {{ item.linkedinHandle }}
+                      </a>
                     </div>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="12" md="6">
                     <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ item.title || "--" }}</div>
                     <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ item.company || "--" }}</div>
                   </v-col>
@@ -36,8 +40,8 @@
                 <template v-slot:default>
                   <thead>
                     <tr>
-                      <th class="text-left">Name</th>
-                      <th class="text-left">Title/Company</th>
+                      <th class="text-left" style="width:15%;">Name</th>
+                      <th class="text-left" style="width:25%;">Title/Company</th>
                       <th class="text-left">LinkedIn</th>
                       <th class="text-left">Score</th>
                       <th class="text-left">Actions</th>
@@ -48,7 +52,7 @@
                       <td>{{ candidate.fullName }}</td>
                       <td>
                         <div>{{ candidate.title || "--" }}</div>
-                        <div class="subtitle-2">{{ candidate.company || "--" }}</div>
+                        <div>{{ candidate.company || "--" }}</div>
                       </td>
                       <td><a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a></td>
                       <td>{{ candidate.score || "--" }}</td>
@@ -61,6 +65,37 @@
                 Not results found
               </div>
             </div>
+          </template>
+          <template v-slot:footer>
+            <v-row class="mt-2" align="center" justify="center">
+              <v-spacer></v-spacer>
+              <span
+                class="mr-4
+                grey--text"
+              >
+                Record {{ options.page }} of {{ linkedinFinderResults.totalResults }}
+              </span>
+              <v-btn
+                fab
+                dark
+                small
+                color="blue darken-3"
+                class="mr-1"
+                @click="formerPage"
+              >
+                <v-icon>chevron-left</v-icon>
+              </v-btn>
+              <v-btn
+                fab
+                dark
+                small
+                color="blue darken-3"
+                class="ml-1"
+                @click="nextPage"
+              >
+                <v-icon>chevron-right</v-icon>
+              </v-btn>
+            </v-row>
           </template>
         </v-data-iterator>
       </v-card-text>
@@ -97,6 +132,12 @@ export default {
     job: Object
   },
   methods: {
+    nextPage () {
+      if (this.options.page + 1 <= this.linkedinFinderResults.totalResults) this.options.page += 1
+    },
+    formerPage () {
+      if (this.options.page - 1 >= 1) this.options.page -= 1
+    }
   },
   apollo: {
     linkedinFinderResults: {

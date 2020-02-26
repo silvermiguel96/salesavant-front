@@ -34,7 +34,6 @@
                     <div>
                       <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
                     </div>
-                    <div><span class="subtitle-2 font-weight-medium">Score: </span> {{ candidate.score }}</div>
                   </v-col>
                   <v-col cols="6">
                     <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ candidate.title || "--" }}</div>
