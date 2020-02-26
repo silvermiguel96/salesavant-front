@@ -4,247 +4,165 @@
       <a v-on="on" href="#">View</a>
     </template>
     <v-card>
-      <v-card-title style="padding-left:16px;">Contacts</v-card-title>
-      <v-card-subtitle>{{ additionalDataParsed.playlist_name }}</v-card-subtitle>
+      <v-card-title style="padding-left:16px;">Contact Finder Results</v-card-title>
+      <v-card-subtitle>{{ additionalDataParsed.original_filename }}</v-card-subtitle>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
         <v-data-table
           v-if="!!job"
-          show-expand
           :headers="headers"
-          :items="constacts"
+          :items="contactFinderResultsParsed"
+          :server-items-length="contactFinderResults.totalResults"
+          :options.sync="options"
           :footer-props="{
-            'items-per-page-options': [10, 20, 50]
+            'items-per-page-options': [5]
           }"
-          item-key="fullname"
+          :single-expand="true"
           expanded.sync="expanded"
+          item-key="id"
+          show-expand
         >
-          <template v-slot:expanded-item="{ headers,item }">
-            <td :colspan="headers.length">
-              <v-row v-for="person in item.candidates" :key="person.fullname" class="ma-0 pa-0">
-                <v-col cols="1"></v-col>
-                <v-col cols="4" class="mt-1 pa-0 pl-3">
-                  <p class="ma-0 pa-0">{{ person.fullname }}</p>
-                  <a :href="person.linkedin_handle" target="_black">Linkedin</a>
-                </v-col>
-                <v-col cols="6" class="ma-0 pa-0">
-                  <p></p>
-                  <p>{{ person.company }}</p>
-                </v-col>
-                <v-col cols="1">
-                  <v-icon v-if="person.score > 70" color="success">check</v-icon>
-                </v-col>
-              </v-row>
+          <template v-slot:item.actions="{ item }">
+               <a target="_blank" @click.prevent="openCandidateProfiles(item)" >Open Profiles</a>
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length" >
+              <div class="ma-3" v-for="candidate in item.candidates" :key="candidate.id">
+                <v-row  no-gutters>
+                  <v-col cols="4">
+                    <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ candidate.fullName }}</div>
+                    <div>
+                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                    </div>
+                  </v-col>
+                  <v-col cols="6">
+                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ candidate.title || "--" }}</div>
+                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ candidate.company || "--" }}</div>
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
+              </div>
             </td>
           </template>
         </v-data-table>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="mx-4">
         <v-spacer></v-spacer>
         <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog=false">Close</v-btn>
+        <a
+          :href="`${salesavantAPI}/files/download/${additionalDataParsed.storage_output_filename}`"
+          target="_blank"
+        >Download</a>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import _get from "lodash.get";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
 
 export default {
   data() {
     return {
+      dialog: false,
+      contactFinderResults: [],
       expanded: [],
-      singleExpand: true,
-      dialog: false
+      options: {
+        page: 1,
+        itemsPerPage: 5
+      },
     };
   },
   props: {
+    salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL },
     job: Object
   },
   methods: {
-    _get: _get,
+    openCandidateProfiles(item){
+      item.candidates.forEach(candidate => {
+        window.open(`https://linkedin.com/in/${candidate.linkedinHandle}`, "_blank", );
+      });
+    }
+  },
+  apollo: {
+    contactFinderResults: {
+      query: gql`
+        query contactFinderResults($jobUid: String, $first: Int, $offset: Int) {
+          contactFinderResults(
+            jobUid: $jobUid
+            first: $first
+            offset: $offset
+          ) {
+            totalResults
+            inputCompaniesList {
+              id
+              name
+              additionalData
+              candidates {
+                id
+                fullName
+                company
+                title
+                candidateType
+                linkedinHandle
+                score
+              }
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          jobUid: this.job.uid,
+          first: this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+        };
+      }
+    }
   },
   computed: {
     headers() {
       return [
-        {
-          text: "Full name",
-          value: "fullname",
-          align: "left",
-          width: "30%",
-          sortable: false
-        },
-        {
-          text: "Title",
-          value: "title",
-          align: "left",
-          width: "30%",
-          sortable: false
-        },
+        { text: '', value: 'data-table-expand' },
         {
           text: "Company",
-          value: "company",
+          value: "name",
           align: "left",
           width: "30%",
           sortable: false
-        }
+        },
+        {
+          text: "Query Titles",
+          value: "additionalDataParsed.titles",
+          align: "left",
+          width: "50%",
+          sortable: false
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          align: "center",
+          width: "20%",
+          sortable: false
+        },
       ];
     },
-    constacts() {
-      return [
-        {
-          fullname: " Roberto Centeno",
-          title: "Mr. Cooper",
-          company: "Mortgage Professional Ii",
-          candidates: [
-            {
-              fullname: " Roberto Centeno",
-              title: "Mr. Cooper",
-              company: "Mortgage Professional Ii",
-              linkedin_handle:
-                "https://linkedin.com/in/roberto-centeno-77aba2101",
-              score: "52"
-            },
-            {
-              fullname: "Joel Hopkins",
-              title: "Lit Mortgage",
-              company: "Residential Mortgage Loan Advisor",
-              linkedin_handle: "https://linkedin.com/in/joel-hopkins-89436933",
-              score: "67"
-            },
-            {
-              fullname: "Shaundra Ramer",
-              title: "Midwest Region",
-              company:
-                "Senior Loan Consultant-Nmls 954749 - New American Funding",
-              linkedin_handle:
-                "https://linkedin.com/in/shaundra-ramer-58117361",
-              score: "80"
-            },
-            {
-              fullname: "Tyler Burns",
-              title: "Altius Mortgage Group",
-              company: "Mortgage Consultant",
-              linkedin_handle: "https://linkedin.com/in/tyler-burns-92844052",
-              score: "78"
-            },
-            {
-              fullname: "Chris Morrow",
-              title: "Delmar Financial Company",
-              company: "Senior Loan Consultant",
-              linkedin_handle: "https://linkedin.com/in/chris-morrow-38449052",
-              score: "70"
-            }
-          ]
-        },
-        {
-          fullname: "Joel Hopkins",
-          title: "Lit Mortgage",
-          company: "Residential Mortgage Loan Advisor",
-          candidates: [
-            {
-              fullname: " Roberto Centeno",
-              title: "Mr. Cooper",
-              company: "Mortgage Professional Ii",
-              linkedin_handle:
-                "https://linkedin.com/in/roberto-centeno-77aba2101",
-              score: "52"
-            },
-            {
-              fullname: "Joel Hopkins",
-              title: "Lit Mortgage",
-              company: "Residential Mortgage Loan Advisor",
-              linkedin_handle: "https://linkedin.com/in/joel-hopkins-89436933",
-              score: "67"
-            },
-            {
-              fullname: "Shaundra Ramer",
-              title: "Midwest Region",
-              company:
-                "Senior Loan Consultant-Nmls 954749 - New American Funding",
-              linkedin_handle:
-                "https://linkedin.com/in/shaundra-ramer-58117361",
-              score: "80"
-            },
-            {
-              fullname: "Tyler Burns",
-              title: "Altius Mortgage Group",
-              company: "Mortgage Consultant",
-              linkedin_handle: "https://linkedin.com/in/tyler-burns-92844052",
-              score: "78"
-            },
-            {
-              fullname: "Chris Morrow",
-              title: "Delmar Financial Company",
-              company: "Senior Loan Consultant",
-              linkedin_handle: "https://linkedin.com/in/chris-morrow-38449052",
-              score: "70"
-            }
-          ]
-        },
-        {
-          fullname: "Shaundra Ramer",
-          title: "Midwest Region",
-          company: "Senior Loan Consultant-Nmls 954749 - New American Funding",
-          candidates: [
-            {
-              fullname: " Roberto Centeno",
-              title: "Mr. Cooper",
-              company: "Mortgage Professional Ii",
-              linkedin_handle:
-                "https://linkedin.com/in/roberto-centeno-77aba2101",
-              score: "52"
-            },
-            {
-              fullname: "Joel Hopkins",
-              title: "Lit Mortgage",
-              company: "Residential Mortgage Loan Advisor",
-              linkedin_handle: "https://linkedin.com/in/joel-hopkins-89436933",
-              score: "67"
-            },
-            {
-              fullname: "Shaundra Ramer",
-              title: "Midwest Region",
-              company:
-                "Senior Loan Consultant-Nmls 954749 - New American Funding",
-              linkedin_handle:
-                "https://linkedin.com/in/shaundra-ramer-58117361",
-              score: "80"
-            },
-            {
-              fullname: "Tyler Burns",
-              title: "Altius Mortgage Group",
-              company: "Mortgage Consultant",
-              linkedin_handle: "https://linkedin.com/in/tyler-burns-92844052",
-              score: "78"
-            },
-            {
-              fullname: "Chris Morrow",
-              title: "Delmar Financial Company",
-              company: "Senior Loan Consultant",
-              linkedin_handle: "https://linkedin.com/in/chris-morrow-38449052",
-              score: "70"
-            }
-          ]
-        },
-        {
-          fullname: "Tyler Burns",
-          title: "Altius Mortgage Group",
-          company: "Mortgage Consultant"
-        },
-        {
-          fullname: "Chris Morrow",
-          title: "Delmar Financial Company",
-          company: "Senior Loan Consultant"
-        }
-      ];
+    contactFinderResultsParsed() {
+      if (!!this.contactFinderResults.inputCompaniesList){
+        return this.contactFinderResults.inputCompaniesList.map(res => {
+          let additionalDataParsed = JSON.parse(res.additionalData);
+          additionalDataParsed.titles = additionalDataParsed.titles.split("|").join(", ");
+          return {...res, additionalDataParsed: additionalDataParsed};
+        });
+      }
+      return [];
     },
     additionalDataParsed: function() {
       if (!!this.job && !!this.job.additionalData) {
         return JSON.parse(this.job.additionalData);
       }
+      return "";
     }
   }
 };

@@ -33,7 +33,7 @@
           </template>
         </v-data-table>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="mx-4">
         <v-spacer></v-spacer>
         <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog=false">Close</v-btn>
       </v-card-actions>
