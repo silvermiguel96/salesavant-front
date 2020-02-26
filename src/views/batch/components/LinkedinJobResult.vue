@@ -11,91 +11,74 @@
         <v-data-iterator
           v-if="!!job"
           :items="linkedinFinderResultsParsed"
-          :items-per-page="options.itemsPerPage"
           :server-items-length="linkedinFinderResults.totalResults"
           :options.sync="options"
+          :footer-props="{
+            'items-per-page-options': [1]
+          }"
           item-key="id"
-          hide-default-footer
         >
           <template v-slot:default="props">
             <div v-for="item in props.items" :key="item.id">
-              <v-card class="pa-3">
-                <v-row  no-gutters >
-                  <v-col cols="12" md="6">
-                    <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ item.fullName }}</div>
-                    <div>
-                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span>
-                      <a :href="`https://linkedin.com/in/${item.linkedinHandle}`" target="_blank">
-                        {{ item.linkedinHandle }}
-                      </a>
-                    </div>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ item.title || "--" }}</div>
-                    <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ item.company || "--" }}</div>
-                  </v-col>
-                </v-row>
+              <v-card>
+                <v-card-text class="pa-2">
+                  <div class="title">Input Data</div>
+                  <v-row  no-gutters >
+                    <v-col cols="12" md="6">
+                      <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ item.fullName }}</div>
+                      <div>
+                        <span class="subtitle-2 font-weight-medium">LinkedIn: </span>
+                        <a :href="`https://linkedin.com/in/${item.linkedinHandle}`" target="_blank">
+                          {{ item.linkedinHandle }}
+                        </a>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div><span class="subtitle-2 font-weight-medium">Title: </span>{{ item.title || "--" }}</div>
+                      <div><span class="subtitle-2 font-weight-medium">Company: </span> {{ item.company || "--" }}</div>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
               </v-card>
-              <v-simple-table v-if="item.candidates">
-                <template v-slot:default>
-                  <thead>
-                    <tr>
-                      <th class="text-left" style="width:15%;">Name</th>
-                      <th class="text-left" style="width:25%;">Title/Company</th>
-                      <th class="text-left">LinkedIn</th>
-                      <th class="text-left">Score</th>
-                      <th class="text-left">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="candidate in item.candidates" :key="candidate.id">
-                      <td>{{ candidate.fullName }}</td>
-                      <td>
-                        <div>{{ candidate.title || "--" }}</div>
-                        <div>{{ candidate.company || "--" }}</div>
-                      </td>
-                      <td><a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a></td>
-                      <td>{{ candidate.score || "--" }}</td>
-                      <td>Select</td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
+              <v-card :elevation="0">
+                <v-card-text class="pa-2 mt-2">
+                  <div class="title">Profile Candidates</div>
+                  <v-simple-table v-if="item.candidates" dense style="max-height:40vh; overflow-y:scroll;" id="results-table">
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left" style="width:30%;">Name/LinkedIn</th>
+                          <th class="text-left" style="width:50%;">Title/Company</th>
+                          <th class="text-left" style="width:10%;">Score</th>
+                          <th class="text-left" style="width:10%; position: sticky; top: 0;">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="candidate in item.candidates" :key="candidate.id">
+                          <td>
+                            <div>
+                              {{ candidate.fullName }}
+                            </div>
+                            <div>
+                              <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                            </div>
+                          </td>
+                          <td>
+                            <div>{{ candidate.title || "--" }}</div>
+                            <div>{{ candidate.company || "--" }}</div>
+                          </td>
+                          <td>{{ candidate.score || "--" }}</td>
+                          <td>Select</td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
               <div v-else>
                 Not results found
               </div>
+                </v-card-text>
+              </v-card>
             </div>
-          </template>
-          <template v-slot:footer>
-            <v-row class="mt-2" align="center" justify="center">
-              <v-spacer></v-spacer>
-              <span
-                class="mr-4
-                grey--text"
-              >
-                Record {{ options.page }} of {{ linkedinFinderResults.totalResults }}
-              </span>
-              <v-btn
-                fab
-                dark
-                small
-                color="blue darken-3"
-                class="mr-1"
-                @click="formerPage"
-              >
-                <v-icon>chevron-left</v-icon>
-              </v-btn>
-              <v-btn
-                fab
-                dark
-                small
-                color="blue darken-3"
-                class="ml-1"
-                @click="nextPage"
-              >
-                <v-icon>chevron-right</v-icon>
-              </v-btn>
-            </v-row>
           </template>
         </v-data-iterator>
       </v-card-text>
@@ -122,8 +105,8 @@ export default {
       linkedinFinderResults: [],
       expanded: [],
       options: {
-        page: 1,
-        itemsPerPage: 1
+        itemsPerPage:1,
+        page: 1
       },
     };
   },
@@ -132,12 +115,6 @@ export default {
     job: Object
   },
   methods: {
-    nextPage () {
-      if (this.options.page + 1 <= this.linkedinFinderResults.totalResults) this.options.page += 1
-    },
-    formerPage () {
-      if (this.options.page - 1 >= 1) this.options.page -= 1
-    }
   },
   apollo: {
     linkedinFinderResults: {
@@ -172,8 +149,8 @@ export default {
       variables() {
         return {
           jobUid: this.job.uid,
-          first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          first: 1,
+          offset: this.options.page - 1
         };
       }
     }
