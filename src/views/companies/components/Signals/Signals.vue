@@ -380,6 +380,11 @@ export default {
           null
         );
         this.companySignals.companySignalsList.splice(index, 1);
+        this.$eventBus.$emit(
+          "showSnack",
+          "The signal successfully delete!!",
+          "success"
+        );
         this.dialog = false
         this.refreshData();
       } catch (error) {
