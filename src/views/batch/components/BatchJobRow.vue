@@ -16,7 +16,7 @@
       <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
     </td>
     <td>{{ job.description || "--" }}</td>
-    <td>{{ changeTimeHuman(job.creationTime) }}</td>
+    <td>{{ time(job.creationTime) }}</td>
     <td v-if="job.progress > 0 && job.progress < 100">
       <v-progress-circular
         :rotate="-90"
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { formatDateTime } from "../../../commons"
 import JobResult from "./BatchJobResult";
 
 export default {
@@ -45,10 +46,8 @@ export default {
     return {};
   },
   methods: {
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
+    time(time) {
+      return formatDateTime(time)
     },
     getJobName(jobType) {
       switch (jobType) {

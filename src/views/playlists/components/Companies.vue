@@ -6,7 +6,7 @@
           <v-col cols="12" md="4"  sm="6">
           <v-card-subtitle>
               <div class="headline">Playlist</div>
-              <div class="caption">Last Update: {{ changeTimeHuman(playlist.modificationTime)}}</div>
+              <div class="caption">Last Update: {{ callMethodTime(playlist.modificationTime)}}</div>
             </v-card-subtitle>
           </v-col>
           <v-col cols="12" md="8" sm="6">
@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { formatDateTime } from "../../../commons"
 import CompaniesTable from "../../../components/companies/CompaniesTable.vue";
 import ButtonMenu from "../../../components/common/ButtonMenu";
 import _get from "lodash.get";
@@ -166,12 +167,8 @@ export default {
         this.sortOrder = "";
       }
     },
-    changeTimeHuman(time) {
-      if (time){
-        let humanDate = time.split(".", 1).toString();
-        let humanTime = humanDate.split("T", 2).join(" ");
-        return humanTime;
-      }
+    callMethodTime(time){
+      return formatDateTime(time)
     },
     createJob(jobType) {
       this.$eventBus.$emit("createJob", {

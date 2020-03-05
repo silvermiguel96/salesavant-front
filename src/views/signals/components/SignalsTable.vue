@@ -93,7 +93,7 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ changeTimeHuman(item.creationTime) || "" }}</td>
+          <td>{{ callMethodTime(item.creationTime) || "" }}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
@@ -120,6 +120,7 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import { formatDateTime } from "../../../commons"
 import LongParagraph from "../../../components/common/LongParagraph";
 export default {
   data() {
@@ -173,10 +174,8 @@ export default {
       this.$emit("deleteSignal", this.selectedSignalId);
       this.dialog = false;
     },
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
+    callMethodTime(time) {
+      return formatDateTime(time)
     },
     async save() {
       if (!this.signal) {

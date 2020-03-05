@@ -2,7 +2,7 @@
   <v-card v-if="company" style="height:100%;">
     <v-card-subtitle>
       <div class="headline">Profile</div>
-      <div class="caption">Last update : {{ changeTimeHuman(company.modificationTime)}}</div>
+      <div class="caption">Last update : {{ callMethodTime(company.modificationTime)}}</div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
@@ -320,6 +320,7 @@
 </template>
 
 <script>
+import { formatDateTime } from "../../../../commons"
 import LongParagraph from "../../../../components/common/LongParagraph";
 import gql from "graphql-tag";
 export default {
@@ -339,10 +340,8 @@ export default {
     }
   },
   methods: {
-    changeTimeHuman(time) {
-      let humanDate = time.split(".", 1).toString();
-      let humanTime = humanDate.split("T", 2).join(" ");
-      return humanTime;
+    callMethodTime(time) {
+      return formatDateTime(time)
     },
   },
   apollo: {

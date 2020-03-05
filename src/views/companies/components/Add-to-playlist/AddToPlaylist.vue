@@ -68,7 +68,7 @@
               </router-link>
             </td>
             <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
-            <td>{{ changeTimeHuman(item.creationTime) }}</td>
+            <td>{{ callMethodTime(item.creationTime) }}</td>
             <td>
               <div class="d-flex align-center justify-center">
               <v-icon
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { formatDateTime } from "../../../../commons"
 import gql from "graphql-tag";
 import playlistsAutocomplete from "../../../../components/playlists/PlaylistAutocomplete.vue";
 import _get from "lodash.get";
@@ -168,10 +169,8 @@ export default {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
     },
-    changeTimeHuman(time) {
-      let humanDate = time.split(".", 1).toString();
-      let humanTime = humanDate.split("T", 2).join(" ");
-      return humanTime;
+    callMethodTime(time){
+      return formatDateTime(time)
     },
     onPlaylistAutoCompleteChange(playlistResults) {
       this.playlistUid = _get(playlistResults, "playlistUid", null);
