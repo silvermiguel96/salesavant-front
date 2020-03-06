@@ -26,7 +26,7 @@
               </v-col>
               <v-col cols="12" sm="4" md="4" lg="3">
                 <v-btn color="primary" class="text-capitalize" block @click.prevent="submitFiles">
-                  <v-icon class="pr-1">backup</v-icon>Launch
+                  <v-icon class="pr-1">backup</v-icon>Create
                 </v-btn>
               </v-col>
             </v-row>
@@ -54,6 +54,10 @@ export default {
         {
           value: "playlist_from_file",
           text: "Playlist From File"
+        },
+        {
+          value: "contacts_from_file",
+          text: "Contacts From File"
         }
       ],
       jobType: "",
