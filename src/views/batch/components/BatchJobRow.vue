@@ -7,7 +7,7 @@
             :to="`/playlists/${additionalDataParsed.playlist_uid}`"
           >{{ additionalDataParsed.playlist_name }}</router-link>
         </div>
-        <div v-else-if="job.jobType=='export_companies' || job.jobType=='contact_finder' || job.jobType=='linkedin_finder'"  >
+        <div v-else-if="job.jobType=='contacts_from_file' || job.jobType=='export_companies' || job.jobType=='contact_finder' || job.jobType=='linkedin_finder'"  >
           <a
             :href="`${salesavantAPI}/files/download/${additionalDataParsed.storage_filename}`"
           >{{ additionalDataParsed.original_filename }}</a>
@@ -68,6 +68,9 @@ export default {
           return "Contact Finder";
         case "linkedin_finder":
           return "LinkedIn Finder";
+        case "contacts_from_file":
+          return "Contacts From File";
+
       }
       return jobType;
     }

@@ -12,6 +12,9 @@
     <div v-if="job.jobType=='refresh_orb'">
       <div class="green--text text--lighten-1">Done</div>
     </div>
+    <div v-if="job.jobType=='contacts_from_file'">
+      <div class="green--text text--lighten-1">Done</div>
+    </div>
     <div v-else-if="job.jobType=='refresh_keywords'">
       <KeywordsJobResult :job="job" />
     </div>
