@@ -33,7 +33,7 @@
       <v-tab>Contacts</v-tab>
       <v-tab-item>
         <div>
-          <h4>Coming soon</h4>
+          <contacts />
         </div>
       </v-tab-item>
       <!-- Tab analytics -->
@@ -51,12 +51,14 @@ import _get from "lodash.get";
 import gql from "graphql-tag";
 import Companies from "./components/Companies.vue";
 import Analytics from "./components/Analytics.vue";
+import Contacts from "./components/Contact.vue"
 import { mapMutations } from "vuex";
 
 export default {
   components: {
     Companies,
-    Analytics
+    Analytics,
+    Contacts
   },
   data() {
     return {

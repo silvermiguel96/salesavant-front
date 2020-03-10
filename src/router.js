@@ -11,6 +11,7 @@ import Playlists from "./views/playlists/Playlists.vue";
 import Playlist from "./views/playlists/Playlist.vue";
 
 import Contacts from "./views/contacts/Contacts.vue";
+import Contact from "./views/contacts/Contact.vue"
 
 import Signals from "./views/signals/Signals.vue";
 import Signal from "./views/signals/components/Signal.vue";
@@ -90,6 +91,14 @@ const router = new Router({
       path: "/contacts",
       name: "Contacts",
       component: Contacts,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/contacts/:contactUid",
+      name: "contact",
+      component: Contact,
       meta: {
         requiresAuth: true
       }

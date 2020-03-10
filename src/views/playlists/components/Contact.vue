@@ -2,43 +2,6 @@
   <v-container fluid>
     <v-card>
       <div class="apollo-example">
-        <v-breadcrumbs
-          v-if="!!this.$route.query && !!this.$route.query.searchType"
-          :large="true"
-          :items="[
-            {
-              text: 'Contants',
-              disabled: false,
-              href: '/Contants'
-            },
-            {
-              text: `${this.$route.query.searchType} search`,
-              disabled: true,
-              href: '/Contants'
-            }
-          ]"
-          divider=">"
-        >
-          <template v-slot:item="props">
-            <v-breadcrumbs-item
-              :href="props.item.href"
-              :class="[props.item.disabled && 'disabled']"
-              @click.prevent="$router.push(props.item.href)"
-            >{{ props.item.text }}</v-breadcrumbs-item>
-          </template>
-        </v-breadcrumbs>
-        <v-breadcrumbs
-          v-else
-          :large="true"
-          :items="[
-        {
-          text: 'Contacts',
-          disabled: true,
-          href: '/Contacts'
-        }
-      ]"
-          divider=">"
-        ></v-breadcrumbs>
         <v-container fluid class="mx-1">
           <v-row no-gutters class="ml-2">
             <v-col cols="12" md="4">
@@ -55,7 +18,7 @@
 
         <!-- Apollo watched Graphql query -->
         <ApolloQuery
-          :query="require('./graphql/Contacts.gql')"
+          :query="require('../graphql/Contacts.gql')"
           :variables="{
               search  : this.search,
               first: this.itemsPerPage, 
@@ -94,7 +57,8 @@
 </template>
 
 <script>
-import ContactsTable from "../../components/contacts/ContactsTable.vue";
+import ContactsTable from "./ContactsTable.vue";
+
 export default {
   data() {
     return {
