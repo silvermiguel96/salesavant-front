@@ -68,9 +68,10 @@ export default {
           return "Contact Finder";
         case "linkedin_finder":
           return "LinkedIn Finder";
+        case "playlist_from_file":
+          return "Playlist From File";
         case "contacts_from_file":
           return "Contacts From File";
-
       }
       return jobType;
     }
