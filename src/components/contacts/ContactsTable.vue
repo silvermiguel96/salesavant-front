@@ -110,10 +110,10 @@
                 </td>
                 <td></td>
                 <td></td>
-                <td>{{ job.company.scaleScore || "" }}</td>
-                <td>{{ job.company.capitalEfficiencyScore || ""}}</td>
-                <td>{{ job.company.capitalEfficiencyEstimate || ""}}</td>
-                <td></td>
+                <td>{{ job.company.scaleScore || "--" }}</td>
+                <td>{{ job.company.capitalEfficiencyScore || "--"}}</td>
+                <td>{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
+                <td>--</td>
               </tr>
             </tbody>
           </template>
