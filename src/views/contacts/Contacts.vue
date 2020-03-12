@@ -66,9 +66,9 @@
           <template v-slot="{ result: { loading, error, data }, isLoading }">
             <!-- Result -->
             <Contacts-Table
-              v-if="contatcs"
-              :items="contatcs"
-              :totalResults="contatcs.length"
+              v-if="data"
+              :items="data.contacts.contactsList"
+              :totalResults="data.contacts.totalResults"
               class="result apollo"
               @updateOptions="updateOptions"
             ></Contacts-Table>
@@ -105,97 +105,8 @@ export default {
       sortBy: "",
       sortOrder: "",
       searchField: "",
-      newsSearch: "",
-      typeButton: "",
       isFiltered: false,
       search: "",
-      contatcs: [
-        {
-          uid: 1,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 1",
-              company: "salesavant 1"
-            }
-          ]
-        },
-        {
-          uid: 2,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 2",
-              company: "salesavant 2"
-            }
-          ]
-        },
-        {
-          uid: 3,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 3",
-              company: "salesavant 3"
-            }
-          ]
-        },
-        {
-          uid: 4,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 4",
-              company: "salesavant 4"
-            }
-          ]
-        },
-        {
-          uid: 5,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 5",
-              company: "salesavant 5"
-            }
-          ]
-        }
-      ]
     };
   },
   components: {

@@ -1,0 +1,22 @@
+query AllContacts($uid: String) {
+  contact(uid: $uid) {
+    creationTime
+    modificationTime
+    uid
+    fullName
+    personalEmail
+    personalPhone
+    bio
+    linkedinHandle
+    additionalData
+    companies {
+      searchContactCompanies
+      title
+      businessEmail
+      businessPhone
+      bioUrl
+      bio
+      isCurrent
+    }
+  }
+}
