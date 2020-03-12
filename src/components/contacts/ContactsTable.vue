@@ -88,32 +88,20 @@
 
         <v-simple-table>
           <template v-slot:default>
-            <thead>
-              <tr>
-                <th style="width:4%;"></th>
-                <th style="width:18%;"></th>
-                <th style="width:18%;"></th>
-                <th style="width:10%;"></th>
-                <th style="width:10%;"></th>
-                <th style="width:10%;"></th>
-                <th style="width:10%;"></th>
-                <th style="width:10%;"></th>
-              </tr>
-            </thead>
             <tbody>
               <tr v-for="job in item.companies" :key="job.uid">
-                <td></td>
-                <td></td>
-                <td>
+                <td style="width:4%;"></td>
+                <td style="width:18%;"></td>
+                <td style="width:18%;">
                   <div>{{ job.title || "" }}</div>
                   <router-link :to="`/companies/${ job.company.uid}`">{{ job.company.name || "" }}</router-link>
                 </td>
-                <td></td>
-                <td></td>
-                <td>{{ job.company.scaleScore || "--" }}</td>
-                <td>{{ job.company.capitalEfficiencyScore || "--"}}</td>
-                <td>{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
-                <td>--</td>
+                <td style="width:10%;"></td>
+                <td style="width:10%;"></td>
+                <td style="width:10%;">{{ job.company.scaleScore || "--" }}</td>
+                <td style="width:10%;">{{ job.company.capitalEfficiencyScore || "--"}}</td>
+                <td style="width:10%;">{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
+                <td style="width:10%;">--</td>
               </tr>
             </tbody>
           </template>
