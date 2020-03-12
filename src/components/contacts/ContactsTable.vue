@@ -16,24 +16,17 @@
     show-expand
   >
     <template v-slot:item.fullName="{ item }">
-      <div>
         <router-link
           class="subtitle-2 font-weight-medium"
           :to="`/contacts/${ item.uid}`"
         >{{ item.fullName}}</router-link>
-      </div>
-      <div>
-        <v-icon>link</v-icon>
-        <a
-          :href="`https://linkedin.com/in/${item.linkedinHandle}`"
-          target="_blank"
-        >{{ item.linkedinHandle }}</a>
-      </div>
     </template>
     <template v-slot:item.companies.title="{ item }">
       <div v-for="select in item.companies" :key="select.uid">
         <span v-if="select.isCurrent">{{ select.title }}</span>
       </div>
+    </template>
+    <template v-slot:item.companies.name="{ item }">
       <div v-for="select in item.companies" :key="select.uid">
         <router-link
           v-if="select.isCurrent"
@@ -67,41 +60,22 @@
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td class="ma-0 pa-0" :colspan="headers.length">
-        <!-- <div class="ma-3" v-for="job in item.companies" :key="job.uid"> -->
-        <!-- <v-row no-gutters>
-            <v-col cols="3" lg="3"></v-col>
-            <v-col cols="2" lg="3">
-              <div>{{ job.title }}</div>
-              {{ job.company.name }}
-            </v-col>
-            <v-col cols="3" lg="2"></v-col>
-            <v-col cols="1" lg="1">
-              <div>{{ job.company.scaleScore }}</div>
-            </v-col>
-            <v-col cols="1" lg="1">
-              <div >{{ job.company.capitalEfficiencyScore }}</div>
-            </v-col>
-            <v-col cols="1" lg="1">
-              <div >{{ job.company.capitalEfficiencyEstimate }}</div>
-            </v-col>
-        </v-row>-->
-
         <v-simple-table>
           <template v-slot:default>
             <tbody>
               <tr v-for="job in item.companies" :key="job.uid">
                 <td style="width:4%;"></td>
-                <td style="width:18%;"></td>
-                <td style="width:18%;">
-                  <div>{{ job.title || "" }}</div>
+                <td style="width:15%;"></td>
+                <td style="width:15%;"> {{ job.title || "" }}</td>
+                <td style="width:15%;">
                   <router-link :to="`/companies/${ job.company.uid}`">{{ job.company.name || "" }}</router-link>
                 </td>
                 <td style="width:10%;"></td>
                 <td style="width:10%;"></td>
-                <td style="width:10%;">{{ job.company.scaleScore || "--" }}</td>
-                <td style="width:10%;">{{ job.company.capitalEfficiencyScore || "--"}}</td>
-                <td style="width:10%;">{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
-                <td style="width:10%;">--</td>
+                <td style="width:6%;">{{ job.company.scaleScore || "--" }}</td>
+                <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--"}}</td>
+                <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
+                <td style="width:6%;">--</td>
               </tr>
             </tbody>
           </template>
@@ -118,17 +92,23 @@ export default {
   data() {
     return {
       headers: [
-        { text: "", value: "data-table-expand", width: "3%" },
+        { text: "", value: "data-table-expand", width: "4%" },
         {
-          text: "Full Name/Linkedin",
+          text: "Full Name",
           value: "fullName",
-          width: "18%",
+          width: "15%",
           sortable: false
         },
         {
-          text: "Title/Company",
+          text: "Title",
           value: "companies.title",
-          width: "18%",
+          width: "15%",
+          sortable: false
+        },
+        {
+          text: "Company",
+          value: "companies.name",
+          width: "15%",
           sortable: false
         },
         {
@@ -146,28 +126,28 @@ export default {
         {
           text: "Scale Score Average",
           value: "scaleScoreAverage",
-          width: "10%",
+          width: "6%",
           align: "left",
           sortable: true
         },
         {
           text: "C.E. Average",
           value: "capitalEfficiencyScoreAverage",
-          width: "10%",
+          width: "6%",
           sortable: true,
           align: "left"
         },
         {
           text: "C.E.E. Average",
           value: "capitalEfficiencyEstimateAverage",
-          width: "10%",
+          width: "6%",
           sortable: true,
           align: "left"
         },
         {
           text: "Number of exits",
           value: "numberOfExits",
-          width: "10%",
+          width: "6%",
           sortable: true,
           align: "left"
         }
