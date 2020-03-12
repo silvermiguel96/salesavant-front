@@ -30,7 +30,7 @@
           {{ item.state || "--"}}
         </td> 
         <td>
-          {{ callMethodTime(item.creationTime) }}
+          <format-date-time :time="item.creationTime" />
         </td>
       </tr>
     </template>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { formatDateTime } from "../../../commons"
+import formatDateTime from "../../../components/common/FormatDateTime.vue";
 export default {
   data() {
     return {
@@ -86,10 +86,10 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
-    },
-    callMethodTime(time) {
-      return formatDateTime(time)
-    },
+    }
+  },
+  components: {
+    formatDateTime
   }
 };
 </script>

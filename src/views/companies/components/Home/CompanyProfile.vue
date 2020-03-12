@@ -2,7 +2,7 @@
   <v-card v-if="company" style="height:100%;">
     <v-card-subtitle>
       <div class="headline">Profile</div>
-      <div class="caption">Last update : {{ callMethodTime(company.modificationTime)}}</div>
+      <div class="caption">Last update : <format-date-time :time="company.modificationTime" /></div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
@@ -320,7 +320,7 @@
 </template>
 
 <script>
-import { formatDateTime } from "../../../../commons"
+import formatDateTime from "../../../../components/common/FormatDateTime.vue";
 import LongParagraph from "../../../../components/common/LongParagraph";
 import gql from "graphql-tag";
 export default {
@@ -330,7 +330,8 @@ export default {
     };
   },
   components: {
-    LongParagraph
+    LongParagraph,
+    formatDateTime
   },
   computed: {
     httpCompany: function() {
@@ -338,11 +339,6 @@ export default {
         ? this.company.url
         : `http://${this.company.url}`;
     }
-  },
-  methods: {
-    callMethodTime(time) {
-      return formatDateTime(time)
-    },
   },
   apollo: {
     company: {

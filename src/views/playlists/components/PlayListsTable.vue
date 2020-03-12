@@ -37,7 +37,7 @@
             <router-link :to="`playlists/${item.uid}`">{{item.name}}</router-link>
           </td>
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
-          <td>{{ callMethodTime(item.creationTime) }}</td>
+          <td><format-date-time :time="item.creationTime" /></td>
           <td>
             <div class="d-flex align-center justify-center">
             <v-icon
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { formatDateTime } from "../../../commons"
+import formatDateTime from "../../../components/common/FormatDateTime.vue";
 export default {
   data() {
     return {
@@ -80,12 +80,12 @@ export default {
       selectedPlaylistId: {}
     };
   },
+  components: {
+    formatDateTime
+  },
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
-    },
-    callMethodTime(time) {
-      return formatDateTime(time)
     },
     selectedPlaylist({ item, playlistId }) {
       this.selectedItem = item;

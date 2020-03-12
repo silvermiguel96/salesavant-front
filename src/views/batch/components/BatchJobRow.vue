@@ -16,7 +16,7 @@
       <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
     </td>
     <td>{{ job.description || "--" }}</td>
-    <td>{{ time(job.creationTime) }}</td>
+    <td> <format-date-time :time="job.creationTime"/> </td>
     <td v-if="job.progress > 0 && job.progress < 100">
       <v-progress-circular
         :rotate="-90"
@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { formatDateTime } from "../../../commons"
+import formatDateTime from "../../../components/common/FormatDateTime.vue";
+
 import JobResult from "./BatchJobResult";
 
 export default {
@@ -46,9 +47,6 @@ export default {
     return {};
   },
   methods: {
-    time(time) {
-      return formatDateTime(time)
-    },
     getJobName(jobType) {
       switch (jobType) {
         case "refresh_keywords":
@@ -97,7 +95,8 @@ export default {
     }
   },
   components: {
-    JobResult
+    JobResult,
+    formatDateTime
   }
 };
 </script>
