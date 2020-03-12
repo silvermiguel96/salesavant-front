@@ -93,7 +93,7 @@
                 <th style="width:4%;"></th>
                 <th style="width:18%;"></th>
                 <th style="width:18%;"></th>
-                <th style="width:9%;"></th>
+                <th style="width:10%;"></th>
                 <th style="width:10%;"></th>
                 <th style="width:10%;"></th>
                 <th style="width:10%;"></th>
@@ -134,13 +134,13 @@ export default {
         {
           text: "Full Name/Linkedin",
           value: "fullName",
-          width: "20%",
+          width: "18%",
           sortable: false
         },
         {
           text: "Title/Company",
           value: "companies.title",
-          width: "20%",
+          width: "18%",
           sortable: false
         },
         {
