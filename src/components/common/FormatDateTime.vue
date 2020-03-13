@@ -4,9 +4,8 @@
 
 <script>
 export default {
-  data() {},
   props: {
-    time: Object
+    time: String
   },
   methods: {
     formatDateTime(time) {
@@ -20,6 +19,5 @@ export default {
     }
   }
 };
-export function formatDateTime(time) {}
 </script>
 
