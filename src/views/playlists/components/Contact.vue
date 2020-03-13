@@ -15,49 +15,104 @@
             </v-col>
           </v-row>
         </v-container>
-
         <!-- Apollo watched Graphql query -->
-        <ApolloQuery
-          :query="require('../graphql/Contacts.gql')"
-          :variables="{
-              search  : this.search,
-              first: this.itemsPerPage, 
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage
-            }"
-          :skip="search.length >0 && search.length<=2"
+        <v-data-table
+          :headers="headers"
+          :items="playlistContacts.contactsList"
+          :server-items-length="playlistContactstotalResults"
+          :items-per-page="options.itemsPerPage"
+          :footer-props="{
+      'items-per-page-options': [10, 20, 50]
+    }"
+          :options.sync="options"
+          class="mx-2"
+          @update:options="updateOptions"
+          :single-expand="true"
+          expanded.sync="expanded"
+          item-key="uid"
+          show-expand
         >
-          <template v-slot="{ result: { loading, error, data }, isLoading }">
-            <!-- Result -->
-            <Contacts-Table
-              v-if="contatcs"
-              :items="contatcs"
-              :totalResults="contatcs.length"
-              class="result apollo"
-              @updateOptions="updateOptions"
-            ></Contacts-Table>
-
-            <!-- Loading -->
-            <v-row justify="center" no-gutters>
-              <v-col cols="12">
-                <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                ></v-progress-linear>
-              </v-col>
-            </v-row>
+          <template v-slot:item.fullName="{ item }">
+            <router-link
+              class="subtitle-2 font-weight-medium"
+              :to="`/contacts/${ item.uid}`"
+            >{{ item.fullName}}</router-link>
           </template>
-        </ApolloQuery>
+          <template v-slot:item.companies.title="{ item }">
+            <div v-for="select in item.companies" :key="select.uid">
+              <span v-if="select.isCurrent">{{ select.title }}</span>
+            </div>
+          </template>
+          <template v-slot:item.companies.name="{ item }">
+            <div v-for="select in item.companies" :key="select.uid">
+              <router-link
+                v-if="select.isCurrent"
+                :to="`/companies/${select.company.uid}`"
+              >{{ select.company.name }}</router-link>
+            </div>
+          </template>
+          <template v-slot:item.companies.deparment="{ item }">
+            <p v-if="item.companies.departament">{{ item.companies.departament || "--"}}</p>
+            <p v-else>--</p>
+          </template>
+          <template v-slot:item.companies.rank="{ item }">
+            <p v-if="item.companies.rank">{{ item.companies.rank }}</p>
+            <p v-else>--</p>
+          </template>
+          <template v-slot:item.scaleScoreAverage="{ item }">
+            <p v-if="item.scaleScoreAverage">{{ item.scaleScoreAverage }}</p>
+            <p v-else>--</p>
+          </template>
+          <template v-slot:item.capitalEfficiencyScoreAverage="{ item }">
+            <p v-if="item.capitalEfficiencyScoreAverage">{{ item.capitalEfficiencyScoreAverage }}</p>
+            <p v-else>--</p>
+          </template>
+          <template v-slot:item.capitalEfficiencyEstimateAverage="{ item }">
+            <p
+              v-if="item.capitalEfficiencyEstimateAverage"
+            >{{ item.capitalEfficiencyEstimateAverage }}</p>
+            <p v-else>--</p>
+          </template>
+          <template v-slot:item.numberOfExits="{ item }">
+            <p v-if="item.numberOfExits">{{ item.numberOfExits }}</p>
+            <p v-else>--</p>
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td class="ma-0 pa-0" :colspan="headers.length">
+              <v-simple-table>
+                <template v-slot:default>
+                  <tbody>
+                    <tr v-for="job in item.companies" :key="job.uid">
+                      <td style="width:4%;"></td>
+                      <td style="width:15%;"></td>
+                      <td style="width:15%;">{{ job.title || "" }}</td>
+                      <td style="width:15%;">
+                        <router-link
+                          :to="`/companies/${ job.company.uid}`"
+                        >{{ job.company.name || "" }}</router-link>
+                      </td>
+                      <td style="width:10%;"></td>
+                      <td style="width:10%;"></td>
+                      <td style="width:6%;">{{ job.company.scaleScore || "--" }}</td>
+                      <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--"}}</td>
+                      <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
+                      <td style="width:6%;">--</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <v-divider></v-divider>
+              <!-- </div> -->
+            </td>
+          </template>
+        </v-data-table>
       </div>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import ContactsTable from "./ContactsTable.vue";
+import gql from "graphql-tag";
 
 export default {
   data() {
@@ -69,101 +124,74 @@ export default {
       sortBy: "",
       sortOrder: "",
       searchField: "",
-      newsSearch: "",
-      typeButton: "",
       isFiltered: false,
       search: "",
-      contatcs: [
+      headers: [
+        { text: "", value: "data-table-expand", width: "4%" },
         {
-          uid: 1,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 1",
-              company: "salesavant 1"
-            }
-          ]
+          text: "Full Name",
+          value: "fullName",
+          width: "15%",
+          sortable: false
         },
         {
-          uid: 2,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 2",
-              company: "salesavant 2"
-            }
-          ]
+          text: "Title",
+          value: "companies.title",
+          width: "15%",
+          sortable: false
         },
         {
-          uid: 3,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 3",
-              company: "salesavant 3"
-            }
-          ]
+          text: "Company",
+          value: "companies.name",
+          width: "15%",
+          sortable: false
         },
         {
-          uid: 4,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 4",
-              company: "salesavant 4"
-            }
-          ]
+          text: "Department",
+          value: "companies.deparment",
+          width: "10%",
+          sortable: false
         },
         {
-          uid: 5,
-          fullname: "Miguelangel Rendon Cuartas",
-          title: "developer",
-          email: "silvermiguel96@gmail.com",
-          find: "busqueda",
-          deparment: "Company",
-          linkedin:
-            "https://www.linkedin.com/in/miguelangel-rendon-cuartas-73850416b/",
-          jobs: [
-            {
-              id: 1,
-              title: "Frontend Developer 5",
-              company: "salesavant 5"
-            }
-          ]
+          text: "Rank",
+          value: "companies.rank",
+          width: "10%",
+          sortable: false
+        },
+        {
+          text: "Scale Score Average",
+          value: "scaleScoreAverage",
+          width: "6%",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "C.E. Average",
+          value: "capitalEfficiencyScoreAverage",
+          width: "6%",
+          sortable: true,
+          align: "left"
+        },
+        {
+          text: "C.E.E. Average",
+          value: "capitalEfficiencyEstimateAverage",
+          width: "6%",
+          sortable: true,
+          align: "left"
+        },
+        {
+          text: "Number of exits",
+          value: "numberOfExits",
+          width: "6%",
+          sortable: true,
+          align: "left"
         }
-      ]
+      ],
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      }
     };
-  },
-  components: {
-    ContactsTable
   },
   methods: {
     updateOptions({
@@ -194,6 +222,49 @@ export default {
         this.sortOrder = "";
       }
     }
+  },
+  apollo: {
+    playlistContacts: {
+      query: gql`
+        query contacsPlaylist($playlistUid: String, $first: Int, $offset: Int) {
+          playlistContacts(playlistUid: $playlistUid, first: $first, offset: $offset) {
+            totalResults
+            contactsList {
+              uid
+              fullName
+              linkedinHandle
+              scaleScoreAverage
+              capitalEfficiencyScoreAverage
+              capitalEfficiencyEstimateAverage
+              numberOfExits
+              companies {
+                title
+                isCurrent
+                rank
+                departament
+                company {
+                  uid
+                  name
+                }
+                title
+                isCurrent
+              }
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          playlistUid: this.$route.params.playlistUid,
+          first: this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+        };
+      },
+      fetchPolicy: "cache-and-network"
+    }
+  },
+  beforeCreate() {
+    this.$apollo.queries.contact;
   }
 };
 </script>
