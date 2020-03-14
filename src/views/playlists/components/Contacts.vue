@@ -17,13 +17,14 @@
         </v-container>
         <!-- Apollo watched Graphql query -->
         <v-data-table
+          v-if="!!playlistContacts"
           :headers="headers"
           :items="playlistContacts.contactsList"
-          :server-items-length="playlistContactstotalResults"
+          :server-items-length="playlistContacts.totalResults"
           :items-per-page="options.itemsPerPage"
           :footer-props="{
-      'items-per-page-options': [10, 20, 50]
-    }"
+            'items-per-page-options': [10, 20, 50]
+          }"
           :options.sync="options"
           class="mx-2"
           @update:options="updateOptions"
@@ -35,8 +36,8 @@
           <template v-slot:item.fullName="{ item }">
             <router-link
               class="subtitle-2 font-weight-medium"
-              :to="`/contacts/${ item.uid}`"
-            >{{ item.fullName}}</router-link>
+              :to="`/contacts/${item.uid}`"
+            >{{ item.fullName }}</router-link>
           </template>
           <template v-slot:item.companies.title="{ item }">
             <div v-for="select in item.companies" :key="select.uid">
@@ -52,7 +53,7 @@
             </div>
           </template>
           <template v-slot:item.companies.deparment="{ item }">
-            <p v-if="item.companies.departament">{{ item.companies.departament || "--"}}</p>
+            <p v-if="item.companies.departament">{{ item.companies.departament || "--" }}</p>
             <p v-else>--</p>
           </template>
           <template v-slot:item.companies.rank="{ item }">
@@ -68,9 +69,7 @@
             <p v-else>--</p>
           </template>
           <template v-slot:item.capitalEfficiencyEstimateAverage="{ item }">
-            <p
-              v-if="item.capitalEfficiencyEstimateAverage"
-            >{{ item.capitalEfficiencyEstimateAverage }}</p>
+            <p v-if="item.capitalEfficiencyEstimateAverage">{{ item.capitalEfficiencyEstimateAverage }}</p>
             <p v-else>--</p>
           </template>
           <template v-slot:item.numberOfExits="{ item }">
@@ -88,14 +87,14 @@
                       <td style="width:15%;">{{ job.title || "" }}</td>
                       <td style="width:15%;">
                         <router-link
-                          :to="`/companies/${ job.company.uid}`"
+                          :to="`/companies/${job.company.uid}`"
                         >{{ job.company.name || "" }}</router-link>
                       </td>
                       <td style="width:10%;"></td>
                       <td style="width:10%;"></td>
                       <td style="width:6%;">{{ job.company.scaleScore || "--" }}</td>
-                      <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--"}}</td>
-                      <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
+                      <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--" }}</td>
+                      <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--" }}</td>
                       <td style="width:6%;">--</td>
                     </tr>
                   </tbody>
@@ -117,15 +116,6 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      items: ["News"],
-      company: "",
-      page: 1,
-      itemsPerPage: 10,
-      sortBy: "",
-      sortOrder: "",
-      searchField: "",
-      isFiltered: false,
-      search: "",
       headers: [
         { text: "", value: "data-table-expand", width: "4%" },
         {
@@ -159,7 +149,7 @@ export default {
           sortable: false
         },
         {
-          text: "Scale Score Average",
+          text: "S.S. Average",
           value: "scaleScoreAverage",
           width: "6%",
           align: "left",
@@ -180,13 +170,17 @@ export default {
           align: "left"
         },
         {
-          text: "Number of exits",
+          text: "Number of Exits",
           value: "numberOfExits",
           width: "6%",
           sortable: true,
           align: "left"
         }
       ],
+      items: [],
+      search: "",
+      sortBy:"",
+      sortOrder:"",
       options: {
         page: 1,
         itemsPerPage: 10
@@ -197,20 +191,22 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.page = page;
-      this.itemsPerPage = itemsPerPage;
-
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
+      console.log(sortBy);
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
-          case "totalScore":
-            this.sortBy = "score";
-          case "totalSignals":
-            this.sortBy = "signals";
-          case "numEmployees":
-            this.sortBy = "employees";
+          case "scaleScoreAverage":
+            this.sortBy = "scale_score_average";
+          case "capitalEfficiencyScoreAverage":
+            this.sortBy  = "capital_efficiency_score_average";
+          case "capitalEfficiencyEstimateAverage":
+            this.sortBy  = "capitalEfficiencyEstimate_average";
+          case "numberOfExits":
+            this.sortBy  = "number_of_exits";
         }
       } else {
-        this.sortBy = "";
+        this.sortBy  = "";
       }
       if (sortDesc.length > 0) {
         if (sortDesc[0]) {
@@ -226,8 +222,8 @@ export default {
   apollo: {
     playlistContacts: {
       query: gql`
-        query contacsPlaylist($playlistUid: String, $first: Int, $offset: Int) {
-          playlistContacts(playlistUid: $playlistUid, first: $first, offset: $offset) {
+        query contacsPlaylist($playlistUid: String, $search: String, $sortBy:String, $sortOrder: String, $first: Int, $offset: Int) {
+          playlistContacts(playlistUid: $playlistUid, search:$search, sortBy: $sortBy, sortOrder: $sortOrder, first: $first, offset: $offset) {
             totalResults
             contactsList {
               uid
@@ -256,15 +252,21 @@ export default {
       variables() {
         return {
           playlistUid: this.$route.params.playlistUid,
+          search: this.search,
+          sortBy: this.sortBy,
+          sortOrder: this.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
         };
+      },
+      skip(){
+        return this.search.length > 0 && this.search.length < 2;
       },
       fetchPolicy: "cache-and-network"
     }
   },
   beforeCreate() {
-    this.$apollo.queries.contact;
+    this.$apollo.queries.playlistContacts;
   }
 };
 </script>
