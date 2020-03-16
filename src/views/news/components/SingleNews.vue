@@ -63,13 +63,13 @@
               <v-card-text>
                 <h3 class="subheading font-weight-bold">
                   Publish date:
-                  <span class="body-1">{{ changeTimeHuman(data.newsArticle.publishDate) }}</span>
+                  <span class="body-1"><format-date-time :time="data.newsArticle.publishDate" /></span>
                 </h3>
               </v-card-text>
               <v-card-text>
                 <h3 class="subheading font-weight-bold">
                   Creation dime:
-                  <span class="body-1">{{ changeTimeHuman(data.newsArticle.creationTime) }}</span>
+                  <span class="body-1"><format-date-time :time="data.newsArticle.creationTime" /></span>
                 </h3>
               </v-card-text>
               <v-card-text>
@@ -97,16 +97,13 @@
 </template>
 
 <script>
+import formatDateTime from "../../../components/common/FormatDateTime.vue";
 export default {
   data() {
     return {};
   },
-  methods: {
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
-    }
+  components: {
+    formatDateTime
   }
 };
 </script>

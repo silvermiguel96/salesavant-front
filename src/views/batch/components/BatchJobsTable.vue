@@ -49,11 +49,6 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
-    },
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
     }
   },
   props: {

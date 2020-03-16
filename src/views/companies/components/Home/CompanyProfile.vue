@@ -2,7 +2,7 @@
   <v-card v-if="company" style="height:100%;">
     <v-card-subtitle>
       <div class="headline">Profile</div>
-      <div class="caption">Last update : {{ changeTimeHuman(company.modificationTime)}}</div>
+      <div class="caption">Last update : <format-date-time :time="company.modificationTime" /></div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
@@ -301,25 +301,11 @@
         </v-card-text>
       </v-col>
     </v-row>
-
-    <!--v-row no-gutters>
-      <v-col cols="12">
-        <v-card-text>
-          <v-row no-gutters>
-            <v-col cols="12">
-              <div class="subtitle-2 font-weight-medium">Keywords:</div>
-            </v-col>
-            <v-col cols="12" class="pr-2">
-              <long-paragraph class="font-weight-light text-justify" :text="company.description" :maxLength="100"></long-paragraph>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-    </v-row-->
   </v-card>
 </template>
 
 <script>
+import formatDateTime from "../../../../components/common/FormatDateTime.vue";
 import LongParagraph from "../../../../components/common/LongParagraph";
 import gql from "graphql-tag";
 export default {
@@ -329,7 +315,8 @@ export default {
     };
   },
   components: {
-    LongParagraph
+    LongParagraph,
+    formatDateTime
   },
   computed: {
     httpCompany: function() {
@@ -337,13 +324,6 @@ export default {
         ? this.company.url
         : `http://${this.company.url}`;
     }
-  },
-  methods: {
-    changeTimeHuman(time) {
-      let humanDate = time.split(".", 1).toString();
-      let humanTime = humanDate.split("T", 2).join(" ");
-      return humanTime;
-    },
   },
   apollo: {
     company: {

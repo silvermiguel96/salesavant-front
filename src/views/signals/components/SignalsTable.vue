@@ -93,7 +93,7 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ changeTimeHuman(item.creationTime) || "" }}</td>
+          <td><format-date-time :time="item.creationTime" /></td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
@@ -120,6 +120,7 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import gql from "graphql-tag";
 import _get from "lodash.get";
+import formatDateTime from "../../../components/common/FormatDateTime.vue";
 import LongParagraph from "../../../components/common/LongParagraph";
 export default {
   data() {
@@ -151,7 +152,8 @@ export default {
     };
   },
   components: {
-    LongParagraph
+    LongParagraph,
+    formatDateTime
   },
   methods: {
     updateOptions(dataFromEvent = {}) {
@@ -172,11 +174,6 @@ export default {
       console.log("this.selectedSignalId", this.selectedSignalId);
       this.$emit("deleteSignal", this.selectedSignalId);
       this.dialog = false;
-    },
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
     },
     async save() {
       if (!this.signal) {

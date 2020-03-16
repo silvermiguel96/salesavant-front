@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container  fluid>
     <v-card>
       <div class="apollo-example">
         <v-breadcrumbs
@@ -52,42 +52,38 @@
             </v-col>
           </v-row>
         </v-container>
-
         <!-- Apollo watched Graphql query -->
         <ApolloQuery
           :query="require('./graphql/Contacts.gql')"
           :variables="{
               search  : this.search,
-              first: this.itemsPerPage, 
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage
+              first: this.options.itemsPerPage, 
+              offset: (this.options.itemsPerPage * this.options.page) - this.options.itemsPerPage
             }"
           :skip="search.length >0 && search.length<=2"
         >
           <template v-slot="{ result: { loading, error, data }, isLoading }">
-
             <!-- Result -->
-              <Contacts-Table
-                 v-if="data"
-                :items="data.contacts.contactsList"
-                :totalResults="data.contacts.totalResults"
-                class="result apollo"
-                @updateOptions="updateOptions">
-              </Contacts-Table>
+            <Contacts-Table
+              v-if="data"
+              :items="data.contacts.contactsList"
+              :totalResults="data.contacts.totalResults"
+              @updateOptions="updateOptions"
+            ></Contacts-Table>
 
             <!-- Loading -->
             <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
+              <v-col cols="12">
+                <v-progress-linear
                   :active="!!isLoading"
                   color="blue"
                   indeterminate
                   absolute
                   bottom
                   query
-                  ></v-progress-linear>
-                </v-col>
+                ></v-progress-linear>
+              </v-col>
             </v-row>
-
           </template>
         </ApolloQuery>
       </div>
@@ -96,21 +92,20 @@
 </template>
 
 <script>
-import ContactsTable from "../../components/contacts/ContactsTable.vue"
+import ContactsTable from "../../components/contacts/ContactsTable.vue";
 export default {
   data() {
     return {
-      items: ["News"],
-      company: "",
-      page: 1,
-      itemsPerPage: 10,
-      sortBy: "",
-      sortOrder: "",
-      searchField: "",
-      newsSearch: "",
-      typeButton: "",
-      isFiltered: false,
-      search: ""
+      search: "",
+      isLoading: true,
+      options: {
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: "",
+        sortOrder: "",
+      
+
+      }
     };
   },
   components: {
@@ -120,29 +115,31 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.page = page;
-      this.itemsPerPage = itemsPerPage;
-
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
+      console.log(sortBy);
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
-          case "totalScore":
-            this.sortBy = "score";
-          case "totalSignals":
-            this.sortBy = "signals";
-          case "numEmployees":
-            this.sortBy = "employees";
+          case "scaleScoreAverage":
+            this.options.sortBy = "scale_score_average";
+          case "capitalEfficiencyScoreAverage":
+            this.options.sortBy = "capital_efficiency_score_average";
+          case "capitalEfficiencyEstimateAverage":
+            this.options.sortBy = "capitalEfficiencyEstimate_average";
+          case "numberOfExits":
+            this.options.sortBy = "number_of_exits";
         }
       } else {
-        this.sortBy = "";
+        this.options.sortBy = "";
       }
       if (sortDesc.length > 0) {
         if (sortDesc[0]) {
-          this.sortOrder = "desc";
+          this.options.sortOrder = "desc";
         } else {
-          this.sortOrder = "asc";
+          this.options.sortOrder = "asc";
         }
       } else {
-        this.sortOrder = "";
+        this.options.sortOrder = "";
       }
     }
   }

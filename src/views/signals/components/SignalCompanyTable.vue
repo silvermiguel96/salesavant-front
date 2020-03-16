@@ -30,7 +30,7 @@
           {{ item.state || "--"}}
         </td> 
         <td>
-          {{ changeTimeHuman(item.creationTime) }}
+          <format-date-time :time="item.creationTime" />
         </td>
       </tr>
     </template>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import formatDateTime from "../../../components/common/FormatDateTime.vue";
 export default {
   data() {
     return {
@@ -85,12 +86,10 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
-    },
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
     }
+  },
+  components: {
+    formatDateTime
   }
 };
 </script>

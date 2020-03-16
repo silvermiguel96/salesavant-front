@@ -6,7 +6,7 @@
           <v-col cols="12" md="4"  sm="6">
           <v-card-subtitle>
               <div class="headline">Playlist</div>
-              <div class="caption">Last Update: {{ changeTimeHuman(playlist.modificationTime)}}</div>
+              <div class="caption">Last Update: <format-date-time :time="playlist.modificationTime" /></div>
             </v-card-subtitle>
           </v-col>
           <v-col cols="12" md="8" sm="6">
@@ -54,16 +54,14 @@
         }"
       >
         <template  v-slot="{ result: { loading, error, data }, isLoading }">
-          <div class="apollo-example">
-          <!-- Result -->
-              <companies-table
-                v-if="data"
-                :items="data.playlistCompanies.companiesList"
-                :totalResults="data.playlistCompanies.totalResults"
-                @updateOptions="updateOptions"
-                class="result apollo ma-2"
-              ></companies-table>
-
+          <div>
+            <!-- Result -->
+            <companies-table
+              v-if="data"
+              :items="data.playlistCompanies.companiesList"
+              :totalResults="data.playlistCompanies.totalResults"
+              @updateOptions="updateOptions"
+            ></companies-table>
             <!-- Loading -->
             <v-row justify="center" no-gutters>
                 <v-col cols="12">
@@ -77,7 +75,6 @@
                   ></v-progress-linear>
                 </v-col>
             </v-row>
-
           </div>
         </template>
       </ApolloQuery>
@@ -86,6 +83,7 @@
 </template>
 
 <script>
+import formatDateTime from "../../../components/common/FormatDateTime"
 import CompaniesTable from "../../../components/companies/CompaniesTable.vue";
 import ButtonMenu from "../../../components/common/ButtonMenu";
 import _get from "lodash.get";
@@ -95,7 +93,8 @@ import { mapMutations } from "vuex";
 export default {
   components: {
     CompaniesTable,
-    ButtonMenu
+    ButtonMenu,
+    formatDateTime
   },
   data() {
     return {
@@ -164,13 +163,6 @@ export default {
         }
       } else {
         this.sortOrder = "";
-      }
-    },
-    changeTimeHuman(time) {
-      if (time){
-        let humanDate = time.split(".", 1).toString();
-        let humanTime = humanDate.split("T", 2).join(" ");
-        return humanTime;
       }
     },
     createJob(jobType) {

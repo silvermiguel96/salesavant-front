@@ -57,7 +57,7 @@
               <long-paragraph :text="item.comments" :maxLength="45"></long-paragraph>
             </td>
             <td>{{ item.user.email || "--" }}</td>
-            <td>{{ changeTimeHuman(item.creationTime) || "--" }}</td>
+            <td><format-date-time :time="item.creationTime" /></td>
             <td>
               <div class="d-flex align-center justify-center">
                 <v-icon
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import formatDateTime from "../../../../components/common/FormatDateTime.vue"
 import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import AddModal from "./components/addModal.vue";
@@ -145,11 +146,6 @@ export default {
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
-    },
-    changeTimeHuman(time) {
-      let HumanDate = time.split(".", 1).toString();
-      let HumanTime = HumanDate.split("T", 2).join(" ");
-      return HumanTime;
     },
     refreshData() {
       this.$apollo.queries.companyComments.refresh();
@@ -243,7 +239,8 @@ export default {
   },
   components: {
     LongParagraph,
-    AddModal
+    AddModal,
+    formatDateTime
   },
   beforeUpdate() {
     this.$apollo.queries.companyComments;

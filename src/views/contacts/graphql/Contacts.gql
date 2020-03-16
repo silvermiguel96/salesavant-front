@@ -6,12 +6,41 @@ query AllContacts(
    contacts(search: $search, first: $first, offset: $offset ) {
     totalResults
     contactsList {
+      uid
       fullName
       personalEmail
       personalPhone
       bio
       linkedinHandle
       additionalData
+      creationTime
+      modificationTime
+      scaleScoreAverage
+      capitalEfficiencyScoreAverage
+      capitalEfficiencyEstimateAverage 
+      numberOfExits
+      companies {
+        creationTime
+        modificationTime
+        searchContactCompanies
+        title
+        businessEmail
+        businessPhone
+        bioUrl
+        bio
+        isCurrent
+        departament
+        contactUid 
+        companyUid	
+        rank
+        company{
+          uid
+          name
+          scaleScore
+          capitalEfficiencyScore
+          capitalEfficiencyEstimate
+        }		
+      }
     }
   }
 }
