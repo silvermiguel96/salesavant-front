@@ -1,7 +1,7 @@
 <template>
   <v-card style="height:100%;">
     <v-card-subtitle>
-      <div class="headline">History Jobs</div>
+      <div class="headline">Experience</div>
       <div class="caption">
         Last update :
         <format-date-time :time="contact.modificationTime" />
@@ -11,7 +11,7 @@
     <v-card-text>
       <v-data-table
         v-if="contact"
-        :headers="headersTable1"
+        :headers="headersTable"
         :items="contact.companies"
         :sort-desc="[true]"
         dense
@@ -19,7 +19,7 @@
       >
         <template v-slot:item="{ item }">
           <tr>
-            <td>{{item.title}}</td>
+            <td>{{ item.title || "--"}}</td>
             <td>{{ item.company.name || "--" }}</td>
             <td v-if="item.isCurrent">
               <v-icon color="green">check_circle</v-icon>
@@ -43,13 +43,13 @@ export default {
   data() {
     return {
       contact: [],
-      headersTable1: [
-        { text: "Title", value: "title", sortable: false },
-        { text: "Company", value: "company.name", sortable: false },
-        { text: "Deparment", value: "isCurrent", sortable: false },
-        { text: "Scale score", value: "company.scaleScore", sortable: false , align: "right"},
-        { text: "Capital Efficiency Score", value: "company.capitalEfficiencyScore", sortable: false, align: "right" },
-        { text: "Capital Efficiency Estimate", value: "company.capitalEfficiencyEstimate", sortable: false, align: "right" }
+      headersTable: [
+        { text: "Title", value: "title", sortable: false, width: "26%" },
+        { text: "Company", value: "company.name", sortable: false, width: "22%" },
+        { text: "Deparment", value: "isCurrent", sortable: false, width: "12%" },
+        { text: "S.S.", value: "company.scaleScore", sortable: true , align: "left", width: "12%" },
+        { text: "C.E.S.", value: "company.capitalEfficiencyScore", sortable: true, align: "left", width: "14%" },
+        { text: "C.E.E.", value: "company.capitalEfficiencyEstimate", sortable: true, align: "left", width: "14%" }
       ]
     };
   },
