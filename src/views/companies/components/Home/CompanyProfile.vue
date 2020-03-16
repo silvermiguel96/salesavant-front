@@ -301,21 +301,6 @@
         </v-card-text>
       </v-col>
     </v-row>
-
-    <!--v-row no-gutters>
-      <v-col cols="12">
-        <v-card-text>
-          <v-row no-gutters>
-            <v-col cols="12">
-              <div class="subtitle-2 font-weight-medium">Keywords:</div>
-            </v-col>
-            <v-col cols="12" class="pr-2">
-              <long-paragraph class="font-weight-light text-justify" :text="company.description" :maxLength="100"></long-paragraph>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-    </v-row-->
   </v-card>
 </template>
 

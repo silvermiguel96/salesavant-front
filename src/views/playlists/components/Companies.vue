@@ -54,16 +54,14 @@
         }"
       >
         <template  v-slot="{ result: { loading, error, data }, isLoading }">
-          <div class="apollo-example">
-          <!-- Result -->
-              <companies-table
-                v-if="data"
-                :items="data.playlistCompanies.companiesList"
-                :totalResults="data.playlistCompanies.totalResults"
-                @updateOptions="updateOptions"
-                class="result apollo ma-2"
-              ></companies-table>
-
+          <div>
+            <!-- Result -->
+            <companies-table
+              v-if="data"
+              :items="data.playlistCompanies.companiesList"
+              :totalResults="data.playlistCompanies.totalResults"
+              @updateOptions="updateOptions"
+            ></companies-table>
             <!-- Loading -->
             <v-row justify="center" no-gutters>
                 <v-col cols="12">
@@ -77,7 +75,6 @@
                   ></v-progress-linear>
                 </v-col>
             </v-row>
-
           </div>
         </template>
       </ApolloQuery>

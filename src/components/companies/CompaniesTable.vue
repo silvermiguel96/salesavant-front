@@ -52,9 +52,6 @@ export default {
       }
     };
   },
-  /* apollo: {
-    playlists: PLAYLISTS
-  } */
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
@@ -73,6 +70,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .wrapping-td {
   white-space: normal;
