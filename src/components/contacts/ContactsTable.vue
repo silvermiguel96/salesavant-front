@@ -16,10 +16,10 @@
     show-expand
   >
     <template v-slot:item.fullName="{ item }">
-        <router-link
-          class="subtitle-2 font-weight-medium"
-          :to="`/contacts/${ item.uid}`"
-        >{{ item.fullName}}</router-link>
+      <router-link
+        class="subtitle-2 font-weight-medium"
+        :to="`/contacts/${item.uid}`"
+      >{{ item.fullName }}</router-link>
     </template>
     <template v-slot:item.companies.title="{ item }">
       <div v-for="select in item.companies" :key="select.uid">
@@ -35,7 +35,7 @@
       </div>
     </template>
     <template v-slot:item.companies.deparment="{ item }">
-      <p v-if="item.companies.departament">{{ item.companies.departament || "--"}}</p>
+      <p v-if="item.companies.departament">{{ item.companies.departament || "--" }}</p>
       <p v-else>--</p>
     </template>
     <template v-slot:item.companies.rank="{ item }">
@@ -66,15 +66,15 @@
               <tr v-for="job in item.companies" :key="job.uid">
                 <td style="width:4%;"></td>
                 <td style="width:15%;"></td>
-                <td style="width:15%;"> {{ job.title || "" }}</td>
+                <td style="width:15%;">{{ job.title || "" }}</td>
                 <td style="width:15%;">
-                  <router-link :to="`/companies/${ job.company.uid}`">{{ job.company.name || "" }}</router-link>
+                  <router-link :to="`/companies/${job.company.uid}`">{{ job.company.name || "" }}</router-link>
                 </td>
                 <td style="width:10%;"></td>
                 <td style="width:10%;"></td>
                 <td style="width:6%;">{{ job.company.scaleScore || "--" }}</td>
-                <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--"}}</td>
-                <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--"}}</td>
+                <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--" }}</td>
+                <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--" }}</td>
                 <td style="width:6%;">--</td>
               </tr>
             </tbody>
@@ -169,6 +169,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .wrapping-td {
   white-space: normal;
