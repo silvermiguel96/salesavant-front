@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-3">
+  <v-card >
     <v-dialog v-model="dialog" max-width="600px">
       <v-card>
         <v-card-title class="headline">Delete playlist</v-card-title>
@@ -73,7 +73,7 @@
               <div class="d-flex align-center justify-center">
               <v-icon
                 color="red lighten-2"
-                size="20"
+                small
                 @click="selectPlaylist({
                   item: item,
                   playlistId: item.uid

@@ -1,5 +1,5 @@
 <template >
-<v-layout align-center justify-center column fill-height class="ma-3">
+<v-layout align-center justify-center column fill-height>
   <v-card>
     <v-card-title>
       <v-text-field

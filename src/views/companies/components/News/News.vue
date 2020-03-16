@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-3">
+  <v-card>
     <v-card-title>
       <h1 class="headline">News</h1>
     </v-card-title>
