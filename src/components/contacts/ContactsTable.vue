@@ -14,6 +14,7 @@
     expanded.sync="expanded"
     item-key="uid"
     show-expand
+    must-sort
   >
     <template v-slot:item.fullName="{ item }">
       <router-link
@@ -124,7 +125,7 @@ export default {
           sortable: false
         },
         {
-          text: "Scale Score Average",
+          text: "S.S. Average",
           value: "scaleScoreAverage",
           width: "6%",
           align: "left",
