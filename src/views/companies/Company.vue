@@ -37,12 +37,12 @@
       <!-- Tab Home -->
       <v-tab>Summary</v-tab>
       <v-tab-item>
-        <v-container fluid>
+        <v-container fluid class="pt-0">
           <v-row>
-            <v-col md="6" xs="12" class="pt-0">
+            <v-col md="6" xs="12" class="pl-0 pt-0">
               <company-profile />
             </v-col>
-            <v-col md="6" xs="12" class="pt-0">
+            <v-col md="6" xs="12" class="px-0 pt-0">
               <company-signals />
             </v-col>
           </v-row>

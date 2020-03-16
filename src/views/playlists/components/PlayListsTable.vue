@@ -14,7 +14,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn color="red darken-1" class="text-capitalize" text @click="deletePlaylist">Delete</v-btn>
+          <v-btn color="red darken-1" class="text-capitalize" text @click="deletePlaylist">delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -46,6 +46,7 @@
                 playlistId: item.uid})"
               color="red lighten-2"
               size="20"
+              small
             >delete</v-icon>
           </div>
           </td>
@@ -69,7 +70,7 @@ export default {
           width: "30%",
           sortable: false
         },
-        { text: "Delete", width: "10%", sortable: false,  align: "center" }
+        { text: "Remove", width: "10%", sortable: false,  align: "center" }
       ],
       options: {
         page: 1,

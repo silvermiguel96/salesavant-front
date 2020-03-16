@@ -79,7 +79,7 @@
                   signalId: item.signal.id
               })"
                 small
-                color="red"
+                color="red lighten-2"
               >delete</v-icon>
               </div>
             </td>

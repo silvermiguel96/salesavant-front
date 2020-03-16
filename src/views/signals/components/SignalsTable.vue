@@ -12,8 +12,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn color="red darken-1" class="text-capitalize" text @click="deleteSignal">Delete</v-btn>
+          <v-btn color="grey darken-1" small class="text-capitalize" text @click="dialog = false">Close</v-btn>
+          <v-btn color="red lighten-2" small class="text-capitalize" text @click="deleteSignal">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -144,7 +144,7 @@ export default {
         { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
         { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "20%"   },
         { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
-        { text: "Delete", value: "icon", align: "center", sortable: false, width: "5%"  }
+        { text: "Remove", value: "icon", align: "center", sortable: false, width: "5%"  }
       ],
       signal: {},
       selectedSignalId: "",
