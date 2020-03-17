@@ -29,6 +29,7 @@
       <div v-for="job in item.currentOrLastJobs" :key="job.uid">
         <router-link :to="`/companies/${job.company.uid}`"
         >{{ job.company.name }}</router-link>
+        <v-icon v-if="job.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
       </div>
     </template>
     <template v-slot:item.companies.title="{ item }">
@@ -188,23 +189,23 @@ export default {
             return job;
           }
         });
-
         if (currentJobs.length > 0){
           contact.currentOrLastJobs = currentJobs;
-        }else{
-          contact.currentOrLastJobs = [contact.companies[0]];
         }
-
-        if (contact.currentOrLastJobs.length < contact.companies.length){
-          let otherJobs = contact.companies.filter(function(job) {
-            if (!job.isCurrent) {
-              return job;
-            }
-          });
-          if (otherJobs.length > 0){
+        let otherJobs = contact.companies.filter(function(job) {
+          if (!job.isCurrent) {
+            return job;
+          }
+        });
+        if (contact.companies.length > 1){
+          if (currentJobs.length == 0){
+            contact.currentOrLastJobs = [contact.companies[0]];
+            contact.otherJobs =  contact.companies.slice(1);
+          }else{
             contact.otherJobs = otherJobs;
           }
         }else{
+          contact.currentOrLastJobs = [contact.companies[0]];
           contact.otherJobs = [];  
         }
         return contact;
