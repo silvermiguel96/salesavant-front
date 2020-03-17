@@ -48,11 +48,11 @@
       <p v-else>--</p>
     </template>
     <template v-slot:item.capitalEfficiencyScoreAverage="{ item }">
-      <p v-if="item.capitalEfficiencyScoreAverage">{{ item.capitalEfficiencyScoreAverage }}</p>
+      <p v-if="item.capitalEfficiencyScoreAverage">{{ item.capitalEfficiencyScoreAverage ? item.capitalEfficiencyScoreAverage.toLocaleString() : "0" }}</p>
       <p v-else>--</p>
     </template>
     <template v-slot:item.capitalEfficiencyEstimateAverage="{ item }">
-      <p v-if="item.capitalEfficiencyEstimateAverage">{{ item.capitalEfficiencyEstimateAverage }}</p>
+      <p v-if="item.capitalEfficiencyEstimateAverage">{{ item.capitalEfficiencyEstimateAverage ? item.capitalEfficiencyEstimateAverage.toLocaleString() : "0" }}</p>
       <p v-else>--</p>
     </template>
     <template v-slot:item.numberOfExits="{ item }">
@@ -65,24 +65,22 @@
           <template v-slot:default>
             <tbody>
               <tr v-for="job in item.companies" :key="job.uid">
-                <td style="width:4%;"></td>
+                <td style="width:5%;"></td>
                 <td style="width:15%;"></td>
                 <td style="width:15%;">{{ job.title || "" }}</td>
                 <td style="width:15%;">
                   <router-link :to="`/companies/${job.company.uid}`">{{ job.company.name || "" }}</router-link>
                 </td>
-                <td style="width:10%;"></td>
-                <td style="width:10%;"></td>
-                <td style="width:6%;">{{ job.company.scaleScore || "--" }}</td>
-                <td style="width:6%;">{{ job.company.capitalEfficiencyScore || "--" }}</td>
-                <td style="width:6%;">{{ job.company.capitalEfficiencyEstimate || "--" }}</td>
+                <td style="width:10%;">--</td>
+                <td style="width:10%;">--</td>
+                <td style="width:7%;">{{ job.company.scaleScore || "--" }}</td>
+                <td style="width:7%;">{{ job.company.capitalEfficiencyScore ? job.company.capitalEfficiencyScore.toLocaleString() : "--" }}</td>
+                <td style="width:7%;">{{ job.company.capitalEfficiencyEstimate ? job.company.capitalEfficiencyEstimate.toLocaleString() : "--" }}</td>
                 <td style="width:6%;">--</td>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
-        <v-divider></v-divider>
-        <!-- </div> -->
       </td>
     </template>
   </v-data-table>
