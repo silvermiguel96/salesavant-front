@@ -156,15 +156,13 @@ export default {
               numberOfExits
               companies {
                 title
-                isCurrent
                 rank
-                departament
+                department
+                isCurrent
                 company {
                   uid
                   name
                 }
-                title
-                isCurrent
               }
             }
           }
