@@ -2,10 +2,6 @@
   <v-card style="height:100%;">
     <v-card-subtitle>
       <div class="headline">Experience</div>
-      <div class="caption">
-        Last update :
-        <format-date-time :time="contact.modificationTime" />
-      </div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-card-text>

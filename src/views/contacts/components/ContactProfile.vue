@@ -1,7 +1,10 @@
 <template>
   <v-card style="height:100%;">
     <v-card-subtitle>
-      <div class="headline">{{ contact.fullName }}</div>
+      <div class="headline">{{ contact.fullName }} <small><a v-if="contact.linkedinHandle"
+          :href="`https://linkedin.com/in/${contact.linkedinHandle}`"
+          target="_blank"
+        >LinkedIn</a></small> </div>
       <div class="caption">Last update : {{ callMethodTime(contact.modificationTime) }}</div>
     </v-card-subtitle>
     <v-divider></v-divider>
@@ -13,14 +16,14 @@
               <div class="subtitle-2 font-weight-medium">Personal email</div>
             </v-col>
             <v-col cols="12" xs="6">
-              <span class="font-weight-light">{{ contact.personalEmail || "[empty name]" }}</span>
+              <span class="font-weight-light">{{ contact.personalEmail || "--" }}</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Personal email:</span>
-                <span class="font-weight-light">{{ contact.personalEmail || "[empty name]" }}</span>
+                <span class="font-weight-light">{{ contact.personalEmail || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -63,83 +66,7 @@
         <v-card-text>
           <v-row class="d-none d-md-block" no-gutters>
             <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Biography</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <span class="font-weight-light">{{ contact.bio || "--" }}</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Biography:</span>
-                <span class="font-weight-light float-right">{{ contact.bio || "--" }}</span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Additional Data</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <span class="font-weight-light">{{ contact.additionalData || "--" }}</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Additional Data:</span>
-                <span class="font-weight-light float-right">{{ contact.additionalData || "--" }}</span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-    </v-row>
-
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Linkedin</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <a
-                v-if="contact.linkedinHandle"
-                :href="`https://linkedin.com/in/${contact.linkedinHandle}`"
-                target="_blank"
-              >{{ contact.linkedinHandle }}</a>
-              <span v-else>--</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Linkedin:</span>
-                <a
-                  v-if="contact.linkedinHandle"
-                  :href="`https://linkedin.com/in/${contact.linkedinHandle}`"
-                  target="_blank"
-                >{{ contact.linkedinHandle }}</a>
-                <span v-else>--</span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-    </v-row>
-
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Capital Efficiency Score Average</div>
+              <div class="subtitle-2 font-weight-medium">C.E.S.A.</div>
             </v-col>
             <v-col cols="12" xs="6">
               <span class="font-weight-light">{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
@@ -148,7 +75,7 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Capital Efficiency Score Average:</span>
+                <span class="subtitle-2 font-weight-medium">C.E.S.A.</span>
                 <span class="font-weight-light">{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
               </div>
             </v-col>
@@ -159,7 +86,7 @@
         <v-card-text>
           <v-row class="d-none d-md-block" no-gutters>
             <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Capital Efficiency Estimate Average</div>
+              <div class="subtitle-2 font-weight-medium">C.E.E.A.</div>
             </v-col>
             <v-col cols="12" xs="6">
               <span
@@ -172,7 +99,7 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Capital Efficiency Estimate Average:</span>
+                <span class="subtitle-2 font-weight-medium">C.E.E.A.</span>
                 <span class="font-weight-light float-right">
                   <span
                     v-if="contact.capitalEfficiencyEstimateAverage"
