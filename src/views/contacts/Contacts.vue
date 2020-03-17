@@ -107,12 +107,16 @@ export default {
         switch (sortBy[0]) {
           case "scaleScoreAverage":
             this.options.sortBy = "scale_score_average";
+            break;
           case "capitalEfficiencyScoreAverage":
             this.options.sortBy = "capital_efficiency_score_average";
+            break;
           case "capitalEfficiencyEstimateAverage":
             this.options.sortBy = "capitalEfficiencyEstimate_average";
+            break;
           case "numberOfExits":
             this.options.sortBy = "number_of_exits";
+            break;
         }
       } else {
         this.options.sortBy = "";
