@@ -98,6 +98,9 @@ export default {
           case "totalCompanies":
             this.sortBy = "companies";
             break;
+          case "creationTime":
+            this.sortBy = "creation_time";
+            break;
         }
       } else {
         this.sortBy = "";

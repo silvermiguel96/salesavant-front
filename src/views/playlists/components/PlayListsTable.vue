@@ -64,12 +64,7 @@ export default {
       headers: [
         { text: "Name", value: "name", width: "40%", sortable: false },
         { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
-        {
-          text: "Creation Time",
-          value: "creationTime",
-          width: "30%",
-          sortable: false
-        },
+        { text: "Creation Time", value: "creationTime", width: "30%", sortable: true },
         { text: "Remove", width: "10%", sortable: false,  align: "center" }
       ],
       options: {
