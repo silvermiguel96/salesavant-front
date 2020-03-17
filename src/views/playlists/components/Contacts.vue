@@ -66,7 +66,6 @@ export default {
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
-      console.log(sortBy);
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "scaleScoreAverage":
@@ -143,9 +142,7 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       skip() {

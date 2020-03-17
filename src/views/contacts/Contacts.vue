@@ -1,5 +1,5 @@
 <template>
-  <v-container  fluid>
+  <v-container fluid>
     <v-card>
       <div class="apollo-example">
         <v-breadcrumbs
@@ -52,47 +52,35 @@
             </v-col>
           </v-row>
         </v-container>
-        <!-- Apollo watched Graphql query -->
-        <ApolloQuery
-          :query="require('./graphql/Contacts.gql')"
-          :variables="{
-              search  : this.search,
-              first: this.options.itemsPerPage, 
-              offset: (this.options.itemsPerPage * this.options.page) - this.options.itemsPerPage
-            }"
-          :skip="search.length >0 && search.length<=2"
-        >
-          <template v-slot="{ result: { loading, error, data }, isLoading }">
-            <!-- Result -->
-            <Contacts-Table
-              v-if="data"
-              :items="data.contacts.contactsList"
-              :totalResults="data.contacts.totalResults"
-              @updateOptions="updateOptions"
-            ></Contacts-Table>
-
-            <!-- Loading -->
-            <v-row justify="center" no-gutters>
-              <v-col cols="12">
-                <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                ></v-progress-linear>
-              </v-col>
-            </v-row>
-          </template>
-        </ApolloQuery>
+        <!-- Result -->
+        <contacts-table
+          v-if="contacts"
+          :items="contacts.contactsList"
+          :totalResults="contacts.totalResults"
+          @updateOptions="updateOptions"
+        ></contacts-table>
+        <!-- Loading -->
+        <v-row justify="center" no-gutters>
+          <v-col cols="12">
+            <v-progress-linear
+              :active="!!isLoading"
+              color="blue"
+              indeterminate
+              absolute
+              bottom
+              query
+            ></v-progress-linear>
+          </v-col>
+        </v-row>
       </div>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import gql from "graphql-tag";
 import ContactsTable from "../../components/contacts/ContactsTable.vue";
+
 export default {
   data() {
     return {
@@ -102,9 +90,7 @@ export default {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: "",
-      
-
+        sortOrder: ""
       }
     };
   },
@@ -117,7 +103,6 @@ export default {
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
-      console.log(sortBy);
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "scaleScoreAverage":
@@ -141,6 +126,66 @@ export default {
       } else {
         this.options.sortOrder = "";
       }
+    }
+  },
+  apollo: {
+    contacts: {
+      query: gql`
+        query contacts(
+          $search: String
+          $sortBy: String
+          $sortOrder: String
+          $first: Int
+          $offset: Int
+        ) {
+          contacts(
+            search: $search
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+            first: $first
+            offset: $offset
+          ) {
+            totalResults
+            contactsList {
+              uid
+              fullName
+              linkedinHandle
+              scaleScoreAverage
+              capitalEfficiencyScoreAverage
+              capitalEfficiencyEstimateAverage
+              numberOfExits
+              companies {
+                title
+                isCurrent
+                rank
+                departament
+                company {
+                  uid
+                  name
+                }
+                title
+                isCurrent
+              }
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          search: this.search,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder,
+          first: this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+        };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
+      },
+      fetchPolicy: "cache-and-network"
     }
   }
 };
