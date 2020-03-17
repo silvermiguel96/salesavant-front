@@ -36,10 +36,10 @@
       </ApolloQuery>
       <v-container fluid>
           <v-row>
-            <v-col lg="6" md="6" cols="12" class="py-0" >
+            <v-col lg="6" md="5" cols="12" class="py-0" >
               <contact-profile />
             </v-col>
-            <v-col lg="6" md="6" cols="12" class="py-0" >
+            <v-col lg="6" md="7" cols="12" class="py-0" >
               <contact-experience />
             </v-col>
           </v-row>
