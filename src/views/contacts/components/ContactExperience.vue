@@ -32,9 +32,6 @@
             <td>
               <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
             </td>
-            <td>
-              <div>{{ item.company.capitalEfficiencyEstimate || "--" }}</div>
-            </td>
           </tr>
         </template>
       </v-data-table>
@@ -55,7 +52,6 @@ export default {
         { text: "Deparment", value: "department", sortable: false, width: "12%" },
         { text: "Scale Score", value: "company.scaleScore", sortable: true, width: "15%" },
         { text: "Capital E.S.", value: "company.capitalEfficiencyScore", sortable: true, width: "15%" },
-        { text: "Capital E.E.", value: "company.capitalEfficiencyEstimate", sortable: true, width: "15%" }
       ]
     };
   },
@@ -79,7 +75,6 @@ export default {
                 name
                 scaleScore
                 capitalEfficiencyScore
-                capitalEfficiencyEstimate
               }
             }
           }
