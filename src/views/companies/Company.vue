@@ -56,7 +56,7 @@
       <!-- Tab contacts -->
       <v-tab>Contacts</v-tab>
       <v-tab-item>
-        <contact></contact>
+        <company-contacts></company-contacts>
       </v-tab-item>
       <!-- tab signals -->
       <v-tab>Signals</v-tab>
@@ -91,7 +91,7 @@ import CompanyComments from "./components/comments/comments.vue";
 // Signals
 import Signals from "./components/Signals/Signals.vue";
 // Contacts
-import Contact from "./components/Contact/Contact.vue";
+import CompanyContacts from "./components/Contacts/Contacts.vue";
 // Add To Playlist
 import AddToPlaylist from "./components/Add-to-playlist/AddToPlaylist.vue";
 // News
@@ -106,10 +106,10 @@ export default {
   components: {
     CompanyProfile,
     CompanyComments,
+    CompanyContacts,
     CompanySignals,
     News,
     Signals,
-    Contact,
     Analytics,
     AddToPlaylist
   }

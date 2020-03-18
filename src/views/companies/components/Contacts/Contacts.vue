@@ -17,9 +17,9 @@
       <div>
         <!-- Result -->
         <contacts-table
-          v-if="playlistContacts"
-          :items="playlistContacts.contactsList"
-          :totalResults="playlistContacts.totalResults"
+          v-if="companyContacts"
+          :items="companyContacts.contactsList"
+          :totalResults="companyContacts.totalResults"
           @updateOptions="updateOptions"
         ></contacts-table>
         <!-- Loading -->
@@ -66,7 +66,6 @@ export default {
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
-      console.log(sortBy);
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "scaleScoreAverage":
@@ -93,9 +92,9 @@ export default {
     }
   },
   apollo: {
-    playlistContacts: {
+    companyContacts: {
       query: gql`
-        query contatcsCompany(
+        query companyContacts(
           $companyUid: String
           $search: String
           $sortBy: String
@@ -103,7 +102,7 @@ export default {
           $first: Int
           $offset: Int
         ) {
-          playlistContacts(
+          companyContacts(
             companyUid: $companyUid
             search: $search
             sortBy: $sortBy
@@ -118,12 +117,13 @@ export default {
               linkedinHandle
               scaleScoreAverage
               capitalEfficiencyScoreAverage
+              wolfpackScore
               numberOfExits
               companies {
                 title
                 isCurrent
                 rank
-                departament
+                department
                 company {
                   uid
                   name
@@ -157,7 +157,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$apollo.queries.playlistContacts;
+    this.$apollo.queries.companyContacts;
   }
 };
 </script>
