@@ -86,25 +86,25 @@
         <v-card-text>
           <v-row class="d-none d-md-block" no-gutters>
             <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Capital Efficiency Estimate</div>
+              <div class="subtitle-2 font-weight-medium">Wolfpack Score</div>
             </v-col>
             <v-col cols="12" xs="6">
               <span
-                v-if="contact.capitalEfficiencyEstimateAverage"
+                v-if="contact.wolfpackScore"
                 class="font-weight-light"
-              >{{ contact.capitalEfficiencyEstimateAverage || "--" }}</span>
+              >{{ contact.wolfpackScore || "--" }}</span>
               <span v-else>--</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Capital Efficiency Estimate</span>
+                <span class="subtitle-2 font-weight-medium">Wolfpack Score</span>
                 <span class="font-weight-light float-right">
                   <span
-                    v-if="contact.capitalEfficiencyEstimateAverage"
+                    v-if="contact.wolfpackScore"
                     class="font-weight-light"
-                  >{{ contact.capitalEfficiencyEstimateAverage || "--" }}</span>
+                  >{{ contact.wolfpackScore || "--" }}</span>
                   <span v-else>--</span>
                 </span>
               </div>

@@ -74,8 +74,8 @@ export default {
           case "capitalEfficiencyScoreAverage":
             this.options.sortBy = "capital_efficiency_score_average";
             break;
-          case "capitalEfficiencyEstimateAverage":
-            this.options.sortBy = "capitalEfficiencyEstimate_average";
+          case "wolfpackScore":
+            this.options.sortBy = "wolfpack_score";
             break;
           case "numberOfExits":
             this.options.sortBy = "number_of_exits";
@@ -121,7 +121,7 @@ export default {
               linkedinHandle
               scaleScoreAverage
               capitalEfficiencyScoreAverage
-              capitalEfficiencyEstimateAverage
+              wolfpackScore
               numberOfExits
               companies {
                 title

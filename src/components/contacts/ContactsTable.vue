@@ -54,8 +54,8 @@
     <template v-slot:item.capitalEfficiencyScoreAverage="{ item }">
       <div>{{ item.capitalEfficiencyScoreAverage ? item.capitalEfficiencyScoreAverage.toLocaleString() : "--" }}</div>
     </template>
-    <template v-slot:item.capitalEfficiencyEstimateAverage="{ item }">
-      <div>{{ item.capitalEfficiencyEstimateAverage ? item.capitalEfficiencyEstimateAverage.toLocaleString() : "--" }}</div>
+    <template v-slot:item.wolfpackScore="{ item }">
+      <div>{{ item.wolfpackScore ? item.wolfpackScore.toLocaleString() : "--" }}</div>
     </template>
     <template v-slot:item.numberOfExits="{ item }">
       <div v-if="item.numberOfExits">{{ item.numberOfExits || "--" }}</div>
@@ -91,7 +91,7 @@
                   <div>{{ job.company.capitalEfficiencyScore ? job.company.capitalEfficiencyScore.toLocaleString() : "--" }}</div>
                 </td>
                 <td style="width:6%;">
-                  <div>{{ job.company.capitalEfficiencyEstimate ? job.company.capitalEfficiencyEstimate.toLocaleString() : "--" }}</div>
+                  <div>--</div>
                 </td>
                 <td style="width:6%;">
                   <div>--</div>
@@ -156,8 +156,8 @@ export default {
           align: "left"
         },
         {
-          text: "Capital E.E.",
-          value: "capitalEfficiencyEstimateAverage",
+          text: "Wolfpack Score",
+          value: "wolfpackScore",
           width: "6%",
           sortable: true,
           align: "left"
