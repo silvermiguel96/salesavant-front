@@ -15,15 +15,26 @@
       >
         <template v-slot:item="{ item }">
           <tr>
-            <td>{{ item.title || "--"}}</td>
-            <td>{{ item.company.name || "--" }}</td>
-            <td v-if="item.isCurrent">
-              <v-icon color="green">check_circle</v-icon>
+            <td>
+              <div>
+                <router-link :to="`/companies/${item.company.uid}`">{{ item.company.name || "" }}</router-link>
+              </div>
             </td>
-            <td v-else>--</td>
-            <td class="text-end">{{ item.company.scaleScore || "0"}}</td>
-            <td class="text-end">{{ item.company.capitalEfficiencyScore || "0"}}</td>
-            <td class="text-end">{{ item.company.capitalEfficiencyEstimate || "0"}}</td>
+            <td>
+              <div>{{ item.title || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.department || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.company.scaleScore || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.company.capitalEfficiencyEstimate || "--" }}</div>
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -32,7 +43,6 @@
 </template>
 
 <script>
-import formatDateTime from "../../../components/common/FormatDateTime.vue";
 import gql from "graphql-tag";
 
 export default {
@@ -40,17 +50,14 @@ export default {
     return {
       contact: [],
       headersTable: [
-        { text: "Title", value: "title", sortable: false, width: "26%" },
-        { text: "Company", value: "company.name", sortable: false, width: "22%" },
-        { text: "Deparment", value: "isCurrent", sortable: false, width: "12%" },
-        { text: "S.S.", value: "company.scaleScore", sortable: true , align: "left", width: "12%" },
-        { text: "C.E.S.", value: "company.capitalEfficiencyScore", sortable: true, align: "left", width: "14%" },
-        { text: "C.E.E.", value: "company.capitalEfficiencyEstimate", sortable: true, align: "left", width: "14%" }
+        { text: "Company", value: "company.name", sortable: false, width: "18%" },
+        { text: "Title", value: "title", sortable: false, width: "18%" },
+        { text: "Deparment", value: "department", sortable: false, width: "12%" },
+        { text: "Scale Score", value: "company.scaleScore", sortable: true, width: "15%" },
+        { text: "Capital E.S.", value: "company.capitalEfficiencyScore", sortable: true, width: "15%" },
+        { text: "Capital E.E.", value: "company.capitalEfficiencyEstimate", sortable: true, width: "15%" }
       ]
     };
-  },
-  components: {
-    formatDateTime
   },
   apollo: {
     contact: {
@@ -66,8 +73,9 @@ export default {
             bio
             companies {
               title
-              departament
+              department
               company {
+                uid
                 name
                 scaleScore
                 capitalEfficiencyScore

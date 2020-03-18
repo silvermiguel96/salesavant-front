@@ -142,21 +142,21 @@ export default {
           sortable: false
         },
         {
-          text: "S.S.A.",
+          text: "Scale Score",
           value: "scaleScoreAverage",
           width: "6%",
           align: "left",
           sortable: true
         },
         {
-          text: "C.E.A.",
+          text: "Capital E.S.",
           value: "capitalEfficiencyScoreAverage",
           width: "6%",
           sortable: true,
           align: "left"
         },
         {
-          text: "C.E.E.A.",
+          text: "Capital E.E.",
           value: "capitalEfficiencyEstimateAverage",
           width: "6%",
           sortable: true,

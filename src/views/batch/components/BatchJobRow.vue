@@ -5,7 +5,7 @@
         <div v-if="job.jobType=='playlist_from_file' || job.jobType=='export_companies' || job.jobType=='refresh_keywords'">
           <router-link
             :to="`/playlists/${additionalDataParsed.playlist_uid}`"
-          >{{ additionalDataParsed.playlist_name }}</router-link>
+          >{{ additionalDataParsed.playlist_name || additionalDataParsed.playlist_uid }}</router-link>
         </div>
         <div v-else-if="job.jobType=='contacts_from_file' || job.jobType=='export_companies' || job.jobType=='contact_finder' || job.jobType=='linkedin_finder'"  >
           <a

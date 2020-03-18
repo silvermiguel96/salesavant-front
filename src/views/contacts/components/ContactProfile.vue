@@ -2,7 +2,7 @@
   <v-card style="height:100%;">
     <v-card-subtitle>
       <div class="headline">{{ contact.fullName }} <small><a v-if="contact.linkedinHandle"
-          :href="`https://linkedin.com/in/${contact.linkedinHandle}`"
+          :href="`https://linkedin.com${contact.linkedinHandle}`"
           target="_blank"
         >LinkedIn</a></small> </div>
       <div class="caption">Last update : {{ callMethodTime(contact.modificationTime) }}</div>
@@ -66,7 +66,7 @@
         <v-card-text>
           <v-row class="d-none d-md-block" no-gutters>
             <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">C.E.S.A.</div>
+              <div class="subtitle-2 font-weight-medium">Capital Efficiency Score</div>
             </v-col>
             <v-col cols="12" xs="6">
               <span class="font-weight-light">{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
@@ -75,7 +75,7 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">C.E.S.A.</span>
+                <span class="subtitle-2 font-weight-medium">Capital Efficiency Score</span>
                 <span class="font-weight-light">{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
               </div>
             </v-col>
@@ -86,7 +86,7 @@
         <v-card-text>
           <v-row class="d-none d-md-block" no-gutters>
             <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">C.E.E.A.</div>
+              <div class="subtitle-2 font-weight-medium">Capital Efficiency Estimate</div>
             </v-col>
             <v-col cols="12" xs="6">
               <span
@@ -99,7 +99,7 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">C.E.E.A.</span>
+                <span class="subtitle-2 font-weight-medium">Capital Efficiency Estimate</span>
                 <span class="font-weight-light float-right">
                   <span
                     v-if="contact.capitalEfficiencyEstimateAverage"
