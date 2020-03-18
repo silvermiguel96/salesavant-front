@@ -73,8 +73,8 @@ export default {
             this.options.sortBy = "scale_score_average";
           case "capitalEfficiencyScoreAverage":
             this.options.sortBy = "capital_efficiency_score_average";
-          case "capitalEfficiencyEstimateAverage":
-            this.options.sortBy = "capitalEfficiencyEstimate_average";
+          case "wolfpackScore":
+            this.options.sortBy = "wolfpack_score";
           case "numberOfExits":
             this.options.sortBy = "number_of_exits";
         }
