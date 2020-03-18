@@ -200,7 +200,7 @@ export default {
             additionalData
             scaleScoreAverage
             capitalEfficiencyScoreAverage
-            capitalEfficiencyEstimateAverage
+            wolfpackScore
             numberOfExits
             companies {
               searchContactCompanies

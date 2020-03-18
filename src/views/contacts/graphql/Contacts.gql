@@ -17,7 +17,7 @@ query AllContacts(
       modificationTime
       scaleScoreAverage
       capitalEfficiencyScoreAverage
-      capitalEfficiencyEstimateAverage 
+      wolfpackScore 
       numberOfExits
       companies {
         creationTime
@@ -38,7 +38,6 @@ query AllContacts(
           name
           scaleScore
           capitalEfficiencyScore
-          capitalEfficiencyEstimate
         }		
       }
     }

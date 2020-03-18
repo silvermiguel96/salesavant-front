@@ -118,7 +118,6 @@ export default {
               linkedinHandle
               scaleScoreAverage
               capitalEfficiencyScoreAverage
-              capitalEfficiencyEstimateAverage
               numberOfExits
               companies {
                 title
