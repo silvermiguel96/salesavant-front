@@ -18,6 +18,7 @@
             <td>
               <div>
                 <router-link :to="`/companies/${item.company.uid}`">{{ item.company.name || "" }}</router-link>
+                <v-icon v-if="item.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
               </div>
             </td>
             <td>
@@ -70,6 +71,7 @@ export default {
             companies {
               title
               department
+              isCurrent
               company {
                 uid
                 name
