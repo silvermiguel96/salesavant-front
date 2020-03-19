@@ -58,7 +58,7 @@
       <div>{{ item.wolfpackScore ? item.wolfpackScore.toLocaleString() : "--" }}</div>
     </template>
     <template v-slot:item.numberOfExits="{ item }">
-      <div v-if="item.numberOfExits">{{ item.numberOfExits || "--" }}</div>
+      <div>{{ item.numberOfExits || "--" }}</div>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td class="ma-0 pa-0" :colspan="headers.length">
@@ -205,7 +205,7 @@ export default {
             contact.otherJobs = otherJobs;
           }
         }else{
-          contact.currentOrLastJobs = [contact.companies[0]];
+          contact.currentOrLastJobs = [];
           contact.otherJobs = [];  
         }
         return contact;
