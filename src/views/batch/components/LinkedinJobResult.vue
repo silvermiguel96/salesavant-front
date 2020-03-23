@@ -85,7 +85,7 @@
       <v-card-actions class="mx-4">
         <v-spacer></v-spacer>
         <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog=false">Close</v-btn>
-        <a
+        <a v-if="additionalDataParsed.storage_output_filename"
           :href="`${salesavantAPI}/files/download/${additionalDataParsed.storage_output_filename}`"
           target="_blank"
         >Download</a>
