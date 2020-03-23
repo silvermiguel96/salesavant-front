@@ -17,7 +17,7 @@
     </td>
     <td>{{ job.description || "--" }}</td>
     <td> <format-date-time :time="job.creationTime"/> </td>
-    <td v-if="job.progress > 0 && job.progress < 100">
+    <td v-if="job.progress > 0 && job.status != 'finished'">
       <v-progress-circular
         :rotate="-90"
         :size="38"
@@ -27,10 +27,9 @@
         style="font-size: 0.9em;"
       >{{ job.progress.toFixed(0) }}%</v-progress-circular>
     </td>
-    <td v-else-if="job.progress >= 100">100%</td>
+    <td v-else-if="job.status == 'finished'">100%</td>
     <td v-else>Waiting...</td>
-
-    <td v-if="job.progress >= 100">
+    <td v-if="job.status == 'finished'">
       <JobResult :job="job" />
     </td>
     <td v-else>Loading...</td>
