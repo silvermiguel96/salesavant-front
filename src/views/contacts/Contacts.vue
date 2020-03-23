@@ -166,6 +166,8 @@ export default {
                 company {
                   uid
                   name
+                  scaleScore
+                  capitalEfficiencyScore
                 }
               }
             }
