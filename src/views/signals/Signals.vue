@@ -131,9 +131,12 @@ export default {
             signalId: singal.id
           }
         });
+        
         console.log("Result", result);
-        this.$router.go(this.$router.currentRoute);
+        this.signals.signalsList.splice(index, 1);
         console.log(this.$apollo.queries);
+        this.$eventBus.$emit( "showSnack", "The signal successfully delete!!", "success" );
+        
         return;
       } catch (error) {
         this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when removing the company - signal, please try again!!", "error");

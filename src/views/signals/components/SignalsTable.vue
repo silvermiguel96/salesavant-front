@@ -142,11 +142,6 @@ export default {
         return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
       }
     },
-    selectedSignal({ item, signalId }) {
-      this.selectedItem = item;
-      this.selectedSignalId = signalId;
-      this.dialog = true;
-    },
     async deleteSignal(item) {
       const res = await this.$confirm(
         ` <h1 class="subtitle-1"
