@@ -31,7 +31,7 @@
       @update:options="updateOptions"
     >
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-      <template v-slot:item="{ item, headers }">
+      <template v-slot:item="{ item }">
         <tr>
           <td>
             <router-link :to="`playlists/${item.uid}`">{{item.name}}</router-link>
@@ -41,9 +41,7 @@
           <td>
             <div class="d-flex align-center justify-center">
             <v-icon
-              @click="selectedPlaylist({
-                item: item,
-                playlistId: item.uid})"
+              @click="deletePlaylist(item)"
               color="red lighten-2"
               size="20"
               small
@@ -83,15 +81,24 @@ export default {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
     },
-    selectedPlaylist({ item, playlistId }) {
-      this.selectedItem = item;
-      this.selectedPlaylistId = playlistId;
-      this.dialog = true;
-    },
-    deletePlaylist() {
-      console.log("this.selectedPlaylistId", this.selectedPlaylistId);
-      this.$emit("deletePlaylist", this.selectedPlaylistId);
-      this.dialog = false;
+    async deletePlaylist(item) {
+      const res = await this.$confirm(
+        ` <h1 class="subtitle-1"
+            >Confirm you want to eliminate the playlist <span class="font-weight-bold">${item.name}</span>?</h1>`,
+        {
+          buttonTrueText: "delete",
+          buttonFalseText: "close",
+          buttonTrueColor: "primary",
+          color: "red lighten-2",
+          icon: "delete",
+          title: "Warning",
+          width: 600,
+        }
+      );
+      if (res) {
+        console.log("the playlist", item)
+        this.$emit("deletePlaylist", item);
+      }
     },
   },
   props: {
