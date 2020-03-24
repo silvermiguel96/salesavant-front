@@ -150,9 +150,9 @@ export default {
           buttonTrueText: "delete",
           buttonFalseText: "close",
           buttonTrueColor: "primary",
-          color: "red lighten-2",
+          color: "primary",
           icon: "delete",
-          title: "Warning",
+          title: "Delete Signal",
           width: 600,
         }
       );
