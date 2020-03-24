@@ -88,7 +88,7 @@ export default {
         {
           buttonTrueText: "delete",
           buttonFalseText: "close",
-          buttonTrueColor: "primary",
+          buttonTrueColor: "red lighten-2",
           color: "primary",
           icon: "delete",
           title: "Delete Playlist",
