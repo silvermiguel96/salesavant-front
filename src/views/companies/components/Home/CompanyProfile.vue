@@ -239,10 +239,11 @@
         <v-card-text>
           <v-row class="d-none d-md-block" no-gutters>
             <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">NAICS Code</div>
+              <div class="subtitle-2 font-weight-medium">NAICS Code:</div>
             </v-col>
             <v-col cols="12" xs="6">
               <span class="font-weight-light" v-if="company.naics">{{ company.naics.code || "--" }}</span>
+              <span class="font-weight-light" v-else>--</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
@@ -253,6 +254,7 @@
                   class="font-weight-light float-right"
                   v-if="company.naics"
                 >{{ company.naics.code || "--" }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
               </div>
             </v-col>
           </v-row>
@@ -266,23 +268,74 @@
             </v-col>
             <v-col cols="12" xs="6">
               <span class="font-weight-light" v-if="company.naics">{{ company.naics.description || "--" }}</span>
+              <span class="font-weight-light" v-else>--</span>
             </v-col>
           </v-row>
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Employees:</span>
+                <span class="subtitle-2 font-weight-medium">NAICS Description::</span>
                 <span
                   class="font-weight-light float-right"
                   v-if="company.naics"
                 >{{ company.naics.description || "--" }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Scale Score:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light" v-if="company.scaleScore">{{ company.scaleScore || "--" }}</span>
+              <span class="font-weight-light" v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Scale Score:</span>
+                <span
+                  class="font-weight-light float-right"
+                  v-if="company.scaleScore"
+                >{{ company.scaleScore || "--" }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Capital Efficiency Score:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light" v-if="company.capitalEfficiencyScore">{{ company.capitalEfficiencyScore || "--" }}</span>
+              <span class="font-weight-light" v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Capital Efficiency Score:</span>
+                <span
+                  class="font-weight-light float-right"
+                  v-if="company.capitalEfficiencyScore"
+                >{{ company.capitalEfficiencyScore || "--" }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
               </div>
             </v-col>
           </v-row>
         </v-card-text>
       </v-col>
     </v-row>
-
     <v-row no-gutters>
       <v-col cols="12">
         <v-card-text>
@@ -347,6 +400,8 @@ export default {
             naicsCode
             website
             modificationTime
+            scaleScore
+            capitalEfficiencyScore
             naics {
               search
               description
