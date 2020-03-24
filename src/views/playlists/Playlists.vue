@@ -11,8 +11,7 @@
           }
       ]"
         divider=">"
-      >
-      </v-breadcrumbs>
+      ></v-breadcrumbs>
       <v-container fluid class="mx-1">
         <v-row no-gutters class="ml-2">
           <v-col cols="12" md="4">
@@ -26,44 +25,29 @@
           </v-col>
         </v-row>
       </v-container>
-      <ApolloQuery
-        :query="require('./graphql/Playlists.gql')"
-        :variables="{
-          search: this.search,
-          first: this.itemsPerPage,
-          offset: this.itemsPerPage * this.page - this.itemsPerPage,
-          sortBy: this.sortBy,
-          sortOrder: this.sortOrder
-        }"
-        :skip="search.length > 0 && search.length < 2"
-      >
-        <template  v-slot="{ result: { loading, error, data }, isLoading }">
-          <!-- Result -->
-            <play-lists-table
-              v-if="data"
-              :items="data.playlists.playlistsList"
-              :totalResults="data.playlists.totalResults"
-              class="result apollo"
-              @updateOptions="updateOptions"
-              @deletePlaylist="deletePlaylist"
-            ></play-lists-table>
+      <!-- Result -->
+      <play-lists-table
+        v-if="playlists"
+        :items="playlists.playlistsList"
+        :totalResults="playlists.totalResults"
+        class="result apollo"
+        @updateOptions="updateOptions"
+        @deletePlaylist="deletePlaylist"
+      ></play-lists-table>
 
-            <!-- Loading -->
-            <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                  ></v-progress-linear>
-                </v-col>
-            </v-row>
-
-        </template>
-      </ApolloQuery>
+      <!-- Loading -->
+      <v-row justify="center" no-gutters>
+        <v-col cols="12">
+          <v-progress-linear
+            :active="!!isLoading"
+            color="blue"
+            indeterminate
+            absolute
+            bottom
+            query
+          ></v-progress-linear>
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -77,11 +61,14 @@ export default {
   data() {
     return {
       items: ["playlists"],
-      page: 1,
-      itemsPerPage: 10,
-      sortBy: "",
-      sortOrder: "",
-      search: ""
+      isLoading: true,
+      search: "",
+      options: {
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: "",
+        sortOrder: ""
+      }
     };
   },
   components: { 
@@ -96,53 +83,106 @@ export default {
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalCompanies":
-            this.sortBy = "companies";
+            this.options.sortBy = "companies";
             break;
           case "creationTime":
-            this.sortBy = "creation_time";
+            this.options.sortBy = "creation_time";
             break;
         }
       } else {
-        this.sortBy = "";
+        this.options.sortBy = "";
       }
       if (sortDesc.length > 0) {
         if (sortDesc[0]) {
-          this.sortOrder = "desc";
+          this.options.sortOrder = "desc";
         } else {
-          this.sortOrder = "asc";
+          this.options.sortOrder = "asc";
         }
       } else {
-        this.sortOrder = "";
+        this.options.sortOrder = "";
       }
     },
-    async deletePlaylist(playlistUid) {
-      console.log("Delete Id", playlistUid);
+    async deletePlaylist(playlist) {
       try {
+        console.log("Delete Id", playlist);
+        const index = this.playlists.playlistsList.indexOf(playlist);
         let result = null;
         result = await this.$apollo.mutate({
           mutation: gql`
             mutation($playlistUid: String!) {
               deletePlaylist(playlistUid: $playlistUid) {
-                playlist {
-                  uid
-                }
+                status
+                message
               }
             }
           `,
           variables: {
-            playlistUid: playlistUid
+            playlistUid: playlist.uid
           }
         });
         console.log("Result", result);
-        this.$router.go(this.$router.currentRoute);
+        this.playlists.playlistsList.splice(index, 1);
         console.log(this.$apollo.queries);
+        this.$eventBus.$emit( "showSnack", "The playlist successfully delete!!", "success" );
         return;
       } catch (error) {
+        this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when removing the playlist, please try again!!", "error");
         console.log("error delete playlist", error);
       } finally {
         this.showTable = true;
       }
     }
-  } 
+  },
+  apollo: {
+    playlists: {
+      query: gql`
+        query playlists(
+          $search: String
+          $first: Int
+          $offset: Int
+          $sortBy: String
+          $sortOrder: String
+        ) {
+          playlists(
+            search: $search
+            first: $first
+            offset: $offset
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+          ) {
+            totalResults
+            playlistsList {
+              uid
+              name
+              creationTime
+              accountId
+              userId
+              totalSignals
+              totalCompanies
+              totalScore
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          search: this.search,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder,
+          first: this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
+        };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
+      },
+      fetchPolicy: "cache-and-network"
+    }
+  }
 };
 </script>

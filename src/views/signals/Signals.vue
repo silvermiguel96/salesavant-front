@@ -56,94 +56,28 @@
           </v-col>
         </v-row>
       </v-container>
-      <template
-        v-if="
-            !!this.$route.query &&
-              !!this.$route.query.searchType &&
-              this.$route.query.searchType === 'signals'
-          "
-      >
-        <ApolloQuery
-          :query="require('./graphql/SearchsSignals.gql')"
-          :variables="{
-              search: this.$route.query.search,
-              search: this.$route.query.search,
-              search: this.$route.query.search,
-              group: this.$route.query.group,
-              category: this.$route.query.category,
-              category: this.$route.query.category,
-              category: this.$route.query.category,
-              first: this.itemsPerPage,
-              offset: this.itemsPerPage * this.page - this.itemsPerPage  
-            }"
-          :deep="true"
-        >
-          <template v-slot="{ result: { loading, error, data }, isLoading  }">
-            <!-- Result -->
-              <signals-table
-                v-if="data"
-                @deleteSignal="deleteSignal"
-                :items="data.signals.signalsList"
-                :totalResults="data.signals.totalResults"
-                class="result apollo"
-                @updateOptions="updateOptions"
-              ></signals-table>
+        <!-- Result -->
+          <signals-table
+            v-if="signals"
+            :items="signals.signalsList"
+            :totalResults="signals.totalResults"
+            @updateOptions="updateOptions"
+            @deleteSignal="deleteSignal"
+          ></signals-table>
 
-            <!-- Loading -->
-            <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                  ></v-progress-linear>
-                </v-col>
-            </v-row>
-
-          </template>
-        </ApolloQuery>
-      </template>
-      <ApolloQuery
-        v-else
-        :query="require('./graphql/Signals.gql')"
-        :variables="{
-          search: this.search,
-          first: this.itemsPerPage,
-          offset: this.itemsPerPage * this.page - this.itemsPerPage
-        }"
-        :skip="search.length > 0 && search.length < 2"
-      >
-        <template v-slot="{ result: { loading, error, data }, isLoading}">
-
-          <!-- Result -->
-            <signals-table
-              v-if="data"
-              @deleteSignal="deleteSignal"
-              :items="data.signals.signalsList"
-              :totalResults="data.signals.totalResults"
-              class="result apollo"
-              @updateOptions="updateOptions"
-            ></signals-table>
-
-            <!-- Loading -->
-            <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                  ></v-progress-linear>
-                </v-col>
-            </v-row>
-          
-        </template>
-      </ApolloQuery>
+          <!-- Loading -->
+          <v-row justify="center" no-gutters>
+            <v-col cols="12">
+              <v-progress-linear
+                :active="!!isLoading"
+                color="blue"
+                indeterminate
+                absolute
+                bottom
+                query
+              ></v-progress-linear>
+            </v-col>
+          </v-row>
     </v-card>
   </v-container>
 </template>
@@ -158,12 +92,14 @@ export default {
   data() {
     return {
       items: ["signals"],
-      page: 1,
-      itemsPerPage: 10,
-      sortBy: "",
-      signalId: "",
-      sortOrder: "",
-      search: ""
+      isLoading: true,
+      search: "",
+      options: {
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: "",
+        sortOrder: ""
+      }
     };
   },
   components: {
@@ -176,10 +112,10 @@ export default {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
     },
-    async deleteSignal(signalId) {
-      // const signalId = this.signalId
-      console.log("Delete Id", signalId);
+    async deleteSignal(singal) {
       try {
+        console.log(singal);
+        const index = this.signals.signalsList.indexOf(singal);
         let result = null;
         result = await this.$apollo.mutate({
           mutation: gql`
@@ -192,15 +128,18 @@ export default {
             }
           `,
           variables: {
-            signalId: signalId
+            signalId: singal.id
           }
         });
+        
         console.log("Result", result);
-        this.$router.go(this.$router.currentRoute);
+        this.signals.signalsList.splice(index, 1);
         console.log(this.$apollo.queries);
+        this.$eventBus.$emit( "showSnack", "The signal successfully delete!!", "success" );
+        
         return;
       } catch (error) {
-        console.log("error delete signal", error);
+        this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when removing the company - signal, please try again!!", "error");
       } finally {
         this.showTable = true;
       }
@@ -218,6 +157,62 @@ export default {
     },
     removeFilter() {
       this.$router.push({ path: "/signals", query: {} });
+    }
+  },
+  apollo: {
+    signals: {
+      query: gql`
+        query signals(
+          $search: String, 
+          $group: String,
+          $category: String,
+          $first: Int, 
+          $offset: Int
+        ) {
+          signals(
+            search: $search,
+            first: $first,
+            offset: $offset,
+            group: $group
+            category: $category) {
+            totalResults
+            signalsList {
+              id
+              name
+              user {
+                id
+              }
+              group
+              userId
+              account {
+                id
+              }
+              category
+              accountId
+              description
+              creationTime
+              defaultScore
+              modificationTime
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          search: this.search, 
+          group: this.$route.query.group,
+          category: this.$route.query.category,
+          first: this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+        };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
+      },
+      fetchPolicy: "cache-and-network"
     }
   },
   beforeMount() {

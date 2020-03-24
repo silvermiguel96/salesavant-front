@@ -1,22 +1,5 @@
 <template>
-  <v-container fluid>
-    <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
-        <v-card-title class="headline">Delete signal</v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <h1
-              class="subtitle-1"
-            >Confirm you want to eliminate the signal <span class="font-weight-bold">{{selectedItem.name}}</span>?</h1>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" small class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn color="red lighten-2" small class="text-capitalize" text @click="deleteSignal">Delete</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  <div>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -101,19 +84,13 @@
           </td>
           <td>
             <div class="d-flex align-center justify-center">
-            <v-icon
-              @click="selectedSignal({
-                item: item ,
-                signalId: item.id})"
-              color="red lighten-2"
-              size="20"
-            >delete</v-icon>
+              <v-icon @click="deleteSignal(item)" color="red lighten-2" size="20">delete</v-icon>
             </div>
           </td>
         </tr>
       </template>
     </v-data-table>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -165,15 +142,24 @@ export default {
         return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
       }
     },
-    selectedSignal({ item, signalId }) {
-      this.selectedItem = item;
-      this.selectedSignalId = signalId;
-      this.dialog = true;
-    },
-    deleteSignal() {
-      console.log("this.selectedSignalId", this.selectedSignalId);
-      this.$emit("deleteSignal", this.selectedSignalId);
-      this.dialog = false;
+    async deleteSignal(item) {
+      const res = await this.$confirm(
+        ` <h1 class="subtitle-1"
+            >Confirm you want to eliminate the signal <span class="font-weight-bold">${item.name}</span>?</h1>`,
+        {
+          buttonTrueText: "delete",
+          buttonFalseText: "close",
+          buttonTrueColor: "primary",
+          color: "red lighten-2",
+          icon: "delete",
+          title: "Warning",
+          width: 600,
+        }
+      );
+      if (res) {
+        console.log("the signal", item)
+        this.$emit("deleteSignal", item);
+      }
     },
     async save() {
       if (!this.signal) {
