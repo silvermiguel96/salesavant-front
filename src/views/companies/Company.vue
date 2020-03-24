@@ -35,7 +35,7 @@
     </ApolloQuery>
     <v-tabs grow background-color="grey lighten-5" color="primary">
       <!-- Tab Home -->
-      <v-tab>Summary</v-tab>
+      <v-tab class="text-capitalize">Summary</v-tab>
       <v-tab-item>
         <v-container fluid class="pt-0">
           <v-row>
@@ -49,32 +49,32 @@
         </v-container>
       </v-tab-item>
       <!-- tab comments -->
-      <v-tab>Comments</v-tab>
+      <v-tab class="text-capitalize">Comments</v-tab>
       <v-tab-item>
         <company-comments />
       </v-tab-item>
       <!-- Tab contacts -->
-      <v-tab>Contacts</v-tab>
+      <v-tab class="text-capitalize">Contacts</v-tab>
       <v-tab-item>
         <company-contacts></company-contacts>
       </v-tab-item>
       <!-- tab signals -->
-      <v-tab>Signals</v-tab>
+      <v-tab class="text-capitalize">Signals</v-tab>
       <v-tab-item>
         <signals />
       </v-tab-item>
       <!-- Tab new signals -->
-      <v-tab>News</v-tab>
+      <v-tab class="text-capitalize">News</v-tab>
       <v-tab-item>
         <news />
       </v-tab-item>
       <!-- Tab add to playlist -->
-      <v-tab>Playlists</v-tab>
+      <v-tab class="text-capitalize">Playlists</v-tab>
       <v-tab-item>
         <add-to-playlist></add-to-playlist>
       </v-tab-item>
       <!-- Tab Analytics -->
-      <v-tab>Analytics</v-tab>
+      <v-tab class="text-capitalize">Analytics</v-tab>
       <v-tab-item>
         <analytics></analytics>
       </v-tab-item>

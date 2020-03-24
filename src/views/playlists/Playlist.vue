@@ -25,19 +25,19 @@
     </v-breadcrumbs>
     <v-tabs grow background-color="grey lighten-5" color="primary">
       <!-- Tab Companies -->
-      <v-tab>Companies</v-tab>
+      <v-tab class="text-capitalize">Companies</v-tab>
       <v-tab-item>
         <companies />
       </v-tab-item>
       <!-- Tab contacts -->
-      <v-tab>Contacts</v-tab>
+      <v-tab class="text-capitalize">Contacts</v-tab>
       <v-tab-item>
         <div>
           <contacts />
         </div>
       </v-tab-item>
       <!-- Tab analytics -->
-      <v-tab>Analytics</v-tab>
+      <v-tab class="text-capitalize">Analytics</v-tab>
       <v-tab-item>
         <analytics :aggs_data="additionalDataParsed">
         </analytics>
