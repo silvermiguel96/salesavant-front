@@ -4,15 +4,18 @@
       <div class="headline">Experience</div>
     </v-card-subtitle>
     <v-divider></v-divider>
+    <div v-if="contact">
     <v-card-text>
-      <div class="title text-capitalize">Current experience </div>
+      <div class="title text-capitalize">Current experience</div>
       <v-data-table
-        v-if="contact"
         :headers="headersTable"
-        :items="contact.companies"
+        :items="currentExperience"
         :sort-desc="[true]"
+        :hide-default-footer="currentExperience.length >= 10 ? false : true"
+        :footer-props="{
+          'items-per-page-options': [10]
+        }"
         dense
-        hide-default-footer
       >
         <template v-slot:item="{ item }">
           <tr>
@@ -41,12 +44,14 @@
     <v-card-text>
       <div class="title text-capitalize">Past experience</div>
       <v-data-table
-        v-if="contact"
         :headers="headersTable"
-        :items="contact.companies"
+        :items="pastExperience"
         :sort-desc="[true]"
+        :hide-default-footer="pastExperience.length >= 10 ? false : true"
+        :footer-props="{
+          'items-per-page-options': [10]
+        }"
         dense
-        hide-default-footer
       >
         <template v-slot:item="{ item }">
           <tr>
@@ -72,6 +77,7 @@
         </template>
       </v-data-table>
     </v-card-text>
+    </div>
   </v-card>
 </template>
 
@@ -81,8 +87,7 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      contact: [],
-      currentExperience: [],
+      contact: null,
       headersTable: [
         {
           text: "Company",
@@ -147,36 +152,20 @@ export default {
     }
   },
   computed: {
-    // formatedItems() {
-    //   return this.contact.map(function(contact) {
-    //     let currentJobs = contact.companies.filter(function(job) {
-    //       if (job.isCurrent) {
-    //         console.log(job)
-    //         return job;
-    //       }
-    //     });
-    //     if (currentJobs.length > 0) {
-    //       contact.currentOrLastJobs = currentJobs;
-    //     }
-    //     let otherJobs = contact.companies.filter(function(job) {
-    //       if (!job.isCurrent) {
-    //         return job;
-    //       }
-    //     });
-    //     if (contact.companies.length > 1) {
-    //       if (currentJobs.length == 0) {
-    //         contact.currentOrLastJobs = [contact.companies[0]];
-    //         contact.otherJobs = contact.companies.slice(1);
-    //       } else {
-    //         contact.otherJobs = otherJobs;
-    //       }
-    //     } else {
-    //       contact.currentOrLastJobs = [];
-    //       contact.otherJobs = [];
-    //     }
-    //     return currentExperience;
-    //   });
-    // }
+    currentExperience: function() {
+      return this.contact.companies.filter(function(job) {
+        if (job.isCurrent) {
+          return job;
+        }
+      });
+    },
+    pastExperience: function() {
+      return this.contact.companies.filter(function(job) {
+        if (!job.isCurrent) {
+          return job;
+        }
+      });
+    }
   },
   beforeCreate() {
     this.$apollo.queries.contact;
