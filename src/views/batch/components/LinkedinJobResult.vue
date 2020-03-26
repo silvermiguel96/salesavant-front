@@ -60,7 +60,7 @@
                               {{ candidate.fullName }}
                             </div>
                             <div>
-                              <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                              <a :href="`https://linkedin.com${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
                             </div>
                           </td>
                           <td>
