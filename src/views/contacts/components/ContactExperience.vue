@@ -11,9 +11,9 @@
         :headers="headersTable"
         :items="currentExperience"
         :sort-desc="[true]"
-        :hide-default-footer="currentExperience.length >= 10 ? false : true"
+        :hide-default-footer="currentExperience.length >= 5 ? false : true"
         :footer-props="{
-          'items-per-page-options': [10]
+          'items-per-page-options': [5]
         }"
         dense
       >
@@ -47,9 +47,9 @@
         :headers="headersTable"
         :items="pastExperience"
         :sort-desc="[true]"
-        :hide-default-footer="pastExperience.length >= 10 ? false : true"
+        :hide-default-footer="pastExperience.length >= 5 ? false : true"
         :footer-props="{
-          'items-per-page-options': [10]
+          'items-per-page-options': [5]
         }"
         dense
       >
