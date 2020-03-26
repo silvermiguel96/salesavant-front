@@ -4,14 +4,18 @@
       <div class="headline">Experience</div>
     </v-card-subtitle>
     <v-divider></v-divider>
+    <div v-if="contact">
     <v-card-text>
+      <div class="title text-capitalize">Current experience</div>
       <v-data-table
-        v-if="contact"
         :headers="headersTable"
-        :items="contact.companies"
+        :items="currentExperience"
         :sort-desc="[true]"
+        :hide-default-footer="currentExperience.length >= 10 ? false : true"
+        :footer-props="{
+          'items-per-page-options': [10]
+        }"
         dense
-        hide-default-footer
       >
         <template v-slot:item="{ item }">
           <tr>
@@ -37,6 +41,43 @@
         </template>
       </v-data-table>
     </v-card-text>
+    <v-card-text>
+      <div class="title text-capitalize">Past experience</div>
+      <v-data-table
+        :headers="headersTable"
+        :items="pastExperience"
+        :sort-desc="[true]"
+        :hide-default-footer="pastExperience.length >= 10 ? false : true"
+        :footer-props="{
+          'items-per-page-options': [10]
+        }"
+        dense
+      >
+        <template v-slot:item="{ item }">
+          <tr>
+            <td>
+              <div>
+                <router-link :to="`/companies/${item.company.uid}`">{{ item.company.name || "" }}</router-link>
+                <v-icon v-if="item.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
+              </div>
+            </td>
+            <td>
+              <div>{{ item.title || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.department || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.company.scaleScore || "--" }}</div>
+            </td>
+            <td>
+              <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-card-text>
+    </div>
   </v-card>
 </template>
 
@@ -46,13 +87,33 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      contact: [],
+      contact: null,
       headersTable: [
-        { text: "Company", value: "company.name", sortable: false, width: "18%" },
+        {
+          text: "Company",
+          value: "company.name",
+          sortable: false,
+          width: "18%"
+        },
         { text: "Title", value: "title", sortable: false, width: "18%" },
-        { text: "Deparment", value: "department", sortable: false, width: "12%" },
-        { text: "Scale Score", value: "company.scaleScore", sortable: true, width: "15%" },
-        { text: "Capital E.S.", value: "company.capitalEfficiencyScore", sortable: true, width: "15%" },
+        {
+          text: "Deparment",
+          value: "department",
+          sortable: false,
+          width: "12%"
+        },
+        {
+          text: "Scale Score",
+          value: "company.scaleScore",
+          sortable: true,
+          width: "15%"
+        },
+        {
+          text: "Capital E.S.",
+          value: "company.capitalEfficiencyScore",
+          sortable: true,
+          width: "15%"
+        }
       ]
     };
   },
@@ -88,6 +149,22 @@ export default {
         };
       },
       fetchPolicy: "cache-and-network"
+    }
+  },
+  computed: {
+    currentExperience: function() {
+      return this.contact.companies.filter(function(job) {
+        if (job.isCurrent) {
+          return job;
+        }
+      });
+    },
+    pastExperience: function() {
+      return this.contact.companies.filter(function(job) {
+        if (!job.isCurrent) {
+          return job;
+        }
+      });
     }
   },
   beforeCreate() {
