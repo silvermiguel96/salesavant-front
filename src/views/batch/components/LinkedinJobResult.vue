@@ -28,7 +28,7 @@
                       <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ item.fullName }}</div>
                       <div>
                         <span class="subtitle-2 font-weight-medium">LinkedIn: </span>
-                        <a :href="`https://linkedin.com/in/${item.linkedinHandle}`" target="_blank">
+                        <a :href="`https://linkedin.com${item.linkedinHandle}`" target="_blank">
                           {{ item.linkedinHandle }}
                         </a>
                       </div>

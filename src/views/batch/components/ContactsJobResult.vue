@@ -32,7 +32,7 @@
                   <v-col cols="4">
                     <div><span class="subtitle-2 font-weight-medium">Name: </span> {{ candidate.fullName }}</div>
                     <div>
-                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com/in/${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
+                      <span class="subtitle-2 font-weight-medium">LinkedIn: </span> <a :href="`https://linkedin.com${candidate.linkedinHandle}`" target="_blank">{{ candidate.linkedinHandle }}</a>
                     </div>
                   </v-col>
                   <v-col cols="6">
