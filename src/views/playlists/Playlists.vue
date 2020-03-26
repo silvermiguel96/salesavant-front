@@ -1,54 +1,62 @@
 <template>
   <v-container fluid>
-    <v-card>
-      <v-breadcrumbs
-        :large="true"
-        :items="[
-          {
-            text: 'Playlists',
-            disabled: true,
-            href: '/playlists'
-          }
-      ]"
-        divider=">"
-      ></v-breadcrumbs>
-      <v-container fluid class="mx-1">
-        <v-row no-gutters class="ml-2">
-          <v-col cols="12" md="4">
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Filter"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-col>
-        </v-row>
-      </v-container>
-      <!-- Result -->
-      <play-lists-table
-        v-if="playlists"
-        :items="playlists.playlistsList"
-        :totalResults="playlists.totalResults"
-        class="result apollo"
-        @updateOptions="updateOptions"
-        @deletePlaylist="deletePlaylist"
-      ></play-lists-table>
+    <v-row>
+      <v-col cols="12" xs="12">
+        <v-card>
+          <v-row no-gutters class="ml-2">
+            <v-breadcrumbs
+              :large="true"
+              :items="[
+                  {
+                    text: 'Playlists',
+                    disabled: true,
+                    href: '/playlists'
+                  }
+              ]"
+              divider=">"
+              class="pl-0 pl-sm-2"
+            ></v-breadcrumbs>
+          </v-row>
 
-      <!-- Loading -->
-      <v-row justify="center" no-gutters>
-        <v-col cols="12">
-          <v-progress-linear
-            :active="!!isLoading"
-            color="blue"
-            indeterminate
-            absolute
-            bottom
-            query
-          ></v-progress-linear>
-        </v-col>
-      </v-row>
-    </v-card>
+          <v-row no-gutters class="pl-2 pl-sm-4">
+            <v-col cols="10" sm="4">
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Type a Name"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row no-gutters>
+            <v-col cols="12">
+              <play-lists-table
+                v-if="playlists"
+                :items="playlists.playlistsList"
+                :totalResults="playlists.totalResults"
+                @updateOptions="updateOptions"
+                @deletePlaylist="deletePlaylist"
+              ></play-lists-table>
+            </v-col>
+          </v-row>
+
+          <v-row no-gutters>
+            <v-col cols="12">
+              <v-progress-linear
+                :active="!!isLoading"
+                color="blue"
+                indeterminate
+                absolute
+                bottom
+                query
+              ></v-progress-linear>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -71,8 +79,8 @@ export default {
       }
     };
   },
-  components: { 
-    PlayListsTable 
+  components: {
+    PlayListsTable
   },
   methods: {
     updateOptions({
@@ -123,10 +131,18 @@ export default {
         console.log("Result", result);
         this.playlists.playlistsList.splice(index, 1);
         console.log(this.$apollo.queries);
-        this.$eventBus.$emit( "showSnack", "The playlist successfully delete!!", "success" );
+        this.$eventBus.$emit(
+          "showSnack",
+          "The playlist was successfully deleted.",
+          "success"
+        );
         return;
       } catch (error) {
-        this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when removing the playlist, please try again!!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops! something went wrong when removing the playlist, please try again.",
+          "error"
+        );
         console.log("error delete playlist", error);
       } finally {
         this.showTable = true;
@@ -170,9 +186,7 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       skip() {
