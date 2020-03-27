@@ -1,66 +1,14 @@
 <template>
   <v-card v-if="company" style="height:100%;">
     <v-card-subtitle>
-      <div class="headline">Profile</div>
+      <div class="headline font-weight-bold">{{ company.name }} <small><a v-if="company.url"
+          :key="`news-external-link${company.url || ''}`"
+          :href="httpCompany"
+          target="_blank"
+        >Website</a></small> </div>
       <div class="caption">Last update : <format-date-time :time="company.modificationTime" /></div>
     </v-card-subtitle>
     <v-divider></v-divider>
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Company</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <span class="font-weight-light">{{ company.name || "[empty name]" }}</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Company:</span>
-                <span class="font-weight-light float-right">{{ company.name || "[empty name]" }}</span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Website</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <a
-                v-if="company.url"
-                :key="`news-external-link${company.url || ''}`"
-                :href="httpCompany"
-                target="_blank"
-              >{{ company.url }}</a>
-              <span v-else>--</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Website:</span>
-                <span class="font-weight-light float-right">
-                  <a
-                    v-if="company.url"
-                    :key="`news-external-link${company.url || ''}`"
-                    :href="httpCompany"
-                    target="_blank"
-                  >{{ company.url }}</a>
-                  <span v-else>--</span>
-                </span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-    </v-row>
 
     <v-row no-gutters>
       <v-col cols="12" md="6">

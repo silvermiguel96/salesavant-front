@@ -37,6 +37,7 @@
         <!-- Tab Home -->
         <v-tab class="text-capitalize">Profile</v-tab>
         <v-tab-item>
+          <v-container fluid class="pt-0">
             <v-row>
               <v-col lg="6" md="5" cols="12" class="py-0">
                 <contact-profile />
@@ -45,6 +46,7 @@
                 <contact-experience />
               </v-col>
             </v-row>
+          </v-container>
         </v-tab-item>
         <!-- tab comments -->
         <v-tab class="text-capitalize">Comments</v-tab>

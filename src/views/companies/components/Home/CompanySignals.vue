@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <v-col cols="12">
             <div class="d-inline-block float-left">
-              <span class="headline">Sales Signals Summary</span>
+              <span class="headline font-weight-bold ">Sales Signals Summary</span>
             </div>
             <div class="d-inline-block float-md-right">
               <v-icon color="blue" style="margin-top:-8px;">check_circle</v-icon>
@@ -19,7 +19,7 @@
     <v-card-text>
       <!-- The first table -->
       <div>
-        <div class="title">Groups</div>
+        <div class="title text-capitalize font-weight-regular grey--text">Groups</div>
         <v-data-table
           v-if="company && company.signalGroupAggs"
           :headers="headersTable1"
@@ -39,7 +39,7 @@
 
       <!-- Second Table -->
       <div class="mt-8">
-        <div class="title">Signals</div>
+        <div class="title text-capitalize font-weight-regular grey--text">Signals</div>
         <v-data-table
           v-if="companySignals"
           :headers="headers"
@@ -348,3 +348,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.v-card__text {
+  padding: 0.5em;
+  padding-left: 1em;
+}
+</style>
