@@ -1,31 +1,5 @@
 <template>
-  <v-card >
-    <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
-        <v-card-title class="headline">Delete comment</v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <h1 class="subtitle-1">
-              Confirm you want to eliminate the comment
-              <span
-                class="font-weight-bold"
-              >{{selectedComment.comments}}</span>?
-            </h1>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn
-            color="red darken-1"
-            class="text-capitalize"
-            text
-            @click="deleteComment(selectedCommentId)"
-          >Delete</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-card-text></v-card-text>
+  <v-card>
     <v-container fluid class="mx-1">
       <v-row no-gutters class="ml-2">
         <v-col cols="12" md="4"></v-col>
@@ -38,7 +12,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-card-text>
+    <v-card-text v-if="companyComments">
       <v-data-table
         :headers="headers"
         :items="companyComments.companyCommentsList"
@@ -51,23 +25,21 @@
         class="mx-2"
         @updateOptions="updateOptions"
       >
-        <template v-slot:item="{ item, headers }">
+        <template v-slot:item="{ item }">
           <tr>
             <td>
               <long-paragraph :text="item.comments" :maxLength="45"></long-paragraph>
             </td>
-            <td>{{ item.user.email || "--" }}</td>
-            <td><format-date-time :time="item.creationTime" /></td>
+            <td
+              v-if="item.user.firstName || item.user.lastName"
+            >{{item.user.firstName}} {{item.user.lastName}}</td>
+            <td v-else>{{item.user.email || "--"}}</td>
+            <td>
+              <format-date-time :time="item.creationTime" />
+            </td>
             <td>
               <div class="d-flex align-center justify-center">
-                <v-icon
-                  color="red lighten-2"
-                  small
-                  @click="selectComment({
-                  item: item,
-                  commentsId: item.id
-              })"
-                >delete</v-icon>
+                <v-icon color="red lighten-2" small @click="deleteComment(item)">delete</v-icon>
               </div>
             </td>
           </tr>
@@ -78,7 +50,7 @@
 </template>
 
 <script>
-import formatDateTime from "../../../../components/common/FormatDateTime.vue"
+import FormatDateTime from "../../../../components/common/FormatDateTime.vue";
 import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import AddModal from "./components/addModal.vue";
@@ -86,23 +58,18 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      options: {
-        page: 1,
-        itemsPerPage: 10
-      },
-      companyComments: [],
-      signalId: null,
-      currentSignalSearch: null,
-      descending: false,
+      dialog: false,
+      companyComments: null,
       headers: [
         { text: "Comment", sortable: false },
         { text: "User", sortable: false },
         { text: "Creation Time", sortable: false },
         { text: "Remove", align: "center", sortable: false }
       ],
-      dialog: false,
-      selectedComment: "",
-      selectedCommentId: {}
+      options: {
+        page: 1,
+        itemsPerPage: 10
+      }
     };
   },
   apollo: {
@@ -125,6 +92,8 @@ export default {
               comments
               user {
                 email
+                firstName
+                lastName
               }
             }
           }
@@ -134,7 +103,9 @@ export default {
         return {
           companyUid: this.$route.params.companiesUid,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
@@ -147,22 +118,99 @@ export default {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
     },
-    refreshData() {
-      this.$apollo.queries.companyComments.refresh();
-    },
-    async saveComments(description = null) {
+    saveComments(description = null) {
       console.log("description", description);
       if (!!description) {
         try {
+          this.$apollo
+            .mutate({
+              mutation: gql`
+                mutation($companyUid: String!, $description: String!) {
+                  createCompanyComment(
+                    companyUid: $companyUid
+                    description: $description
+                  ) {
+                    companyComment {
+                      creationTime
+                      id
+                      creationTime
+                      comments
+                      user {
+                        email
+                        firstName
+                        lastName
+                      }
+                    }
+                  }
+                }
+              `,
+              // Parameters
+              variables: {
+                companyUid: this.$route.params.companiesUid,
+                description: description
+              },
+              fetchPolicy: "no-cache"
+            })
+            .then(result => {
+              console.log("result", result);
+              if (!!result && !!result.data.createCompanyComment) {
+                this.companyComments.totalResults += 1;
+                this.companyComments.companyCommentsList.push(
+                  result.data.createCompanyComment.companyComment
+                );
+                console.log(
+                  "this.companyComments.totalResults",
+                  this.companyComments.totalResults
+                );
+                console.log(
+                  "this.companyComments.companyCommentsList",
+                  this.companyComments.companyCommentsList
+                );
+                this.$eventBus.$emit(
+                  "showSnack",
+                  "New comment successfully created!!",
+                  "success"
+                );
+              }
+            });
+        } catch (error) {
+          console.log("error saving simple search as a commet list", error);
+          this.$eventBus.$emit(
+            "showSnack",
+            "Error in save new comment!!",
+            "error"
+          );
+        }
+      }
+    },
+    async deleteComment(comment) {
+      console.log("comment", comment);
+      const res = await this.$confirm(
+        `<h1 class="subtitle-1">
+              Confirm you want to eliminate the comment
+              <span class="font-weight-bold"
+              >${comment.comments}</span>?
+            </h1> `,
+        {
+          buttonTrueText: "delete",
+          buttonFalseText: "close",
+          buttonTrueColor: "red lighten-2",
+          color: "primary",
+          icon: "delete",
+          title: "Delete Comment",
+          width: 600
+        }
+      );
+      if (res) {
+        try {
+          const index = this.companyComments.companyCommentsList.indexOf(
+            comment
+          );
           const result = await this.$apollo.mutate({
             mutation: gql`
-              mutation($companyUid: String!, $description: String!) {
-                createCompanyComment(
-                  companyUid: $companyUid
-                  description: $description
-                ) {
+              mutation($commentId: Int!) {
+                deleteCompanyComment(companyCommentId: $commentId) {
                   companyComment {
-                    creationTime
                     id
                     comments
                   }
@@ -171,76 +219,33 @@ export default {
             `,
             // Parameters
             variables: {
-              companyUid: this.$route.params.companiesUid,
-              description: description
+              commentId: parseInt(comment.id)
             }
           });
+          console.log("result", result);
+          this.companyComments.companyCommentsList.splice(index, 1);
+          console.log(this.$apollo.queries);
           this.$eventBus.$emit(
             "showSnack",
-            "New comment successfully created!!",
+            "The comment successfully delete!!",
             "success"
           );
-          console.log("saving result comments", result);
-          this.refreshData();
-          return;
+          this.dialog = false;
         } catch (error) {
-          console.log("error saving simple search as a commet list", error);
-        }
-      }
-    },
-    selectComment({ item, commentsId }) {
-      this.selectedComment = item;
-      this.selectedCommentId = commentsId;
-      this.dialog = true;
-    },
-    async deleteComment(selectedCommentId) {
-      console.log("selectedCommentId", selectedCommentId);
-      try {
-        if (!selectedCommentId) {
+          console.log("error", error);
           this.$eventBus.$emit(
             "showSnack",
             "Error in delete comments!!",
             "error"
           );
-          return;
         }
-        const result = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($commentId: Int!) {
-              deleteCompanyComment(companyCommentId: $commentId) {
-                companyComment {
-                  id
-                  comments
-                }
-              }
-            }
-          `,
-          // Parameters
-          variables: {
-            commentId: selectedCommentId
-          }
-        });
-        console.log("result", result);
-        this.$eventBus.$emit(
-          "showSnack",
-          "The comment successfully delete!!",
-          "success"
-        );
-        this.dialog = false;
-        this.refreshData();
-      } catch (error) {
-        this.$eventBus.$emit(
-          "showSnack",
-          "Error in delete comments!!",
-          "error"
-        );
       }
     }
   },
   components: {
     LongParagraph,
     AddModal,
-    formatDateTime
+    FormatDateTime
   },
   beforeUpdate() {
     this.$apollo.queries.companyComments;
