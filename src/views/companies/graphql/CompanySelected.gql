@@ -18,7 +18,6 @@ query SelecteCompany($companyUid: String){
     industry
     status
     dateFounded
-    dateAcquired
     linkedinHandle
     stockSymbol
     naicsCode
