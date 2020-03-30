@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import MergeAutocomplete from "../../../components/playlists/MergeAutocomplete.vue";
+import MergeAutocomplete from "../../../../components/playlists/MergeAutocomplete.vue";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 
