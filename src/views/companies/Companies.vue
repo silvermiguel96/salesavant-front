@@ -1,172 +1,97 @@
 <template>
   <v-container fluid>
-    <v-card>
-      <div>
-        <v-breadcrumbs
-          v-if="!!this.$route.query && !!this.$route.query.searchType"
-          :large="true"
-          :items="[
-           {	          
-             text: 'Companies',	            
-             disabled: true,	              
-             href: '/companies'	              
-            },	             
-            {	             
-              text: `${this.$route.query.searchType} search`,	           
-              disabled: true,	       
-              href: '/companies'	     
-            }	
-          ]"	
-            divider=">" 
+    <v-row>
+      <v-col cols="12" xs="12" class="pt-0">
+        <v-card>
+          <v-row no-gutters>
+            <v-breadcrumbs
+              class="pl-3 pl-sm-6"
+              :large="true"
+              :items="[
+                {	          
+                text: 'Companies',	            
+                disabled: true,	              
+                href: '/companies'	              
+                }
+              ]"
+              divider=">"
+            ></v-breadcrumbs>
+          </v-row>
+          <v-row
+            no-gutters
+            v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'"
           >
-          <template v-slot:item="props">
-            <v-breadcrumbs-item
-              :href="props.item.href"
-              :class="[props.item.disabled && 'disabled']"
-              @click.prevent="$router.push(props.item.href)">
-              {{ props.item.text }}
-            </v-breadcrumbs-item>
-          </template> 
-        </v-breadcrumbs>
-        <v-breadcrumbs
-          v-else
-          :large="true"
-          :items="[
-            {	          
-            text: 'Companies',	            
-            disabled: true,	              
-            href: '/companies'	              
-            }
-          ]"
-          divider=">"
-        > 
-        </v-breadcrumbs>
-        <template v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'" >
-          <v-container fluid class="mx-1">
-            <v-row no-gutters>
-              <v-col cols="12" md="8">
-                <div class="mt-6">
-                  <span class="ml-2">Filtering by: </span>
-                  <v-chip 
-                    v-for="obj in companySearchFilters" 
-                    :key="obj.key" 
-                    class="mx-1 text-capitalize"
-                    style="padding: 0 8px;"
-                    color="blue-grey"
-                    @click:close="removeFilter(obj.key)"
-                    outlined
-                    close
-                    small
-                  ><strong>{{obj.labelKey}}:&nbsp;</strong>{{obj.labelVal}}</v-chip>
+            <v-col cols="12" md="8">
+              <div class="mt-6">
+                <span class="ml-2">Filtering by:</span>
+                <v-chip
+                  v-for="obj in companySearchFilters"
+                  :key="obj.key"
+                  class="mx-1 text-capitalize"
+                  style="padding: 0 8px;"
+                  color="blue-grey"
+                  @click:close="removeFilter(obj.key)"
+                  outlined
+                  close
+                  small
+                >
+                  <strong>{{obj.labelKey}}:&nbsp;</strong>
+                  {{obj.labelVal}}
+                </v-chip>
+              </div>
+            </v-col>
+            <v-col cols="12" md="4">
+              <div class="d-flex justify-md-end">
+                <div class="mr-2 mt-sm-3">
+                  <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
                 </div>
-              </v-col>
-              <v-col cols="12" md="4">
-                <div class="d-flex justify-md-end">
-                  <div class="mr-2 mt-sm-3">
-                    <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
-                  </div>
-                  <div class="mr-2 mt-sm-3">
-                    <create-signal-from-results @onSave="saveResultsAsSignal" />
-                  </div>
+                <div class="mr-2 mt-sm-3">
+                  <create-signal-from-results @onSave="saveResultsAsSignal" />
                 </div>
-              </v-col>
-            </v-row>
-          </v-container>
-          <ApolloQuery
-            :query="require('./graphql/CompaniesAdvancedSearch.gql')"
-            :variables="{ 
-              ...this.advancedSearch.companySearch,
-              sortBy: this.sortBy,
-              sortOrder: this.sortOrder,
-              first: this.itemsPerPage,
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
-              totalResults: this.totalResults
-            }"
-            :update="data => {
-              this.totalResults = data.companies.totalResults
-              return data;
-            }"
-          >
-            <template v-slot="{ result: { loading, error, data }, isLoading }">
+              </div>
+            </v-col>
+          </v-row>
+
+          <v-row v-else no-gutters class="pl-2 pl-sm-6">
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Filter"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row no-gutters>
+            <v-col cols="12">
               <!-- Result -->
               <companies-table
-                v-if="data"
-                :items="data.companies.companiesList"
-                :totalResults="data.companies.totalResults"
-                class="result apollo"
+                v-if="companies"
+                :items="companies.companiesList"
+                :totalResults="companies.totalResults"
                 @updateOptions="updateOptions"
               ></companies-table>
+            </v-col>
+          </v-row>
 
+          <v-row no-gutters>
+            <v-col cols="12">
               <!-- Loading -->
-              <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                  ></v-progress-linear>
-                </v-col>
-              </v-row>
-            </template>
-          </ApolloQuery>
-        </template>
-        <template v-else>
-          <v-container fluid class="mx-1">
-            <v-row no-gutters class="ml-2">
-              <v-col cols="12" md="4">
-                <v-text-field
-                  v-model="search"
-                  append-icon="search"
-                  label="Filter"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-          <ApolloQuery
-            :query="require('./graphql/Companies.gql')"
-            :variables="{
-              searchNameOrDescription: this.search,
-              first: this.itemsPerPage, 
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
-              sortBy: this.sortBy,
-              sortOrder: this.sortOrder
-            }"
-            :skip="search.length >0 && search.length<=2"
-          >
-            <template v-slot="{ result: { loading, error, data }, isLoading }">
-              
-              <!-- Result -->
-              <companies-table
-                v-if="data"
-                :items="data.companies.companiesList"
-                :totalResults="data.companies.totalResults"
-                class="result apollo"
-                @updateOptions="updateOptions"
-              ></companies-table>
-
-              <!-- Loading -->
-              <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                  ></v-progress-linear>
-                </v-col>
-              </v-row>
-            </template>
-          </ApolloQuery>
-        </template>
-      </div>
-    </v-card>
+              <v-progress-linear
+                :active="!!isLoading"
+                color="blue"
+                indeterminate
+                absolute
+                bottom
+                query
+              ></v-progress-linear>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -177,7 +102,7 @@ import _pickby from "lodash.pickby";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
-import {defaultCompanySearch} from "../../store";
+import { defaultCompanySearch } from "../../store";
 
 export default {
   data() {
@@ -189,7 +114,14 @@ export default {
       sortOrder: "",
       search: "",
       searchField: "",
-      isFiltered: false
+      isLoading: true,
+      isFiltered: false,
+      options: {
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: "",
+        sortOrder: ""
+      }
     };
   },
   components: {
@@ -197,11 +129,130 @@ export default {
     CreatePlaylistFromResults,
     CreateSignalFromResults
   },
-  watch:{
-    companySearchFilters: function(val){
-      console.log('total results to zero');
+  watch: {
+    companySearchFilters: function(val) {
+      console.log("total results to zero");
       this.totalResults = 0;
       this.page = 1;
+    }
+  },
+  apollo: {
+    companies: {
+      query: gql`
+        query CompaniesAdvancedSearch(
+          $searchNameOrDescription: String
+          $playlistUid: String
+          $signals: [Int]
+          $signalGroups: [String]
+          $name: String
+          $website: String
+          $description: String
+          $country: String
+          $city: String
+          $region: String
+          $state: String
+          $status: String
+          $lessThanEmployees: Int
+          $moreThanEmployees: Int
+          $moreThanScore: Float
+          $lessThanScore: Float
+          $sortBy: String
+          $sortOrder: String
+          $first: Int
+          $offset: Int
+          $totalResults: Int
+        ) {
+          companies(
+            searchNameOrDescription: $searchNameOrDescription
+            playlistUid: $playlistUid
+            signals: $signals
+            signalGroups: $signalGroups
+            searchName: $name
+            searchWebsite: $website
+            searchDescription: $description
+            country: $country
+            city: $city
+            region: $region
+            state: $state
+            status: $status
+            lessThanEmployees: $lessThanEmployees
+            moreThanEmployees: $moreThanEmployees
+            moreThanScore: $moreThanScore
+            lessThanScore: $lessThanScore
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+            first: $first
+            offset: $offset
+            totalResults: $totalResults
+          ) {
+            totalResults
+            companiesList {
+              creationTime
+              modificationTime
+              uid
+              name
+              website
+              description
+              url
+              handle
+              logoUrl
+              city
+              country
+              region
+              state
+              numEmployees
+              momentum
+              vertical
+              industry
+              status
+              dateFounded
+              linkedinHandle
+              stockSymbol
+              naicsCode
+              totalScore
+              totalSignals
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          searchNameOrDescription: this.search,
+          playlistUid: this.advancedSearch.companySearch.playlistUid,
+          signals: this.advancedSearch.companySearch.signals,
+          signalGroups: this.advancedSearch.companySearch.signalGroups,
+          name: this.advancedSearch.companySearch.name,
+          website: this.advancedSearch.companySearch.website,
+          description: this.advancedSearch.companySearch.description,
+          country: this.advancedSearch.country,
+          city: this.advancedSearch.companySearch.city,
+          region: this.advancedSearch.companySearch.region,
+          state: this.advancedSearch.companySearch.state,
+          status: this.advancedSearch.companySearch.status,
+          lessThanEmployees: this.advancedSearch.companySearch
+            .lessThanEmployees,
+          moreThanEmployees: this.advancedSearch.companySearch
+            .moreThanEmployees,
+          moreThanScore: this.advancedSearch.companySearch.moreThanScore,
+          lessThanScore: this.advancedSearch.companySearch.lessThanScore,
+          sortBy: this.sortBy,
+          sortOrder: this.sortOrder,
+          first: this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage,
+          totalResults: this.totalResults,
+          first: this.itemsPerPage,
+          offset: this.itemsPerPage * this.page - this.itemsPerPage
+        };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
+      },
+      fetchPolicy: "cache-and-network"
     }
   },
   methods: {
@@ -258,7 +309,7 @@ export default {
                 $moreThanScore: Int
                 $playlistUid: String
                 $signals: [Int]
-                $signalGroups: [String],
+                $signalGroups: [String]
                 $newPlaylistName: String!
               ) {
                 createPlaylistFromSearch(
@@ -344,7 +395,7 @@ export default {
                 $moreThanScore: Int
                 $playlistUid: String
                 $signals: [Int]
-                $signalGroups: [String],
+                $signalGroups: [String]
               ) {
                 createSignalFromSearch(
                   signalData: {
@@ -384,7 +435,7 @@ export default {
               newSignalName: newSignalName,
               newSignalDescription: newSignalDescription,
               newSignalGroup: newSignalGroup,
-              newSignalDefaultScore: newSignalDefaultScore,
+              newSignalDefaultScore: newSignalDefaultScore
             }
           });
           console.log("saving results as signal success", result);
@@ -402,27 +453,30 @@ export default {
         }
       }
     },
-    removeFilter(key){
-      if (key.startsWith("signals")){
+    removeFilter(key) {
+      if (key.startsWith("signals")) {
         let index = key.split(">>>")[1];
         let currentSignals = this.$store.state.advancedSearch.companySearch.signals.slice();
         let currentDisplaySignals = this.$store.state.advancedSearch.companySearch.displaySignals.slice();
 
         currentSignals.splice(index, 1);
         currentDisplaySignals.splice(index, 1);
-        this.$store.commit('doCompanySearch', {
+        this.$store.commit("doCompanySearch", {
           ...this.$store.state.advancedSearch.companySearch,
           signals: currentSignals,
           displaySignals: currentDisplaySignals
-        })
-      }else if (key.startsWith("playlist")){
-        this.$store.commit('doCompanySearch', {
+        });
+      } else if (key.startsWith("playlist")) {
+        this.$store.commit("doCompanySearch", {
           ...this.$store.state.advancedSearch.companySearch,
           playlistUid: "",
-          displayPlaylistUid: "",
-        })
-      }else{
-        this.$store.commit('doCompanySearch', {...this.$store.state.advancedSearch.companySearch, [key]: defaultCompanySearch[key]})
+          displayPlaylistUid: ""
+        });
+      } else {
+        this.$store.commit("doCompanySearch", {
+          ...this.$store.state.advancedSearch.companySearch,
+          [key]: defaultCompanySearch[key]
+        });
       }
     }
   },
@@ -430,26 +484,28 @@ export default {
     advancedSearch() {
       return this.$store.state.advancedSearch;
     },
-    companySearchFilters(){
+    companySearchFilters() {
       let filterObjects = [];
       Object.keys(this.advancedSearch.companySearch).forEach(key => {
         let value = this.advancedSearch.companySearch[key];
-        if (!key.startsWith('display') && value && value.length > 0){
-          if (key=='signals'){
+        if (!key.startsWith("display") && value && value.length > 0) {
+          if (key == "signals") {
             value.forEach((entry, index) => {
               filterObjects.push({
-                key: 'signals>>>'+index,
+                key: "signals>>>" + index,
                 labelKey: key,
-                labelVal: this.advancedSearch.companySearch.displaySignals[index]
+                labelVal: this.advancedSearch.companySearch.displaySignals[
+                  index
+                ]
               });
             });
-          }else if (key=='playlistUid'){
+          } else if (key == "playlistUid") {
             filterObjects.push({
               key: key,
-              labelKey: 'Playlist',
+              labelKey: "Playlist",
               labelVal: this.advancedSearch.companySearch.displayPlaylistUid
             });
-          }else{
+          } else {
             filterObjects.push({
               key: key,
               labelKey: key,
@@ -459,19 +515,10 @@ export default {
         }
       });
       return filterObjects;
-    },
+    }
   },
   props: {
     showSearch: { type: Boolean, default: false }
-  },
+  }
 };
 </script>
-<style>
-.calltoactions {
-  display: flex;
-  flex-direction: row;
-}
-.calltoactions .layout {
-  flex: unset;
-}
-</style>
