@@ -15,7 +15,7 @@
       ></v-breadcrumbs>
       <v-tabs grow background-color="grey lighten-5" color="primary">
         <!-- Tab Home -->
-        <v-tab class="text-capitalize">Comapny</v-tab>
+        <v-tab class="text-capitalize">Company</v-tab>
         <v-tab-item>
           <playlists-companies />
         </v-tab-item>
