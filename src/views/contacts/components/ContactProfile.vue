@@ -1,7 +1,7 @@
 <template>
   <v-card style="height:100%;">
     <v-card-subtitle>
-      <div class="headline">{{ contact.fullName }} <small><a v-if="contact.linkedinHandle"
+      <div class="headline font-weight-bold">{{ contact.fullName }} <small><a v-if="contact.linkedinHandle"
           :href="`https://linkedin.com${contact.linkedinHandle}`"
           target="_blank"
         >LinkedIn</a></small> </div>
@@ -76,7 +76,7 @@
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Capital Efficiency Score</span>
-                <span class="font-weight-light">{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
+                <span class="font-weight-light float-right">{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -129,7 +129,7 @@
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Scale Score Average:</span>
-                <span class="font-weight-light">{{ contact.scaleScoreAverage || "--" }}</span>
+                <span class="font-weight-light float-right">{{ contact.scaleScoreAverage || "--" }}</span>
               </div>
             </v-col>
           </v-row>

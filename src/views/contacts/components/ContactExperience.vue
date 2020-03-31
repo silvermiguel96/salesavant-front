@@ -1,82 +1,89 @@
 <template>
   <v-card style="height:100%;">
     <v-card-subtitle>
-      <div class="headline">Experience</div>
+      <div class="headline font-weight-bold">Experience</div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <div v-if="contact">
-    <v-card-text>
-      <div class="title text-capitalize">Current experience</div>
-      <v-data-table
-        :headers="headersTable"
-        :items="currentExperience"
-        :sort-desc="[true]"
-        :hide-default-footer="currentExperience.length >= 5 ? false : true"
-        :footer-props="{
+      <v-card-text>
+        <div>
+          <div class="title text-capitalize font-weight-regular grey--text">Current experience</div>
+          <v-data-table
+            :headers="headersTable"
+            :items="currentExperience"
+            :sort-desc="[true]"
+            :hide-default-footer="currentExperience.length >= 5 ? false : true"
+            :footer-props="{
           'items-per-page-options': [5]
         }"
-        dense
-      >
-        <template v-slot:item="{ item }">
-          <tr>
-            <td>
-              <div>
-                <router-link :to="`/companies/${item.company.uid}`">{{ item.company.name || "" }}</router-link>
-                <v-icon v-if="item.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
-              </div>
-            </td>
-            <td>
-              <div>{{ item.title || "--" }}</div>
-            </td>
-            <td>
-              <div>{{ item.department || "--" }}</div>
-            </td>
-            <td>
-              <div>{{ item.company.scaleScore || "--" }}</div>
-            </td>
-            <td>
-              <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card-text>
-    <v-card-text>
-      <div class="title text-capitalize">Past experience</div>
-      <v-data-table
-        :headers="headersTable"
-        :items="pastExperience"
-        :sort-desc="[true]"
-        :hide-default-footer="pastExperience.length >= 5 ? false : true"
-        :footer-props="{
+            dense
+          >
+            <template v-slot:item="{ item }">
+              <tr>
+                <td>
+                  <div>
+                    <router-link
+                      :to="`/companies/${item.company.uid}`"
+                    >{{ item.company.name || "" }}</router-link>
+                    <v-icon v-if="item.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
+                  </div>
+                </td>
+                <td>
+                  <div>{{ item.title || "--" }}</div>
+                </td>
+                <td>
+                  <div>{{ item.department || "--" }}</div>
+                </td>
+                <td>
+                  <div>{{ item.company.scaleScore || "--" }}</div>
+                </td>
+                <td>
+                  <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </div>
+
+        <div class="mt-2">
+          <div class="title text-capitalize font-weight-regular grey--text">Past experience</div>
+          <v-data-table
+            :headers="headersTable"
+            :items="pastExperience"
+            :sort-desc="[true]"
+            :hide-default-footer="pastExperience.length >= 5 ? false : true"
+            :footer-props="{
           'items-per-page-options': [5]
         }"
-        dense
-      >
-        <template v-slot:item="{ item }">
-          <tr>
-            <td>
-              <div>
-                <router-link :to="`/companies/${item.company.uid}`">{{ item.company.name || "" }}</router-link>
-                <v-icon v-if="item.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
-              </div>
-            </td>
-            <td>
-              <div>{{ item.title || "--" }}</div>
-            </td>
-            <td>
-              <div>{{ item.department || "--" }}</div>
-            </td>
-            <td>
-              <div>{{ item.company.scaleScore || "--" }}</div>
-            </td>
-            <td>
-              <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card-text>
+            dense
+          >
+            <template v-slot:item="{ item }">
+              <tr>
+                <td>
+                  <div>
+                    <router-link
+                      :to="`/companies/${item.company.uid}`"
+                    >{{ item.company.name || "" }}</router-link>
+                    <v-icon v-if="item.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
+                  </div>
+                </td>
+                <td>
+                  <div>{{ item.title || "--" }}</div>
+                </td>
+                <td>
+                  <div>{{ item.department || "--" }}</div>
+                </td>
+                <td>
+                  <div>{{ item.company.scaleScore || "--" }}</div>
+                </td>
+                <td>
+                  <div>{{ item.company.capitalEfficiencyScore || "--" }}</div>
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </div>
+      </v-card-text>
     </div>
   </v-card>
 </template>

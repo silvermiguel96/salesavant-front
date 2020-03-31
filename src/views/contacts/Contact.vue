@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <v-card>
       <ApolloQuery
         :query="require('./graphql/Contact.gql')"
         :variables="{
@@ -34,29 +33,41 @@
           </v-breadcrumbs>
         </template>
       </ApolloQuery>
-      <v-container fluid>
-          <v-row>
-            <v-col lg="6" md="5" cols="12" class="py-0" >
-              <contact-profile />
-            </v-col>
-            <v-col lg="6" md="7" cols="12" class="py-0" >
-              <contact-experience />
-            </v-col>
-          </v-row>
-      </v-container>
-    </v-card>
+      <v-tabs grow background-color="grey lighten-5" color="primary">
+        <!-- Tab Home -->
+        <v-tab class="text-capitalize">Profile</v-tab>
+        <v-tab-item>
+          <v-container fluid class="pt-0">
+            <v-row>
+              <v-col lg="6" md="5" cols="12" class="py-0">
+                <contact-profile />
+              </v-col>
+              <v-col lg="6" md="7" cols="12" class="py-0">
+                <contact-experience />
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-tab-item>
+        <!-- tab comments -->
+        <v-tab class="text-capitalize">Comments</v-tab>
+        <v-tab-item>
+          <contact-comments />
+        </v-tab-item>
+      </v-tabs>
   </v-container>
 </template>
 <script>
 import contactProfile from "./components/ContactProfile.vue";
-import ContactExperience from "./components/ContactExperience.vue";
+import contactExperience from "./components/ContactExperience.vue";
+import contactComments from "./components/commets/Comments.vue";
 export default {
   data() {
     return {};
   },
   components: {
     contactProfile,
-    ContactExperience
+    contactExperience,
+    contactComments
   }
 };
 </script>

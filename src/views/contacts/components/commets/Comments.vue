@@ -6,17 +6,17 @@
         <v-col cols="12" md="8">
           <div class="d-flex justify-md-end">
             <div class="mt-3 mr-2">
-              <add-modal @onSave="saveComments" />
+              <add-modal @onSave="saveComment" />
             </div>
           </div>
         </v-col>
       </v-row>
     </v-container>
-    <v-card-text v-if="companyComments">
+    <v-card-text v-if="contactComments">
       <v-data-table
         :headers="headers"
-        :items="companyComments.companyCommentsList"
-        :server-items-length="companyComments.totalResults"
+        :items="contactComments.contactCommentsList"
+        :server-items-length="contactComments.totalResults"
         :items-per-page="options.itemsPerPage"
         :footer-props="{
           'items-per-page-options': [10, 20, 50]
@@ -51,15 +51,15 @@
 
 <script>
 import FormatDateTime from "../../../../components/common/FormatDateTime.vue";
-import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
-import AddModal from "./components/addModal.vue";
+import AddModal from "./components/AddModal.vue";
+import _get from "lodash.get";
 import gql from "graphql-tag";
 export default {
   data() {
     return {
       dialog: false,
-      companyComments: null,
+      contactComments: null,
       headers: [
         { text: "Comment", sortable: false },
         { text: "User", sortable: false },
@@ -73,20 +73,16 @@ export default {
     };
   },
   apollo: {
-    companyComments: {
+    contactComments: {
       query: gql`
-        query searchCompanyComments(
-          $companyUid: String
-          $first: Int
-          $offset: Int
-        ) {
-          companyComments(
-            companyUid: $companyUid
+        query contactComments($contactUid: String, $first: Int, $offset: Int) {
+          contactComments(
+            contactUid: $contactUid
             first: $first
             offset: $offset
           ) {
             totalResults
-            companyCommentsList {
+            contactCommentsList {
               id
               creationTime
               comments
@@ -101,7 +97,7 @@ export default {
       `,
       variables() {
         return {
-          companyUid: this.$route.params.companiesUid,
+          contactUid: this.$route.params.contactUid,
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
@@ -118,20 +114,18 @@ export default {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
     },
-    saveComments(description = null) {
-      console.log("description", description);
+    saveComment(description = null) {
       if (!!description) {
         try {
           this.$apollo
             .mutate({
               mutation: gql`
-                mutation($companyUid: String!, $description: String!) {
-                  createCompanyComment(
-                    companyUid: $companyUid
+                mutation($contactUid: String!, $description: String!) {
+                  createContactComment(
+                    contactUid: $contactUid
                     description: $description
                   ) {
-                    companyComment {
-                      creationTime
+                    contactComment {
                       id
                       creationTime
                       comments
@@ -146,25 +140,25 @@ export default {
               `,
               // Parameters
               variables: {
-                companyUid: this.$route.params.companiesUid,
+                contactUid: this.$route.params.contactUid,
                 description: description
               },
               fetchPolicy: "no-cache"
             })
             .then(result => {
               console.log("result", result);
-              if (!!result && !!result.data.createCompanyComment) {
-                this.companyComments.totalResults += 1;
-                this.companyComments.companyCommentsList.push(
-                  result.data.createCompanyComment.companyComment
+              if (!!result && !!result.data.createContactComment) {
+                this.contactComments.totalResults += 1;
+                this.contactComments.contactCommentsList.push(
+                  result.data.createContactComment.contactComment
                 );
                 console.log(
-                  "this.companyComments.totalResults",
-                  this.companyComments.totalResults
+                  "this.contactComments.totalResults",
+                  this.contactComments.totalResults
                 );
                 console.log(
-                  "this.companyComments.companyCommentsList",
-                  this.companyComments.companyCommentsList
+                  "this.contactComments.contactCommentsList",
+                  this.contactComments.contactCommentsList
                 );
                 this.$eventBus.$emit(
                   "showSnack",
@@ -183,6 +177,7 @@ export default {
         }
       }
     },
+
     async deleteComment(comment) {
       console.log("comment", comment);
       const res = await this.$confirm(
@@ -203,14 +198,14 @@ export default {
       );
       if (res) {
         try {
-          const index = this.companyComments.companyCommentsList.indexOf(
+          const index = this.contactComments.contactCommentsList.indexOf(
             comment
           );
           const result = await this.$apollo.mutate({
             mutation: gql`
               mutation($commentId: Int!) {
-                deleteCompanyComment(companyCommentId: $commentId) {
-                  companyComment {
+                deleteContactComment(contactCommentId: $commentId) {
+                  contactComment {
                     id
                     comments
                   }
@@ -223,7 +218,7 @@ export default {
             }
           });
           console.log("result", result);
-          this.companyComments.companyCommentsList.splice(index, 1);
+          this.contactComments.contactCommentsList.splice(index, 1);
           console.log(this.$apollo.queries);
           this.$eventBus.$emit(
             "showSnack",
@@ -248,7 +243,7 @@ export default {
     FormatDateTime
   },
   beforeUpdate() {
-    this.$apollo.queries.companyComments;
+    this.$apollo.queries.contactComments;
   }
 };
 </script>
