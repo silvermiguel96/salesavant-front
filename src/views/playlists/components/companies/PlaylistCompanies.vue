@@ -50,7 +50,6 @@ import PlayListsTable from "./PlayListsTable.vue";
 export default {
   data() {
     return {
-      items: ["playlists"],
       isLoading: true,
       search: "",
       options: {
@@ -130,6 +129,15 @@ export default {
         this.showTable = true;
       }
     }
+  },
+  updated() {
+    // if (this.playlists.totalResults > 0) {
+    //   let table = document.querySelector(".v-data-table__wrapper tbody");
+    //   const _self = this;
+    //   Sortable.create(table, {
+    //     onEnd({ newIndex, oldIndex }) {}
+    //   });
+    // }
   },
   apollo: {
     playlists: {

@@ -7,7 +7,9 @@
           <v-container grid-list-md>
             <h1 class="subtitle-1">
               Confirm you want to eliminate the playlist
-              <span class="font-weight-bold">{{selectedItem.name}}</span>?
+              <span
+                class="font-weight-bold"
+              >{{selectedItem.name}}</span>?
             </h1>
           </v-container>
         </v-card-text>
@@ -32,21 +34,18 @@
     >
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:item="{ item }">
-        <tr>
+        <tr draggable="true" v-on:dragstart="dragstart(item, $event)">
           <td>
             <router-link :to="`playlists/${item.uid}`">{{item.name}}</router-link>
           </td>
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
-          <td><format-date-time :time="item.creationTime" /></td>
+          <td>
+            <format-date-time :time="item.creationTime" />
+          </td>
           <td>
             <div class="d-flex align-center justify-center">
-            <v-icon
-              @click="deletePlaylist(item)"
-              color="red lighten-2"
-              size="20"
-              small
-            >delete</v-icon>
-          </div>
+              <v-icon @click="deletePlaylist(item)" color="red lighten-2" size="20" small>delete</v-icon>
+            </div>
           </td>
         </tr>
       </template>
@@ -62,8 +61,13 @@ export default {
       headers: [
         { text: "Name", value: "name", width: "40%", sortable: false },
         { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
-        { text: "Creation Time", value: "creationTime", width: "30%", sortable: true },
-        { text: "Remove", width: "10%", sortable: false,  align: "center" }
+        {
+          text: "Creation Time",
+          value: "creationTime",
+          width: "30%",
+          sortable: true
+        },
+        { text: "Remove", width: "10%", sortable: false, align: "center" }
       ],
       options: {
         page: 1,
@@ -83,8 +87,7 @@ export default {
     },
     async deletePlaylist(item) {
       const res = await this.$confirm(
-        ` <h1 class="subtitle-1"
-            >Confirm you want to eliminate the playlist <span class="font-weight-bold">${item.name}</span>?</h1>`,
+        ` <h1 class="subtitle-1">Confirm you want to eliminate the playlist <span class="font-weight-bold">${item.name}</span>?</h1>`,
         {
           buttonTrueText: "delete",
           buttonFalseText: "close",
@@ -92,14 +95,21 @@ export default {
           color: "primary",
           icon: "delete",
           title: "Delete Playlist",
-          width: 600,
+          width: 600
         }
       );
       if (res) {
-        console.log("the playlist", item)
+        console.log("the playlist", item);
         this.$emit("deletePlaylist", item);
       }
     },
+    dragstart(item, event) {
+      console.log("dragstart", item);
+      event.dataTransfer.setData(
+        "text/plain",
+        `playlistCompanies>>>${item.uid}>>>${item.name}`
+      );
+    }
   },
   props: {
     items: Array,
