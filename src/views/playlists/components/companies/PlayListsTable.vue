@@ -34,8 +34,8 @@
     >
       <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:item="{ item }">
-        <tr draggable="true" v-on:dragstart="dragstart(item, $event)">
-          <td>
+        <tr>
+          <td draggable="true" v-on:dragstart="dragstart(item, $event)">
             <router-link :to="`playlists/${item.uid}`">{{item.name}}</router-link>
           </td>
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>

@@ -130,19 +130,11 @@ export default {
       }
     }
   },
-  updated() {
-    // if (this.playlists.totalResults > 0) {
-    //   let table = document.querySelector(".v-data-table__wrapper tbody");
-    //   const _self = this;
-    //   Sortable.create(table, {
-    //     onEnd({ newIndex, oldIndex }) {}
-    //   });
-    // }
-  },
   apollo: {
     playlists: {
       query: gql`
         query playlists(
+          $folderId: Int
           $search: String
           $first: Int
           $offset: Int
@@ -150,6 +142,7 @@ export default {
           $sortOrder: String
         ) {
           playlists(
+            folderId: $folderId
             search: $search
             first: $first
             offset: $offset
@@ -172,13 +165,12 @@ export default {
       `,
       variables() {
         return {
+          folderId: this.folderId,
           search: this.search,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       skip() {
@@ -188,6 +180,12 @@ export default {
         this.isLoading = isLoading;
       },
       fetchPolicy: "cache-and-network"
+    }
+  },
+  props: {
+    folderId: {
+      type: Number,
+      default: null
     }
   }
 };

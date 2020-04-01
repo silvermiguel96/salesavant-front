@@ -2,7 +2,9 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="3" class="d-none d-md-block">
-        <folder-list />
+        <folder-list 
+          @updateSelectedFolder="updateSelectedFolder"
+        />
       </v-col>
       <v-col cols="12" md="9">
         <v-card>
@@ -20,9 +22,9 @@
           ></v-breadcrumbs>
           <v-tabs grow background-color="grey lighten-5" color="primary">
             <!-- Tab Home -->
-            <v-tab class="text-capitalize">Company Playlists</v-tab>
+            <v-tab class="text-capitalize" >Company Playlists</v-tab>
             <v-tab-item>
-              <playlists-companies />
+              <playlists-companies :folderId="selectedFolder? selectedFolder.id: undefined"/>
             </v-tab-item>
             <!-- tab comments -->
             <v-tab class="text-capitalize">Contacts Playlists</v-tab>
@@ -46,6 +48,11 @@ export default {
     return {
       selectedFolder: undefined
     };
+  },
+  methods:{
+    updateSelectedFolder(selectedFolder){
+      this.selectedFolder = selectedFolder;
+    }
   },
   components: {
     FolderList,
