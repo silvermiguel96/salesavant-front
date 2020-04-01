@@ -63,7 +63,6 @@ query CompaniesAdvancedSearch(
       industry
       status
       dateFounded
-      dateAcquired
       linkedinHandle
       stockSymbol
       naicsCode
