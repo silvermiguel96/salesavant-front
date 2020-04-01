@@ -124,9 +124,7 @@ export default {
       selectedPlaylistId: {}
     };
   },
-  components: {
-    playlistsAutocomplete
-  },
+
   apollo: {
     companyPlaylists: {
       query: gql`
@@ -163,7 +161,8 @@ export default {
     }
   },
   components: {
-    formatDateTime
+    formatDateTime,
+    playlistsAutocomplete
   },
   methods: {
     updateOptions({
