@@ -139,7 +139,7 @@ export default {
   apollo: {
     companies: {
       query: gql`
-        query CompaniesAdvancedSearch(
+        query companiesAdvancedSearch(
           $searchNameOrDescription: String
           $playlistUid: String
           $signals: [Int]
@@ -224,7 +224,7 @@ export default {
           name: this.advancedSearch.companySearch.name,
           website: this.advancedSearch.companySearch.website,
           description: this.advancedSearch.companySearch.description,
-          country: this.advancedSearch.country,
+          country: this.advancedSearch.companySearch.country,
           city: this.advancedSearch.companySearch.city,
           region: this.advancedSearch.companySearch.region,
           state: this.advancedSearch.companySearch.state,
