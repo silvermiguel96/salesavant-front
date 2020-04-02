@@ -50,8 +50,8 @@ import PlayListsTable from "./PlayListsTable.vue";
 export default {
   data() {
     return {
-      isLoading: true,
       search: "",
+      isLoading: true,
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -125,8 +125,6 @@ export default {
           "error"
         );
         console.log("error delete playlist", error);
-      } finally {
-        this.showTable = true;
       }
     }
   },
@@ -165,7 +163,7 @@ export default {
       `,
       variables() {
         return {
-          folderId: this.folderId,
+          folderId: parseInt(this.folderId),
           search: this.search,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
@@ -184,7 +182,11 @@ export default {
   },
   props: {
     folderId: {
-      type: Number,
+      type: String,
+      default: null
+    },
+    folderName: {
+      type: String,
       default: null
     }
   }

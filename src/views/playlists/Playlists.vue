@@ -2,9 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="3" class="d-none d-md-block">
-        <folder-list 
-          @updateSelectedFolder="updateSelectedFolder"
-        />
+        <folder-list @updateSelectedFolder="updateSelectedFolder" />
       </v-col>
       <v-col cols="12" md="9">
         <v-card>
@@ -12,7 +10,7 @@
             :large="true"
             :items="[
                   {
-                    text: 'Playlists',
+                    text: selectedFolder? `${selectedFolder.name} / Playlists`:'Global / Playlists ',
                     disabled: true,
                     href: '/playlists'
                   }
@@ -22,9 +20,12 @@
           ></v-breadcrumbs>
           <v-tabs grow background-color="grey lighten-5" color="primary">
             <!-- Tab Home -->
-            <v-tab class="text-capitalize" >Company Playlists</v-tab>
+            <v-tab class="text-capitalize">Company Playlists</v-tab>
             <v-tab-item>
-              <playlists-companies :folderId="selectedFolder? selectedFolder.id: undefined"/>
+              <playlists-companies
+                :folderId="selectedFolder? selectedFolder.id: undefined"
+                :folderName="selectedFolder? selectedFolder.name: undefined"
+              />
             </v-tab-item>
             <!-- tab comments -->
             <v-tab class="text-capitalize">Contacts Playlists</v-tab>
@@ -49,8 +50,9 @@ export default {
       selectedFolder: undefined
     };
   },
-  methods:{
-    updateSelectedFolder(selectedFolder){
+  methods: {
+    updateSelectedFolder(selectedFolder) {
+      console.log("updateSelectedFolder", selectedFolder);
       this.selectedFolder = selectedFolder;
     }
   },
