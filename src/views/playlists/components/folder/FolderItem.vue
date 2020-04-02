@@ -20,7 +20,7 @@
         v-model="folder.name"
         v-show="edit"
         v-on:keydown="saveEditEnter($event)"
-        style="max-width: 140px;"
+        style="max-width: 85%;"
       />
     </v-col>
 
@@ -36,7 +36,7 @@
       </v-btn>
     </v-col>
 
-    <v-col cols="2">
+    <v-col cols="2" class="text-lg-center">
       <v-chip color="light-blue darken-2" text-color="white" small>{{folderNumItems}}</v-chip>
     </v-col>
   </v-row>
