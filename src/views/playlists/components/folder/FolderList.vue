@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-row no-gutters class="ml-2">
+    <v-row no-gutters class="ml-3">
       <v-col cols="12">
         <v-list shaped class="pr-1">
           <v-subheader class="pl-0 pl-sm-2 body-1">Folders</v-subheader>

@@ -2,6 +2,7 @@
   <v-row
     no-gutters
     class="align-center"
+    v-bind:style="dashedBorder"
     v-on:dragover.prevent
     v-on:dragenter="dragenter($event)"
     v-on:dragleave="dragleave($event)"
@@ -46,7 +47,8 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      edit: false
+      edit: false,
+      hightlight: false
     };
   },
   methods: {
@@ -108,9 +110,11 @@ export default {
     },
     dragenter(event) {
       console.log("dragenter");
+      this.hightlight = true;
     },
     dragleave(event) {
       console.log("dragleave");
+      setTimeout(() => (this.hightlight = false), 500);
     },
     drop(event) {
       console.log("drop", event);
@@ -135,6 +139,15 @@ export default {
         this.folder.companyPlaylists.length +
         this.folder.contactPlaylists.length
       );
+    },
+    dashedBorder() {
+      if (this.hightlight) {
+        return {
+          "border": "1px dashed #1976D6",
+          "border-radius": "5px"
+        };
+      }
+      return {};
     }
   },
   props: {
