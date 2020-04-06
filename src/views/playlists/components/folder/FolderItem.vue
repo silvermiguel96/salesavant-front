@@ -109,15 +109,15 @@ export default {
       this.$emit("deleteFolder");
     },
     dragenter(event) {
-      console.log("dragenter");
+      // console.log("dragenter");
       this.hightlight = true;
     },
     dragleave(event) {
-      console.log("dragleave");
+      // console.log("dragleave");
       setTimeout(() => (this.hightlight = false), 500);
     },
     drop(event) {
-      console.log("drop", event);
+      // console.log("drop", event);
       const eventString = event.dataTransfer.getData("text");
       const [playlistType, playlistUid, playlistName] = eventString.split(
         ">>>"
