@@ -15,7 +15,6 @@ query AllPlaylists(
       userId
       totalSignals
       totalCompanies
-      totalScore
     }
   }
 }

@@ -108,7 +108,6 @@ export default {
       playlist: {
         uid: "",
         name: "",
-        totalScore: 0,
         description: null
       }
     };
@@ -120,7 +119,6 @@ export default {
           playlist(uid: $uid) {
             uid
             name
-            totalScore
             description
             modificationTime
           }

@@ -140,6 +140,7 @@ export default {
           $sortOrder: String
         ) {
           playlists(
+            playlistType: "company"
             folderId: $folderId
             search: $search
             first: $first
@@ -154,9 +155,8 @@ export default {
               creationTime
               accountId
               userId
-              totalSignals
               totalCompanies
-              totalScore
+              totalContacts
             }
           }
         }

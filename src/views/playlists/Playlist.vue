@@ -50,8 +50,8 @@
 import _get from "lodash.get";
 import gql from "graphql-tag";
 import Companies from "./components/Companies.vue";
-import Analytics from "./components/Analytics.vue";
 import Contacts from "./components/Contacts.vue"
+import Analytics from "./components/Analytics.vue";
 import { mapMutations } from "vuex";
 
 export default {
@@ -66,7 +66,6 @@ export default {
       playlist: {
         uid: "",
         name: "",
-        totalScore: 0,
         description: null
       }
     };
@@ -78,7 +77,6 @@ export default {
           playlist(uid: $uid) {
             uid
             name
-            totalScore
             description
             additionalData
           }

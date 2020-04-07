@@ -312,7 +312,7 @@ export default {
                 $signalGroups: [String]
                 $newPlaylistName: String!
               ) {
-                createPlaylistFromSearch(
+                createPlaylistFromCompanySearch(
                   companySearch: {
                     searchName: $name
                     city: $city
