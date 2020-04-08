@@ -68,9 +68,9 @@
 <script>
 import _get from "lodash.get";
 import gql from "graphql-tag";
-import Companies from "./CompaniesTab.vue";
-import Contacts from "./ContactsTab.vue";
-import Analytics from "./AnalyticsTab.vue";
+import Companies from "../../components/playlists/playlist/CompaniesTab.vue";
+import Contacts from "../../components/playlists/playlist/ContactsTab.vue";
+import Analytics from "../../components/playlists/playlist/AnalyticsTab.vue";
 import { mapMutations } from "vuex";
 
 export default {

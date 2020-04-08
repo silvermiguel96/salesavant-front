@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import CompaniesTable from "../../../components/companies/CompaniesTable.vue";
-import ButtonMenu from "../../../components/common/ButtonMenu.vue";
+import CompaniesTable from "../../companies/CompaniesTable.vue";
+import ButtonMenu from "../../common/ButtonMenu.vue";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 import { mapMutations } from "vuex";

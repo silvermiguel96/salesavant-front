@@ -7,8 +7,8 @@ import Home from "./views/dashboard/Dashboard.vue";
 import Companies from "./views/companies/Companies.vue";
 import Company from "./views/companies/Company.vue";
 
-import Playlists from "./views/playlists/playlists/Playlists.vue";
-import Playlist from "./views/playlists/playlist/Playlist.vue";
+import Playlists from "./views/playlists/Playlists.vue";
+import Playlist from "./views/playlists/Playlist.vue";
 
 import Contacts from "./views/contacts/Contacts.vue";
 import Contact from "./views/contacts/Contact.vue"

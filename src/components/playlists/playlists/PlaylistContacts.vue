@@ -1,13 +1,13 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" xs="12" class="px-0">
+      <v-col cols="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="10" sm="4">
+          <v-col cols="12" sm="4">
             <v-text-field
               v-model="search"
               append-icon="search"
-              label="Type a Name"
+              label="Type a name"
               single-line
               hide-details
             ></v-text-field>
@@ -45,13 +45,13 @@
 
 <script>
 import gql from "graphql-tag";
-import PlaylistsTable from "../../../components/playlists/PlaylistsTable.vue";
+import PlaylistsTable from "../PlaylistsTable.vue";
 
 export default {
   data() {
     return {
-      search: "",
       isLoading: true,
+      search: "",
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -67,8 +67,8 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.options.page = page;
-      this.options.itemsPerPage = itemsPerPage;
+      this.page = page;
+      this.itemsPerPage = itemsPerPage;
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalCompanies":
@@ -140,7 +140,7 @@ export default {
           $sortOrder: String
         ) {
           playlists(
-            playlistType: "company"
+            playlistType: "contact"
             folderId: $folderId
             search: $search
             first: $first
@@ -168,7 +168,9 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       skip() {
@@ -178,16 +180,6 @@ export default {
         this.isLoading = isLoading;
       },
       fetchPolicy: "cache-and-network"
-    }
-  },
-  props: {
-    folderId: {
-      type: String,
-      default: null
-    },
-    folderName: {
-      type: String,
-      default: null
     }
   }
 };
