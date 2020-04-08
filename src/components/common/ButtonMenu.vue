@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div>
     <v-menu open-on-hover offset-y>
       <template v-slot:activator="{ on }">
         <v-btn class="text-capitalize" color="primary" dark v-on="on" min-width="150">
@@ -10,7 +10,7 @@
       <v-list>
         <v-list-item v-for="(item, index) in items" :key="index"  @click="item.callback">
           <v-icon size="18" class="mr-2">{{ item.icon }}</v-icon>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="text-center">{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>

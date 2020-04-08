@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import formatDateTime from "../../../../components/common/FormatDateTime.vue";
+import formatDateTime from "../common/FormatDateTime.vue";
 export default {
   data() {
     return {

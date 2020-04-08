@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import FolderList from "./components/folder/FolderList.vue";
-import PlaylistsCompanies from "./components/companies/PlaylistCompanies.vue";
-import PlaylistsContacts from "./components/contacts/PlaylistContacts.vue";
+import FolderList from "../../../components/folders/FolderList.vue";
+import PlaylistsCompanies from "./PlaylistCompanies.vue";
+import PlaylistsContacts from "./PlaylistContacts.vue";
 
 export default {
   data() {

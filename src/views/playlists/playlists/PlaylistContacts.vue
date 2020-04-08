@@ -17,10 +17,11 @@
         <v-row no-gutters>
           <v-col cols="12">
             <playlists-table
-              v-if="contacts"
-              :items="contacts.contactsList"
-              :totalResults="contacts.totalResults"
+              v-if="playlists"
+              :items="playlists.playlistsList"
+              :totalResults="playlists.totalResults"
               @updateOptions="updateOptions"
+              @deletePlaylist="deletePlaylist"
             ></playlists-table>
           </v-col>
         </v-row>
@@ -44,7 +45,7 @@
 
 <script>
 import gql from "graphql-tag";
-import PlaylistsTable from "./PlaylistTable.vue";
+import PlaylistsTable from "../../../components/playlists/PlaylistsTable.vue";
 
 export default {
   data() {
@@ -89,52 +90,80 @@ export default {
       } else {
         this.options.sortOrder = "";
       }
+    },
+    async deletePlaylist(playlist) {
+      try {
+        console.log("Delete Id", playlist);
+        const index = this.playlists.playlistsList.indexOf(playlist);
+        let result = null;
+        result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($playlistUid: String!) {
+              deletePlaylist(playlistUid: $playlistUid) {
+                status
+                message
+              }
+            }
+          `,
+          variables: {
+            playlistUid: playlist.uid
+          }
+        });
+        console.log("Result", result);
+        this.playlists.playlistsList.splice(index, 1);
+        console.log(this.$apollo.queries);
+        this.$eventBus.$emit(
+          "showSnack",
+          "The playlist was successfully deleted.",
+          "success"
+        );
+        return;
+      } catch (error) {
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops! something went wrong when removing the playlist, please try again.",
+          "error"
+        );
+        console.log("error delete playlist", error);
+      }
     }
   },
   apollo: {
-    contacts: {
+    playlists: {
       query: gql`
-        query contacts(
+        query playlists(
+          $folderId: Int
           $search: String
-          $sortBy: String
-          $sortOrder: String
           $first: Int
           $offset: Int
+          $sortBy: String
+          $sortOrder: String
         ) {
-          contacts(
+          playlists(
+            playlistType: "contact"
+            folderId: $folderId
             search: $search
-            sortBy: $sortBy
-            sortOrder: $sortOrder
             first: $first
             offset: $offset
+            sortBy: $sortBy
+            sortOrder: $sortOrder
           ) {
             totalResults
-            contactsList {
+            playlistsList {
               uid
-              fullName
-              linkedinHandle
-              scaleScoreAverage
-              capitalEfficiencyScoreAverage
-              wolfpackScore
-              numberOfExits
-              companies {
-                title
-                rank
-                department
-                isCurrent
-                company {
-                  uid
-                  name
-                  scaleScore
-                  capitalEfficiencyScore
-                }
-              }
+              name
+              creationTime
+              accountId
+              userId
+              totalCompanies
+              totalContacts
             }
           }
         }
       `,
       variables() {
         return {
+          folderId: parseInt(this.folderId),
           search: this.search,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,

@@ -4,18 +4,20 @@
       <v-col cols="12" xs="12" class="pt-0">
         <v-card>
           <v-row no-gutters>
-            <v-breadcrumbs
-              class="pl-3 pl-sm-6"
-              :large="true"
-              :items="[
+            <v-col cols="12" xs="12" class="pt-0">
+              <v-breadcrumbs
+                class="pl-3 pl-sm-6"
+                :large="true"
+                :items="[
                 {	          
                 text: 'Companies',	            
                 disabled: true,	              
                 href: '/companies'	              
                 }
               ]"
-              divider=">"
-            ></v-breadcrumbs>
+                divider=">"
+              ></v-breadcrumbs>
+            </v-col>
           </v-row>
           <v-row
             no-gutters

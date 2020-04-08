@@ -16,13 +16,13 @@
 
         <v-row no-gutters>
           <v-col cols="12">
-            <play-lists-table
+            <playlists-table
               v-if="playlists"
               :items="playlists.playlistsList"
               :totalResults="playlists.totalResults"
               @updateOptions="updateOptions"
               @deletePlaylist="deletePlaylist"
-            ></play-lists-table>
+            ></playlists-table>
           </v-col>
         </v-row>
 
@@ -45,7 +45,7 @@
 
 <script>
 import gql from "graphql-tag";
-import PlayListsTable from "./PlayListsTable.vue";
+import PlaylistsTable from "../../../components/playlists/PlaylistsTable.vue";
 
 export default {
   data() {
@@ -61,14 +61,14 @@ export default {
     };
   },
   components: {
-    PlayListsTable
+    PlaylistsTable
   },
   methods: {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.page = page;
-      this.itemsPerPage = itemsPerPage;
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalCompanies":
