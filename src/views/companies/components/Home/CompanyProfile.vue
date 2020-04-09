@@ -6,7 +6,7 @@
           :href="httpCompany"
           target="_blank"
         >Website</a></small> </div>
-      <div class="caption">Last update : <format-date-time :time="company.modificationTime" /></div>
+      <div class="caption">Last update : {{ company.modificationTime | moment("from", "now")}}</div>
     </v-card-subtitle>
     <v-divider></v-divider>
 
@@ -283,6 +283,106 @@
           </v-row>
         </v-card-text>
       </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Acquirer Name:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light" v-if="company.acquirerName">{{ company.acquirerName || "--" }}</span>
+              <span class="font-weight-light" v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Acquirer Name:</span>
+                <span
+                  class="font-weight-light float-right"
+                  v-if="company.acquirerName"
+                >{{ company.acquirerName || "--" }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Date Founded:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light" v-if="company.dateFounded">{{ company.dateFounded | moment("from", "now") }}</span>
+              <span class="font-weight-light" v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Date Founded:</span>
+                <span
+                  class="font-weight-light float-right"
+                  v-if="company.dateFounded"
+                >{{ company.dateFounded | moment("from", "now") }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Exit Date:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light" v-if="company.exitDate">{{ company.exitDate | moment("from", "now") }}</span>
+              <span class="font-weight-light" v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Exit Date:</span>
+                <span
+                  class="font-weight-light float-right"
+                  v-if="company.exitDate"
+                >{{ company.exitDate | moment("from", "now") }}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Exit Value:</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light" v-if="company.exitValue">{{ company.exitValue || "--" }}</span>
+              <span class="font-weight-light" v-else>--</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Exit Value:</span>
+                <span
+                  class="font-weight-light float-right"
+                  v-if="company.exitValue"
+                >{{ company.exitValue || "--"}}</span>
+              <span class="font-weight-light float-right" v-else>--</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col cols="12">
@@ -350,6 +450,10 @@ export default {
             modificationTime
             scaleScore
             capitalEfficiencyScore
+            dateFounded
+            acquirerName
+            exitDate
+            exitValue
             naics {
               search
               description
