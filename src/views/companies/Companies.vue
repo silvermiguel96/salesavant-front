@@ -142,121 +142,6 @@ export default {
       this.page = 1;
     }
   },
-  apollo: {
-    companies: {
-      query: gql`
-        query companiesSearch(
-          $searchNameOrDescription: String
-          $playlistUid: String
-          $signals: [Int]
-          $signalGroups: [String]
-          $name: String
-          $website: String
-          $description: String
-          $country: String
-          $city: String
-          $region: String
-          $state: String
-          $status: String
-          $lessThanEmployees: Int
-          $moreThanEmployees: Int
-          $moreThanScore: Float
-          $lessThanScore: Float
-          $sortBy: String
-          $sortOrder: String
-          $first: Int
-          $offset: Int
-          $totalResults: Int
-        ) {
-          companies(
-            searchNameOrDescription: $searchNameOrDescription
-            playlistUid: $playlistUid
-            signals: $signals
-            signalGroups: $signalGroups
-            searchName: $name
-            searchWebsite: $website
-            searchDescription: $description
-            country: $country
-            city: $city
-            region: $region
-            state: $state
-            status: $status
-            lessThanEmployees: $lessThanEmployees
-            moreThanEmployees: $moreThanEmployees
-            moreThanScore: $moreThanScore
-            lessThanScore: $lessThanScore
-            sortBy: $sortBy
-            sortOrder: $sortOrder
-            first: $first
-            offset: $offset
-            totalResults: $totalResults
-          ) {
-            totalResults
-            companiesList {
-              creationTime
-              modificationTime
-              uid
-              name
-              website
-              description
-              url
-              handle
-              logoUrl
-              city
-              country
-              region
-              state
-              numEmployees
-              momentum
-              vertical
-              industry
-              status
-              dateFounded
-              linkedinHandle
-              stockSymbol
-              naicsCode
-              totalScore
-              totalSignals
-            }
-          }
-        }
-      `,
-      variables() {
-        return {
-          searchNameOrDescription: this.search,
-          playlistUid: this.companySearch.playlistUid,
-          signals: this.companySearch.signals,
-          signalGroups: this.companySearch.signalGroups,
-          name: this.companySearch.name,
-          website: this.companySearch.website,
-          description: this.companySearch.description,
-          country: this.companySearch.country,
-          city: this.companySearch.city,
-          region: this.companySearch.region,
-          state: this.companySearch.state,
-          status: this.companySearch.status,
-          lessThanEmployees: this.companySearch.lessThanEmployees,
-          moreThanEmployees: this.companySearch.moreThanEmployees,
-          moreThanScore: this.companySearch.moreThanScore,
-          lessThanScore: this.companySearch.lessThanScore,
-          first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage,
-          sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder,
-          totalResults: this.totalResults
-        };
-      },
-      skip() {
-        return this.search.length > 0 && this.search.length < 2;
-      },
-      watchLoading(isLoading, countModifier) {
-        this.isLoading = isLoading;
-      },
-      fetchPolicy: "cache-and-network"
-    }
-  },
   methods: {
     ...mapMutations([
       'showSearchDialog'
@@ -524,6 +409,121 @@ export default {
         }
       });
       return filterObjects;
+    }
+  },
+  apollo: {
+    companies: {
+      query: gql`
+        query companiesSearch(
+          $searchNameOrDescription: String
+          $playlistUid: String
+          $signals: [Int]
+          $signalGroups: [String]
+          $name: String
+          $website: String
+          $description: String
+          $country: String
+          $city: String
+          $region: String
+          $state: String
+          $status: String
+          $lessThanEmployees: Int
+          $moreThanEmployees: Int
+          $moreThanScore: Float
+          $lessThanScore: Float
+          $sortBy: String
+          $sortOrder: String
+          $first: Int
+          $offset: Int
+          $totalResults: Int
+        ) {
+          companies(
+            searchNameOrDescription: $searchNameOrDescription
+            playlistUid: $playlistUid
+            signals: $signals
+            signalGroups: $signalGroups
+            searchName: $name
+            searchWebsite: $website
+            searchDescription: $description
+            country: $country
+            city: $city
+            region: $region
+            state: $state
+            status: $status
+            lessThanEmployees: $lessThanEmployees
+            moreThanEmployees: $moreThanEmployees
+            moreThanScore: $moreThanScore
+            lessThanScore: $lessThanScore
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+            first: $first
+            offset: $offset
+            totalResults: $totalResults
+          ) {
+            totalResults
+            companiesList {
+              creationTime
+              modificationTime
+              uid
+              name
+              website
+              description
+              url
+              handle
+              logoUrl
+              city
+              country
+              region
+              state
+              numEmployees
+              momentum
+              vertical
+              industry
+              status
+              dateFounded
+              linkedinHandle
+              stockSymbol
+              naicsCode
+              totalScore
+              totalSignals
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          searchNameOrDescription: this.search,
+          playlistUid: this.companySearch.playlistUid,
+          signals: this.companySearch.signals,
+          signalGroups: this.companySearch.signalGroups,
+          name: this.companySearch.name,
+          website: this.companySearch.website,
+          description: this.companySearch.description,
+          country: this.companySearch.country,
+          city: this.companySearch.city,
+          region: this.companySearch.region,
+          state: this.companySearch.state,
+          status: this.companySearch.status,
+          lessThanEmployees: this.companySearch.lessThanEmployees,
+          moreThanEmployees: this.companySearch.moreThanEmployees,
+          moreThanScore: this.companySearch.moreThanScore,
+          lessThanScore: this.companySearch.lessThanScore,
+          first: this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder,
+          totalResults: this.totalResults
+        };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
+      },
+      fetchPolicy: "cache-and-network"
     }
   },
   props: {

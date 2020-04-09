@@ -109,11 +109,9 @@ export default {
     ContactsTable
   },
   methods: {
-    ...mapMutations([
-      'showSearchDialog'
-    ]),
+    ...mapMutations(["showSearchDialog"]),
     triggerSearch() {
-      this.showSearchDialog('contacts');
+      this.showSearchDialog("contacts");
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
@@ -149,43 +147,86 @@ export default {
       }
     }
   },
+  computed: {
+    contactSearch() {
+      return this.$store.state.contactSearch;
+    },
+    searchType() {
+      return this.$store.state.searchType;
+    }
+  },
   apollo: {
     contacts: {
       query: gql`
         query contacts(
-          $search: String
+          $searchName: String
+          $searchTitle: String
+          $searchDepartment: String
+          $searchRank: String
+          $city: String
+          $state: String
+          $region: String
+          $country: String
+          $moreThanScaleScoreAverage: Int
+          $lessThanScaleScoreAverage: Int
+          $moreThanCesa: Int
+          $lessThanCesa: Int
+          $moreThanWolfpackScore: Int
+          $lessThanWolfpackScore: Int
+          $moreThanNumberOfExits: Int
+          $lessThanNumberOfExits: Int
           $sortBy: String
           $sortOrder: String
           $first: Int
           $offset: Int
+          $totalResults: Int
         ) {
           contacts(
-            search: $search
+            searchName: $searchName
+            searchTitle: $searchTitle
+            searchDepartment: $searchDepartment
+            searchRank: $searchRank
+            city: $city
+            state: $state
+            region: $region
+            country: $country
+            moreThanScaleScoreAverage: $moreThanScaleScoreAverage
+            lessThanScaleScoreAverage: $lessThanScaleScoreAverage
+            moreThanCesa: $moreThanCesa
+            lessThanCesa: $lessThanCesa
+            moreThanWolfpackScore: $moreThanWolfpackScore
+            lessThanWolfpackScore: $lessThanWolfpackScore
+            moreThanNumberOfExits: $moreThanNumberOfExits
+            lessThanNumberOfExits: $lessThanNumberOfExits
             sortBy: $sortBy
             sortOrder: $sortOrder
             first: $first
             offset: $offset
+            totalResults: $totalResults
           ) {
             totalResults
             contactsList {
-              uid
+              creationTime
+              modificationTime
               fullName
               linkedinHandle
+              city
+              state
+              region
+              country
               scaleScoreAverage
               capitalEfficiencyScoreAverage
               wolfpackScore
               numberOfExits
               companies {
-                title
-                rank
-                department
-                isCurrent
                 company {
                   uid
                   name
-                  scaleScore
-                  capitalEfficiencyScore
                 }
+                title
+                department
+                rank
+                isCurrent
               }
             }
           }
@@ -193,7 +234,22 @@ export default {
       `,
       variables() {
         return {
-          search: this.search,
+          searchName: this.contactSearch.name,
+          searchTitle: this.contactSearch.title,
+          searchDepartment: this.contactSearch.department,
+          searchRank: this.contactSearch.rank,
+          city: this.contactSearch.city,
+          state: this.contactSearch.state,
+          region: this.contactSearch.region,
+          country: this.contactSearch.country,
+          moreThanScaleScoreAverage: this.contactSearch.moreThanScaleScoreAverage,
+          lessThanScaleScoreAverage: this.contactSearch.lessThanScaleScoreAverage,
+          moreThanCesa: this.contactSearch.moreThanCesa,
+          lessThanCesa: this.contactSearch.lessThanCesa,
+          moreThanWolfpackScore: this.contactSearch.moreThanWolfpackScore,
+          lessThanWolfpackScore: this.contactSearch.lessThanWolfpackScore,
+          moreThanNumberOfExits: this.contactSearch.moreThanNumberOfExits,
+          lessThanNumberOfExits: this.contactSearch.lessThanNumberOfExits,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
