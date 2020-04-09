@@ -69,11 +69,6 @@ export default {
           icon: "work", 
           text: "Batch",
           click: this.onBatch
-        },
-        { 
-          icon: "search", 
-          text: "Search", 
-          click: this.showSearch 
         }
       ]
     };
@@ -84,9 +79,6 @@ export default {
     ...mapMutations([
       'resetCompanySearch', 'resetContactSearch'
     ]),
-    showSearch() {
-      return this.$store.commit('showSearchDialog');
-    },
     onBatch() {
       this.resetSearch();
       this.$router.push("/batch").catch(err => {});
