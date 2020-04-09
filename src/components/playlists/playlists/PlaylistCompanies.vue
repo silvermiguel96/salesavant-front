@@ -20,6 +20,8 @@
               v-if="playlists"
               :items="playlists.playlistsList"
               :totalResults="playlists.totalResults"
+              :folderId="folderId"
+              :folderName="folderName"
               @updateOptions="updateOptions"
               @deletePlaylist="deletePlaylist"
             ></playlists-table>

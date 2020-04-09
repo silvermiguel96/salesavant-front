@@ -19,7 +19,7 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-          <v-row no-gutters v-if="!!this.searchType && this.searchType=='companies'">
+          <v-row no-gutters v-if="!!this.searchType && this.searchType=='companies'" class="px-4">
             <v-col cols="12" md="8">
               <div class="mt-6">
                 <span class="ml-2">Filtering by:</span>
@@ -40,11 +40,11 @@
               </div>
             </v-col>
             <v-col cols="12" md="4">
-              <div class="d-flex justify-md-end">
-                <div class="mr-2 mt-sm-3">
+              <div class="d-flex flex-column flex-sm-row justify-md-end ">
+                <div class="mr-2 mt-sm-3 pa-1">
                   <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
                 </div>
-                <div class="mr-2 mt-sm-3">
+                <div class="mr-2 mt-sm-3 pa-1">
                   <create-signal-from-results @onSave="saveResultsAsSignal" />
                 </div>
               </div>
