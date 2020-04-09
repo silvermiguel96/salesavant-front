@@ -1,27 +1,6 @@
 <template >
-  <div>
-    <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
-        <v-card-title class="headline">Delete playlist</v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <h1 class="subtitle-1">
-              Confirm you want to eliminate the playlist
-              <span
-                class="font-weight-bold"
-              >{{selectedItem.name}}</span>?
-            </h1>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn color="red darken-1" class="text-capitalize" text @click="deletePlaylist">delete</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <v-data-table
-      :headers="folderId || folderName ? foldersheaders : defaultHeaders"
+      :headers="folderId ? foldersHeaders : defaultHeaders"
       :items="items"
       :server-items-length="totalResults"
       :items-per-page="options.itemsPerPage"
@@ -44,7 +23,7 @@
           <td>
             <div class="d-flex align-center justify-center" v-if="folderId || folderName ">
               <v-icon @click="removePlaylist(item)" color="red lighten-2" size="20" small>delete</v-icon>
-            </div>  
+            </div>
             <div class="d-flex align-center justify-center" v-else>
               <v-icon @click="deletePlaylist(item)" color="red lighten-2" size="20" small>delete</v-icon>
             </div>
@@ -52,36 +31,31 @@
         </tr>
       </template>
     </v-data-table>
-  </div>
 </template>
 
 <script>
 import formatDateTime from "../common/FormatDateTime.vue";
+const defaultHeaders = [
+  { text: "Name", value: "name", width: "40%", sortable: false },
+  { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
+  {
+    text: "Creation Time",
+    value: "creationTime",
+    width: "30%",
+    sortable: true
+  },
+  { text: "Delete", width: "10%", sortable: false, align: "center" }
+];
 export default {
   data() {
     return {
-      defaultHeaders: [
-        { text: "Name", value: "name", width: "40%", sortable: false },
-        { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
-        {
-          text: "Creation Time",
-          value: "creationTime",
-          width: "30%",
-          sortable: true
-        },
-        { text: "Delete" , width: "10%", sortable: false, align: "center" }
-      ],
-      foldersheaders: [
-        { text: "Name", value: "name", width: "40%", sortable: false },
-        { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
-        {
-          text: "Creation Time",
-          value: "creationTime",
-          width: "30%",
-          sortable: true
-        },
-        { text: "Remove", width: "10%", sortable: false, align: "center" }
-      ],
+      defaultHeaders: defaultHeaders,
+      foldersHeaders: defaultHeaders.map(item => {
+        if(item.text == "Delete") {
+          return  { text: "Remove", width: "10%", sortable: false, align: "center" };
+        }
+        return item;
+      }),
       options: {
         page: 1,
         itemsPerPage: 10
