@@ -42,7 +42,7 @@
 
 <script>
 import gql from "graphql-tag";
-import ContactsTable from "../../../components/contacts/ContactsTable";
+import ContactsTable from "../../contacts/ContactsTable";
 
 export default {
   data() {

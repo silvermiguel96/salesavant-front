@@ -9,6 +9,7 @@ import store from "./store";
 Vue.config.productionTip = false;
 
 Vue.use(VuetifyConfirm, { vuetify })
+Vue.use(require('vue-moment'));
 
 Vue.prototype.$eventBus = new Vue();
 

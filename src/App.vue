@@ -46,7 +46,6 @@ export default {
     if (!!localStorage.getItem(AUTH_TOKEN)) {
       this.isAuthenticated = true;
       this.$store.commit("hideSearchDialog");
-      console.log("AUTH_TOKEN", AUTH_TOKEN);
     }
     this.$eventBus.$on("createJob", this.createJob);
     this.$eventBus.$on("showSnack", this.showSnack);
@@ -97,7 +96,7 @@ export default {
   computed: {
     showSearchDialog :{
       get () {
-        return this.$store.state.advancedSearch.showDialog;
+        return this.$store.state.showSearchDialog;
       },
       set (value) {
         if (value){

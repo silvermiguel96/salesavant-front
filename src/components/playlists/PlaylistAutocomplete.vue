@@ -34,10 +34,6 @@ export default {
     search(val) {
       if (this.loading) return;
       this.queryPlaylists();
-    },
-    playlistSelected (val){
-      console.log("playlistSelected store val change", val);
-      this.select  = val;
     }
   },
   methods: {
@@ -86,11 +82,6 @@ export default {
       }else{
         this.$emit("change", {});
       }
-    }
-  },
-  computed: {
-    playlistSelected (){
-      return this.$store.state.advancedSearch.companySearch.playlistUid;
     }
   },
   destroyed() {

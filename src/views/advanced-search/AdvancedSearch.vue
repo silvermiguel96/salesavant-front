@@ -9,14 +9,17 @@
       scrollable>
       <v-card>
         <v-toolbar dark color="primary" height="48px">
-          <v-toolbar-title>Advanced Search</v-toolbar-title>
+          <v-toolbar-title class="text-capitalize">{{`Advanced ${searchType} Search`}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="hideSearchDialog" align-end>
             <v-icon>close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-content>
+        <v-content v-if="searchType=='companies'">
           <companies-search />
+        </v-content>
+        <v-content v-else-if="searchType=='contacts'">
+          <contacts-search />
         </v-content>
       </v-card>
     </v-dialog>
@@ -24,24 +27,30 @@
 
 <script>
 import CompaniesSearch from "./CompaniesSearch.vue";
+import ContactsSearch from "./ContactsSearch.vue";
 import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      searchType: null
     };
   },
   props: {
     value: { type: Boolean, default: false }
   },
   components: {
-    CompaniesSearch
+    CompaniesSearch,
+    ContactsSearch
   },
   methods: {
     ...mapMutations([
       'hideSearchDialog'
     ]),
+  },
+  computed:{
+    searchType(){
+      return this.$store.state.searchType;
+    }
   }
 };
 </script>

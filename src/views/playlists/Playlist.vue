@@ -1,8 +1,11 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs
-      :large="true"
-      :items="[
+    <v-card>
+      <v-row no-gutters>
+        <v-col cols="12" xs="12" class="pt-0">
+          <v-breadcrumbs
+            :large="true"
+            :items="[
             {
               text: 'Playlists',
               disabled: false,
@@ -13,45 +16,61 @@
               disabled: true
             }
           ]"
-      divider=">"
-    >
-      <template v-slot:item="props">
-        <v-breadcrumbs-item
-          :href="props.item.href"
-          :class="[props.item.disabled && 'disabled']"
-          @click.prevent="$router.push(props.item.href)"
-        >{{ props.item.text }}</v-breadcrumbs-item>
-      </template>
-    </v-breadcrumbs>
-    <v-tabs grow background-color="grey lighten-5" color="primary">
-      <!-- Tab Companies -->
-      <v-tab class="text-capitalize">Companies</v-tab>
-      <v-tab-item>
-        <companies />
-      </v-tab-item>
-      <!-- Tab contacts -->
-      <v-tab class="text-capitalize">Contacts</v-tab>
-      <v-tab-item>
-        <div>
-          <contacts />
-        </div>
-      </v-tab-item>
-      <!-- Tab analytics -->
-      <v-tab class="text-capitalize">Analytics</v-tab>
-      <v-tab-item>
-        <analytics :aggs_data="additionalDataParsed">
-        </analytics>
-      </v-tab-item>
-    </v-tabs>
+            divider=">"
+            class="pl-3 pl-sm-6 pb-0"
+          >
+            <template v-slot:item="props">
+              <v-breadcrumbs-item
+                :href="props.item.href"
+                :class="[props.item.disabled && 'disabled']"
+                @click.prevent="$router.push(props.item.href)"
+              >{{ props.item.text }}</v-breadcrumbs-item>
+            </template>
+          </v-breadcrumbs>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <div class="title text--secondary pl-3 pl-sm-6">{{playlist.name}}</div>
+          <div class="caption text--secondary pl-3 pl-sm-6">
+            Last Updated:
+            <span>{{ playlist.modificationTime | moment("from", "now") }}</span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="12" xs="12" class="pt-0">
+          <v-tabs grow background-color="grey lighten-5" color="primary">
+            <!-- Tab Companies -->
+            <v-tab class="text-capitalize">Companies</v-tab>
+            <v-tab-item>
+              <companies />
+            </v-tab-item>
+            <!-- Tab contacts -->
+            <v-tab class="text-capitalize">Contacts</v-tab>
+            <v-tab-item>
+              <div>
+                <contacts />
+              </div>
+            </v-tab-item>
+            <!-- Tab analytics -->
+            <v-tab class="text-capitalize">Analytics</v-tab>
+            <v-tab-item>
+              <analytics :aggs_data="additionalDataParsed"></analytics>
+            </v-tab-item>
+          </v-tabs>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 import _get from "lodash.get";
 import gql from "graphql-tag";
-import Companies from "./components/Companies.vue";
-import Analytics from "./components/Analytics.vue";
-import Contacts from "./components/Contacts.vue"
+import Companies from "../../components/playlists/playlist/CompaniesTab.vue";
+import Contacts from "../../components/playlists/playlist/ContactsTab.vue";
+import Analytics from "../../components/playlists/playlist/AnalyticsTab.vue";
 import { mapMutations } from "vuex";
 
 export default {
@@ -66,7 +85,6 @@ export default {
       playlist: {
         uid: "",
         name: "",
-        totalScore: 0,
         description: null
       }
     };
@@ -78,8 +96,8 @@ export default {
           playlist(uid: $uid) {
             uid
             name
-            totalScore
             description
+            modificationTime
             additionalData
           }
         }

@@ -32,7 +32,6 @@
       class="mx-2"
       @update:options="updateOptions"
     >
-      <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
       <template v-slot:item="{ item }">
         <tr>
           <td draggable="true" v-on:dragstart="dragstart(item, $event)">
@@ -54,7 +53,7 @@
 </template>
 
 <script>
-import formatDateTime from "../../../../components/common/FormatDateTime.vue";
+import formatDateTime from "../common/FormatDateTime.vue";
 export default {
   data() {
     return {

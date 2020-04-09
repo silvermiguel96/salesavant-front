@@ -1,13 +1,13 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" xs="12" class="px-0">
+      <v-col cols="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="10" sm="4">
+          <v-col cols="12" sm="4">
             <v-text-field
               v-model="search"
               append-icon="search"
-              label="Type a Name"
+              label="Type a name"
               single-line
               hide-details
             ></v-text-field>
@@ -16,13 +16,13 @@
 
         <v-row no-gutters>
           <v-col cols="12">
-            <play-lists-table
+            <playlists-table
               v-if="playlists"
               :items="playlists.playlistsList"
               :totalResults="playlists.totalResults"
               @updateOptions="updateOptions"
               @deletePlaylist="deletePlaylist"
-            ></play-lists-table>
+            ></playlists-table>
           </v-col>
         </v-row>
 
@@ -45,13 +45,13 @@
 
 <script>
 import gql from "graphql-tag";
-import PlayListsTable from "./PlayListsTable.vue";
+import PlaylistsTable from "../PlaylistsTable.vue";
 
 export default {
   data() {
     return {
-      search: "",
       isLoading: true,
+      search: "",
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -61,7 +61,7 @@ export default {
     };
   },
   components: {
-    PlayListsTable
+    PlaylistsTable
   },
   methods: {
     updateOptions({
@@ -140,6 +140,7 @@ export default {
           $sortOrder: String
         ) {
           playlists(
+            playlistType: "contact"
             folderId: $folderId
             search: $search
             first: $first
@@ -154,9 +155,8 @@ export default {
               creationTime
               accountId
               userId
-              totalSignals
               totalCompanies
-              totalScore
+              totalContacts
             }
           }
         }
@@ -168,7 +168,9 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       skip() {
@@ -178,16 +180,6 @@ export default {
         this.isLoading = isLoading;
       },
       fetchPolicy: "cache-and-network"
-    }
-  },
-  props: {
-    folderId: {
-      type: String,
-      default: null
-    },
-    folderName: {
-      type: String,
-      default: null
     }
   }
 };

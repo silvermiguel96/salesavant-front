@@ -40,7 +40,7 @@
               :dense="denseForm"
               name="moreThanEmployees"
               v-model="companySearch.moreThanEmployees"
-              label="More than Employees"
+              label="More Than Employees"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -49,7 +49,7 @@
               :dense="denseForm"
               name="lessThanEmployees"
               v-model="companySearch.lessThanEmployees"
-              label="Less than Employees"
+              label="Less Than Employees"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -60,7 +60,7 @@
               :dense="denseForm"
               name="moreThanScore"
               v-model="companySearch.moreThanScore"
-              label="More than Score"
+              label="More Than Score"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -69,7 +69,7 @@
               :dense="denseForm"
               name="lessThanScore"
               v-model="companySearch.lessThanScore"
-              label="Less than Score"
+              label="Less Than Score"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -150,7 +150,7 @@ export default {
       if (!this.companySearch.lessThanScore) {
         this.companySearch.lessThanScore = 0
       }
-      console.log("this.company", this.companySearch)
+      console.log("this.companySearch", this.companySearch)
       this.doCompanySearch({...this.companySearch})
     },
     clearAll() {

@@ -1,13 +1,13 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" class="px-0">
+      <v-col cols="12" xs="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="12" sm="4">
+          <v-col cols="10" sm="4">
             <v-text-field
               v-model="search"
               append-icon="search"
-              label="Type a name"
+              label="Type a Name"
               single-line
               hide-details
             ></v-text-field>
@@ -17,10 +17,11 @@
         <v-row no-gutters>
           <v-col cols="12">
             <playlists-table
-              v-if="contacts"
-              :items="contacts.contactsList"
-              :totalResults="contacts.totalResults"
+              v-if="playlists"
+              :items="playlists.playlistsList"
+              :totalResults="playlists.totalResults"
               @updateOptions="updateOptions"
+              @deletePlaylist="deletePlaylist"
             ></playlists-table>
           </v-col>
         </v-row>
@@ -44,13 +45,13 @@
 
 <script>
 import gql from "graphql-tag";
-import PlaylistsTable from "./PlaylistTable.vue";
+import PlaylistsTable from "../PlaylistsTable.vue";
 
 export default {
   data() {
     return {
-      isLoading: true,
       search: "",
+      isLoading: true,
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -66,8 +67,8 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.page = page;
-      this.itemsPerPage = itemsPerPage;
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalCompanies":
@@ -89,59 +90,85 @@ export default {
       } else {
         this.options.sortOrder = "";
       }
+    },
+    async deletePlaylist(playlist) {
+      try {
+        console.log("Delete Id", playlist);
+        const index = this.playlists.playlistsList.indexOf(playlist);
+        let result = null;
+        result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($playlistUid: String!) {
+              deletePlaylist(playlistUid: $playlistUid) {
+                status
+                message
+              }
+            }
+          `,
+          variables: {
+            playlistUid: playlist.uid
+          }
+        });
+        console.log("Result", result);
+        this.playlists.playlistsList.splice(index, 1);
+        console.log(this.$apollo.queries);
+        this.$eventBus.$emit(
+          "showSnack",
+          "The playlist was successfully deleted.",
+          "success"
+        );
+        return;
+      } catch (error) {
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops! something went wrong when removing the playlist, please try again.",
+          "error"
+        );
+        console.log("error delete playlist", error);
+      }
     }
   },
   apollo: {
-    contacts: {
+    playlists: {
       query: gql`
-        query contacts(
+        query playlists(
+          $folderId: Int
           $search: String
-          $sortBy: String
-          $sortOrder: String
           $first: Int
           $offset: Int
+          $sortBy: String
+          $sortOrder: String
         ) {
-          contacts(
+          playlists(
+            playlistType: "company"
+            folderId: $folderId
             search: $search
-            sortBy: $sortBy
-            sortOrder: $sortOrder
             first: $first
             offset: $offset
+            sortBy: $sortBy
+            sortOrder: $sortOrder
           ) {
             totalResults
-            contactsList {
+            playlistsList {
               uid
-              fullName
-              linkedinHandle
-              scaleScoreAverage
-              capitalEfficiencyScoreAverage
-              wolfpackScore
-              numberOfExits
-              companies {
-                title
-                rank
-                department
-                isCurrent
-                company {
-                  uid
-                  name
-                  scaleScore
-                  capitalEfficiencyScore
-                }
-              }
+              name
+              creationTime
+              accountId
+              userId
+              totalCompanies
+              totalContacts
             }
           }
         }
       `,
       variables() {
         return {
+          folderId: parseInt(this.folderId),
           search: this.search,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       skip() {
@@ -151,6 +178,16 @@ export default {
         this.isLoading = isLoading;
       },
       fetchPolicy: "cache-and-network"
+    }
+  },
+  props: {
+    folderId: {
+      type: String,
+      default: null
+    },
+    folderName: {
+      type: String,
+      default: null
     }
   }
 };
