@@ -62,7 +62,8 @@ const getters = {
 };
 
 const mutations = {
-  showSearchDialog(state) {
+  showSearchDialog(state, newSearchType) {
+    state.searchType = newSearchType;
     state.showSearchDialog = true;
   },
   hideSearchDialog(state) {

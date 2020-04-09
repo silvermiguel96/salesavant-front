@@ -19,10 +19,7 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-          <v-row
-            no-gutters
-            v-if="!!this.searchType && this.searchType=='companies'"
-          >
+          <v-row no-gutters v-if="!!this.searchType && this.searchType=='companies'">
             <v-col cols="12" md="8">
               <div class="mt-6">
                 <span class="ml-2">Filtering by:</span>
@@ -63,6 +60,16 @@
                 single-line
                 hide-details
               ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="2">
+              <div>
+                <a
+                  @click.prevent="triggerSearch"
+                  class="text-capitalize body-2"
+                  block
+                  color="primary"
+                >Advanced Search</a>
+              </div>
             </v-col>
           </v-row>
 
@@ -105,6 +112,7 @@ import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
 import { defaultCompanySearch } from "../../store";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -232,10 +240,12 @@ export default {
           moreThanScore: this.companySearch.moreThanScore,
           lessThanScore: this.companySearch.lessThanScore,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
-          totalResults: this.totalResults,
+          totalResults: this.totalResults
         };
       },
       skip() {
@@ -248,6 +258,12 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'showSearchDialog'
+    ]),
+    triggerSearch() {
+      this.showSearchDialog('companies');
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -489,9 +505,7 @@ export default {
               filterObjects.push({
                 key: "signals>>>" + index,
                 labelKey: key,
-                labelVal: this.companySearch.displaySignals[
-                  index
-                ]
+                labelVal: this.companySearch.displaySignals[index]
               });
             });
           } else if (key == "playlistUid") {

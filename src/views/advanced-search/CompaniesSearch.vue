@@ -150,7 +150,7 @@ export default {
       if (!this.companySearch.lessThanScore) {
         this.companySearch.lessThanScore = 0
       }
-      console.log("this.company", this.companySearch)
+      console.log("this.companySearch", this.companySearch)
       this.doCompanySearch({...this.companySearch})
     },
     clearAll() {

@@ -50,6 +50,16 @@
                 hide-details
               ></v-text-field>
             </v-col>
+            <v-col cols="12" md="2">
+              <div>
+                <a
+                  @click.prevent="triggerSearch"
+                  class="text-capitalize body-2"
+                  block
+                  color="primary"
+                >Advanced Search</a>
+              </div>
+            </v-col>
           </v-row>
         </v-container>
         <!-- Result -->
@@ -80,6 +90,7 @@
 <script>
 import gql from "graphql-tag";
 import ContactsTable from "../../components/contacts/ContactsTable.vue";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -98,6 +109,12 @@ export default {
     ContactsTable
   },
   methods: {
+    ...mapMutations([
+      'showSearchDialog'
+    ]),
+    triggerSearch() {
+      this.showSearchDialog('contacts');
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
