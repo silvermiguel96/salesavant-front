@@ -82,34 +82,38 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'resetAdvancedSearch'
+      'resetCompanySearch', 'resetContactSearch'
     ]),
     showSearch() {
       return this.$store.commit('showSearchDialog');
     },
     onBatch() {
-      this.resetAdvancedSearch();
+      this.resetSearch();
       this.$router.push("/batch").catch(err => {});
     },
     onPlaylists() {
-      this.resetAdvancedSearch();
+      this.resetSearch();
       this.$router.push("/playlists").catch(err => {});
     },
     onCompanies() {
-      this.resetAdvancedSearch();
+      this.resetSearch();
       this.$router.push("/companies").catch(err => {});
     },
     onContacts() {
-      this.resetAdvancedSearch();
+      this.resetSearch();
       this.$router.push("/contacts").catch(err => {});
     },
     onSignals() {
-      this.resetAdvancedSearch();
+      this.resetSearch();
       this.$router.push("/signals").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);
       this.$router.go("/login");
+    },
+    resetSearch(){
+      this.resetCompanySearch();
+      this.resetContactSearch();
     }
   }
 };
