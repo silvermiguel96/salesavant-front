@@ -96,7 +96,7 @@ export default {
   computed: {
     showSearchDialog :{
       get () {
-        return this.$store.state.advancedSearch.showDialog;
+        return this.$store.state.showSearchDialog;
       },
       set (value) {
         if (value){

@@ -21,7 +21,7 @@
           </v-row>
           <v-row
             no-gutters
-            v-if="!!this.advancedSearch.searchType && this.advancedSearch.searchType=='companies'"
+            v-if="!!this.searchType && this.searchType=='companies'"
           >
             <v-col cols="12" md="8">
               <div class="mt-6">
@@ -110,10 +110,6 @@ export default {
   data() {
     return {
       totalResults: 0,
-      page: 1,
-      itemsPerPage: 10,
-      sortBy: "",
-      sortOrder: "",
       search: "",
       searchField: "",
       isLoading: true,
@@ -141,7 +137,7 @@ export default {
   apollo: {
     companies: {
       query: gql`
-        query companiesAdvancedSearch(
+        query companiesSearch(
           $searchNameOrDescription: String
           $playlistUid: String
           $signals: [Int]
@@ -220,32 +216,26 @@ export default {
       variables() {
         return {
           searchNameOrDescription: this.search,
-          playlistUid: this.advancedSearch.companySearch.playlistUid,
-          signals: this.advancedSearch.companySearch.signals,
-          signalGroups: this.advancedSearch.companySearch.signalGroups,
-          name: this.advancedSearch.companySearch.name,
-          website: this.advancedSearch.companySearch.website,
-          description: this.advancedSearch.companySearch.description,
-          country: this.advancedSearch.companySearch.country,
-          city: this.advancedSearch.companySearch.city,
-          region: this.advancedSearch.companySearch.region,
-          state: this.advancedSearch.companySearch.state,
-          status: this.advancedSearch.companySearch.status,
-          lessThanEmployees: this.advancedSearch.companySearch
-            .lessThanEmployees,
-          moreThanEmployees: this.advancedSearch.companySearch
-            .moreThanEmployees,
-          moreThanScore: this.advancedSearch.companySearch.moreThanScore,
-          lessThanScore: this.advancedSearch.companySearch.lessThanScore,
-          sortBy: this.sortBy,
-          sortOrder: this.sortOrder,
+          playlistUid: this.companySearch.playlistUid,
+          signals: this.companySearch.signals,
+          signalGroups: this.companySearch.signalGroups,
+          name: this.companySearch.name,
+          website: this.companySearch.website,
+          description: this.companySearch.description,
+          country: this.companySearch.country,
+          city: this.companySearch.city,
+          region: this.companySearch.region,
+          state: this.companySearch.state,
+          status: this.companySearch.status,
+          lessThanEmployees: this.companySearch.lessThanEmployees,
+          moreThanEmployees: this.companySearch.moreThanEmployees,
+          moreThanScore: this.companySearch.moreThanScore,
+          lessThanScore: this.companySearch.lessThanScore,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder,
           totalResults: this.totalResults,
-          first: this.itemsPerPage,
-          offset: this.itemsPerPage * this.page - this.itemsPerPage
         };
       },
       skip() {
@@ -261,28 +251,28 @@ export default {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.page = page;
-      this.itemsPerPage = itemsPerPage;
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalScore":
-            this.sortBy = "score";
+            this.options.sortBy = "score";
             break;
           case "numEmployees":
-            this.sortBy = "employees";
+            this.options.sortBy = "employees";
             break;
         }
       } else {
-        this.sortBy = "";
+        this.options.sortBy = "";
       }
       if (sortDesc.length > 0) {
         if (sortDesc[0]) {
-          this.sortOrder = "desc";
+          this.options.sortOrder = "desc";
         } else {
-          this.sortOrder = "asc";
+          this.options.sortOrder = "asc";
         }
       } else {
-        this.sortOrder = "";
+        this.options.sortOrder = "";
       }
     },
     async saveResultsAsPlaylist(newPlaylistName = null) {
@@ -292,7 +282,7 @@ export default {
         "newPlaylistName =",
         newPlaylistName
       );
-      if (!!this.advancedSearch.searchType && !!newPlaylistName) {
+      if (!!this.searchType && !!newPlaylistName) {
         try {
           const result = await this.$apollo.mutate({
             mutation: gql`
@@ -342,7 +332,7 @@ export default {
               }
             `,
             variables: {
-              ...this.advancedSearch.companySearch,
+              ...this.companySearch,
               newPlaylistName: newPlaylistName
             }
           });
@@ -362,7 +352,7 @@ export default {
     },
     async saveResultsAsSignal(signal = null) {
       console.log("signal", signal);
-      if (!!this.advancedSearch.searchType && !!signal) {
+      if (!!this.searchType && !!signal) {
         const newSignalName = _get(signal, "name", "");
         const newSignalDescription = _get(signal, "description", "");
         const newSignalGroup = _get(signal, "group", "");
@@ -433,7 +423,7 @@ export default {
             `,
             // Parameters
             variables: {
-              ...this.advancedSearch.companySearch,
+              ...this.companySearch,
               newSignalName: newSignalName,
               newSignalDescription: newSignalDescription,
               newSignalGroup: newSignalGroup,
@@ -458,45 +448,48 @@ export default {
     removeFilter(key) {
       if (key.startsWith("signals")) {
         let index = key.split(">>>")[1];
-        let currentSignals = this.$store.state.advancedSearch.companySearch.signals.slice();
-        let currentDisplaySignals = this.$store.state.advancedSearch.companySearch.displaySignals.slice();
+        let currentSignals = this.$store.state.companySearch.signals.slice();
+        let currentDisplaySignals = this.$store.state.companySearch.displaySignals.slice();
 
         currentSignals.splice(index, 1);
         currentDisplaySignals.splice(index, 1);
         this.$store.commit("doCompanySearch", {
-          ...this.$store.state.advancedSearch.companySearch,
+          ...this.$store.state.companySearch,
           signals: currentSignals,
           displaySignals: currentDisplaySignals
         });
       } else if (key.startsWith("playlist")) {
         this.$store.commit("doCompanySearch", {
-          ...this.$store.state.advancedSearch.companySearch,
+          ...this.$store.state.companySearch,
           playlistUid: "",
           displayPlaylistUid: ""
         });
       } else {
         this.$store.commit("doCompanySearch", {
-          ...this.$store.state.advancedSearch.companySearch,
+          ...this.$store.state.companySearch,
           [key]: defaultCompanySearch[key]
         });
       }
     }
   },
   computed: {
-    advancedSearch() {
-      return this.$store.state.advancedSearch;
+    companySearch() {
+      return this.$store.state.companySearch;
+    },
+    searchType() {
+      return this.$store.state.searchType;
     },
     companySearchFilters() {
       let filterObjects = [];
-      Object.keys(this.advancedSearch.companySearch).forEach(key => {
-        let value = this.advancedSearch.companySearch[key];
+      Object.keys(this.companySearch).forEach(key => {
+        let value = this.companySearch[key];
         if (!key.startsWith("display") && value && value.length > 0) {
           if (key == "signals") {
             value.forEach((entry, index) => {
               filterObjects.push({
                 key: "signals>>>" + index,
                 labelKey: key,
-                labelVal: this.advancedSearch.companySearch.displaySignals[
+                labelVal: this.companySearch.displaySignals[
                   index
                 ]
               });
@@ -505,7 +498,7 @@ export default {
             filterObjects.push({
               key: key,
               labelKey: "Playlist",
-              labelVal: this.advancedSearch.companySearch.displayPlaylistUid
+              labelVal: this.companySearch.displayPlaylistUid
             });
           } else {
             filterObjects.push({
