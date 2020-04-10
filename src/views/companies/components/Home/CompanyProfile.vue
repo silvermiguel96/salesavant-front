@@ -1,15 +1,5 @@
 <template>
   <v-card v-if="company" style="height:100%;">
-    <v-card-subtitle>
-      <div class="headline font-weight-bold">{{ company.name }} <small><a v-if="company.url"
-          :key="`news-external-link${company.url || ''}`"
-          :href="httpCompany"
-          target="_blank"
-        >Website</a></small> </div>
-      <div class="caption">Last update : {{ company.modificationTime | moment("from", "now")}}</div>
-    </v-card-subtitle>
-    <v-divider></v-divider>
-
     <v-row no-gutters>
       <v-col cols="12" md="6">
         <v-card-text>
@@ -412,19 +402,11 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      company: null
+      company: null,
     };
   },
   components: {
     LongParagraph,
-    formatDateTime
-  },
-  computed: {
-    httpCompany: function() {
-      return this.company.url.startsWith("http")
-        ? this.company.url
-        : `http://${this.company.url}`;
-    }
   },
   apollo: {
     company: {
