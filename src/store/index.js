@@ -75,18 +75,6 @@ const mutations = {
   resetContactSearch(state) {
     state.contactSearch = { ...defaultContactSearch };
   },
-  updateCompanySearch(state, newCompanySearch) {
-    state.companySearch = {
-      ...state.companySearch,
-      ...newCompanySearch
-    };
-  },
-  updateContactSearch(state, newContactSearch) {
-    state.contactSearch = {
-      ...state.contactSearch,
-      ...newContactSearch
-    };
-  },
   doCompanySearch(state, companySearch) {
     console.log(companySearch);
     state.searchType = "companies";

@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'updateCompanySearch',
+      'resetCompanySearch',
       'doCompanySearch'
     ]),
     search() {
@@ -154,7 +154,7 @@ export default {
       this.doCompanySearch({...this.companySearch})
     },
     clearAll() {
-      this.updateCompanySearch({ ...defaultCompanySearch})
+      this.resetCompanySearch()
       this.companySearch = {...defaultCompanySearch}
     },
     onPlaylistAutocompleteChange(value) {
