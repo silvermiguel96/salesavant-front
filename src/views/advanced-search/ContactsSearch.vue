@@ -209,7 +209,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["updateContactSearch", "doContactSearch"]),
+    ...mapMutations(["resetContactSearch", "doContactSearch"]),
     search() {
       if (this.$route.path !== "/contacts") {
         this.$router.push("/contacts");
@@ -242,7 +242,7 @@ export default {
       this.doContactSearch({ ...this.contactSearch });
     },
     clearAll() {
-      this.updateContactSearch({ ...defaultContactSearch });
+      this.resetContactSearch();
       this.contactSearch = { ...defaultContactSearch };
     },
     onPlaylistAutocompleteChange(value) {
