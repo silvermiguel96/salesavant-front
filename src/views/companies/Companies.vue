@@ -19,7 +19,12 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-          <v-row no-gutters v-if="!!this.searchType && this.searchType=='companies'" class="px-4">
+
+          <v-row
+            no-gutters
+            v-if="!!searchType && searchType=='companies' && !!companySearchFilters && companySearchFilters.length>0"
+            class="px-4"
+          >
             <v-col cols="12" md="8">
               <div class="mt-6">
                 <span class="ml-2">Filtering by:</span>
@@ -40,7 +45,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="4">
-              <div class="d-flex flex-column flex-sm-row justify-md-end ">
+              <div class="d-flex flex-column flex-sm-row justify-md-end">
                 <div class="mr-2 mt-sm-3 pa-1">
                   <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
                 </div>
@@ -51,29 +56,27 @@
             </v-col>
           </v-row>
 
-          <v-row v-else no-gutters class="pl-2 pl-sm-6">
+          <v-row v-else no-gutters class="pl-2 px-sm-6">
             <v-col cols="12" md="4">
               <v-text-field
                 v-model="search"
-                append-icon="search"
+                append-icon="filter_list"
                 label="Filter"
+                placeholder="Type a Name"
                 single-line
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="2">
-              <div>
-                <a
-                  @click.prevent="triggerSearch"
-                  class="text-capitalize body-2"
-                  block
-                  color="primary"
-                >Advanced Search</a>
-              </div>
+            <v-col cols="12" md="2" class="d-flex flex-column justify-end pt-sm-4">
+              <a
+                @click.prevent="triggerSearch"
+                class="text-capitalize body-2 pl-md-4 pt-md-4"
+                block
+                color="primary"
+              >Advanced Search</a>
             </v-col>
           </v-row>
-
-          <v-row no-gutters>
+          <v-row class="pt-4" no-gutters>
             <v-col cols="12">
               <!-- Result -->
               <companies-table
@@ -109,7 +112,7 @@ import gql from "graphql-tag";
 import _get from "lodash.get";
 import _pickby from "lodash.pickby";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
+import CreatePlaylistFromResults from "../../components/common/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
 import { defaultCompanySearch } from "../../store";
 import { mapMutations } from "vuex";
@@ -143,11 +146,9 @@ export default {
     }
   },
   methods: {
-    ...mapMutations([
-      'showSearchDialog'
-    ]),
+    ...mapMutations(["showSearchDialog"]),
     triggerSearch() {
-      this.showSearchDialog('companies');
+      this.showSearchDialog("companies");
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
