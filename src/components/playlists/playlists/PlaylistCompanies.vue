@@ -6,7 +6,7 @@
           <v-col cols="10" sm="4">
             <v-text-field
               v-model="search"
-              append-icon="search"
+              append-icon="filter_list"
               label="Type a Name"
               single-line
               hide-details

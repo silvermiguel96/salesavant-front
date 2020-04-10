@@ -173,9 +173,6 @@ export default {
         }
       });
     }
-  },
-  beforeCreate() {
-    this.$apollo.queries.contact;
   }
 };
 </script>
