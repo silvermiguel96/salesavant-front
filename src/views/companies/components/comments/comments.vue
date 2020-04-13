@@ -1,56 +1,52 @@
 <template>
-  <v-card>
-    <v-container fluid class="mx-1">
-      <v-row no-gutters class="ml-2">
-        <v-col cols="12" md="4"></v-col>
-        <v-col cols="12" md="8">
-          <div class="d-flex justify-md-end">
-            <div class="mt-3 mr-2">
-              <add-modal @onSave="saveComments" />
-            </div>
+  <v-container fluid>
+    <v-row no-gutters class="ml-2">
+      <v-col cols="12">
+        <div class="d-flex justify-md-end">
+          <div class="mt-3 mr-2">
+            <add-modal @onSave="saveComments" />
           </div>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-card-text v-if="companyComments">
-      <v-data-table
-        :headers="headers"
-        :items="companyComments.companyCommentsList"
-        :server-items-length="companyComments.totalResults"
-        :items-per-page="options.itemsPerPage"
-        :footer-props="{
+        </div>
+      </v-col>
+    </v-row>
+    <v-row no-gutters v-if="companyComments">
+      <v-col cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="companyComments.companyCommentsList"
+          :server-items-length="companyComments.totalResults"
+          :items-per-page="options.itemsPerPage"
+          :footer-props="{
           'items-per-page-options': [10, 20, 50]
         }"
-        :options.sync="options"
-        class="mx-2"
-        @updateOptions="updateOptions"
-      >
-        <template v-slot:item="{ item }">
-          <tr>
-            <td>
-              <long-paragraph :text="item.comments" :maxLength="45"></long-paragraph>
-            </td>
-            <td
-              v-if="item.user.firstName || item.user.lastName"
-            >{{item.user.firstName}} {{item.user.lastName}}</td>
-            <td v-else>{{item.user.email || "--"}}</td>
-            <td>
-              <format-date-time :time="item.creationTime" />
-            </td>
-            <td>
-              <div class="d-flex align-center justify-center">
-                <v-icon color="red lighten-2" small @click="deleteComment(item)">delete</v-icon>
-              </div>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card-text>
-  </v-card>
+          :options.sync="options"
+          class="mx-2"
+          @updateOptions="updateOptions"
+        >
+          <template v-slot:item="{ item }">
+            <tr>
+              <td>
+                <long-paragraph :text="item.comments" :maxLength="45"></long-paragraph>
+              </td>
+              <td
+                v-if="item.user.firstName || item.user.lastName"
+              >{{item.user.firstName}} {{item.user.lastName}}</td>
+              <td v-else>{{item.user.email || "--"}}</td>
+              <td>{{ item.creationTime | moment(" MMMM Do YYYY")}}</td>
+              <td>
+                <div class="d-flex align-center justify-center">
+                  <v-icon color="red lighten-2" small @click="deleteComment(item)">delete</v-icon>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import FormatDateTime from "../../../../components/common/FormatDateTime.vue";
 import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import AddModal from "./components/addModal.vue";
@@ -58,13 +54,12 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      dialog: false,
       companyComments: null,
       headers: [
-        { text: "Comment", sortable: false },
-        { text: "User", sortable: false },
-        { text: "Creation Time", sortable: false },
-        { text: "Remove", align: "center", sortable: false }
+        { text: "Comment", value: "firstName",  width: "40%", sortable: false },
+        { text: "User", value: "email", width: "25%", sortable: false },
+        { text: "Creation Time", value: "creationTime", width: "25%", sortable: false },
+        { text: "Remove", value: "action", width: "10%", align: "center", sortable: false }
       ],
       options: {
         page: 1,
@@ -224,6 +219,7 @@ export default {
           });
           console.log("result", result);
           this.companyComments.companyCommentsList.splice(index, 1);
+          this.companyComments.totalResults -= 1;
           console.log(this.$apollo.queries);
           this.$eventBus.$emit(
             "showSnack",
@@ -235,7 +231,7 @@ export default {
           console.log("error", error);
           this.$eventBus.$emit(
             "showSnack",
-            "Error in delete comments!!",
+            "Error in delete comment!!",
             "error"
           );
         }
@@ -244,12 +240,10 @@ export default {
   },
   components: {
     LongParagraph,
-    AddModal,
-    FormatDateTime
+    AddModal
   },
   beforeUpdate() {
     this.$apollo.queries.companyComments;
   }
 };
 </script>
-<style></style>

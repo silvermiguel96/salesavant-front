@@ -1,21 +1,5 @@
 <template>
-  <v-card v-if="company" style="height:100%;">
-    <v-card-subtitle>
-      <v-row no-gutters>
-        <v-col cols="12">
-            <div class="d-inline-block float-left">
-              <span class="headline font-weight-bold ">Sales Signals Summary</span>
-            </div>
-            <div class="d-inline-block float-md-right">
-              <v-icon color="blue" style="margin-top:-8px;">check_circle</v-icon>
-              <span class="headline">Total Score: </span>
-              <span class="headline">{{ company.totalScore || "--" }}</span>
-            </div>
-        </v-col>
-      </v-row>
-    </v-card-subtitle>
-    <v-divider></v-divider>
-
+  <v-card v-if="company" style="height:100%;" class="pa-3">
     <v-card-text>
       <!-- The first table -->
       <div>
@@ -49,7 +33,7 @@
           dense
           hide-default-footer
         >
-          <template v-slot:item="{ item, headers }">
+          <template v-slot:item="{ item }">
             <tr>
               <td>{{ item.signal.group || "--" }}</td>
               <td>

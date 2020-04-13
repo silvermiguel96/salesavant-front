@@ -1,29 +1,5 @@
 <template>
   <v-card>
-    <v-dialog v-model="dialog" max-width="600px">
-      <v-card>
-        <v-card-title class="headline">Delete signal</v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <h1
-              class="subtitle-1"
-            >Confirm you want to eliminate the signal <span class="font-weight-bold">{{selectedItem.signal.name}}</span>?</h1>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn
-            color="red darken-1"
-            class="text-capitalize"
-            text
-            @click="deleteItem({ 
-              item: selectedItem,
-              signalId: selectedSignalId} )"
-          >Delete</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <v-card-text class="mx-2">
       <v-row>
         <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
@@ -58,7 +34,7 @@
         :options.sync="options"
         @updateOptions="updateOptions"
       >
-        <template v-slot:item="{ item, headers }">
+        <template v-slot:item="{ item }">
           <tr>
             <td>
               <router-link :to="`/signals/${item.signal.id}`">
@@ -73,14 +49,7 @@
             <td>{{ item.score || "0" }}</td>
             <td>
               <div class="d-flex align-center justify-center">
-              <v-icon
-                @click="selectedSignal({
-                  item: item,
-                  signalId: item.signal.id
-              })"
-                small
-                color="red lighten-2"
-              >delete</v-icon>
+                <v-icon @click="deleteSingal(item)" small color="red lighten-2">delete</v-icon>
               </div>
             </td>
           </tr>
@@ -98,14 +67,9 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      options: {
-        page: 1,
-        itemsPerPage: 10
-      },
       companySignals: [],
       signalId: null,
       currentSignalSearch: null,
-      descending: false,
       headers: [
         { text: "Name", sortable: false, width: "20%" },
         { text: "Description", sortable: false, width: "20%" },
@@ -114,12 +78,9 @@ export default {
         { text: "Score", sortable: false, width: "10%" },
         { text: "Remove", sortable: false, align: "center", width: "10%" }
       ],
-      dialog: "",
-      selectedSignalId: "",
-      selectedItem: {
-        signal: {
-          name: ""
-        }
+      options: {
+        page: 1,
+        itemsPerPage: 10
       }
     };
   },
@@ -171,9 +132,6 @@ export default {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
     },
-    refreshData() {
-      this.$apollo.queries.companySignals.refresh();
-    },
     onSignalAutoCompleteChange(signalResults) {
       this.signalId = _get(signalResults, "signalId", null);
       this.currentSignalSearch = _get(
@@ -189,109 +147,143 @@ export default {
         null
       );
     },
-    async addSignalToCompany() {
+    addSignalToCompany() {
       try {
         if (!!this.signalId || !!this.currentSignalSearch) {
           if (!!this.signalId) {
             console.log("this.signalId", this.signalId);
-
-            const result = await this.$apollo.mutate({
-              mutation: gql`
-                mutation($score: Float, $signalId: Int!, $companyUid: String!) {
-                  createCompanySignal(
-                    companySignalData: {
-                      score: $score
-                      signalId: $signalId
-                      companyUid: $companyUid
-                    }
+            this.$apollo
+              .mutate({
+                mutation: gql`
+                  mutation(
+                    $score: Float
+                    $signalId: Int!
+                    $companyUid: String!
                   ) {
-                    companySignal {
-                      company {
-                        name
-                        uid
+                    createCompanySignal(
+                      companySignalData: {
+                        score: $score
+                        signalId: $signalId
+                        companyUid: $companyUid
                       }
-                      signal {
+                    ) {
+                      companySignal {
+                        company {
+                          name
+                          uid
+                        }
+                        signal {
+                          id
+                          name
+                          description
+                          group
+                          category
+                          defaultScore
+                        }
                         id
-                        name
                       }
-                      id
                     }
                   }
+                `,
+                // Parameters
+                variables: {
+                  score: 1,
+                  signalId: this.signalId,
+                  companyUid: this.$route.params.companiesUid
                 }
-              `,
-              // Parameters
-              variables: {
-                score: 1,
-                signalId: this.signalId,
-                companyUid: this.$route.params.companiesUid
-              }
-            });
-            console.log("result", result);
-            const newSignalId = _get(
-              result,
-              "data.createCompanySignal.companySignal.signal.id",
-              null
-            );
-            console.log("newSignalId", newSignalId);
-            if (!newSignalId) {
-              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when saving the company - signal, please try again!!", "error");
-              return;
-            }
-            this.refreshData();
-            this.$eventBus.$emit("showSnack", "New signal successfully created!!", "success");
-            return;
+              })
+              .then(result => {
+                console.log("result", result);
+                if (!!result && !!result.data.createCompanySignal) {
+                  this.companySignals.totalResults += 1;
+                  this.companySignals.companySignalsList.push(
+                    result.data.createCompanySignal.companySignal
+                  );
+                  const newSignalId = _get(
+                    result,
+                    "data.createCompanySignal.companySignal.signal.id",
+                    null
+                  );
+                  console.log("newSignalId", newSignalId);
+                  if (!newSignalId) {
+                    this.$eventBus.$emit(
+                      "showSnack",
+                      "Oops!! we did something wrong when saving the company - signal, please try again!!",
+                      "error"
+                    );
+                    return;
+                  }
+                  this.$eventBus.$emit(
+                    "showSnack",
+                    "New signal successfully created!!",
+                    "success"
+                  );
+                  return;
+                }
+              });
           } else {
-            const result = await this.$apollo.mutate({
-              mutation: gql`
-                mutation(
-                  $name: String
-                  $description: String
-                  $group: String
-                  $category: String
-                  $score: Float
-                ) {
-                  createSignal(
-                    signalData: {
-                      name: $name
-                      description: $description
-                      group: $group
-                      category: $category
-                      defaultScore: $score
-                    }
+            this.$apollo
+              .mutate({
+                mutation: gql`
+                  mutation(
+                    $name: String
+                    $description: String
+                    $group: String
+                    $category: String
+                    $score: Float
                   ) {
-                    signal {
-                      id
-                      name
-                      group
-                      userId
-                      category
-                      accountId
-                      description
-                      creationTime
-                      defaultScore
-                      modificationTime
+                    createSignal(
+                      signalData: {
+                        name: $name
+                        description: $description
+                        group: $group
+                        category: $category
+                        defaultScore: $score
+                      }
+                    ) {
+                      signal {
+                        id
+                        name
+                        group
+                        userId
+                        category
+                        accountId
+                        description
+                        creationTime
+                        defaultScore
+                        modificationTime
+                      }
                     }
                   }
+                `,
+                // Parameters
+                variables: {
+                  name: this.currentSignalSearch,
+                  description: "",
+                  group: "",
+                  category: "",
+                  score: 1
                 }
-              `,
-              // Parameters
-              variables: {
-                name: this.currentSignalSearch,
-                description: "",
-                group: "",
-                category: "",
-                score: 1
-              }
-            });
-            console.log("result", result);
-            const newSignal = _get(result, "data.createSignal.signal", null);
-            if (!newSignal) {
-              console.log("hola5");
-              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when creating a new signal!!!", "error");
-              return;
-            }
-            console.log("newSignal", newSignal);
-            const newCompanySignalMutation = await this.$apollo.mutate({
+              })
+              .then(result => {
+                console.log("result", result);
+                const newSignal = _get(
+                  result,
+                  "data.createSignal.signal",
+                  null
+                );
+                if (!newSignal) {
+                  console.log("hola5");
+                  this.$eventBus.$emit(
+                    "showSnack",
+                    "Oops!! we did something wrong when creating a new signal!!!",
+                    "error"
+                  );
+                  return;
+                }
+                console.log("newSignal", newSignal);
+              });
+            this.$apollo.mutate({
               mutation: gql`
                 mutation($score: Float, $signalId: Int!, $companyUid: String!) {
                   createCompanySignal(
@@ -309,6 +301,10 @@ export default {
                       signal {
                         id
                         name
+                        description
+                        group
+                        category
+                        defaultScore
                       }
                       id
                     }
@@ -322,74 +318,110 @@ export default {
                 companyUid: this.$route.params.companiesUid
               }
             });
-            console.log("newCompanySignalMutation", newCompanySignalMutation);
-            const newCompanySignal = _get(
-              newCompanySignalMutation,
-              "data.createCompanySignal.companySignal",
-              null
-            );
-            if (!newCompanySignal) {
-              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when creating the new CompanySignal, please try again!!", "error");
-              return;
-            }
-            this.refreshData();
-            this.$eventBus.$emit("showSnack", "New signal successfully created!!", "success");
-            return;
+            then(result => {
+              console.log("result", result);
+              if (!!result && !!result.data.createCompanySignal) {
+                this.companySignals.totalResults += 1;
+                this.companySignals.companySignalsList.push(
+                  result.data.createCompanySignal.companySignal
+                );
+                const newCompanySignal = _get(
+                  result,
+                  "data.createCompanySignal.companySignal",
+                  null
+                );
+                if (!newCompanySignal) {
+                  this.$eventBus.$emit(
+                    "showSnack",
+                    "Oops!! we did something wrong when creating the new CompanySignal, please try again!!",
+                    "error"
+                  );
+                  return;
+                }
+                this.$eventBus.$emit(
+                  "showSnack",
+                  "New signal successfully created!!",
+                  "success"
+                );
+                return;
+              }
+            });
           }
         } else {
           this.$eventBus.$emit("showSnack", "Select a signal first", "error");
           return;
         }
       } catch (error) {
-        this.$eventBus.$emit("showSnack", "Oops we did something wrong!!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops we did something wrong!!",
+          "error"
+        );
         console.log("error adding signal to company", error);
       }
     },
-    selectedSignal({ item, signalId }) {
-      this.selectedItem = item;
-      this.selectedSignalId = signalId;
-      this.dialog = true;
-    },
-    async deleteItem({ item = null, signalId = null }) {
-      try {
-        console.log({ item, signalId });
-        const index = this.companySignals.companySignalsList.indexOf(item);
-        const result = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($signalId: Int!, $companyUid: String!) {
-              deleteCompanySignal(
-                companyUid: $companyUid
-                signalId: $signalId
-              ) {
-                companySignal {
-                  id
+    async deleteSingal(signal) {
+      console.log("signal", signal);
+      const res = await this.$confirm(
+        `<h1 class="subtitle-1">
+              Confirm you want to eliminate the signal
+              <span class="font-weight-bold"
+              >${signal.signal.name}</span>?
+            </h1> `,
+        {
+          buttonTrueText: "delete",
+          buttonFalseText: "close",
+          buttonTrueColor: "red lighten-2",
+          color: "primary",
+          icon: "delete",
+          title: "Delete signal",
+          width: 600
+        }
+      );
+      if (res) {
+        try {
+          const index = this.companySignals.companySignalsList.indexOf(signal);
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation($signalId: Int!, $companyUid: String!) {
+                deleteCompanySignal(
+                  companyUid: $companyUid
+                  signalId: $signalId
+                ) {
+                  companySignal {
+                    id
+                  }
                 }
               }
+            `,
+            // Parameters
+            variables: {
+              signalId: parseInt(signal.signal.id),
+              companyUid: this.$route.params.companiesUid
             }
-          `,
-          // Parameters
-          variables: {
-            signalId,
-            companyUid: this.$route.params.companiesUid
-          }
-        });
-        console.log("result", result);
-        const companySignalId = _get(
-          result,
-          "data.deleteCompanySignal.companySignal.id",
-          null
-        );
-        this.companySignals.companySignalsList.splice(index, 1);
-        this.$eventBus.$emit(
-          "showSnack",
-          "The signal successfully delete!!",
-          "success"
-        );
-        this.dialog = false
-        this.refreshData();
-      } catch (error) {
-        this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when removing the company - signal, please try again!!", "error");
-        return;
+          });
+          console.log("result", result);
+          const companySignalId = _get(
+            result,
+            "data.deleteCompanySignal.companySignal.id",
+            null
+          );
+          this.companySignals.companySignalsList.splice(index, 1);
+          this.companySignals.totalResults -= 1;
+          this.$eventBus.$emit(
+            "showSnack",
+            "The signal successfully delete!!",
+            "success"
+          );
+        } catch (error) {
+          console.log("error", error);
+          this.$eventBus.$emit(
+            "showSnack",
+            "Oops!! we did something wrong when removing the company - signal, please try again!!",
+            "error"
+          );
+          return;
+        }
       }
     }
   },
