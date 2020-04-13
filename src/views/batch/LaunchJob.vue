@@ -15,8 +15,42 @@
                 <v-col cols="12">
                   <v-text-field v-model="playlistDescription" label="Playlist Description"></v-text-field>
                 </v-col>
+                <v-col>
+                  <h2 class="title">Upload a file (.cvs)</h2>
+                  <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
+                  <p class="caption my-1">You need columns with:</p>
+                  <ul>
+                    <li>Website</li>
+                    <li>Scale Score</li>
+                    <li>Capital Efficiency Score</li>
+                    <li>Capital Efficiency Estimate</li>
+                  </ul>
+                </v-col>
               </template>
-              <template v-else>
+              <template v-if="jobType=='contacts_from_file'">
+                <v-col cols="12">
+                  <v-text-field v-model="description" label="Description"></v-text-field>
+                </v-col>
+                <v-col>
+                  <h2 class="title">Upload a file (.cvs)</h2>
+                  <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
+                  <p class="caption my-1">You need columns with:</p>
+                  <ul>
+                    <li>Full name</li>
+                    <li>LinkedIn</li>
+                    <li>Website</li>
+                    <li>Scale Score Average</li>
+                    <li>Capital Efficiency Score Average</li>
+                    <li>Capital Efficiency Estimate Average</li>
+                    <li>Numbers of Exits</li>
+                    <li>Title</li>
+                    <li>Rank</li>
+                    <li>Deparment</li>
+                    <li>Current Job</li>
+                  </ul>
+                </v-col>
+              </template>
+              <template v-else-if="jobType=='linkedin_finder' || jobType=='contact_finder' ">
                 <v-col cols="12">
                   <v-text-field v-model="description" label="Description"></v-text-field>
                 </v-col>
@@ -62,8 +96,8 @@ export default {
       ],
       jobType: "",
       description: "",
-      playlistName:"",
-      playlistDescription:"",
+      playlistName: "",
+      playlistDescription: "",
       file: null
     };
   },
@@ -77,10 +111,10 @@ export default {
         let formData = new FormData();
         formData.append("file", this.file, this.file.name);
         formData.append("jobType", this.jobType);
-        if (this.jobType=="playlist_from_file"){
+        if (this.jobType == "playlist_from_file") {
           formData.append("playlistName", this.playlistName);
           formData.append("playlistDescription", this.playlistDescription);
-        }else{
+        } else {
           formData.append("description", this.description);
         }
         fetch(this.salesavantAPI + "/launch-job?jwt=" + getAuthToken(), {
@@ -89,7 +123,11 @@ export default {
         })
           .then(response => {
             console.log(response.json());
-            this.$eventBus.$emit("showSnack", `Job ${this.jobType} enqueed successfully`, "success");
+            this.$eventBus.$emit(
+              "showSnack",
+              `Job ${this.jobType} enqueed successfully`,
+              "success"
+            );
             this.$router.push({
               path: `/batch`
             });
