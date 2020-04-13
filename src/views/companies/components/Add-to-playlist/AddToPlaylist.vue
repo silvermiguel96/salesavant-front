@@ -44,7 +44,7 @@
             </td>
             <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
             <td>
-              {{ item.creationTime | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}
+              {{ item.creationTime | moment("MMMM Do YYYY")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
