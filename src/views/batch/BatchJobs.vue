@@ -16,7 +16,7 @@
           <v-col cols="12" md="4">
             <v-text-field
               v-model="search"
-              append-icon="search"
+              append-icon="filter_list"
               label="Filter"
               single-line
               hide-details

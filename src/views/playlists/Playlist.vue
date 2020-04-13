@@ -71,7 +71,6 @@ import gql from "graphql-tag";
 import Companies from "../../components/playlists/playlist/CompaniesTab.vue";
 import Contacts from "../../components/playlists/playlist/ContactsTab.vue";
 import Analytics from "../../components/playlists/playlist/AnalyticsTab.vue";
-import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -110,9 +109,6 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  methods: {
-    ...mapMutations(["updateCompanySearch"])
-  },
   computed: {
     additionalDataParsed: function() {
       if (!!this.playlist && !!this.playlist.additionalData) {
@@ -124,10 +120,10 @@ export default {
   beforeCreate() {
     this.$apollo.query.playlist;
   },
-  mounted() {
-    this.$store.commit("updateCompanySearch", {
-      playlistUid: this.$route.params.playlistUid
-    });
-  }
+  // mounted() {
+  //   this.$store.commit("updateCompanySearch", {
+  //     playlistUid: this.$route.params.playlistUid
+  //   });
+  // }
 };
 </script>

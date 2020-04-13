@@ -7,9 +7,8 @@
       </v-snackbar>
       <main-menu v-if="isAuthenticated"></main-menu>
       <advanced-search
+        v-model="computedShowSearchDialog"
         v-if="isAuthenticated"
-        v-model="showSearchDialog"
-        :expand="expand"
       ></advanced-search>
       <router-view></router-view>
     </v-content>
@@ -94,7 +93,7 @@ export default {
     }
   },
   computed: {
-    showSearchDialog :{
+    computedShowSearchDialog :{
       get () {
         return this.$store.state.showSearchDialog;
       },

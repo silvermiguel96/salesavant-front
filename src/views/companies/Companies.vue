@@ -19,7 +19,38 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-          <v-row no-gutters v-if="!!this.searchType && this.searchType=='companies'" class="px-4">
+
+          <v-row class="pl-2 px-sm-6" no-gutters>
+            <v-col cols="12" md="4" class="mt-3">
+              <v-btn class="text-capitalize d-inline-block" color="primary" @click="triggerSearch">
+                <v-icon class="pr-1">search</v-icon>Advanced Search
+              </v-btn>
+              <v-btn class="text-capitalize d-inline-block ml-1" color="normal" @click="resetCompanySearch" v-if="showFiltersAndActions">
+                <v-icon class="pr-1" small>replay</v-icon>Reset
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="4" offset-md="4" class="mt-3" v-if="showFiltersAndActions">
+              <div class="d-flex flex-column flex-sm-row justify-md-end">
+                <div class="pr-2 mt-xs-3">
+                  <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+                </div>
+                <div class="pr-2 mt-xs-3">
+                  <create-signal-from-results @onSave="saveResultsAsSignal" />
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="12" md="4" offset-md="4" v-else>
+              <v-text-field
+                v-model="search"
+                append-icon="filter_list"
+                label="Quick Search"
+                placeholder="Type a Name"
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row v-if="showFiltersAndActions" class="px-4" no-gutters>
             <v-col cols="12" md="8">
               <div class="mt-6">
                 <span class="ml-2">Filtering by:</span>
@@ -28,52 +59,20 @@
                   :key="obj.key"
                   class="mx-1 text-capitalize"
                   style="padding: 0 8px;"
-                  color="blue-grey"
+                  color="green darken-3"
                   @click:close="removeFilter(obj.key)"
                   outlined
                   close
                   small
                 >
-                  <strong>{{obj.labelKey}}:&nbsp;</strong>
+                  <strong class="text-capitalize">{{obj.labelKey}}:&nbsp;</strong>
                   {{obj.labelVal}}
                 </v-chip>
               </div>
             </v-col>
-            <v-col cols="12" md="4">
-              <div class="d-flex flex-column flex-sm-row justify-md-end ">
-                <div class="mr-2 mt-sm-3 pa-1">
-                  <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
-                </div>
-                <div class="mr-2 mt-sm-3 pa-1">
-                  <create-signal-from-results @onSave="saveResultsAsSignal" />
-                </div>
-              </div>
-            </v-col>
           </v-row>
 
-          <v-row v-else no-gutters class="pl-2 pl-sm-6">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Filter"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="2">
-              <div>
-                <a
-                  @click.prevent="triggerSearch"
-                  class="text-capitalize body-2"
-                  block
-                  color="primary"
-                >Advanced Search</a>
-              </div>
-            </v-col>
-          </v-row>
-
-          <v-row no-gutters>
+          <v-row class="pt-4" no-gutters>
             <v-col cols="12">
               <!-- Result -->
               <companies-table
@@ -109,7 +108,7 @@ import gql from "graphql-tag";
 import _get from "lodash.get";
 import _pickby from "lodash.pickby";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import CreatePlaylistFromResults from "./components/CreatePlaylistFromResults.vue";
+import CreatePlaylistFromResults from "../../components/common/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
 import { defaultCompanySearch } from "../../store";
 import { mapMutations } from "vuex";
@@ -142,127 +141,10 @@ export default {
       this.page = 1;
     }
   },
-  apollo: {
-    companies: {
-      query: gql`
-        query companiesSearch(
-          $searchNameOrDescription: String
-          $playlistUid: String
-          $signals: [Int]
-          $signalGroups: [String]
-          $name: String
-          $website: String
-          $description: String
-          $country: String
-          $city: String
-          $region: String
-          $state: String
-          $status: String
-          $lessThanEmployees: Int
-          $moreThanEmployees: Int
-          $moreThanScore: Float
-          $lessThanScore: Float
-          $sortBy: String
-          $sortOrder: String
-          $first: Int
-          $offset: Int
-          $totalResults: Int
-        ) {
-          companies(
-            searchNameOrDescription: $searchNameOrDescription
-            playlistUid: $playlistUid
-            signals: $signals
-            signalGroups: $signalGroups
-            searchName: $name
-            searchWebsite: $website
-            searchDescription: $description
-            country: $country
-            city: $city
-            region: $region
-            state: $state
-            status: $status
-            lessThanEmployees: $lessThanEmployees
-            moreThanEmployees: $moreThanEmployees
-            moreThanScore: $moreThanScore
-            lessThanScore: $lessThanScore
-            sortBy: $sortBy
-            sortOrder: $sortOrder
-            first: $first
-            offset: $offset
-            totalResults: $totalResults
-          ) {
-            totalResults
-            companiesList {
-              creationTime
-              modificationTime
-              uid
-              name
-              website
-              description
-              url
-              handle
-              logoUrl
-              city
-              country
-              region
-              state
-              numEmployees
-              momentum
-              vertical
-              industry
-              status
-              dateFounded
-              linkedinHandle
-              stockSymbol
-              naicsCode
-              totalScore
-              totalSignals
-            }
-          }
-        }
-      `,
-      variables() {
-        return {
-          searchNameOrDescription: this.search,
-          playlistUid: this.companySearch.playlistUid,
-          signals: this.companySearch.signals,
-          signalGroups: this.companySearch.signalGroups,
-          name: this.companySearch.name,
-          website: this.companySearch.website,
-          description: this.companySearch.description,
-          country: this.companySearch.country,
-          city: this.companySearch.city,
-          region: this.companySearch.region,
-          state: this.companySearch.state,
-          status: this.companySearch.status,
-          lessThanEmployees: this.companySearch.lessThanEmployees,
-          moreThanEmployees: this.companySearch.moreThanEmployees,
-          moreThanScore: this.companySearch.moreThanScore,
-          lessThanScore: this.companySearch.lessThanScore,
-          first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage,
-          sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder,
-          totalResults: this.totalResults
-        };
-      },
-      skip() {
-        return this.search.length > 0 && this.search.length < 2;
-      },
-      watchLoading(isLoading, countModifier) {
-        this.isLoading = isLoading;
-      },
-      fetchPolicy: "cache-and-network"
-    }
-  },
   methods: {
-    ...mapMutations([
-      'showSearchDialog'
-    ]),
+    ...mapMutations(["showSearchDialog", "resetCompanySearch"]),
     triggerSearch() {
-      this.showSearchDialog('companies');
+      this.showSearchDialog("companies");
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
@@ -524,6 +406,129 @@ export default {
         }
       });
       return filterObjects;
+    },
+    showFiltersAndActions() {
+      return (
+        !!this.searchType &&
+        this.searchType == "companies" &&
+        !!this.companySearchFilters &&
+        this.companySearchFilters.length
+      );
+    }
+  },
+  apollo: {
+    companies: {
+      query: gql`
+        query companiesSearch(
+          $searchNameOrDescription: String
+          $playlistUid: String
+          $signals: [Int]
+          $signalGroups: [String]
+          $name: String
+          $website: String
+          $description: String
+          $country: String
+          $city: String
+          $region: String
+          $state: String
+          $status: String
+          $lessThanEmployees: Int
+          $moreThanEmployees: Int
+          $moreThanScore: Float
+          $lessThanScore: Float
+          $sortBy: String
+          $sortOrder: String
+          $first: Int
+          $offset: Int
+          $totalResults: Int
+        ) {
+          companies(
+            searchNameOrDescription: $searchNameOrDescription
+            playlistUid: $playlistUid
+            signals: $signals
+            signalGroups: $signalGroups
+            searchName: $name
+            searchWebsite: $website
+            searchDescription: $description
+            country: $country
+            city: $city
+            region: $region
+            state: $state
+            status: $status
+            lessThanEmployees: $lessThanEmployees
+            moreThanEmployees: $moreThanEmployees
+            moreThanScore: $moreThanScore
+            lessThanScore: $lessThanScore
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+            first: $first
+            offset: $offset
+            totalResults: $totalResults
+          ) {
+            totalResults
+            companiesList {
+              creationTime
+              modificationTime
+              uid
+              name
+              website
+              description
+              url
+              handle
+              logoUrl
+              city
+              country
+              region
+              state
+              numEmployees
+              momentum
+              vertical
+              industry
+              status
+              dateFounded
+              linkedinHandle
+              stockSymbol
+              naicsCode
+              totalScore
+              totalSignals
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          searchNameOrDescription: this.search,
+          playlistUid: this.companySearch.playlistUid,
+          signals: this.companySearch.signals,
+          signalGroups: this.companySearch.signalGroups,
+          name: this.companySearch.name,
+          website: this.companySearch.website,
+          description: this.companySearch.description,
+          country: this.companySearch.country,
+          city: this.companySearch.city,
+          region: this.companySearch.region,
+          state: this.companySearch.state,
+          status: this.companySearch.status,
+          lessThanEmployees: this.companySearch.lessThanEmployees,
+          moreThanEmployees: this.companySearch.moreThanEmployees,
+          moreThanScore: this.companySearch.moreThanScore,
+          lessThanScore: this.companySearch.lessThanScore,
+          first: this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder,
+          totalResults: this.totalResults
+        };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
+      },
+      fetchPolicy: "cache-and-network"
     }
   },
   props: {

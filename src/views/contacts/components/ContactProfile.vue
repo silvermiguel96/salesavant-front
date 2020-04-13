@@ -187,11 +187,11 @@ export default {
   apollo: {
     contact: {
       query: gql`
-        query contactOne($uid: String) {
+        query contact($uid: String) {
           contact(uid: $uid) {
+            uid
             creationTime
             modificationTime
-            uid
             fullName
             personalEmail
             personalPhone
@@ -203,7 +203,6 @@ export default {
             wolfpackScore
             numberOfExits
             companies {
-              searchContactCompanies
               title
               businessEmail
               businessPhone
@@ -221,9 +220,6 @@ export default {
       },
       fetchPolicy: "cache-and-network"
     }
-  },
-  beforeCreate() {
-    this.$apollo.queries.contact;
   }
 };
 </script>

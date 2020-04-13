@@ -70,40 +70,23 @@ const mutations = {
     state.showSearchDialog = false;
   },
   resetCompanySearch(state) {
-    state = {
-      ...state,
-      companySearch: { ...defaultCompanySearch }
-    };
+    state.companySearch = { ...defaultCompanySearch };
   },
   resetContactSearch(state) {
-    state = {
-      ...state,
-      contactSearch: { ...defaultContactSearch }
-    };
-  },
-  updateCompanySearch(state, newCompanySearch) {
-    state.companySearch = {
-      ...state.companySearch,
-      ...newCompanySearch
-    };
+    state.contactSearch = { ...defaultContactSearch };
   },
   doCompanySearch(state, companySearch) {
     console.log(companySearch);
     state.searchType = "companies";
+    state.showSearchDialog = false;
     state.companySearch = companySearch;
-    state.companySearch.showDialog = false;
-  },
-  updateContactSearch(state, newContactSearch) {
-    state.contactSearch = {
-      ...state.contactSearch,
-      ...newContactSearch
-    };
+    
   },
   doContactSearch(state, contactSearch) {
     console.log(contactSearch);
     state.searchType = "contacts";
+    state.showSearchDialog = false;
     state.contactSearch = contactSearch;
-    state.contactSearch.showDialog = false;
   },
   showDenseForm(state) {
     state.denseForm = false
