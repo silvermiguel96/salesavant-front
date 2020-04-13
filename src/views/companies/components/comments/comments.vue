@@ -35,7 +35,7 @@
             >{{item.user.firstName}} {{item.user.lastName}}</td>
             <td v-else>{{item.user.email || "--"}}</td>
             <td>
-              <format-date-time :time="item.creationTime" />
+              {{ item.creationTime | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import FormatDateTime from "../../../../components/common/FormatDateTime.vue";
 import _get from "lodash.get";
 import LongParagraph from "../../../../components/common/LongParagraph.vue";
 import AddModal from "./components/addModal.vue";
@@ -58,7 +57,6 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      dialog: false,
       companyComments: null,
       headers: [
         { text: "Comment", sortable: false },
@@ -224,6 +222,7 @@ export default {
           });
           console.log("result", result);
           this.companyComments.companyCommentsList.splice(index, 1);
+          this.companyComments.totalResults -= 1;
           console.log(this.$apollo.queries);
           this.$eventBus.$emit(
             "showSnack",
@@ -235,7 +234,7 @@ export default {
           console.log("error", error);
           this.$eventBus.$emit(
             "showSnack",
-            "Error in delete comments!!",
+            "Error in delete comment!!",
             "error"
           );
         }
@@ -245,11 +244,9 @@ export default {
   components: {
     LongParagraph,
     AddModal,
-    FormatDateTime
   },
   beforeUpdate() {
     this.$apollo.queries.companyComments;
   }
 };
 </script>
-<style></style>
