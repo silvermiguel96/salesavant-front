@@ -20,11 +20,37 @@
             </v-col>
           </v-row>
 
-          <v-row
-            no-gutters
-            v-if="!!searchType && searchType=='companies' && !!companySearchFilters && companySearchFilters.length>0"
-            class="px-4"
-          >
+          <v-row class="pl-2 px-sm-6" no-gutters>
+            <v-col cols="12" md="4" class="mt-3">
+              <v-btn class="text-capitalize d-inline-block" color="primary" @click="triggerSearch">
+                <v-icon class="pr-1">search</v-icon>Advanced Search
+              </v-btn>
+              <v-btn class="text-capitalize d-inline-block ml-1" color="normal" @click="resetCompanySearch" v-if="showFiltersAndActions">
+                <v-icon class="pr-1" small>replay</v-icon>Reset
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="4" offset-md="4" class="mt-3" v-if="showFiltersAndActions">
+              <div class="d-flex flex-column flex-sm-row justify-md-end">
+                <div class="pr-2 mt-xs-3">
+                  <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+                </div>
+                <div class="pr-2 mt-xs-3">
+                  <create-signal-from-results @onSave="saveResultsAsSignal" />
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="12" md="4" offset-md="4" v-else>
+              <v-text-field
+                v-model="search"
+                append-icon="filter_list"
+                label="Quick Search"
+                placeholder="Type a Name"
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row v-if="showFiltersAndActions" class="px-4" no-gutters>
             <v-col cols="12" md="8">
               <div class="mt-6">
                 <span class="ml-2">Filtering by:</span>
@@ -33,49 +59,19 @@
                   :key="obj.key"
                   class="mx-1 text-capitalize"
                   style="padding: 0 8px;"
-                  color="blue-grey"
+                  color="green darken-3"
                   @click:close="removeFilter(obj.key)"
                   outlined
                   close
                   small
                 >
-                  <strong>{{obj.labelKey}}:&nbsp;</strong>
+                  <strong class="text-capitalize">{{obj.labelKey}}:&nbsp;</strong>
                   {{obj.labelVal}}
                 </v-chip>
               </div>
             </v-col>
-            <v-col cols="12" md="4">
-              <div class="d-flex flex-column flex-sm-row justify-md-end">
-                <div class="mr-2 mt-sm-3 pa-1">
-                  <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
-                </div>
-                <div class="mr-2 mt-sm-3 pa-1">
-                  <create-signal-from-results @onSave="saveResultsAsSignal" />
-                </div>
-              </div>
-            </v-col>
           </v-row>
 
-          <v-row v-else no-gutters class="pl-2 px-sm-6">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="filter_list"
-                label="Filter"
-                placeholder="Type a Name"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="2" class="d-flex flex-column justify-end pt-sm-4">
-              <a
-                @click.prevent="triggerSearch"
-                class="text-capitalize body-2 pl-md-4 pt-md-4"
-                block
-                color="primary"
-              >Advanced Search</a>
-            </v-col>
-          </v-row>
           <v-row class="pt-4" no-gutters>
             <v-col cols="12">
               <!-- Result -->
@@ -146,7 +142,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["showSearchDialog"]),
+    ...mapMutations(["showSearchDialog", "resetCompanySearch"]),
     triggerSearch() {
       this.showSearchDialog("companies");
     },
@@ -410,6 +406,14 @@ export default {
         }
       });
       return filterObjects;
+    },
+    showFiltersAndActions() {
+      return (
+        !!this.searchType &&
+        this.searchType == "companies" &&
+        !!this.companySearchFilters &&
+        this.companySearchFilters.length
+      );
     }
   },
   apollo: {

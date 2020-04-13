@@ -69,7 +69,6 @@ import CompaniesTable from "../../companies/CompaniesTable.vue";
 import ButtonMenu from "../../common/ButtonMenu.vue";
 import _get from "lodash.get";
 import gql from "graphql-tag";
-import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -166,7 +165,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["updateCompanySearch"]),
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -218,9 +216,6 @@ export default {
       "playlist-companies update state ",
       this.$route.params.playlistUid
     );
-    this.$store.commit("updateCompanySearch", {
-      playlistUid: this.$route.params.playlistUid
-    });
   }
 };
 </script>

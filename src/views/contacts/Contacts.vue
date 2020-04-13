@@ -20,7 +20,7 @@
             </v-col>
           </v-row>
           
-          <v-row no-gutters class="pl-2 px-sm-6">
+          <v-row class="pl-2 px-sm-6" no-gutters>
             <v-col cols="12" md="4" class="mt-3">
               <v-btn class="text-capitalize d-inline-block" color="primary" @click="triggerSearch">
                 <v-icon class="pr-1">search</v-icon>Advanced Search
@@ -29,7 +29,7 @@
                 <v-icon class="pr-1" small>replay</v-icon>Reset
               </v-btn>
             </v-col>
-            <v-col cols="12" md="4" offset-md="4" class="mt-3" v-if="showFiltersAndActions" >
+            <v-col cols="12" md="4" offset-md="4" class="mt-3" v-if="showFiltersAndActions">
               <div class="d-flex flex-column flex-sm-row justify-md-end">
                 <div>
                   <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
@@ -60,7 +60,7 @@
                   :key="obj.key"
                   class="mx-1 "
                   style="padding: 0 8px;"
-                  color="green lighten-1"
+                  color="green darken-3"
                   @click:close="removeFilter(obj.key)"
                   outlined
                   close
@@ -71,7 +71,6 @@
                 </v-chip>
               </div>
             </v-col>
-            
           </v-row>
 
           <v-row class="pt-4" no-gutters>
