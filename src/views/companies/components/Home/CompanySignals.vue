@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="company" style="height:100%;">
+  <v-card v-if="company" style="height:100%;" class="pa-3">
     <v-card-text>
       <!-- The first table -->
       <div>

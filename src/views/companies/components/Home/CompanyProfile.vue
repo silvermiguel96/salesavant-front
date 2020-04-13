@@ -1,5 +1,53 @@
 <template>
-  <v-card v-if="company" style="height:100%;">
+  <v-card v-if="company" style="height:100%;" class="pa-3">
+        <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Website</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <!-- <span class="font-weight-light">{{ company.website || "--" }}</span> -->
+              <a
+                v-if="company.url"
+                :key="`news-external-link${company.url || ''}`"
+                :href="httpCompany"
+                target="_blank"
+              >{{ company.url || "--"}}</a>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Website:</span>
+                <span class="font-weight-light float-right">{{ company.Website || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Momentum</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light">{{ company.momentum || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Momentum:</span>
+                <span class="font-weight-light float-right">{{ company.momentum || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
     <v-row no-gutters>
       <v-col cols="12" md="6">
         <v-card-text>
@@ -36,49 +84,6 @@
               <div>
                 <span class="subtitle-2 font-weight-medium">Industry:</span>
                 <span class="font-weight-light float-right">{{ company.industry || "--" }}</span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-    </v-row>
-
-    <v-row no-gutters>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Status</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <span class="font-weight-light">{{ company.status || "--" }}</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Status:</span>
-                <span class="font-weight-light float-right">{{ company.status || "--" }}</span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card-text>
-          <v-row class="d-none d-md-block" no-gutters>
-            <v-col cols="12" xs="6">
-              <div class="subtitle-2 font-weight-medium">Momentum</div>
-            </v-col>
-            <v-col cols="12" xs="6">
-              <span class="font-weight-light">{{ company.momentum || "--" }}</span>
-            </v-col>
-          </v-row>
-          <v-row class="d-block d-md-none" no-gutters>
-            <v-col xs="12">
-              <div>
-                <span class="subtitle-2 font-weight-medium">Momentum:</span>
-                <span class="font-weight-light float-right">{{ company.momentum || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -374,6 +379,28 @@
         </v-card-text>
       </v-col>
     </v-row>
+        <v-row no-gutters>
+      <v-col cols="12" md="6">
+        <v-card-text>
+          <v-row class="d-none d-md-block" no-gutters>
+            <v-col cols="12" xs="6">
+              <div class="subtitle-2 font-weight-medium">Status</div>
+            </v-col>
+            <v-col cols="12" xs="6">
+              <span class="font-weight-light">{{ company.status || "--" }}</span>
+            </v-col>
+          </v-row>
+          <v-row class="d-block d-md-none" no-gutters>
+            <v-col xs="12">
+              <div>
+                <span class="subtitle-2 font-weight-medium">Status:</span>
+                <span class="font-weight-light float-right">{{ company.status || "--" }}</span>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-col>
+    </v-row>
     <v-row no-gutters>
       <v-col cols="12">
         <v-card-text>
@@ -452,8 +479,12 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  beforeCreate() {
-    this.$apollo.queries.company;
+  computed: {
+    httpCompany: function() {
+      return this.company.url.startsWith("http")
+        ? this.company.url
+        : `http://${this.company.url}`;
+    }
   }
 };
 </script>

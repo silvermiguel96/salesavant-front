@@ -33,14 +33,6 @@
         <v-col cols="12" sm="8" md="9" lg="10">
           <div class="title text--secondary pl-3 pl-sm-6">
             {{ company.name || '' }}
-            <small>
-              <a
-                v-if="company.url"
-                :key="`news-external-link${company.url || ''}`"
-                :href="httpCompany"
-                target="_blank"
-              >Website</a>
-            </small>
           </div>
           <div class="caption text--secondary pl-3 pl-sm-6">
             Last Updated:
@@ -49,7 +41,7 @@
         </v-col>
         <v-col cols="12" sm="4" md="3" lg="2">
           <div class="pl-3 pl-sm-6">
-            <v-icon color="blue" style="margin-top:-8px;">check_circle</v-icon>
+            <v-icon color="blue" style="margin-top:-4px;" small>check_circle</v-icon>
             <span class="title text--secondary">Total Score:</span>
             <span class="title text--secondary">{{ company.totalScore || "--" }}</span>
           </div>
