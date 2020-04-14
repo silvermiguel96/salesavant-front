@@ -106,6 +106,7 @@
 
 <script>
 import gql from "graphql-tag";
+import _get from "lodash.get";
 import ContactsTable from "../../components/contacts/ContactsTable.vue";
 import CreatePlaylistFromResults from "../../components/common/CreatePlaylistFromResults.vue";
 import { mapMutations } from "vuex";
@@ -166,7 +167,87 @@ export default {
         this.options.sortOrder = "";
       }
     },
-    async saveResultsAsPlaylist(newPlaylistName = null) {},
+    async saveResultsAsPlaylist(newPlaylistName = null) {
+      console.log(
+        "companies ",
+        "saveResultsAsPlaylist ",
+        "newPlaylistName =",
+        newPlaylistName
+      );
+      if (!!this.searchType && !!newPlaylistName) {
+        try {
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation(
+                $name: String
+                $title: String
+                $department: String
+                $rank: String
+                $city: String
+                $state: String
+                $region: String
+                $country: String
+                $status: String
+                $moreThanScaleScoreAverage: Int
+                $lessThanScaleScoreAverage: Int
+                $moreThanCesa: Int
+                $lessThanCesa: Int
+                $moreThanWolfpackScore: Int
+                $lessThanWolfpackScore: Int
+                $moreThanNumberOfExits: Int
+                $lessThanNumberOfExits: Int
+                $playlistUid: String
+                $newPlaylistName: String!
+              ) {
+                createPlaylistFromContactSearch(
+                  contactSearch: {
+                    searchName: $name
+                    searchTitle: $title
+                    searchDepartment: $department
+                    searchRank: $rank
+                    city: $city
+                    state: $state
+                    region: $region
+                    country: $country
+                    status: $status
+                    moreThanScaleScoreAverage: $moreThanScaleScoreAverage
+                    lessThanScaleScoreAverage: $lessThanScaleScoreAverage
+                    moreThanCesa: $moreThanCesa
+                    lessThanCesa: $lessThanCesa
+                    moreThanWolfpackScore: $moreThanWolfpackScore
+                    lessThanWolfpackScore: $lessThanWolfpackScore
+                    moreThanNumberOfExits: $moreThanNumberOfExits
+                    lessThanNumberOfExits: $lessThanNumberOfExits
+                    playlistUid: $playlistUid
+                  }
+                  playlistData: { name: $newPlaylistName }
+                ) {
+                  playlist {
+                    uid
+                    name
+                  }
+                }
+              }
+            `,
+            variables: {
+              ...this.contactSearch,
+              newPlaylistName: newPlaylistName
+            }
+          });
+          console.log("saving results as playlist success", result);
+          const playlist = _get(
+            result,
+            "data.createPlaylistFromContactSearch.playlist",
+            null
+          );
+          this.$router.push({
+            path: `/playlists/${playlist.uid}`
+          });
+        } catch (error) {
+          console.log("error saving simple search as a play list", error);
+        }
+      }
+    },
     removeFilter(key) {
       if (key.startsWith("playlist")) {
         this.$store.commit("doContactSearch", {
@@ -303,10 +384,8 @@ export default {
           state: this.contactSearch.state,
           region: this.contactSearch.region,
           country: this.contactSearch.country,
-          moreThanScaleScoreAverage: this.contactSearch
-            .moreThanScaleScoreAverage,
-          lessThanScaleScoreAverage: this.contactSearch
-            .lessThanScaleScoreAverage,
+          moreThanScaleScoreAverage: this.contactSearch.moreThanScaleScoreAverage,
+          lessThanScaleScoreAverage: this.contactSearch.lessThanScaleScoreAverage,
           moreThanCesa: this.contactSearch.moreThanCesa,
           lessThanCesa: this.contactSearch.lessThanCesa,
           moreThanWolfpackScore: this.contactSearch.moreThanWolfpackScore,
@@ -316,9 +395,7 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       skip() {

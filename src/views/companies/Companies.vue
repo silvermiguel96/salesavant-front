@@ -106,7 +106,6 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import _pickby from "lodash.pickby";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CreatePlaylistFromResults from "../../components/common/CreatePlaylistFromResults.vue";
 import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
