@@ -27,10 +27,12 @@
       </v-col>
     </v-row>
     <v-row no-gutters class="mx-4">
-      <v-col cols="12">
+      <v-col cols="12" class="py-4">
         <v-text-field
           v-model="folderInput"
           v-on:keydown="folderInputKeydown"
+          :error="folderInputError"
+          :error-messages="folderInputErrorMessages"
           label="Add a Folder"
           append-icon="keyboard_return"
           dense
@@ -48,12 +50,19 @@ export default {
   data: () => ({
     selected: null,
     folders: [],
-    folderInput: ""
+    folderInput: "",
+    folderInputError: false,
+    folderInputErrorMessages: undefined
   }),
   methods: {
     async folderInputKeydown(event) {
       switch (event.key) {
         case "Enter":
+          if (!this.folderInput || this.folderInput.length < 5) {
+            this.folderInputError = true;
+            this.folderInputErrorMessages = ["Name must be at least 5"];
+            return;
+          }
           try {
             let result = null;
             result = await this.$apollo.mutate({
@@ -87,10 +96,11 @@ export default {
             );
             console.log("error delete playlist", error);
           }
-          this.folderInput = "";
+          this.resetFolderInput();
           break;
         case "Escape":
-          this.folderInput = "";
+          console.log("Escape");
+          this.resetFolderInput();
           break;
       }
     },
@@ -152,27 +162,24 @@ export default {
           let result = null;
           result = await this.$apollo.mutate({
             mutation: gql`
-            mutation(
-              $folderId: Int!
-              $playlistUid: String!
-            ) {
-              addCompanyPlaylistToFolder(
+              mutation($folderId: Int!, $playlistUid: String!) {
+                addCompanyPlaylistToFolder(
                   folderId: $folderId
                   playlistUid: $playlistUid
-              ) {
-                folder {
-                  id
-                  name
-                  companyPlaylists {
-                    uid
-                  }
-                  contactPlaylists {
-                    uid
+                ) {
+                  folder {
+                    id
+                    name
+                    companyPlaylists {
+                      uid
+                    }
+                    contactPlaylists {
+                      uid
+                    }
                   }
                 }
               }
-            }
-          `,
+            `,
             variables: {
               folderId: parseInt(folder.id),
               playlistUid: playlistUid
@@ -205,6 +212,11 @@ export default {
         `Playlist "${playlistName}" added successfully to "${folder.name}"`,
         "success"
       );
+    },
+    resetFolderInput() {
+      this.folderInput = "";
+      this.folderInputError = false;
+      this.folderInputErrorMessages = undefined;
     }
   },
   computed: {

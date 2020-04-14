@@ -13,7 +13,7 @@
       <v-icon small v-else>folder</v-icon>
     </v-col>
 
-    <v-col cols="7" class="align-center">
+    <v-col cols="5" class="align-center">
       <v-text-field v-show="!edit" v-text="folder.name" class="body-2 pt-0 mt-0"></v-text-field>
       <input
         type="text"
@@ -24,20 +24,16 @@
       />
     </v-col>
 
-    <v-col cols="1">
-      <v-btn icon>
-        <v-icon v-show="!edit" v-on:click="toggleEdit($event)" small>edit</v-icon>
-      </v-btn>
-    </v-col>
-
-    <v-col cols="1">
-      <v-btn icon>
-        <v-icon v-on:click="deleteFolder($event)" small>delete</v-icon>
-      </v-btn>
-    </v-col>
-
-    <v-col cols="2" class="text-lg-center">
-      <v-chip color="light-blue darken-2" text-color="white" small>{{folderNumItems}}</v-chip>
+    <v-col cols="5">
+      <div class="d-flex flex-row justify-space-around align-center">
+        <v-btn icon>
+          <v-icon v-show="!edit" v-on:click="toggleEdit($event)" small>edit</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon v-on:click="deleteFolder($event)" small>delete</v-icon>
+        </v-btn>
+        <v-chip color="light-blue darken-2" class="text-center px-2" text-color="white" small>{{folderNumItems}}</v-chip>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -143,7 +139,7 @@ export default {
     dashedBorder() {
       if (this.hightlight) {
         return {
-          "border": "1px dashed #1976D6",
+          border: "1px dashed #1976D6",
           "border-radius": "5px"
         };
       }
