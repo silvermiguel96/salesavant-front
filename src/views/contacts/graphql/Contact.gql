@@ -10,7 +10,6 @@ query AllContacts($uid: String) {
     linkedinHandle
     additionalData
     companies {
-      searchContactCompanies
       title
       businessEmail
       businessPhone
