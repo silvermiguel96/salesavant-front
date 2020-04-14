@@ -18,7 +18,7 @@
                 <v-col>
                   <h2 class="title">Upload a (.csv) file</h2>
                   <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
-                  <p class="caption my-1">You need columns with:</p>
+                  <p class="caption my-1">The columns must be:</p>
                   <ul>
                     <li>Website</li>
                     <li>Scale Score</li>
@@ -34,7 +34,7 @@
                 <v-col>
                   <h2 class="title">Upload a (.csv) file</h2>
                   <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
-                  <p class="caption my-1">You need columns with:</p>
+                  <p class="caption my-1">The columns must be:</p>
                   <ul>
                     <li>Full name</li>
                     <li>LinkedIn</li>
