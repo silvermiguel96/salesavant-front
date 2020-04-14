@@ -236,7 +236,7 @@ export default {
           console.log("saving results as playlist success", result);
           const playlist = _get(
             result,
-            "data.createPlaylistFromSearch.playlist",
+            "data.createPlaylistFromCompanySearch.playlist",
             null
           );
           this.$router.push({
