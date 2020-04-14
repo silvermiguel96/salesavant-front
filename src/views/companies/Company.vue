@@ -31,12 +31,10 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="8" md="9" lg="10">
-          <div class="title text--secondary pl-3 pl-sm-6">
-            {{ company.name || '' }}
-          </div>
+          <div class="title text--secondary pl-3 pl-sm-6">{{ company.name || '' }}</div>
           <div class="caption text--secondary pl-3 pl-sm-6">
             Last Updated:
-            <span>{{ company.modificationTime | moment("from", "now") }}</span>
+            <span v-if="company.modificationTime">{{ company.modificationTime | moment("from", "now") }}</span>
           </div>
         </v-col>
         <v-col cols="12" sm="4" md="3" lg="2">
@@ -121,7 +119,9 @@ import Analytics from "./components/Analytics/Analytics.vue";
 
 export default {
   data() {
-    return {};
+    return {
+      company: {}
+    };
   },
   components: {
     CompanyProfile,
@@ -155,16 +155,6 @@ export default {
       },
       fetchPolicy: "cache-and-network"
     }
-  },
-  computed: {
-    httpCompany: function() {
-      return this.company.url.startsWith("http")
-        ? this.company.url
-        : `http://${this.company.url}`;
-    }
-  },
-  beforeCreate() {
-    this.$apollo.query.company;
   }
 };
 </script>

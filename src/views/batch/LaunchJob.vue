@@ -16,7 +16,7 @@
                   <v-text-field v-model="playlistDescription" label="Playlist Description"></v-text-field>
                 </v-col>
                 <v-col>
-                  <h2 class="title">Upload a file (.cvs)</h2>
+                  <h2 class="title">Upload a (.csv) file</h2>
                   <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
                   <p class="caption my-1">You need columns with:</p>
                   <ul>
@@ -32,7 +32,7 @@
                   <v-text-field v-model="description" label="Description"></v-text-field>
                 </v-col>
                 <v-col>
-                  <h2 class="title">Upload a file (.cvs)</h2>
+                  <h2 class="title">Upload a (.csv) file</h2>
                   <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
                   <p class="caption my-1">You need columns with:</p>
                   <ul>
