@@ -98,7 +98,7 @@ export default {
   apollo: {
     playlistContacts: {
       query: gql`
-        query contacsPlaylist(
+        query playlistCompanyContacts(
           $playlistUid: String
           $search: String
           $sortBy: String
@@ -106,7 +106,7 @@ export default {
           $first: Int
           $offset: Int
         ) {
-          playlistContacts(
+          playlistCompanyContacts(
             playlistUid: $playlistUid
             search: $search
             sortBy: $sortBy

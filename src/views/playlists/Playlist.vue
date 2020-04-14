@@ -39,8 +39,8 @@
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="12" xs="12" class="pt-0">
-          <v-tabs grow background-color="grey lighten-5" color="primary">
+        <v-col cols="12" xs="12" class="pt-0" v-if="playlist">
+          <v-tabs grow background-color="grey lighten-5" color="primary" v-if="playlist.playlistType=='company'">
             <!-- Tab Companies -->
             <v-tab class="text-capitalize">Companies</v-tab>
             <v-tab-item>
@@ -52,6 +52,25 @@
               <div>
                 <contacts />
               </div>
+            </v-tab-item>
+            <!-- Tab analytics -->
+            <v-tab class="text-capitalize">Analytics</v-tab>
+            <v-tab-item>
+              <analytics :aggs_data="additionalDataParsed"></analytics>
+            </v-tab-item>
+          </v-tabs>
+          <v-tabs grow background-color="grey lighten-5" color="primary" v-if="playlist.playlistType=='contact'">
+            <!-- Tab contacts -->
+            <v-tab class="text-capitalize">Contacts</v-tab>
+            <v-tab-item>
+              <div>
+                <contacts />
+              </div>
+            </v-tab-item>
+            <!-- Tab Companies -->
+            <v-tab class="text-capitalize">Companies</v-tab>
+            <v-tab-item>
+              <companies />
             </v-tab-item>
             <!-- Tab analytics -->
             <v-tab class="text-capitalize">Analytics</v-tab>
@@ -82,18 +101,16 @@ export default {
     return {
       isLoading: false,
       playlist: {
-        uid: "",
-        name: "",
-        description: null
       }
     };
   },
   apollo: {
     playlist: {
       query: gql`
-        query getPlaylist($uid: String) {
+        query playlist($uid: String) {
           playlist(uid: $uid) {
             uid
+            playlistType
             name
             description
             modificationTime
@@ -116,9 +133,6 @@ export default {
       }
       return {};
     }
-  },
-  beforeCreate() {
-    this.$apollo.query.playlist;
   },
   // mounted() {
   //   this.$store.commit("updateCompanySearch", {
