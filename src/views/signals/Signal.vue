@@ -97,7 +97,7 @@
                 v-if="signalCompanies"
                 :items="signalCompanies.companiesList"
                 :totalResults="signalCompanies.totalResults"
-                class="result apollo"
+                class="mx-2"
                 @updateOptions="updateOptions"
               ></company-signals>
             </v-col>
