@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import KeywordsJobResult from "./KeywordsJobResult";
-import ContactsJobResult from "./ContactsJobResult";
-import LinkedinJobResult from "./LinkedinJobResult";
+import KeywordsJobResult from "./jobResult/KeywordsJobResult.vue";
+import ContactsJobResult from "./jobResult/ContactsJobResult.vue";
+import LinkedinJobResult from "./jobResult/LinkedinJobResult.vue";
 export default {
   data() {
     return {

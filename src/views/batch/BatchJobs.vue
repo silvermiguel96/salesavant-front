@@ -53,7 +53,7 @@
 <script>
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
-import JobsTable from "./components/BatchJobsTable.vue";
+import JobsTable from "../../components/batch/BatchJobsTable.vue";
 
 export default {
   data() {
