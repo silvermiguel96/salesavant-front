@@ -42,7 +42,7 @@
 
 <script>
 import gql from "graphql-tag";
-import ContactsTable from "../../contacts/ContactsTable";
+import ContactsTable from "../../../contacts/ContactsTable";
 
 export default {
   data() {
@@ -98,7 +98,7 @@ export default {
   apollo: {
     playlistContacts: {
       query: gql`
-        query playlistCompanyContacts(
+        query playlistContacts(
           $playlistUid: String
           $search: String
           $sortBy: String
@@ -106,7 +106,7 @@ export default {
           $first: Int
           $offset: Int
         ) {
-          playlistCompanyContacts(
+          playlistContacts(
             playlistUid: $playlistUid
             search: $search
             sortBy: $sortBy

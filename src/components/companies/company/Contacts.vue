@@ -17,9 +17,9 @@
       <div>
         <!-- Result -->
         <contacts-table
-          v-if="playlistContacts"
-          :items="playlistContacts.contactsList"
-          :totalResults="playlistContacts.totalResults"
+          v-if="companyContacts"
+          :items="companyContacts.contactsList"
+          :totalResults="companyContacts.totalResults"
           @updateOptions="updateOptions"
         ></contacts-table>
         <!-- Loading -->
@@ -42,9 +42,12 @@
 
 <script>
 import gql from "graphql-tag";
-import ContactsTable from "../../contacts/ContactsTable";
+import ContactsTable from "../../contacts/ContactsTable.vue";
 
 export default {
+  components: {
+    ContactsTable
+  },
   data() {
     return {
       search: "",
@@ -57,9 +60,6 @@ export default {
       }
     };
   },
-  components: {
-    ContactsTable
-  },
   methods: {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
@@ -70,16 +70,12 @@ export default {
         switch (sortBy[0]) {
           case "scaleScoreAverage":
             this.options.sortBy = "scale_score_average";
-            break;
           case "capitalEfficiencyScoreAverage":
             this.options.sortBy = "capital_efficiency_score_average";
-            break;
           case "wolfpackScore":
             this.options.sortBy = "wolfpack_score";
-            break;
           case "numberOfExits":
             this.options.sortBy = "number_of_exits";
-            break;
         }
       } else {
         this.options.sortBy = "";
@@ -96,18 +92,18 @@ export default {
     }
   },
   apollo: {
-    playlistContacts: {
+    companyContacts: {
       query: gql`
-        query playlistContacts(
-          $playlistUid: String
+        query companyContacts(
+          $companyUid: String
           $search: String
           $sortBy: String
           $sortOrder: String
           $first: Int
           $offset: Int
         ) {
-          playlistContacts(
-            playlistUid: $playlistUid
+          companyContacts(
+            companyUid: $companyUid
             search: $search
             sortBy: $sortBy
             sortOrder: $sortOrder
@@ -125,13 +121,15 @@ export default {
               numberOfExits
               companies {
                 title
+                isCurrent
                 rank
                 department
-                isCurrent
                 company {
                   uid
                   name
                 }
+                title
+                isCurrent
               }
             }
           }
@@ -139,12 +137,14 @@ export default {
       `,
       variables() {
         return {
-          playlistUid: this.$route.params.playlistUid,
+          companyUid: this.$route.params.companiesUid,
           search: this.search,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       skip() {
@@ -157,7 +157,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$apollo.queries.playlistContacts;
+    this.$apollo.queries.companyContacts;
   }
 };
 </script>

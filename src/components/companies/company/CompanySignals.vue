@@ -49,7 +49,7 @@
   </v-card>
 </template>
 <script>
-import LongParagraph from "../../../../components/common/LongParagraph.vue";
+import LongParagraph from "../../common/LongParagraph.vue";
 import gql from "graphql-tag";
 import _get from "lodash.get";
 export default {

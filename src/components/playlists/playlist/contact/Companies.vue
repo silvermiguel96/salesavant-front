@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import CompaniesTable from "../../companies/CompaniesTable.vue";
-import ButtonMenu from "../../common/ButtonMenu.vue";
+import CompaniesTable from "../../../companies/CompaniesTable.vue";
+import ButtonMenu from "../../../common/ButtonMenu.vue";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 

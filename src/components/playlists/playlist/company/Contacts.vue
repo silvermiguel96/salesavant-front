@@ -17,9 +17,9 @@
       <div>
         <!-- Result -->
         <contacts-table
-          v-if="companyContacts"
-          :items="companyContacts.contactsList"
-          :totalResults="companyContacts.totalResults"
+          v-if="playlistContacts"
+          :items="playlistContacts.contactsList"
+          :totalResults="playlistContacts.totalResults"
           @updateOptions="updateOptions"
         ></contacts-table>
         <!-- Loading -->
@@ -42,7 +42,7 @@
 
 <script>
 import gql from "graphql-tag";
-import ContactsTable from "../../../../components/contacts/ContactsTable";
+import ContactsTable from "../../../contacts/ContactsTable.vue";
 
 export default {
   data() {
@@ -70,12 +70,16 @@ export default {
         switch (sortBy[0]) {
           case "scaleScoreAverage":
             this.options.sortBy = "scale_score_average";
+            break;
           case "capitalEfficiencyScoreAverage":
             this.options.sortBy = "capital_efficiency_score_average";
+            break;
           case "wolfpackScore":
             this.options.sortBy = "wolfpack_score";
+            break;
           case "numberOfExits":
             this.options.sortBy = "number_of_exits";
+            break;
         }
       } else {
         this.options.sortBy = "";
@@ -92,18 +96,18 @@ export default {
     }
   },
   apollo: {
-    companyContacts: {
+    playlistContacts: {
       query: gql`
-        query companyContacts(
-          $companyUid: String
+        query playlistCompanyContacts(
+          $playlistUid: String
           $search: String
           $sortBy: String
           $sortOrder: String
           $first: Int
           $offset: Int
         ) {
-          companyContacts(
-            companyUid: $companyUid
+          playlistCompanyContacts(
+            playlistUid: $playlistUid
             search: $search
             sortBy: $sortBy
             sortOrder: $sortOrder
@@ -121,15 +125,13 @@ export default {
               numberOfExits
               companies {
                 title
-                isCurrent
                 rank
                 department
+                isCurrent
                 company {
                   uid
                   name
                 }
-                title
-                isCurrent
               }
             }
           }
@@ -137,14 +139,12 @@ export default {
       `,
       variables() {
         return {
-          companyUid: this.$route.params.companiesUid,
+          playlistUid: this.$route.params.playlistUid,
           search: this.search,
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
       },
       skip() {
@@ -157,7 +157,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$apollo.queries.companyContacts;
+    this.$apollo.queries.playlistContacts;
   }
 };
 </script>

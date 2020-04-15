@@ -3,7 +3,7 @@
     <!-- Apollo watched Graphql query -->
     <h2 class="display-1 ma-3">Categorized</h2>
     <ApolloQuery
-      :query="require('../graphql/NewsTrueCategorized.gql')"
+      :query="require('./NewsTrueCategorized.gql')"
       :variables="{
         companyUid: this.$route.params.companiesUid,
         first: this.options.itemsPerPage,
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import LongParagraph from "../../../../../components/common/LongParagraph.vue";
+import LongParagraph from "../../common/LongParagraph.vue";
 import gql from "graphql-tag";
 export default {
   data() {

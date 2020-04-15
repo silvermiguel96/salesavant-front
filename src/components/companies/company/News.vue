@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import NewsTableFalse from "./components/NewsTableFalse.vue";
-import NewsTableTrue from "./components/NewsTableTrue.vue";
+import NewsTableFalse from "./NewsTableFalse.vue";
+import NewsTableTrue from "./NewsTableTrue.vue";
 import gql from "graphql-tag";
 export default {
   components: {

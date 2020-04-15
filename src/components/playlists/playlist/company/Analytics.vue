@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import C3Chart from "../../C3Chart.vue";
+import C3Chart from "../../../C3Chart.vue";
 export default {
   props: {
     aggs_data: { type: Object, default: () => {} }

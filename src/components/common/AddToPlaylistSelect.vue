@@ -60,7 +60,7 @@
 
 <script>
 import gql from "graphql-tag";
-import playlistsAutocomplete from "../../../../components/playlists/PlaylistAutocomplete.vue";
+import playlistsAutocomplete from "../playlists/PlaylistAutocomplete.vue";
 import _get from "lodash.get";
 export default {
   data() {
