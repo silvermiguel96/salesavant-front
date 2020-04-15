@@ -87,12 +87,12 @@
 <script>
 import _get from "lodash.get";
 import gql from "graphql-tag";
-import TabCompanyCompanies from "../../components/playlists/company/CompaniesTab.vue";
-import TabCompanyContacts from "../../components/playlists/company/ContactsTab.vue";
-import TabCompanyAnalytics from "../../components/playlists/company/AnalyticsTab.vue";
-import TabContactContacts from "../../components/playlists/contact/ContactsTab.vue";
-import TabContactCompanies from "../../components/playlists/contact/CompaniesTab.vue";
-import TabContactAnalytics from "../../components/playlists/contact/AnalyticsTab.vue";
+import TabCompanyCompanies from "../../components/playlists/playlist/company/CompaniesTab.vue";
+import TabCompanyContacts from "../../components/playlists/playlist/company/ContactsTab.vue";
+import TabCompanyAnalytics from "../../components/playlists/playlist/company/AnalyticsTab.vue";
+import TabContactContacts from "../../components/playlists/playlist/contact/ContactsTab.vue";
+import TabContactCompanies from "../../components/playlists/playlist/contact/CompaniesTab.vue";
+import TabContactAnalytics from "../../components/playlists/playlist/contact/AnalyticsTab.vue";
 
 export default {
   components: {
