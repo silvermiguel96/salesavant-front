@@ -4,7 +4,7 @@
       <v-col cols="12">
         <div class="d-flex justify-md-end">
           <div class="mt-3 mr-2">
-            <add-modal @onSave="saveComments" />
+            <add-comment-modal @onSave="saveComments" />
           </div>
         </div>
       </v-col>
@@ -48,10 +48,14 @@
 
 <script>
 import _get from "lodash.get";
-import LongParagraph from "../../../../components/common/LongParagraph.vue";
-import AddModal from "./components/addModal.vue";
+import LongParagraph from "../../common/LongParagraph.vue";
+import AddCommentModal from "../../common/AddCommentModal.vue";
 import gql from "graphql-tag";
 export default {
+  components: {
+    LongParagraph,
+    AddCommentModal
+  },
   data() {
     return {
       companyComments: null,
@@ -237,13 +241,6 @@ export default {
         }
       }
     }
-  },
-  components: {
-    LongParagraph,
-    AddModal
-  },
-  beforeUpdate() {
-    this.$apollo.queries.companyComments;
   }
 };
 </script>

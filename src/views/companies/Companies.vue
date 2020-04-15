@@ -108,7 +108,7 @@ import gql from "graphql-tag";
 import _get from "lodash.get";
 import CompaniesTable from "../../components/companies/CompaniesTable.vue";
 import CreatePlaylistFromResults from "../../components/common/CreatePlaylistFromResults.vue";
-import CreateSignalFromResults from "./components/CreateSignalFromResults.vue";
+import CreateSignalFromResults from "../../components/common/CreateSignalFromResults.vue";
 import { defaultCompanySearch } from "../../store";
 import { mapMutations } from "vuex";
 

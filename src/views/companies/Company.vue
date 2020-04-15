@@ -102,20 +102,20 @@
 <script>
 import gql from "graphql-tag";
 // Home
-import CompanyProfile from "./components/Home/CompanyProfile.vue";
-import CompanySignals from "./components/Home/CompanySignals.vue";
+import CompanyProfile from "../../components/companies/company/CompanyProfile.vue"
+import CompanySignals from "../../components/companies/company/CompanySignals.vue";
 // Comments
-import CompanyComments from "./components/comments/comments.vue";
+import CompanyComments from "../../components/companies/company/Comments.vue";
 // Signals
-import Signals from "./components/Signals/Signals.vue";
+import Signals from "../../components/companies/company/Signals.vue";
 // Contacts
-import CompanyContacts from "./components/Contacts/Contacts.vue";
+import CompanyContacts from "../../components/companies/company/Contacts.vue";
 // Add To Playlist
-import AddToPlaylist from "./components/Add-to-playlist/AddToPlaylist.vue";
+import AddToPlaylist from "../../components/common/AddToPlaylistSelect.vue";
 // News
-import News from "./components/News/News.vue";
+import News from "../../components/companies/company/News.vue";
 // Analytics
-import Analytics from "./components/Analytics/Analytics.vue";
+import Analytics from "../../components/companies/company/Analytics.vue";
 
 export default {
   data() {

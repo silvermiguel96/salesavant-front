@@ -423,8 +423,7 @@
 </template>
 
 <script>
-import formatDateTime from "../../../../components/common/FormatDateTime.vue";
-import LongParagraph from "../../../../components/common/LongParagraph";
+import LongParagraph from "../../common/LongParagraph.vue";
 import gql from "graphql-tag";
 export default {
   data() {
@@ -433,7 +432,7 @@ export default {
     };
   },
   components: {
-    LongParagraph,
+    LongParagraph
   },
   apollo: {
     company: {

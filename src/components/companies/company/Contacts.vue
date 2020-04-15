@@ -42,9 +42,12 @@
 
 <script>
 import gql from "graphql-tag";
-import ContactsTable from "../../../../components/contacts/ContactsTable";
+import ContactsTable from "../../contacts/ContactsTable.vue";
 
 export default {
+  components: {
+    ContactsTable
+  },
   data() {
     return {
       search: "",
@@ -56,9 +59,6 @@ export default {
         sortOrder: ""
       }
     };
-  },
-  components: {
-    ContactsTable
   },
   methods: {
     updateOptions({
