@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import CompaniesSearch from "./CompaniesSearch.vue";
-import ContactsSearch from "./ContactsSearch.vue";
+import CompaniesSearch from "../../components/advanced-search/CompaniesSearch.vue";
+import ContactsSearch from "../../components/advanced-search/ContactsSearch.vue";
 import { mapMutations } from "vuex";
 
 export default {
