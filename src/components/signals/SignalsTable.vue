@@ -76,7 +76,7 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td><format-date-time :time="item.creationTime" /></td>
+          <td>{{ item.creationTime | moment("MMMM Do YYYY")}}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
@@ -97,8 +97,8 @@
 /* import PLAYLISTS from "./Playlists.gql"; */
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import formatDateTime from "../../../components/common/FormatDateTime.vue";
-import LongParagraph from "../../../components/common/LongParagraph";
+import LongParagraph from "../common/LongParagraph.vue";
+
 export default {
   data() {
     return {
@@ -117,9 +117,9 @@ export default {
           width: "20%"
         },
         { text: "Group", value: "group", align: "left", sortable: false, width: "15%"  },
-        { text: "Category", value: "category", align: "left", sortable: false, width: "10%" },
+        { text: "Category", value: "category", align: "left", sortable: false, width: "15%" },
         { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
-        { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "20%"   },
+        { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "15%"   },
         { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
         { text: "Remove", value: "icon", align: "center", sortable: false, width: "5%"  }
       ],
@@ -130,7 +130,6 @@ export default {
   },
   components: {
     LongParagraph,
-    formatDateTime
   },
   methods: {
     updateOptions(dataFromEvent = {}) {

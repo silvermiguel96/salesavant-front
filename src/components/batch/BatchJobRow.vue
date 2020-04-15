@@ -16,7 +16,9 @@
       <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
     </td>
     <td>{{ job.description || "--" }}</td>
-    <td> <format-date-time :time="job.creationTime"/> </td>
+    <td> 
+      <!-- <format-date-time :time="job.creationTime"/> -->
+    {{ job.creationTime | moment("MMMM Do YYYY")}} </td>
     <td v-if="job.progress > 0 && job.status != 'finished'">
       <v-progress-circular
         :rotate="-90"
@@ -37,7 +39,6 @@
 </template>
 
 <script>
-import formatDateTime from "../../../components/common/FormatDateTime.vue";
 
 import JobResult from "./BatchJobResult";
 
@@ -95,7 +96,6 @@ export default {
   },
   components: {
     JobResult,
-    formatDateTime
   }
 };
 </script>

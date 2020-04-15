@@ -30,7 +30,7 @@
           {{ item.state || "--"}}
         </td> 
         <td>
-          <format-date-time :time="item.creationTime" />
+          {{ item.creationTime | moment("MMMM Do YYYY")}}
         </td>
       </tr>
     </template>
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import formatDateTime from "../../../components/common/FormatDateTime.vue";
 export default {
   data() {
     return {
@@ -46,25 +45,30 @@ export default {
         {
           text: "Company name",
           sortable: false,
-          value: "name"
+          value: "name",
+          width: "20%",
         },
         {
           text: "Score",
-          value: "totalScore"
+          value: "totalScore",
+          width: "15%",
         },
         {
           text: "Employes",
-          value: "numEmployees"
+          value: "numEmployees",
+          width: "15%",
         },
         {
           text: "Country",
           sortable: false,
-          value: "country"
+          value: "country",
+          width: "15%",
         },
         {
           text: "State",
           sortable: false,
-          value: "state"
+          value: "state",
+          width: "15%",
         },
         {
           text: "Creation Time",
@@ -87,9 +91,6 @@ export default {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
     }
-  },
-  components: {
-    formatDateTime
   }
 };
 </script>

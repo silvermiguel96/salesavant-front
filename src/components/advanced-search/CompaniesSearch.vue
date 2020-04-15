@@ -114,8 +114,8 @@ import { setTimeout } from "timers";
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import PlaylistsAutocomplete from "../../components/playlists/PlaylistAutocomplete.vue";
-import SignalsAutocompleteMulti from "../../components/signals/SignalsAutocompleteMulti.vue";
-import SignalsGroupsAutocomplete from "../../components/signals/GroupsAutocomplete.vue";
+import SignalsAutocompleteMulti from "../../components/signals/autoComplete/SignalsAutocompleteMulti.vue";
+import SignalsGroupsAutocomplete from "../../components/signals/autoComplete/SignalsAutocomplete.vue";
 import {defaultCompanySearch} from "../../store";
 import { mapMutations } from "vuex";
 

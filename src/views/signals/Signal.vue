@@ -1,145 +1,117 @@
 <template>
-  <v-container fluid>
-    <v-card class="apollo-example">
-      <v-breadcrumbs
-      :large="true"
-        v-if="!!this.$route.params.signalId"
-        :items="[
+  <v-container fluid class="py-0">
+    <v-row>
+      <v-col cols="12" xs="12">
+        <v-card>
+          <v-row no-gutters>
+            <v-breadcrumbs
+              :large="true"
+              v-if="!!this.$route.params.signalId"
+              :items="[
           {
             text: 'Signals',
             disabled: false,
             href: '/signals'
           },
           {
-            text: this.signal.name || this.$route.params.signalId,
+            text: signal.name || this.$route.params.signalId,
             disabled: true,
             href: `/signals/${this.$route.params.signalId}`
           }
         ]"
-        divider=">"
-      ></v-breadcrumbs>
-      <v-breadcrumbs
-      :large="true"
-        v-else
-        :items="[
+              divider=">"
+            ></v-breadcrumbs>
+            <v-breadcrumbs
+              :large="true"
+              v-else
+              :items="[
           {
             text: 'Signals',
             disabled: false,
             href: '/signals'
           }
         ]"
-        divider=">"
-      ></v-breadcrumbs>
-      <v-form @submit.prevent>
-        <v-container fluid >
-          <v-row class="px-3" dense>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="signal.name"
-                label="Name"
-                required
-                :disabled="!canModifySignalName"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="signal.description"
-                label="Description"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="signal.defaultScore"
-                label="Score"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="signal.group"
-                label="Group"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="4" md="2" lg="2">
-              <v-btn
-                v-if="canModifySignalName"
-                type="submit"
-                @click="save"
-                class="text-capitalize"
-                color="primary"
-                block
-              >
-                <v-icon small class="pr-1">{{
-                  !!signal.id ? "save" : "add"
-                }}</v-icon>
-                {{ !!signal.id ? "Update" : "Create" }}
-              </v-btn>
-              <v-btn
-                v-else
-                type="submit"
-                color="primary"
-                @click="saveKeyWordsAsSignal"
-                >Save from playlist keywords</v-btn
-              >
+              divider=">"
+            ></v-breadcrumbs>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-form @submit.prevent>
+                <v-container fluid>
+                  <v-row class="px-3" dense>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="signal.name"
+                        label="Name"
+                        required
+                        :disabled="!canModifySignalName"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="signal.description" label="Description" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field v-model="signal.group" label="Group" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="4" md="2" lg="2">
+                      <v-btn
+                        v-if="canModifySignalName"
+                        type="submit"
+                        @click="save"
+                        class="text-capitalize"
+                        color="primary"
+                        block
+                      >
+                        <v-icon small class="pr-1">
+                          {{
+                          !!signal.id ? "save" : "add"
+                          }}
+                        </v-icon>
+                        {{ !!signal.id ? "Update" : "Create" }}
+                      </v-btn>
+                      <v-btn
+                        v-else
+                        type="submit"
+                        color="primary"
+                        @click="saveKeyWordsAsSignal"
+                      >Save from playlist keywords</v-btn>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
             </v-col>
           </v-row>
-        </v-container>
-      </v-form>
-      <v-container fluid v-if="canModifySignalName">
-        <template
-          v-if="
-            !!this.$route.params.signalId &&
-              this.$route.params.signalId !== 'create'
-          "
-        >
-          <ApolloQuery
-            :query="require('../graphql/SearchsCompanySignal.gql')"
-            :variables="{
-              signalId: parseInt(this.$route.params.signalId),
-              first: this.itemsPerPage, 
-              offset: (this.itemsPerPage * this.page) - this.itemsPerPage,
-              sortBy: this.sortBy,
-              sortOrder: this.sortOrder,
-            }"
-          >
-            <template  v-slot="{ result: { loading, error, data }, isLoading }">
+          <v-row no-gutters v-if="canModifySignalName">
+            <v-col
+              cols="12"
+              v-if="
+                  !!this.$route.params.signalId &&
+                    this.$route.params.signalId !== 'create'
+                "
+            >
               <!-- Result -->
-                <company-signals
-                  v-if="data"
-                  :items="data.signalCompanies.companiesList"
-                  :totalResults="data.signalCompanies.totalResults"
-                  class="result apollo"
-                  @updateOptions="updateOptions"
-                ></company-signals>
-
-            <!-- Loading -->
-            <v-row justify="center" no-gutters>
-                <v-col cols="12">
-                  <v-progress-linear
-                  :active="!!isLoading"
-                  color="blue"
-                  indeterminate
-                  absolute
-                  bottom
-                  query
-                  ></v-progress-linear>
-                </v-col>
-            </v-row>
-
-            </template>
-          </ApolloQuery>
-        </template>
-      </v-container>
-    </v-card>
+              <company-signals
+                v-if="signalCompanies"
+                :items="signalCompanies.companiesList"
+                :totalResults="signalCompanies.totalResults"
+                class="mx-2"
+                @updateOptions="updateOptions"
+              ></company-signals>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import companySignals from "./SignalCompanyTable.vue";
+import companySignals from "../../components/signals/SignalCompanyTable.vue";
 
 const defaultSignal = {
   id: "",
@@ -157,11 +129,12 @@ const defaultSignal = {
 export default {
   data() {
     return {
-      descending: false,
-      sortBy: "",
-      sortOrder: "",
-      page: 1,
-      itemsPerPage: 10,
+      options: {
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: "",
+        sortOrder: ""
+      },
       signal: { ...defaultSignal },
       companySignals: []
     };
@@ -194,39 +167,84 @@ export default {
         };
       },
       fetchPolicy: "cache-and-network"
+    },
+    signalCompanies: {
+      query: gql`
+        query getSignalsById(
+          $signalId: Int
+          $first: Int
+          $offset: Int
+          $sortBy: String
+          $sortOrder: String
+        ) {
+          signalCompanies(
+            signalId: $signalId
+            first: $first
+            offset: $offset
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+          ) {
+            totalResults
+            companiesList {
+              uid
+              name
+              numEmployees
+              totalScore
+              country
+              state
+              creationTime
+            }
+          }
+        }
+      `,
+      variables() {
+        return {
+          signalId: parseInt(this.$route.params.signalId),
+          first: this.options.itemsPerPage,
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder
+        };
+      },
     }
   },
   methods: {
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
-      this.page = page;
-      this.itemsPerPage = itemsPerPage;
+      this.options.page = page;
+      this.options.itemsPerPage = itemsPerPage;
       if (sortBy.length > 0) {
         switch (sortBy[0]) {
           case "totalScore":
-            this.sortBy = "score";
+            this.options.sortBy = "score";
             break;
           case "numEmployees":
-            this.sortBy = "employees";
+            this.options.sortBy = "employees";
             break;
         }
       } else {
-        this.sortBy = "";
+        this.options.sortBy = "";
       }
       if (sortDesc.length > 0) {
         if (sortDesc[0]) {
-          this.sortOrder = "desc";
+          this.options.sortOrder = "desc";
         } else {
-          this.sortOrder = "asc";
+          this.options.sortOrder = "asc";
         }
       } else {
-        this.sortOrder = "";
+        this.options.sortOrder = "";
       }
     },
     async save() {
       if (!this.signal) {
-        this.$eventBus.$emit("showSnack", "There's something wrong with the signal saving!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "There's something wrong with the signal saving!",
+          "error"
+        );
         return;
       }
       if (!this.signal.name) {
@@ -234,7 +252,11 @@ export default {
         return;
       }
       if (!this.signal.description) {
-        this.$eventBus.$emit("showSnack", "Description can not be empty!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Description can not be empty!",
+          "error"
+        );
         return;
       }
       if (!this.signal.defaultScore) {
@@ -295,7 +317,11 @@ export default {
               score: this.signal.defaultScore
             }
           });
-          this.$eventBus.$emit("showSnack", "The signals are updated successfully!", "success");
+          this.$eventBus.$emit(
+            "showSnack",
+            "The signals are updated successfully!",
+            "success"
+          );
           console.log("Update signal success", result);
         } else {
           //create signal
@@ -341,14 +367,22 @@ export default {
               score: this.signal.defaultScore
             }
           });
-          this.$eventBus.$emit("showSnack", "The signals are saving successfully!", "success");
+          this.$eventBus.$emit(
+            "showSnack",
+            "The signals are saving successfully!",
+            "success"
+          );
           console.log("saving signal success", result);
         }
         const signal =
           _get(result, "data.createSignal.signal", null) ||
           _get(result, "data.updateSignal.signal", null);
         if (!signal) {
-          this.$eventBus.$emit("showSnack", "it seems that we created/updated the signal but couldn't check it, please check manually", "error");
+          this.$eventBus.$emit(
+            "showSnack",
+            "it seems that we created/updated the signal but couldn't check it, please check manually",
+            "error"
+          );
           return;
         }
         this.signal = signal;
@@ -358,13 +392,21 @@ export default {
         this.$apollo.queries.signal;
         this.$apollo.queries.companySignals;
       } catch (error) {
-        this.$eventBus.$emit("showSnack", "oops we did something wrong!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "oops we did something wrong!",
+          "error"
+        );
         console.log("error saving signal", error);
       }
     },
     async saveKeyWordsAsSignal() {
       if (!this.signal) {
-        this.$eventBus.$emit("showSnack", "There's something wrong with the signal saving!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "There's something wrong with the signal saving!",
+          "error"
+        );
         return;
       }
       if (!this.signal.name) {
@@ -372,7 +414,11 @@ export default {
         return;
       }
       if (!this.signal.description) {
-        this.$eventBus.$emit("showSnack", "Description can not be empty!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Description can not be empty!",
+          "error"
+        );
         return;
       }
       if (!this.signal.defaultScore) {
@@ -419,7 +465,11 @@ export default {
             defaultScore: this.signal.defaultScore
           }
         });
-        this.$eventBus.$emit("showSnack", "The signals are saving successfully!", "success");
+        this.$eventBus.$emit(
+          "showSnack",
+          "The signals are saving successfully!",
+          "success"
+        );
         console.log("saving signal success", result);
         this.$router.push("/signal");
         const signal = _get(
@@ -430,7 +480,11 @@ export default {
 
         console.log("signal", signal);
         if (!signal) {
-          this.$eventBus.$emit("showSnack", "it seems that we created/updated the signal but couldn't check it, please check manually", "error");
+          this.$eventBus.$emit(
+            "showSnack",
+            "it seems that we created/updated the signal but couldn't check it, please check manually",
+            "error"
+          );
           return;
         }
         this.signal = signal;
@@ -438,7 +492,11 @@ export default {
           path: `/signals/${signal.id}`
         });
       } catch (error) {
-        this.$eventBus.$emit("showSnack", "oops we did something wrong!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "oops we did something wrong!",
+          "error"
+        );
         console.log("error saving signal", error);
       }
     },
@@ -449,7 +507,6 @@ export default {
       this.$route.params.signalId !== "create" &&
       Number.isInteger(this.$route.params.signalId)
     ) {
-      this.$apollo.queries.signal;
     }
   },
   beforeUpdate() {
