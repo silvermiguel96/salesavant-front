@@ -44,38 +44,34 @@
             <!-- Tab Companies -->
             <v-tab class="text-capitalize">Companies</v-tab>
             <v-tab-item>
-              <tab-company-companies/>
+              <company-companies/>
             </v-tab-item>
             <!-- Tab contacts -->
             <v-tab class="text-capitalize">Contacts</v-tab>
             <v-tab-item>
-              <div>
-                <tab-company-contacts />
-              </div>
+                <company-contacts />
             </v-tab-item>
             <!-- Tab analytics -->
             <v-tab class="text-capitalize">Analytics</v-tab>
             <v-tab-item>
-              <tab-company-analytics :aggs_data="additionalDataParsed" />
+              <company-analytics :aggs_data="additionalDataParsed" />
             </v-tab-item>
           </v-tabs>
           <v-tabs grow background-color="grey lighten-5" color="primary" v-if="playlist.playlistType=='contact'">
             <!-- Tab contacts -->
             <v-tab class="text-capitalize">Contacts</v-tab>
             <v-tab-item>
-              <div>
-                <tab-contact-contacts />
-              </div>
+                <contact-contacts />
             </v-tab-item>
             <!-- Tab Companies -->
             <v-tab class="text-capitalize">Companies</v-tab>
             <v-tab-item>
-              <tab-contact-companies />
+              <contact-companies />
             </v-tab-item>
             <!-- Tab analytics -->
             <v-tab class="text-capitalize">Analytics</v-tab>
             <v-tab-item>
-              <tab-contact-analytics :aggs_data="additionalDataParsed"/>
+              <contact-analytics :aggs_data="additionalDataParsed"/>
             </v-tab-item>
           </v-tabs>
         </v-col>
@@ -87,21 +83,21 @@
 <script>
 import _get from "lodash.get";
 import gql from "graphql-tag";
-import TabCompanyCompanies from "../../components/playlists/playlist/company/CompaniesTab.vue";
-import TabCompanyContacts from "../../components/playlists/playlist/company/ContactsTab.vue";
-import TabCompanyAnalytics from "../../components/playlists/playlist/company/AnalyticsTab.vue";
-import TabContactContacts from "../../components/playlists/playlist/contact/ContactsTab.vue";
-import TabContactCompanies from "../../components/playlists/playlist/contact/CompaniesTab.vue";
-import TabContactAnalytics from "../../components/playlists/playlist/contact/AnalyticsTab.vue";
+import CompanyCompanies from "../../components/playlists/playlist/company/Companies.vue";
+import CompanyContacts from "../../components/playlists/playlist/company/Contacts.vue";
+import CompanyAnalytics from "../../components/playlists/playlist/company/Analytics.vue";
+import ContactContacts from "../../components/playlists/playlist/contact/Contacts.vue";
+import ContactCompanies from "../../components/playlists/playlist/contact/Companies.vue";
+import ContactAnalytics from "../../components/playlists/playlist/contact/Analytics.vue";
 
 export default {
   components: {
-    TabCompanyCompanies,
-    TabCompanyContacts,
-    TabCompanyAnalytics,
-    TabContactContacts,
-    TabContactCompanies,
-    TabContactAnalytics
+    CompanyCompanies,
+    CompanyContacts,
+    CompanyAnalytics,
+    ContactContacts,
+    ContactCompanies,
+    ContactAnalytics
   },
   data() {
     return {
