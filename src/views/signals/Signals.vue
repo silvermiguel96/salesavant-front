@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="py-0">
     <v-row>
       <v-col cols="12" xs="12">
         <v-card>
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import SignalsTable from "./components/SignalsTable.vue";
+import SignalsTable from "../../components/signals/SignalsTable.vue";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
 import { mapMutations } from "../../store";

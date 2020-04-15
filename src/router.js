@@ -14,7 +14,7 @@ import Contacts from "./views/contacts/Contacts.vue";
 import Contact from "./views/contacts/Contact.vue"
 
 import Signals from "./views/signals/Signals.vue";
-import Signal from "./views/signals/components/Signal.vue";
+import Signal from "./views/signals/Signal.vue";
 
 import News from "./views/news/News.vue";
 import SingleNews from "./views/news/components/SingleNews.vue";
