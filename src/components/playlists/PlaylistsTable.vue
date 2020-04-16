@@ -105,7 +105,10 @@ export default {
       );
       if (res) {
         console.log("the playlist", item);
-        // this.$emit("deletePlaylist", item);
+        this.$emit("removePlaylist", {
+          item,
+          folderId: this.folderId
+        });
       }
     },
     dragstart(item, event) {
