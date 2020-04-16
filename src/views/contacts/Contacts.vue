@@ -400,14 +400,18 @@ export default {
             lessThanWolfpackScore: this.contactSearch.lessThanWolfpackScore,
             moreThanNumberOfExits: this.contactSearch.moreThanNumberOfExits,
             lessThanNumberOfExits: this.contactSearch.lessThanNumberOfExits,
-            sortBy: this.options.sortBy,
-            sortOrder: this.options.sortOrder,
             first: this.options.itemsPerPage,
-            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+            sortBy: this.options.sortBy,
+            sortOrder: this.options.sortOrder
           };
         }else{
           return {
-            searchName: this.search
+            searchName: this.search,
+            first: this.options.itemsPerPage,
+            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+            sortBy: this.options.sortBy,
+            sortOrder: this.options.sortOrder
           };
         }
       },

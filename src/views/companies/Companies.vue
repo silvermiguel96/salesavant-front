@@ -521,7 +521,11 @@ export default {
           };
         }else{
           return {
-            searchName: this.search
+            searchName: this.search,
+            first: this.options.itemsPerPage,
+            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+            sortBy: this.options.sortBy,
+            sortOrder: this.options.sortOrder,
           }
         }
       },
