@@ -24,6 +24,7 @@
               :folderName="folderName"
               @updateOptions="updateOptions"
               @deletePlaylist="deletePlaylist"
+              @removePlaylist="removePlaylist"
             ></playlists-table>
           </v-col>
         </v-row>
@@ -127,6 +128,46 @@ export default {
           "error"
         );
         console.log("error delete playlist", error);
+      }
+    },
+    async removePlaylist(playlist) {
+      try {
+        console.log("Playlist", playlist);
+        const index = this.playlists.playlistsList.indexOf(playlist.item);
+        console.log("index", index)
+        let result = null;
+        result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($playlistUid: String!, $folderId: Int!) {
+              removeCompanyPlaylistFromFolder(folderId: $folderId, playlistUid: $playlistUid) {
+                folder{
+                  id
+                  name
+                }
+              }
+            }
+          `,
+          variables: {
+            playlistUid: playlist.item.uid,
+            folderId: parseInt(playlist.folderId)
+          }
+        });
+        console.log("Result", result);
+        this.playlists.playlistsList.splice(index, 1);
+        console.log(this.$apollo.queries);
+        this.$eventBus.$emit(
+          "showSnack",
+          "The playlist was successfully remove.",
+          "success"
+        );
+        return;
+      } catch (error) {
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops! something went wrong when removing the playlist, please try again.",
+          "error"
+        );
+        console.log("error remove playlist", error);
       }
     }
   },
