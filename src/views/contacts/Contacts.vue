@@ -19,13 +19,18 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-          
+
           <v-row class="pl-2 px-sm-6" no-gutters>
             <v-col cols="12" md="4" class="mt-3">
               <v-btn class="text-capitalize d-inline-block" color="primary" @click="triggerSearch">
                 <v-icon class="pr-1">search</v-icon>Advanced Search
               </v-btn>
-              <v-btn class="text-capitalize d-inline-block ml-1" color="normal" @click="resetContactSearch" v-if="showFiltersAndActions">
+              <v-btn
+                class="text-capitalize d-inline-block ml-1"
+                color="normal"
+                @click="resetContactSearch"
+                v-if="showFiltersAndActions"
+              >
                 <v-icon class="pr-1" small>replay</v-icon>Reset
               </v-btn>
             </v-col>
@@ -47,18 +52,14 @@
             </v-col>
           </v-row>
 
-          <v-row
-            v-if="showFiltersAndActions"
-            class="px-4"
-            no-gutters
-          >
+          <v-row v-if="showFiltersAndActions" class="px-4" no-gutters>
             <v-col cols="12" md="8">
               <div class="mt-6">
                 <span class="ml-2">Filtering by:</span>
                 <v-chip
                   v-for="obj in contactSearchFilters"
                   :key="obj.key"
-                  class="mx-1 "
+                  class="mx-1"
                   style="padding: 0 8px;"
                   color="green darken-3"
                   @click:close="removeFilter(obj.key)"
@@ -115,6 +116,7 @@ import { defaultContactSearch } from "../../store";
 export default {
   data() {
     return {
+      totalResults: 0,
       search: "",
       isLoading: true,
       options: {
@@ -292,8 +294,13 @@ export default {
       });
       return filterObjects;
     },
-    showFiltersAndActions(){
-      return !!this.searchType && this.searchType=='contacts' && !!this.contactSearchFilters && this.contactSearchFilters.length;
+    showFiltersAndActions() {
+      return (
+        !!this.searchType &&
+        this.searchType == "contacts" &&
+        !!this.contactSearchFilters &&
+        this.contactSearchFilters.length
+      );
     }
   },
   apollo: {
@@ -375,28 +382,34 @@ export default {
         }
       `,
       variables() {
-        return {
-          searchName: this.contactSearch.name,
-          searchTitle: this.contactSearch.title,
-          searchDepartment: this.contactSearch.department,
-          searchRank: this.contactSearch.rank,
-          city: this.contactSearch.city,
-          state: this.contactSearch.state,
-          region: this.contactSearch.region,
-          country: this.contactSearch.country,
-          moreThanScaleScoreAverage: this.contactSearch.moreThanScaleScoreAverage,
-          lessThanScaleScoreAverage: this.contactSearch.lessThanScaleScoreAverage,
-          moreThanCesa: this.contactSearch.moreThanCesa,
-          lessThanCesa: this.contactSearch.lessThanCesa,
-          moreThanWolfpackScore: this.contactSearch.moreThanWolfpackScore,
-          lessThanWolfpackScore: this.contactSearch.lessThanWolfpackScore,
-          moreThanNumberOfExits: this.contactSearch.moreThanNumberOfExits,
-          lessThanNumberOfExits: this.contactSearch.lessThanNumberOfExits,
-          sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder,
-          first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
-        };
+        if (this.showFiltersAndActions) {
+          return {
+            searchName: this.contactSearch.name,
+            searchTitle: this.contactSearch.title,
+            searchDepartment: this.contactSearch.department,
+            searchRank: this.contactSearch.rank,
+            city: this.contactSearch.city,
+            state: this.contactSearch.state,
+            region: this.contactSearch.region,
+            country: this.contactSearch.country,
+            moreThanScaleScoreAverage: this.contactSearch.moreThanScaleScoreAverage,
+            lessThanScaleScoreAverage: this.contactSearch.lessThanScaleScoreAverage,
+            moreThanCesa: this.contactSearch.moreThanCesa,
+            lessThanCesa: this.contactSearch.lessThanCesa,
+            moreThanWolfpackScore: this.contactSearch.moreThanWolfpackScore,
+            lessThanWolfpackScore: this.contactSearch.lessThanWolfpackScore,
+            moreThanNumberOfExits: this.contactSearch.moreThanNumberOfExits,
+            lessThanNumberOfExits: this.contactSearch.lessThanNumberOfExits,
+            sortBy: this.options.sortBy,
+            sortOrder: this.options.sortOrder,
+            first: this.options.itemsPerPage,
+            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          };
+        }else{
+          return {
+            searchName: this.search
+          };
+        }
       },
       skip() {
         return this.search.length > 0 && this.search.length < 2;
