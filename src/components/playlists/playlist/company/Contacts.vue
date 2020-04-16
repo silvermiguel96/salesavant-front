@@ -17,9 +17,9 @@
       <div>
         <!-- Result -->
         <contacts-table
-          v-if="playlistContacts"
-          :items="playlistContacts.contactsList"
-          :totalResults="playlistContacts.totalResults"
+          v-if="playlistCompanyContacts"
+          :items="playlistCompanyContacts.contactsList"
+          :totalResults="playlistCompanyContacts.totalResults"
           @updateOptions="updateOptions"
         ></contacts-table>
         <!-- Loading -->
@@ -96,7 +96,7 @@ export default {
     }
   },
   apollo: {
-    playlistContacts: {
+    playlistCompanyContacts: {
       query: gql`
         query playlistCompanyContacts(
           $playlistUid: String
@@ -155,9 +155,6 @@ export default {
       },
       fetchPolicy: "cache-and-network"
     }
-  },
-  beforeCreate() {
-    this.$apollo.queries.playlistContacts;
   }
 };
 </script>

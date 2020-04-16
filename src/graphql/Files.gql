@@ -1,7 +1,0 @@
-query {
-  companies {
-    uid
-    name
-    url
-  }
-}
