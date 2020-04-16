@@ -25,7 +25,12 @@
               <v-btn class="text-capitalize d-inline-block" color="primary" @click="triggerSearch">
                 <v-icon class="pr-1">search</v-icon>Advanced Search
               </v-btn>
-              <v-btn class="text-capitalize d-inline-block ml-1" color="normal" @click="resetCompanySearch" v-if="showFiltersAndActions">
+              <v-btn
+                class="text-capitalize d-inline-block ml-1"
+                color="normal"
+                @click="resetCompanySearch"
+                v-if="showFiltersAndActions"
+              >
                 <v-icon class="pr-1" small>replay</v-icon>Reset
               </v-btn>
             </v-col>
@@ -117,9 +122,7 @@ export default {
     return {
       totalResults: 0,
       search: "",
-      searchField: "",
       isLoading: true,
-      isFiltered: false,
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -419,13 +422,12 @@ export default {
     companies: {
       query: gql`
         query companiesSearch(
-          $searchNameOrDescription: String
           $playlistUid: String
           $signals: [Int]
           $signalGroups: [String]
-          $name: String
-          $website: String
-          $description: String
+          $searchName: String
+          $searchWebsite: String
+          $searchDescription: String
           $country: String
           $city: String
           $region: String
@@ -442,13 +444,12 @@ export default {
           $totalResults: Int
         ) {
           companies(
-            searchNameOrDescription: $searchNameOrDescription
             playlistUid: $playlistUid
             signals: $signals
             signalGroups: $signalGroups
-            searchName: $name
-            searchWebsite: $website
-            searchDescription: $description
+            searchName: $searchName
+            searchWebsite: $searchWebsite
+            searchDescription: $searchDescription
             country: $country
             city: $city
             region: $region
@@ -495,31 +496,34 @@ export default {
         }
       `,
       variables() {
-        return {
-          searchNameOrDescription: this.search,
-          playlistUid: this.companySearch.playlistUid,
-          signals: this.companySearch.signals,
-          signalGroups: this.companySearch.signalGroups,
-          name: this.companySearch.name,
-          website: this.companySearch.website,
-          description: this.companySearch.description,
-          country: this.companySearch.country,
-          city: this.companySearch.city,
-          region: this.companySearch.region,
-          state: this.companySearch.state,
-          status: this.companySearch.status,
-          lessThanEmployees: this.companySearch.lessThanEmployees,
-          moreThanEmployees: this.companySearch.moreThanEmployees,
-          moreThanScore: this.companySearch.moreThanScore,
-          lessThanScore: this.companySearch.lessThanScore,
-          first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage,
-          sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder,
-          totalResults: this.totalResults
-        };
+        if (this.showFiltersAndActions) {
+          return {
+            playlistUid: this.companySearch.playlistUid,
+            signals: this.companySearch.signals,
+            signalGroups: this.companySearch.signalGroups,
+            searchName: this.companySearch.name,
+            searchWebsite: this.companySearch.website,
+            searchDescription: this.companySearch.description,
+            country: this.companySearch.country,
+            city: this.companySearch.city,
+            region: this.companySearch.region,
+            state: this.companySearch.state,
+            status: this.companySearch.status,
+            lessThanEmployees: this.companySearch.lessThanEmployees,
+            moreThanEmployees: this.companySearch.moreThanEmployees,
+            moreThanScore: this.companySearch.moreThanScore,
+            lessThanScore: this.companySearch.lessThanScore,
+            first: this.options.itemsPerPage,
+            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+            sortBy: this.options.sortBy,
+            sortOrder: this.options.sortOrder,
+            totalResults: this.totalResults
+          };
+        }else{
+          return {
+            searchName: this.search
+          }
+        }
       },
       skip() {
         return this.search.length > 0 && this.search.length < 2;
