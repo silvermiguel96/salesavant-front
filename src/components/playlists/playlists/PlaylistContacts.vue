@@ -7,8 +7,8 @@
             <v-text-field
               v-model="search"
               append-icon="filter_list"
-              label="Type a name"
-              single-line
+              label="Quick Search"
+              placeholder="Type a Name"
               hide-details
             ></v-text-field>
           </v-col>

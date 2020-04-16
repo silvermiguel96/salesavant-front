@@ -30,14 +30,14 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" sm="8" md="9" lg="10">
+        <v-col cols="12" sm="8" md="8" lg="10">
           <div class="title text--secondary pl-3 pl-sm-6">{{ company.name || '' }}</div>
           <div class="caption text--secondary pl-3 pl-sm-6">
             Last Updated:
             <span v-if="company.modificationTime">{{ company.modificationTime | moment("from", "now") }}</span>
           </div>
         </v-col>
-        <v-col cols="12" sm="4" md="3" lg="2">
+        <v-col cols="12" sm="4" md="4" lg="2">
           <div class="pl-3 pl-sm-6">
             <v-icon color="blue" style="margin-top:-4px;" small>check_circle</v-icon>
             <span class="title text--secondary">Total Score:</span>
