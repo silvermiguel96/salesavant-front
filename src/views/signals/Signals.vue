@@ -39,12 +39,12 @@
           </v-row>
 
           <v-row no-gutters class="pl-2 pl-sm-6">
-            <v-col cols="11" md="4">
+            <v-col cols="10" md="4">
               <v-text-field
                 v-model="search"
                 append-icon="filter_list"
-                label="Filter"
-                single-line
+                label="Quick Search"
+                placeholder="Type a Name, Description or Group "
                 hide-details
               ></v-text-field>
             </v-col>

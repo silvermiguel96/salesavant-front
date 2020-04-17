@@ -3,12 +3,12 @@
     <v-card>
       <v-container fluid class="mx-1">
         <v-row no-gutters class="ml-2">
-          <v-col cols="12" md="4">
+          <v-col cols="10" sm="4">
             <v-text-field
               v-model="search"
-              append-icon="search"
-              label="Filter"
-              single-line
+              append-icon="filter_list"
+              label="Quick Search"
+              placeholder="Type a Full Name"
               hide-details
             ></v-text-field>
           </v-col>
