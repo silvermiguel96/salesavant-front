@@ -5,7 +5,7 @@
           :href="`https://linkedin.com${contact.linkedinHandle}`"
           target="_blank"
         >LinkedIn</a></small> </div>
-      <div class="caption">Last update : {{ callMethodTime(contact.modificationTime) }}</div>
+      <div class="caption">Last update : {{ contact.modificationTime | moment("MMMM Do YYYY") }}</div>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-row no-gutters>
@@ -170,7 +170,6 @@
 </template>
 
 <script>
-import { formatDateTime } from "../../../commons";
 import gql from "graphql-tag";
 
 export default {
@@ -178,11 +177,6 @@ export default {
     return {
       contact: []
     };
-  },
-  methods: {
-    callMethodTime(time) {
-      return formatDateTime(time);
-    }
   },
   apollo: {
     contact: {
