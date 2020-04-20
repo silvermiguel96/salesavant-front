@@ -1,14 +1,9 @@
 <template>
   <v-container fluid>
-      <ApolloQuery
-        :query="require('./graphql/Contact.gql')"
-        :variables="{
-        uid: $route.params.contactUid
-      }"
-      >
-        <template slot-scope="{ result: { loading, error, data } }">
+    <v-card>
+      <v-row no-gutters>
+        <v-col cols="12" xs="2" class="pt-0">
           <v-breadcrumbs
-            v-if="data && data.contact"
             :large="true"
             :items="[
             {
@@ -17,7 +12,7 @@
               href: '/contacts'
             },
             {
-              text: data.contact.fullName || $route.params.contactUid,
+              text: contact.fullName || $route.params.contactUid,
               disable: true
             }
           ]"
@@ -31,43 +26,82 @@
               >{{ props.item.text }}</v-breadcrumbs-item>
             </template>
           </v-breadcrumbs>
-        </template>
-      </ApolloQuery>
-      <v-tabs grow background-color="grey lighten-5" color="primary">
-        <!-- Tab Home -->
-        <v-tab class="text-capitalize">Profile</v-tab>
-        <v-tab-item>
-          <v-container fluid class="pt-0">
-            <v-row>
-              <v-col lg="6" md="5" cols="12" class="py-0">
-                <contact-profile />
-              </v-col>
-              <v-col lg="6" md="7" cols="12" class="py-0">
-                <contact-experience />
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-        <!-- tab comments -->
-        <v-tab class="text-capitalize">Comments</v-tab>
-        <v-tab-item>
-          <contact-comments />
-        </v-tab-item>
-      </v-tabs>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" sm="8" md="8" lg="10">
+          <div class="title text--secondary pl-3 pl-sm-6">{{ contact.fullName || '' }}</div>
+          <div class="caption text--secondary pl-3 pl-sm-6">
+            Last Updated:
+            <span
+              v-if="contact.modificationTime"
+            >{{ contact.modificationTime | moment("from", "now") }}</span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="12" xs="12" class="pt-0">
+          <v-tabs grow background-color="grey lighten-5" color="primary">
+            <!-- Tab Home -->
+            <v-tab class="text-capitalize">Profile</v-tab>
+            <v-tab-item>
+              <v-container fluid class="py-0">
+                <v-row>
+                  <v-col md="6" xs="12" class="px-0 py-0 pb-1 pr-sm-3 pb-sm-0">
+                    <contact-profile />
+                  </v-col>
+                  <v-col md="6" xs="12" class="px-0 py-0">
+                    <contact-experience />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <!-- tab comments -->
+            <v-tab class="text-capitalize">Comments</v-tab>
+            <v-tab-item>
+              <contact-comments />
+            </v-tab-item>
+          </v-tabs>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 <script>
-import contactProfile from "../../components/contacts/contact/ContactProfile";
+import gql from "graphql-tag";
+import contactProfile from "../../components/contacts/contact/ContactProfile.vue";
 import contactExperience from "../../components/contacts/contact/ContactExperience.vue";
 import contactComments from "../../components/contacts/contact/Comments.vue";
 export default {
   data() {
-    return {};
+    return {
+      contact: {}
+    };
   },
   components: {
     contactProfile,
     contactExperience,
     contactComments
+  },
+  apollo: {
+    contact: {
+      query: gql`
+        query getContact($contactUid: String) {
+          contact(uid: $contactUid) {
+            creationTime
+            modificationTime
+            uid
+            fullName
+          }
+        }
+      `,
+      variables() {
+        return {
+          contactUid: this.$route.params.contactUid
+        };
+      },
+      fetchPolicy: "cache-and-network"
+    }
   }
 };
 </script>
