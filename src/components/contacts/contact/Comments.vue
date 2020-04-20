@@ -6,7 +6,7 @@
         <v-col cols="12" md="8">
           <div class="d-flex justify-md-end">
             <div class="mt-3 mr-2">
-              <add-modal @onSave="saveComment" />
+              <add-comment-modal @onSave="saveComment" />
             </div>
           </div>
         </v-col>
@@ -50,16 +50,21 @@
 </template>
 
 <script>
-import FormatDateTime from "../../../../components/common/FormatDateTime.vue";
-import LongParagraph from "../../../../components/common/LongParagraph.vue";
-import AddModal from "./components/AddModal.vue";
+import FormatDateTime from "../../common/FormatDateTime.vue";
+import LongParagraph from "../../common/LongParagraph.vue";
+import AddCommentModal from "../../common/AddCommentModal.vue";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 export default {
+  components: {
+    LongParagraph,
+    FormatDateTime,
+    AddCommentModal
+  },
   data() {
     return {
       dialog: false,
-      contactComments: null,
+      contactComments: [],
       headers: [
         { text: "Comment", sortable: false },
         { text: "User", sortable: false },
@@ -236,14 +241,6 @@ export default {
         }
       }
     }
-  },
-  components: {
-    LongParagraph,
-    AddModal,
-    FormatDateTime
-  },
-  beforeUpdate() {
-    this.$apollo.queries.contactComments;
   }
 };
 </script>
