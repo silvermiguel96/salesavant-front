@@ -57,9 +57,9 @@
   </v-container>
 </template>
 <script>
-import contactProfile from "./components/ContactProfile.vue";
-import contactExperience from "./components/ContactExperience.vue";
-import contactComments from "./components/commets/Comments.vue";
+import contactProfile from "../../components/contacts/contact/ContactProfile";
+import contactExperience from "../../components/contacts/contact/ContactExperience.vue";
+import contactComments from "../../components/contacts/contact/Comments.vue";
 export default {
   data() {
     return {};
