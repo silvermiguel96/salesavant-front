@@ -17,9 +17,9 @@
             <v-text-field
               v-model="search"
               append-icon="filter_list"
-              label="Filter"
-              single-line
+              label="Quick Search"
               hide-details
+              placeholder="Type a Job Name or Description"
               @change="onSearch"
             ></v-text-field>
           </v-col>

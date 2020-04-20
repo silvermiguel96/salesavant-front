@@ -35,7 +35,7 @@
             >{{item.user.firstName}} {{item.user.lastName}}</td>
             <td v-else>{{item.user.email || "--"}}</td>
             <td>
-              <format-date-time :time="item.creationTime" />
+              {{ item.creationTime | moment("MMMM Do YYYY")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import FormatDateTime from "../../common/FormatDateTime.vue";
 import LongParagraph from "../../common/LongParagraph.vue";
 import AddCommentModal from "../../common/AddCommentModal.vue";
 import _get from "lodash.get";
@@ -58,7 +57,6 @@ import gql from "graphql-tag";
 export default {
   components: {
     LongParagraph,
-    FormatDateTime,
     AddCommentModal
   },
   data() {

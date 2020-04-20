@@ -18,7 +18,7 @@
           </td>
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
           <td>
-            <format-date-time :time="item.creationTime" />
+            {{ item.creationTime | moment("MMMM Do YYYY")}}
           </td>
           <td>
             <div class="d-flex align-center justify-center" v-if="folderId || folderName ">
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import formatDateTime from "../common/FormatDateTime.vue";
 const defaultHeaders = [
   { text: "Name", value: "name", width: "40%", sortable: false },
   { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
@@ -64,9 +63,6 @@ export default {
       selectedItem: "",
       selectedPlaylistId: {}
     };
-  },
-  components: {
-    formatDateTime
   },
   methods: {
     updateOptions(dataFromEvent = {}) {

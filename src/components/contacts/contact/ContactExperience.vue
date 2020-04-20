@@ -1,9 +1,5 @@
 <template>
-  <v-card style="height:100%;">
-    <v-card-subtitle>
-      <div class="headline font-weight-bold">Experience</div>
-    </v-card-subtitle>
-    <v-divider></v-divider>
+  <v-card style="height:100%;" class="pa-3">
     <div v-if="contact">
       <v-card-text>
         <div>
