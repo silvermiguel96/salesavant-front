@@ -1,8 +1,8 @@
 <template>
-  <v-container class="pa-0" fluid>
-    <v-card>
-      <v-container fluid class="mx-1">
-        <v-row no-gutters class="ml-2">
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" xs="12" class="px-0">
+        <v-row no-gutters class="pl-2 pl-sm-6">
           <v-col cols="10" sm="4">
             <v-text-field
               v-model="search"
@@ -13,17 +13,17 @@
             ></v-text-field>
           </v-col>
         </v-row>
-      </v-container>
-      <div>
-        <!-- Result -->
-        <contacts-table
-          v-if="playlistCompanyContacts"
-          :items="playlistCompanyContacts.contactsList"
-          :totalResults="playlistCompanyContacts.totalResults"
-          @updateOptions="updateOptions"
-        ></contacts-table>
-        <!-- Loading -->
-        <v-row justify="center" no-gutters>
+        <v-row no-gutters>
+          <v-col cols="12">
+            <contacts-table
+              v-if="playlistCompanyContacts"
+              :items="playlistCompanyContacts.contactsList"
+              :totalResults="playlistCompanyContacts.totalResults"
+              @updateOptions="updateOptions"
+            ></contacts-table>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
           <v-col cols="12">
             <v-progress-linear
               :active="!!isLoading"
@@ -35,8 +35,8 @@
             ></v-progress-linear>
           </v-col>
         </v-row>
-      </div>
-    </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
