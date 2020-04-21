@@ -3,46 +3,22 @@
     <v-row>
       <v-col cols="12" xs="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="12" xs="12" md="2" offset-md="8">
-            <v-btn
-              class="text-capitalize"
-              color="primary"
-              min-width="150"
-              outlined
-              @click="createJob('export_companies')"
-            >
-              <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
-            </v-btn>
-          </v-col>
-          <v-col cols="12" xs="12" md="2">
-            <button-menu
-              :items="[
-              {
-                title: 'Companies',
-                icon: 'update',
-                callback: () => {
-                  this.createJob('refresh_companies');
-                }
-              },
-              {
-                title: 'Keywords',
-                icon: 'update',
-                callback: () => {
-                  this.createJob('refresh_keywords');
-                }
-              }
-            ]"
-            >
-              <template v-slot:label>Refresh</template>
-            </button-menu>
+          <v-col cols="10" sm="4">
+            <v-text-field
+              v-model="search"
+              append-icon="filter_list"
+              label="Quick Search"
+              placeholder="Type a Full Name"
+              hide-details
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col cols="12">
             <companies-table
-              v-if="playlistCompanies"
-              :items="playlistCompanies.companiesList"
-              :totalResults="playlistCompanies.totalResults"
+              v-if="playlistContactCompanies"
+              :items="playlistContactCompanies.companiesList"
+              :totalResults="playlistContactCompanies.totalResults"
               @updateOptions="updateOptions"
             ></companies-table>
           </v-col>
@@ -72,12 +48,11 @@ import gql from "graphql-tag";
 
 export default {
   components: {
-    CompaniesTable,
-    ButtonMenu,
-    
+    CompaniesTable
   },
   data() {
     return {
+      search: "",
       isLoading: false,
       options: {
         page: 1,
@@ -90,7 +65,7 @@ export default {
         name: "",
         description: null
       },
-      playlistCompanies: []
+      playlistContactCompanies: []
     };
   },
   apollo: {
@@ -112,21 +87,23 @@ export default {
       },
       fetchPolicy: "cache-and-network"
     },
-    playlistCompanies: {
+    playlistContactCompanies: {
       query: gql`
-        query playlistCompanies(
+        query playlistContactCompanies(
           $playlistUid: String
-          $first: Int
-          $offset: Int
+          $search: String
           $sortBy: String
           $sortOrder: String
+          $first: Int
+          $offset: Int
         ) {
-          playlistCompanies(
+          playlistContactCompanies(
             playlistUid: $playlistUid
-            first: $first
-            offset: $offset
+            search: $search
             sortBy: $sortBy
             sortOrder: $sortOrder
+            first: $first
+            offset: $offset
           ) {
             totalResults
             companiesList {
@@ -150,13 +127,15 @@ export default {
       variables() {
         return {
           playlistUid: this.$route.params.playlistUid,
-          first: this.options.itemsPerPage,
-          offset:
-            this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage,
+          search: this.search,
           sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder
+          sortOrder: this.options.sortOrder,
+          first: this.options.itemsPerPage,
+          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
         };
+      },
+      skip() {
+        return this.search.length > 0 && this.search.length < 2;
       },
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
