@@ -197,7 +197,7 @@ export default {
             return job;
           }
         });
-        if (contact.companies.length > 1){
+        if (contact.companies.length >= 1){
           if (currentJobs.length == 0){
             contact.currentOrLastJobs = [contact.companies[0]];
             contact.otherJobs =  contact.companies.slice(1);
