@@ -251,14 +251,6 @@ export default {
         this.$eventBus.$emit("showSnack", "Name can not be empty!", "error");
         return;
       }
-      if (!this.signal.description) {
-        this.$eventBus.$emit(
-          "showSnack",
-          "Description can not be empty!",
-          "error"
-        );
-        return;
-      }
       if (!this.signal.defaultScore) {
         this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
         return;
