@@ -16,49 +16,55 @@
     show-expand
     must-sort
   >
-    <template v-slot:item.fullName="{ item }">
-      <div>
-        <router-link
-        class="subtitle-2 font-weight-medium"
-        :to="`/contacts/${item.uid}`"
-      >{{ item.fullName }}</router-link>
-      </div>
-    </template>
-    
-    <template v-slot:item.companies.name="{ item }">
-      <div v-for="job in item.currentOrLastJobs" :key="job.uid">
-        <router-link :to="`/companies/${job.company.uid}`"
-        >{{ job.company.name }}</router-link>
-        <v-icon v-if="job.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
-      </div>
-    </template>
-    <template v-slot:item.companies.title="{ item }">
-      <div v-for="job in item.currentOrLastJobs" :key="job.uid">
-        <span>{{ job.title }}</span>
-      </div>
-    </template>
-    <template v-slot:item.companies.deparment="{ item }">
-      <div v-for="job in item.currentOrLastJobs" :key="job.uid">
-        <div>{{ job.department || "--" }}</div>
-      </div>
-    </template>
-    <template v-slot:item.companies.rank="{ item }">
-      <div v-for="job in item.currentOrLastJobs" :key="job.uid">
-        <div>{{ job.rank || "--" }}</div>
-      </div>
-    </template>
-
-    <template v-slot:item.scaleScoreAverage="{ item }">
-      <div>{{ item.scaleScoreAverage || "--" }}</div>
-    </template>
-    <template v-slot:item.capitalEfficiencyScoreAverage="{ item }">
-      <div>{{ item.capitalEfficiencyScoreAverage ? item.capitalEfficiencyScoreAverage.toLocaleString() : "--" }}</div>
-    </template>
-    <template v-slot:item.wolfpackScore="{ item }">
-      <div>{{ item.wolfpackScore ? item.wolfpackScore.toLocaleString() : "--" }}</div>
-    </template>
-    <template v-slot:item.numberOfExits="{ item }">
-      <div>{{ item.numberOfExits || "--" }}</div>
+    <template v-slot:item="{ item, expand, isExpanded }">
+      <tr>
+        <td>
+          <v-icon
+            v-if="item.otherJobs.length >= 1 && isExpanded == false"
+            @click="expand(!isExpanded)"
+          >expand_more</v-icon>
+          <v-icon v-if="isExpanded == true" @click="expand(!isExpanded)">expand_less</v-icon>
+        </td>
+        <td>
+          <router-link
+            class="subtitle-2 font-weight-medium"
+            :to="`/contacts/${item.uid}`"
+          >{{ item.fullName }}</router-link>
+        </td>
+        <td>
+          <div v-for="job in item.currentOrLastJobs" :key="job.uid">
+            <router-link :to="`/companies/${job.company.uid}`">{{ job.company.name }}</router-link>
+            <v-icon v-if="job.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
+          </div>
+        </td>
+        <td>
+          <div v-for="job in item.currentOrLastJobs" :key="job.uid">
+            <span>{{ job.title }}</span>
+          </div>
+        </td>
+        <td>
+          <div v-for="job in item.currentOrLastJobs" :key="job.uid">
+            <div>{{ job.department || "--" }}</div>
+          </div>
+        </td>
+        <td>
+          <div v-for="job in item.currentOrLastJobs" :key="job.uid">
+            <div>{{ job.rank || "--" }}</div>
+          </div>
+        </td>
+        <td>
+          <div>{{ item.scaleScoreAverage || "--" }}</div>
+        </td>
+        <td>
+          <div>{{ item.capitalEfficiencyScoreAverage ? item.capitalEfficiencyScoreAverage.toLocaleString() : "--" }}</div>
+        </td>
+        <td>
+          <div>{{ item.wolfpackScore ? item.wolfpackScore.toLocaleString() : "--" }}</div>
+        </td>
+        <td>
+          <div>{{ item.numberOfExits || "--" }}</div>
+        </td>
+      </tr>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
       <td class="ma-0 pa-0" :colspan="headers.length">
