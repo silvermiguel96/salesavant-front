@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" xs="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="12" xs="12" md="2" offset-md="8">
+          <v-col cols="12" sm="3" md="2" offset-md="8" class="pa-1" >
             <v-btn
               class="text-capitalize"
               color="primary"
@@ -14,7 +14,7 @@
               <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
             </v-btn>
           </v-col>
-          <v-col cols="12" xs="12" md="2">
+          <v-col cols="12" sm="3" md="2" class="pa-1">
             <button-menu
               :items="[
               {
