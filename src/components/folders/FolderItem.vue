@@ -59,7 +59,15 @@ export default {
     },
     async saveEditEnter(event) {
       console.log("saveEditEnter");
-      if (event.key == "Enter") {
+      if (event.key == "Enter" ) {
+        if (!this.folder.name || this.folder.name.length < 5) {
+          this.$eventBus.$emit(
+            "showSnack",
+            "Name must be at least 5",
+            "error"
+          );
+          return;
+        }
         try {
           let result = null;
           result = await this.$apollo.mutate({
