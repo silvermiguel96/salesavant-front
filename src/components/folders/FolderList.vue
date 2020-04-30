@@ -88,6 +88,11 @@ export default {
             });
             console.log("Result", result.data.createFolder.folder);
             this.folders.foldersList.push(result.data.createFolder.folder);
+            this.$eventBus.$emit(
+              "showSnack",
+              `The Folder "${this.folderInput}" was created`,
+              "success"
+            );
           } catch (error) {
             this.$eventBus.$emit(
               "showSnack",
@@ -125,6 +130,11 @@ export default {
         });
         console.log("Result", result);
         this.folders.foldersList.splice(index, 1);
+        this.$eventBus.$emit(
+          "showSnack",
+          "The folder was successfully deleted",
+          "success"
+        );
       } catch (error) {
         this.$eventBus.$emit(
           "showSnack",
