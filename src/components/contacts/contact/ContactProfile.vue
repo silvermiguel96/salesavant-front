@@ -20,8 +20,8 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Status :</span>
-                <span class="font-weight-light">
+                <span class="subtitle-2 font-weight-medium">Linkedin :</span>
+                <span class="font-weight-light float-right">
                   <a
                     v-if="contact.linkedinHandle"
                     :href="`https://linkedin.com${contact.linkedinHandle}`"
@@ -79,7 +79,7 @@
             <v-col xs="12">
               <div>
                 <span class="subtitle-2 font-weight-medium">Personal email:</span>
-                <span class="font-weight-light">{{ contact.personalEmail || "--" }}</span>
+                <span class="font-weight-light float-right">{{ contact.personalEmail || "--" }}</span>
               </div>
             </v-col>
           </v-row>
@@ -131,7 +131,7 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Capital Efficiency Score</span>
+                <span class="subtitle-2 font-weight-medium">Capital Efficiency Score:</span>
                 <span
                   class="font-weight-light float-right"
                 >{{ contact.capitalEfficiencyScoreAverage || "--" }}</span>
@@ -157,7 +157,7 @@
           <v-row class="d-block d-md-none" no-gutters>
             <v-col xs="12">
               <div>
-                <span class="subtitle-2 font-weight-medium">Wolfpack Score</span>
+                <span class="subtitle-2 font-weight-medium">Wolfpack Score:</span>
                 <span class="font-weight-light float-right">
                   <span
                     v-if="contact.wolfpackScore"
