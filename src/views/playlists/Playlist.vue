@@ -46,6 +46,11 @@
             <v-tab-item>
               <company-companies/>
             </v-tab-item>
+            <!-- Tab Comments -->
+            <v-tab class="text-capitalize">Comments</v-tab>
+            <v-tab-item>
+              <company-comments/>
+            </v-tab-item>
             <!-- Tab contacts -->
             <v-tab class="text-capitalize">Contacts</v-tab>
             <v-tab-item>
@@ -84,6 +89,7 @@
 import _get from "lodash.get";
 import gql from "graphql-tag";
 import CompanyCompanies from "../../components/playlists/playlist/company/Companies.vue";
+import CompanyComments from "../../components/playlists/playlist/company/Comments.vue";
 import CompanyContacts from "../../components/playlists/playlist/company/Contacts.vue";
 import CompanyAnalytics from "../../components/playlists/playlist/company/Analytics.vue";
 import ContactContacts from "../../components/playlists/playlist/contact/Contacts.vue";
@@ -93,6 +99,7 @@ import ContactAnalytics from "../../components/playlists/playlist/contact/Analyt
 export default {
   components: {
     CompanyCompanies,
+    CompanyComments,
     CompanyContacts,
     CompanyAnalytics,
     ContactContacts,
