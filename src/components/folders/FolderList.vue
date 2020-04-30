@@ -90,7 +90,7 @@ export default {
             this.folders.foldersList.push(result.data.createFolder.folder);
             this.$eventBus.$emit(
               "showSnack",
-              `The Folder "${this.folderInput}" is created`,
+              `The Folder "${this.folderInput}" was created`,
               "success"
             );
           } catch (error) {
