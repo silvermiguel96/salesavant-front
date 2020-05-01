@@ -137,6 +137,11 @@ export default {
           });
       } else {
         console.log("there are no files.");
+        this.$eventBus.$emit(
+          "showSnack",
+          `Please, Select the file!`,
+          "error"
+        );
       }
     }
   }
