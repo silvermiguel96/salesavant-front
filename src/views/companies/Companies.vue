@@ -471,7 +471,6 @@ export default {
               modificationTime
               uid
               name
-              website
               description
               url
               handle

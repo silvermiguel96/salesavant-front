@@ -115,7 +115,6 @@ export default {
               country
               momentum
               numEmployees
-              website
               url
               vertical
               totalScore

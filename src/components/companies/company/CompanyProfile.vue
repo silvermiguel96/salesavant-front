@@ -454,7 +454,6 @@ export default {
             totalSignals
             industry
             naicsCode
-            website
             modificationTime
             scaleScore
             capitalEfficiencyScore
