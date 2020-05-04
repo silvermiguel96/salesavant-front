@@ -5,7 +5,7 @@
         <v-data-table
           :headers="headers"
           :items="playlistCompanyComments.companyCommentsList"
-          :server-items-length="playlistCompanyComments.length"
+          :server-items-length="playlistCompanyComments.totalResults"
           :items-per-page="options.itemsPerPage"
           :footer-props="{
           'items-per-page-options': [10, 20, 50]
@@ -37,6 +37,18 @@
         </v-data-table>
       </v-col>
     </v-row>
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-progress-linear
+          :active="!!isLoading"
+          color="blue"
+          indeterminate
+          absolute
+          bottom
+          query
+        ></v-progress-linear>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -52,6 +64,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       playlistCompanyComments: {
         companyCommentsList: [],
         totalResults: 0
@@ -119,6 +132,9 @@ export default {
             this.options.itemsPerPage * this.options.page -
             this.options.itemsPerPage
         };
+      },
+      watchLoading(isLoading, countModifier) {
+        this.isLoading = isLoading;
       },
       fetchPolicy: "cache-and-network"
     }
