@@ -3,7 +3,12 @@
     <v-row>
       <v-col cols="12" xs="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="12" sm="3" md="2" offset-md="8" class="pa-1" >
+          <v-col cols="12" sm="3" md="3" class="mt-1" >
+            <v-btn class="text-capitalize d-inline-block" min-width="150" color="primary" @click="triggerSearch">
+              <v-icon class="pr-1">search</v-icon>Advanced Search
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="3" md="2" offset-md="4" class="pa-1">
             <v-btn
               class="text-capitalize"
               color="primary"
@@ -67,6 +72,8 @@
 <script>
 import CompaniesTable from "../../../companies/CompaniesTable.vue";
 import ButtonMenu from "../../../common/ButtonMenu.vue";
+import { defaultCompanySearch } from "../../../../store";
+import { mapMutations } from "vuex";
 import _get from "lodash.get";
 import gql from "graphql-tag";
 
@@ -78,6 +85,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      companySearch: { ...defaultCompanySearch },
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -163,6 +171,12 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["resetCompanySearch", "showSearchDialogCompanies"]),
+    triggerSearch() {
+      this.companySearch.playlistUid = this.$route.params.playlistUid;
+      this.companySearch.name = "miguel"
+      this.showSearchDialogCompanies({companies : "companies" , companySearch: { ...this.companySearch }});
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
