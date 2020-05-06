@@ -72,7 +72,6 @@
 <script>
 import CompaniesTable from "../../../companies/CompaniesTable.vue";
 import ButtonMenu from "../../../common/ButtonMenu.vue";
-import { defaultCompanySearch } from "../../../../store";
 import { mapMutations } from "vuex";
 import _get from "lodash.get";
 import gql from "graphql-tag";
@@ -85,7 +84,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      companySearch: { ...defaultCompanySearch },
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -171,11 +169,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["resetCompanySearch", "showSearchDialogCompanies"]),
+    ...mapMutations(["resetCompanySearch", "updateCompanySearch"]),
     triggerSearch() {
-      this.companySearch.playlistUid = this.$route.params.playlistUid;
-      this.companySearch.name = "miguel"
-      this.showSearchDialogCompanies({companies : "companies" , companySearch: { ...this.companySearch }});
+      this.updateCompanySearch({ playlistUid: this.$route.params.playlistUid, displayPlaylistUid: this.playlist.name });
+      // this.$store.commit("updateCompanySearch", this.$route.params.playlistUid );
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

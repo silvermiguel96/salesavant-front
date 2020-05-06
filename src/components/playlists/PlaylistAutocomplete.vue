@@ -34,6 +34,19 @@ export default {
     search(val) {
       if (this.loading) return;
       this.queryPlaylists();
+    },
+    globalPlaylistUid (val){
+      console.log("globalPlaylistUid store val change", val);
+      this.select  = val;
+      this.$emit("change", { playlistUid: val, displayPlaylistUid: this.globalDisplayPlaylistUid });
+    }
+  },
+  computed: {
+    globalPlaylistUid (){
+      return this.$store.state.companySearch.playlistUid;
+    },
+    globalDisplayPlaylistUid(){
+      return this.$store.state.companySearch.displayPlaylistUid;
     }
   },
   methods: {

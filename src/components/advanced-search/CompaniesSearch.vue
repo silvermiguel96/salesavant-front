@@ -200,6 +200,7 @@ export default {
       }
     };
   },
+
   methods: {
     ...mapMutations(["resetCompanySearch", "doCompanySearch"]),
     search() {
@@ -261,6 +262,9 @@ export default {
     denseForm() {
       return this.window.width > 1440 ? false : true;
     }
+    // playlistUid() {
+    //   return this.$store.state.companySearch.playlistUid
+    // }
   }
 };
 </script>
