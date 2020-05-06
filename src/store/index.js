@@ -74,6 +74,8 @@ const mutations = {
       playlistUid: playlistCompany.playlistUid,
       displayPlaylistUid: playlistCompany.displayPlaylistUid
     }
+    state.showSearchDialog = true;
+    console.log("state.companySearch", state.companySearch)
   },
   hideSearchDialog(state) {
     state.showSearchDialog = false;
