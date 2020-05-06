@@ -72,6 +72,7 @@
 <script>
 import CompaniesTable from "../../../companies/CompaniesTable.vue";
 import ButtonMenu from "../../../common/ButtonMenu.vue";
+import { defaultCompanySearch } from "../../../../store";
 import { mapMutations } from "vuex";
 import _get from "lodash.get";
 import gql from "graphql-tag";
@@ -84,6 +85,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      companySearch: { ...defaultCompanySearch },
       options: {
         page: 1,
         itemsPerPage: 10,
