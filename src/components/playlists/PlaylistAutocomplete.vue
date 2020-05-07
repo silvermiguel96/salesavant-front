@@ -44,7 +44,7 @@ export default {
           .query({
             query: gql`
               query getFilteredPlaylists($playlistSearch: String) {
-                playlists(first: 25, search: $playlistSearch) {
+                playlists(first: 1000, search: $playlistSearch) {
                   playlistsList{
                     uid
                     name
@@ -89,3 +89,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.v-list-item--dense, .v-list--dense .v-list-item {
+  min-height: 20px !important;
+}
+.v-list--dense .v-list-item .v-list-item__content, .v-list-item--dense .v-list-item__content {
+  padding: 6px 0;
+}
+</style>

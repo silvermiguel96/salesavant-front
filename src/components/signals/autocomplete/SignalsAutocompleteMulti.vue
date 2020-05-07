@@ -60,7 +60,7 @@ export default {
         .query({
           query: gql`
             query getSignals($signalSearch: String) {
-              signals(search: $signalSearch, first: 10, offset: 0) {
+              signals(search: $signalSearch, first: 1000, offset: 0) {
                 signalsList {
                   id
                   name
@@ -108,3 +108,21 @@ export default {
   }
 };
 </script>
+
+<style>
+.v-list--dense .v-list-item, .v-list-item--dense {
+    min-height: 30px !important;
+    max-height: 35px !important;
+}
+.v-list--dense .v-list-item, .v-list-item--dense {
+  min-height: 30px !important;
+  max-height: 32px !important;
+}
+.v-list-item--dense, .v-list--dense .v-list-item {
+  min-height: 30px !important;
+  max-height: 32px !important;
+}
+.v-list--dense .v-list-item .v-list-item__content, .v-list-item--dense .v-list-item__content {
+  padding: 6px 0 !important;
+}
+</style>
