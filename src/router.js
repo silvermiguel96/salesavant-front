@@ -19,6 +19,9 @@ import Signal from "./views/signals/Signal.vue";
 import BatchJobs from "./views/batch/BatchJobs.vue";
 import LaunchJob from "./views/batch/LaunchJob.vue";
 
+import SalesforceAuthorize from "./views/salesforce/Authorize.vue";
+import SalesforceCallback from "./views/salesforce/Callback.vue";
+
 import { AUTH_TOKEN } from "./util";
 
 Vue.use(Router);
@@ -136,6 +139,22 @@ const router = new Router({
       path: "/launch-job",
       name: "launch-job",
       component: LaunchJob,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/oauth/salesforce",
+      name: "salesforce",
+      component: SalesforceAuthorize,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/oauth/salesforce/ok",
+      name: "salesforceOk",
+      component: SalesforceCallback,
       meta: {
         requiresAuth: true
       }

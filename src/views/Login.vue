@@ -7,11 +7,7 @@
             <v-card class="elevation-12" v-if="!isAuthenticated">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>
-                  <img
-                    src="/static/salesavant_header.png"
-                    alt="SaleSavant"
-                    style="width: 240px; max-width: 80%; margin: 1em;"
-                  />
+                  <v-img :src="require('../assets/salesavant_logo.jpg')" width="240" alt="SaleSavant"></v-img>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
