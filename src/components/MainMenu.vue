@@ -69,6 +69,11 @@ export default {
           icon: "work", 
           text: "Batch",
           click: this.onBatch
+        },
+        { 
+          icon: "account_circle", 
+          text: "Account",
+          click: this.onAccount
         }
       ]
     };
@@ -98,6 +103,10 @@ export default {
     onSignals() {
       this.resetSearch();
       this.$router.push("/signals").catch(err => {});
+    },
+    onAccount() {
+      this.resetSearch();
+      this.$router.push("/account").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);
