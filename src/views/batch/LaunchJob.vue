@@ -56,7 +56,7 @@
                 </v-col>
               </template>
               <v-col cols="12">
-                <v-file-input v-model="file" accept=".csv" label="Upload Input File"></v-file-input>
+                <v-file-input v-model="file" accept=".csv" label="Upload Input File" :error="fileError" :error-messages="fileMessages"></v-file-input>
               </v-col>
               <v-col cols="12" sm="4" md="4" lg="3">
                 <v-btn color="primary" class="text-capitalize" block @click.prevent="submitFiles">
@@ -98,7 +98,9 @@ export default {
       description: "",
       playlistName: "",
       playlistDescription: "",
-      file: null
+      file: null,
+      fileError: false,
+      fileMessages: undefined
     };
   },
   props: {
@@ -136,7 +138,9 @@ export default {
             console.error(error);
           });
       } else {
-        console.log("there are no files.");
+        this.fileError = true;
+        this.fileMessages = ["The file is required!"];
+        return;
       }
     }
   }
