@@ -84,17 +84,17 @@
     <!-- Custom Signal Groups -->
     <custom-signal-groups />
     <!-- Custom Sales Signals -->
-    <table-custom-sales-signals />
+    <custom-sales-signals/>
   </v-card>
 </template>
 
 <script>
-import TableCustomSalesSignals from "./components/CustomSalesSignals.vue";
-import CustomSignalGroups from "./components/CustomSignalGroups.vue";
+import customSalesSignals from "../../components/dashboard/CustomSalesSignals";
+import customSignalGroups from "../../components/dashboard/CustomSignalGroups";
 export default {
   components: {
-    TableCustomSalesSignals,
-    CustomSignalGroups
+    customSalesSignals,
+    customSignalGroups
   },
   data() {
     return {
