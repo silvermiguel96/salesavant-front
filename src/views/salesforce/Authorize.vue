@@ -15,7 +15,6 @@
 import getParameterByName from "../../commons";
 export default {
   methods:{
-
     auth() {
       window.location.href = "https://login.salesforce.com/services/oauth2/authorize?client_id=3MVG95jctIhbyCppvyjcsk_6VmWy_4n51L3cyCqM.XralAzdHjgdF1sVoSlO.c4KtpapZ6z9Od9Keims5MDfw&redirect_uri=http://localhost:8080/oauth/salesforce/ok&response_type=code&prompt=login";
     }
