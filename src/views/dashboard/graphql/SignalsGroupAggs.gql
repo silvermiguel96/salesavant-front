@@ -1,9 +1,0 @@
-query companySignalsGroupAggs($first: Int, $offset: Int) {
-  companySignalsGroupAggs(first: $first, offset: $offset) {
-    id
-    signalGroup
-    creationTime
-    totalCompanies
-    modificationTime
-  }
-}
