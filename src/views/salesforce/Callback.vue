@@ -1,4 +1,16 @@
-<template></template>
+<template>
+  <v-container fluid>
+    <v-card class="d-flex flex-column align-center mx-auto py-4" max-width="600" outlined>
+      <div class="title text-secondary">Connect to Salesforce</div>
+      <div class="d-flex flex-row justify-space-between my-8">
+        <v-img :src="require('../../assets/salesavant_logo_w.png')" width="140" contain></v-img>
+        <v-icon class="mx-md-8 mx-2" color="primary">swap_horizontal_circle</v-icon>
+        <v-img :src="require('../../assets/salesforce_logo.png')" width="140"></v-img>
+      </div>
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-card>
+  </v-container>
+</template>
 <script>
 import { getAuthToken } from "../../util";
 export default {
