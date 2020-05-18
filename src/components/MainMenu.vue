@@ -46,9 +46,9 @@
             <v-btn text class="text-capitalize" v-on="on">Account</v-btn>
           </v-toolbar-items>
         </template>
-        <v-list color="primary" class="pa-0">
+        <v-list class="pa-0">
           <v-list-item v-for="account in accounts" :key="account.text" @click="account.click">
-            <v-list-item-title class="white--text subtitle-1 font-weight-medium">{{ account.text }}</v-list-item-title>
+            <v-list-item-title class="subtitle-1 font-weight-medium">{{ account.text }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -96,12 +96,12 @@ export default {
       ],
       accounts: [
         {
-          text: "My perfil",
+          text: "Profile",
           router: "/account",
           click: this.onAccount
         },
         {
-          text: "Login Out",
+          text: "Logout",
           router: "/home",
           click: this.exitApp
         },
