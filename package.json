@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "cpassets": "cp logo.jpg ./dist/logo.jpg",
-    "build": "vue-cli-service build && npm run cpassets",
+    "build": "vue-cli-service build",
     "deploy": "npm run build && npm run force-commit && npm run ebdeploy",
     "ebdeploy": "eb deploy proxy-server-development",
     "force-commit": "git add . && sleep 5 && git commit -m 'deployment' && sleep 5 && git push && sleep 5",
