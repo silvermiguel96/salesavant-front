@@ -45,11 +45,9 @@
                 <v-card-text>
                   <v-row class="d-md-block" no-gutters>
                     <v-col cols="12" xs="6">
-                      <div
-                        class="subtitle-2 font-weight-medium text-capitalize"
-                      >Salesforce</div>
+                      <div class="subtitle-2 font-weight-medium text-capitalize">Salesforce</div>
                     </v-col>
-                    <v-col cols="12" xs="6"  v-for="oauth in myUser.oauths" :key="oauth.serviceUrl">
+                    <v-col cols="12" xs="6" v-for="oauth in myUser.oauths" :key="oauth.serviceUrl">
                       <a
                         v-if="myUser.oauths"
                         :key="`news-external-link${ myUser.oauths[0].serviceUrl || ''}`"
@@ -65,8 +63,12 @@
                 <v-card-text>
                   <v-row class="d-md-block" no-gutters>
                     <v-col cols="12" xs="6">
-                      <v-btn  v-if="!myUser.oauths" color="primary" to="/oauth/salesforce" disabled>Connect</v-btn>
-                      <v-btn  v-else color="primary" to="/oauth/salesforce" >Connect</v-btn>
+                      <div v-if="!myUser.oauths.length">
+                        <v-btn color="primary" to="/oauth/salesforce">Connect</v-btn>
+                      </div>
+                      <div v-else>
+                        <v-btn color="primary" to="/oauth/salesforce" disabled>Connect</v-btn>
+                      </div>
                     </v-col>
                   </v-row>
                 </v-card-text>
@@ -83,7 +85,9 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      myUser: {}
+      myUser: {
+        oauths: {}
+      }
     };
   },
   apollo: {
