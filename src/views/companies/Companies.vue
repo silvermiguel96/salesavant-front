@@ -193,12 +193,13 @@ export default {
                 $state: String
                 $region: String
                 $country: String
-                $status: String
                 $website: String
+                $links: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $lessThanScore: Int
                 $moreThanScore: Int
+                $status: String
                 $playlistUid: String
                 $signals: [Int]
                 $signalGroups: [String]
@@ -210,14 +211,15 @@ export default {
                     city: $city
                     searchDescription: $description
                     searchWebsite: $website
+                    searchLinks: $links
                     state: $state
                     region: $region
                     country: $country
-                    status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
                     lessThanScore: $lessThanScore
                     moreThanScore: $moreThanScore
+                    status: $status
                     playlistUid: $playlistUid
                     signals: $signals
                     signalGroups: $signalGroups
@@ -279,12 +281,13 @@ export default {
                 $state: String
                 $region: String
                 $country: String
-                $status: String
                 $website: String
+                $links: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $lessThanScore: Int
                 $moreThanScore: Int
+                $status: String
                 $playlistUid: String
                 $signals: [Int]
                 $signalGroups: [String]
@@ -299,16 +302,17 @@ export default {
                   companySearch: {
                     searchName: $name
                     searchDescription: $description
+                    searchWebsite: $website
+                    searchLinks: $links
                     city: $city
                     state: $state
                     region: $region
                     country: $country
-                    status: $status
                     lessThanEmployees: $lessThanEmployees
                     moreThanEmployees: $moreThanEmployees
                     lessThanScore: $lessThanScore
                     moreThanScore: $moreThanScore
-                    searchWebsite: $website
+                    status: $status
                     playlistUid: $playlistUid
                     signals: $signals
                     signalGroups: $signalGroups
@@ -426,17 +430,18 @@ export default {
           $signals: [Int]
           $signalGroups: [String]
           $searchName: String
-          $searchWebsite: String
           $searchDescription: String
+          $searchWebsite: String
+          $searchLinks: String
           $country: String
           $city: String
           $region: String
           $state: String
-          $status: String
           $lessThanEmployees: Int
           $moreThanEmployees: Int
           $moreThanScore: Float
           $lessThanScore: Float
+          $status: String
           $sortBy: String
           $sortOrder: String
           $first: Int
@@ -448,17 +453,18 @@ export default {
             signals: $signals
             signalGroups: $signalGroups
             searchName: $searchName
-            searchWebsite: $searchWebsite
             searchDescription: $searchDescription
+            searchWebsite: $searchWebsite
+            searchLinks: $searchLinks
             country: $country
             city: $city
             region: $region
             state: $state
-            status: $status
             lessThanEmployees: $lessThanEmployees
             moreThanEmployees: $moreThanEmployees
             moreThanScore: $moreThanScore
             lessThanScore: $lessThanScore
+            status: $status
             sortBy: $sortBy
             sortOrder: $sortOrder
             first: $first
@@ -502,6 +508,7 @@ export default {
             signalGroups: this.companySearch.signalGroups,
             searchName: this.companySearch.name,
             searchWebsite: this.companySearch.website,
+            searchLinks: this.companySearch.links,
             searchDescription: this.companySearch.description,
             country: this.companySearch.country,
             city: this.companySearch.city,

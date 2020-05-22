@@ -111,10 +111,6 @@ export default {
   props: {},
   methods: {
     ...mapMutations(["resetCompanySearch", "resetContactSearch"]),
-    onBatch() {
-      this.resetSearch();
-      this.$router.push("/batch").catch(err => {});
-    },
     onPlaylists() {
       this.resetSearch();
       this.$router.push("/playlists").catch(err => {});
@@ -138,6 +134,10 @@ export default {
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);
       this.$router.go("/login");
+    },
+    onBatch() {
+      this.resetSearch();
+      this.$router.push("/batch").catch(err => {});
     },
     resetSearch() {
       this.resetCompanySearch();

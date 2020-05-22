@@ -8,6 +8,7 @@ export const defaultCompanySearch = {
   description: "",
   country: "",
   website: "",
+  links: "",
   city: "",
   region: "",
   state: "",
