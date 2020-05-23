@@ -9,22 +9,21 @@
           <div class="d-flex flex-row justify-space-between my-6">
             <v-card-text>
               <v-text-field
-                v-model="fullname"
-                autocomplete="off"
-                label="Name"
-                type="text"
-                name="name"
-                dense
-                disabled
-                outlined
-              ></v-text-field>
-              <v-text-field
                 v-model="myUser.email"
                 autocomplete="off"
                 label="Email"
                 type="email"
                 name="email"
                 disabled
+                dense
+                outlined
+              ></v-text-field>
+              <v-text-field
+                v-model="fullname"
+                autocomplete="off"
+                label="Name"
+                type="text"
+                name="name"
                 dense
                 outlined
               ></v-text-field>
