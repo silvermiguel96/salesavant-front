@@ -87,6 +87,11 @@
             <v-tab-item>
               <add-to-playlist></add-to-playlist>
             </v-tab-item>
+            <!-- Tab add to playlist -->
+            <v-tab class="text-capitalize">Content</v-tab>
+            <v-tab-item>
+              <Content></Content>
+            </v-tab-item>
             <!-- Tab Analytics -->
             <v-tab class="text-capitalize">Analytics</v-tab>
             <v-tab-item>
@@ -112,6 +117,8 @@ import Signals from "../../components/companies/company/Signals.vue";
 import CompanyContacts from "../../components/companies/company/Contacts.vue";
 // Add To Playlist
 import AddToPlaylist from "../../components/common/AddToPlaylistSelect.vue";
+// Add To Playlist
+import Content from "../../components/companies/company/Content.vue";
 // News
 import News from "../../components/companies/company/News.vue";
 // Analytics
@@ -131,7 +138,8 @@ export default {
     News,
     Signals,
     Analytics,
-    AddToPlaylist
+    AddToPlaylist,
+    Content
   },
   apollo: {
     company: {
