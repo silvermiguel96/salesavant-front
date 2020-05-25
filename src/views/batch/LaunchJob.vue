@@ -10,7 +10,12 @@
               </v-col>
               <template v-if="jobType=='playlist_from_file'">
                 <v-col cols="12">
-                  <v-text-field v-model="playlistName" label="Playlist Name"></v-text-field>
+                  <v-text-field
+                    v-model="playlistName"
+                    label="Playlist Name"
+                    :error="playlistError"
+                    :error-messages="playlistMessages"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field v-model="playlistDescription" label="Playlist Description"></v-text-field>
@@ -56,7 +61,13 @@
                 </v-col>
               </template>
               <v-col cols="12">
-                <v-file-input v-model="file" accept=".csv" label="Upload Input File" :error="fileError" :error-messages="fileMessages"></v-file-input>
+                <v-file-input
+                  v-model="file"
+                  accept=".csv"
+                  label="Upload Input File"
+                  :error="fileError"
+                  :error-messages="fileMessages"
+                ></v-file-input>
               </v-col>
               <v-col cols="12" sm="4" md="4" lg="3">
                 <v-btn color="primary" class="text-capitalize" block @click.prevent="submitFiles">
@@ -96,7 +107,9 @@ export default {
       ],
       jobType: "",
       description: "",
-      playlistName: "",
+      playlistName: null,
+      playlistError: false,
+      playlistMessages: undefined,
       playlistDescription: "",
       file: null,
       fileError: false,
@@ -114,8 +127,14 @@ export default {
         formData.append("file", this.file, this.file.name);
         formData.append("jobType", this.jobType);
         if (this.jobType == "playlist_from_file") {
-          formData.append("playlistName", this.playlistName);
-          formData.append("playlistDescription", this.playlistDescription);
+          if (this.playlistName) {
+            formData.append("playlistName", this.playlistName);
+            formData.append("playlistDescription", this.playlistDescription);
+          } else {
+            this.playlistError = true;
+            this.playlistMessages = ["The Name is required!"];
+            return;
+          }
         } else {
           formData.append("description", this.description);
         }
