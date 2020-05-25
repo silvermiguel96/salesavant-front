@@ -6,15 +6,13 @@
           <v-row no-gutters>
             <v-col cols="12">
               <v-card-text>
+              <div class="title text-capitalize font-weight-regular grey--text">Website Text</div>
                 <v-row no-gutters>
-                  <v-col cols="12">
-                    <div class="subtitle-2 font-weight-medium">Description:</div>
-                  </v-col>
-                  <v-col cols="12" class="pr-2">
+                  <v-col cols="12" class="pr-2" >
                     <long-paragraph
-                      class="font-weight-light text-justify"
-                      :text="company.content"
-                      :maxLength="100"
+                      class="font-weight-light text-justify pt-1"
+                      :text="company.website"
+                      :maxLength="1500"
                     ></long-paragraph>
                   </v-col>
                 </v-row>
@@ -29,28 +27,33 @@
             <!-- The first table -->
             <div>
               <div class="title text-capitalize font-weight-regular grey--text">Web Site Links</div>
-              <v-data-table
-                v-if="company && httpCompany"
-                :headers="headers"
-                :items="httpCompany"
-                dense
-              >
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="filter_list"
+                label="Quick Search"
+                placeholder="Type a Keyword"
+                hide-details
+              ></v-text-field>
+              <v-data-table :headers="headers" :items="httpCompany" :search="search" dense>
                 <template v-slot:item="{ item }">
                   <tr>
                     <td>
-                      <long-paragraph
-                        class="font-weight-light text-justify"
-                        :text="item.linkLabel"
-                        :maxLength="40"
-                      ></long-paragraph>
+                        {{ item.linkLabel}}
                     </td>
                     <td>
                       <a
                         v-if="item"
-                        :key="`news-external-link${item.website || ''}`"
-                        :href="item.website"
+                        :key="`news-external-link${item.url || ''}`"
+                        :href="item.url"
                         target="_blank"
-                      >Link</a>
+                      >
+                        <long-paragraph
+                          class="font-weight-light text-justify"
+                          :text="item.url"
+                          :maxLength="60"
+                        ></long-paragraph>
+                      </a>
                     </td>
                   </tr>
                 </template>
@@ -70,9 +73,10 @@ export default {
   data() {
     return {
       company: null,
+      search: "",
       headers: [
-        { text: "Names", value: "name", sortable: false },
-        { text: "Links", value: "link", sortable: false }
+        { text: "Names", value: "linkLabel", sortable: true , width: "20%" },
+        { text: "Links", value: "url", sortable: false , width: "80%"}
       ]
     };
   },
@@ -87,6 +91,7 @@ export default {
             uid
             name
             url
+            website
             websiteLinks {
               url
               linkLabel
@@ -105,16 +110,17 @@ export default {
   },
   computed: {
     httpCompany: function() {
-      return  this.company.websiteLinks.map(website => {
-        console.log("website", website.link.startsWith('http'));
+      return this.company.websiteLinks.map(website => {
         if (website.link.startsWith("http")) {
-          return  {website: website.link, linkLabel: website.linkLabel};
+          return { url: website.link, linkLabel: website.linkLabel };
         } else {
-          return  {website: `${website.url}+${website.link}`, linkLabel: website.linkLabel};;
+          return {
+            url: `${website.url}+${website.link}`,
+            linkLabel: website.linkLabel
+          };
         }
       });
-      console.log("https", https)
-
+      console.log("https", https);
     }
   },
   beforeCreate() {
