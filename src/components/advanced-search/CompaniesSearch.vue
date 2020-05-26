@@ -15,9 +15,9 @@
           <v-col cols="6">
             <v-text-field
               :dense="denseForm"
-              name="country"
-              v-model="companySearch.country"
-              label="Country"
+              name="description"
+              label="Description"
+              v-model="companySearch.description"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -26,9 +26,9 @@
           <v-col cols="6">
             <v-text-field
               :dense="denseForm"
-              name="description"
-              label="Description"
-              v-model="companySearch.description"
+              name="country"
+              v-model="companySearch.country"
+              label="Country"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -46,9 +46,9 @@
           <v-col cols="6">
             <v-text-field
               :dense="denseForm"
-              name="status"
-              v-model="companySearch.status"
-              label="Status"
+              name="city"
+              v-model="companySearch.city"
+              label="City"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -75,9 +75,9 @@
           <v-col cols="6">
             <v-text-field
               :dense="denseForm"
-              name="city"
-              v-model="companySearch.city"
-              label="City"
+              name="status"
+              v-model="companySearch.links"
+              label="Links"
               autocomplete="off"
             ></v-text-field>
           </v-col>
@@ -118,6 +118,17 @@
               name="lessThanScore"
               v-model="companySearch.lessThanScore"
               label="Less Than Score"
+              autocomplete="off"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row wrap>
+          <v-col cols="6">
+            <v-text-field
+              :dense="denseForm"
+              name="status"
+              v-model="companySearch.status"
+              label="Status"
               autocomplete="off"
             ></v-text-field>
           </v-col>
