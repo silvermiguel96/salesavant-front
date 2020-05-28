@@ -26,7 +26,6 @@ export default {
     return {
       loading: false,
       search: "",
-      select: "",
       playlists: []
     };
   },
@@ -35,18 +34,21 @@ export default {
       if (this.loading) return;
       this.queryPlaylists();
     },
-    globalPlaylistUid (val){
+    globalPlaylistUid(val) {
       console.log("globalPlaylistUid store val change", val);
       this.select  = val;
       this.$emit("change", { playlistUid: val, displayPlaylistUid: this.globalDisplayPlaylistUid });
     }
   },
   computed: {
-    globalPlaylistUid (){
+    globalPlaylistUid() {
       return this.$store.state.companySearch.playlistUid;
     },
-    globalDisplayPlaylistUid(){
+    globalDisplayPlaylistUid() {
       return this.$store.state.companySearch.displayPlaylistUid;
+    },
+    select() {
+      return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
     }
   },
   methods: {
@@ -58,7 +60,7 @@ export default {
             query: gql`
               query getFilteredPlaylists($playlistSearch: String) {
                 playlists(first: 1000, search: $playlistSearch) {
-                  playlistsList{
+                  playlistsList {
                     uid
                     name
                   }
@@ -72,12 +74,14 @@ export default {
           })
           .then(resp => {
             if (!!resp.data && !!resp.data.playlists) {
-              this.playlists = resp.data.playlists.playlistsList.map(playlist=>{
-                return {
-                  uid: playlist.uid + ">>>" + playlist.name,
-                  name: playlist.name
+              this.playlists = resp.data.playlists.playlistsList.map(
+                playlist => {
+                  return {
+                    uid: playlist.uid + ">>>" + playlist.name,
+                    name: playlist.name
+                  };
                 }
-              });
+              );
             }
           });
         setTimeout(() => {
@@ -86,28 +90,33 @@ export default {
       }, 500);
     },
     change(v) {
-      if (v && v.length>0){
+      if (v && v.length > 0) {
         let idSplit = v.split(">>>");
-        this.$emit("change", { 
-          playlistUid: idSplit[0], 
-          displayPlaylistUid: idSplit[1] 
-        });  
-      }else{
+        this.$emit("change", {
+          playlistUid: idSplit[0],
+          displayPlaylistUid: idSplit[1]
+        });
+      } else {
         this.$emit("change", {});
       }
     }
   },
   destroyed() {
     console.log("destroyed autocomplete");
+  },
+  beforeCreate() {
+    this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
   }
 };
 </script>
 
 <style scoped>
-.v-list-item--dense, .v-list--dense .v-list-item {
+.v-list-item--dense,
+.v-list--dense .v-list-item {
   min-height: 20px !important;
 }
-.v-list--dense .v-list-item .v-list-item__content, .v-list-item--dense .v-list-item__content {
+.v-list--dense .v-list-item .v-list-item__content,
+.v-list-item--dense .v-list-item__content {
   padding: 6px 0;
 }
 </style>

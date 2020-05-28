@@ -172,7 +172,6 @@ export default {
     ...mapMutations(["resetCompanySearch", "updateCompanySearch"]),
     triggerSearch() {
       this.updateCompanySearch({ playlistUid: this.$route.params.playlistUid, displayPlaylistUid: this.playlist.name });
-      // this.$store.commit("updateCompanySearch", this.$route.params.playlistUid );
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
