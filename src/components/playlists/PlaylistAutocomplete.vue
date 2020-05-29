@@ -47,8 +47,15 @@ export default {
     globalDisplayPlaylistUid() {
       return this.$store.state.companySearch.displayPlaylistUid;
     },
-    select() {
-      return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
+    select: {
+      get: function () {
+        return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
+      },
+      set: function (store) {
+        console.log("store", store)
+        return `${store}>>>${this.globalDisplayPlaylistUid}`;
+
+      }
     }
   },
   methods: {
