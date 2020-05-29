@@ -165,7 +165,7 @@
         <v-divider></v-divider>
         <v-row wrap>
           <v-col cols="12">
-            <playlists-autocomplete :dense="denseForm" @change="onPlaylistAutocompleteChange" />
+            <playlists-autocomplete :dense="denseForm" typeSearch="contact" @change="onPlaylistAutocompleteChange" />
           </v-col>
         </v-row>
         <v-divider></v-divider>

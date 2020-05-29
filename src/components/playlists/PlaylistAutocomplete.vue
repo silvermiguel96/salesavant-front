@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>{{ typeSearch }}</h2>
     <v-autocomplete
       v-model="select"
       :loading="loading"
@@ -29,10 +30,20 @@ export default {
       playlists: []
     };
   },
+  props: {
+    typeSearch: {
+      type: String
+    }
+  },
   watch: {
     search(val) {
       if (this.loading) return;
-      this.queryPlaylists();
+      if (this.typeSearch === "contact")  {
+        this.queryPlaylists();
+      } else {
+        console.log("this is a search company")
+      }
+      
     },
     globalPlaylistUid(val) {
       console.log("globalPlaylistUid store val change", val);
