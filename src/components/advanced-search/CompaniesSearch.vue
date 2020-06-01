@@ -227,7 +227,6 @@ export default {
       this.companySearch = { ...defaultCompanySearch };
     },
     onPlaylistAutocompleteChange(value) {
-      console.log("este es el value the on play", value);
       this.companySearch = {
         ...this.companySearch,
         playlistUid: _get(value, "playlistUid", ""),
