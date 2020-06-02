@@ -27,45 +27,55 @@ export default {
     return {
       loading: false,
       search: "",
-      playlists: []
+      playlists: [],
     };
   },
   props: {
     typeSearch: {
-      type: String
+      type: String,
+      default: ""
     }
   },
   watch: {
     search(val) {
       if (this.loading) return;
-      if (this.typeSearch === "contact")  {
-        this.queryPlaylists();
-      } else {
-        console.log("this is a search company")
-      }
-      
+      this.queryPlaylists();
     },
     globalPlaylistUid(val) {
       console.log("globalPlaylistUid store val change", val);
-      this.select  = val;
-      this.$emit("change", { playlistUid: val, displayPlaylistUid: this.globalDisplayPlaylistUid });
+      this.select = val;
+      this.$emit("change", {
+        playlistUid: val,
+        displayPlaylistUid: this.globalDisplayPlaylistUid
+      });
     }
   },
   computed: {
     globalPlaylistUid() {
-      return this.$store.state.companySearch.playlistUid;
+      if (this.typeSearch === "company") {
+        return this.$store.state.companySearch.playlistUid;
+      } else {
+        return this.$store.state.contactSearch.playlistUid;
+      }
     },
     globalDisplayPlaylistUid() {
-      return this.$store.state.companySearch.displayPlaylistUid;
+      if (this.typeSearch === "company") {
+        return this.$store.state.companySearch.displayPlaylistUid;
+      } else {
+        return this.$store.state.contactSearch.displayPlaylistUid;
+      }
     },
     select: {
-      get: function () {
-        return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
+      get: function() {
+        if (this.typeSearch === "company") {
+          return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
+        } else {
+          return `${this.$store.state.contactSearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
+        }
       },
-      set: function (store) {
-        console.log("store", store)
+      set: function(store) {
+        console.log("store", store);
         return `${store}>>>${this.globalDisplayPlaylistUid}`;
-
       }
     }
   },
@@ -76,8 +86,15 @@ export default {
         this.$apollo
           .query({
             query: gql`
-              query getFilteredPlaylists($playlistSearch: String) {
-                playlists(first: 1000, search: $playlistSearch) {
+              query getFilteredPlaylists(
+                $playlistSearch: String
+                $playlistType: String
+              ) {
+                playlists(
+                  first: 1000
+                  search: $playlistSearch
+                  playlistType: $playlistType
+                ) {
                   playlistsList {
                     uid
                     name
@@ -86,7 +103,8 @@ export default {
               }
             `,
             variables: {
-              playlistSearch: this.search ? this.search : ""
+              playlistSearch: this.search ? this.search : "",
+              playlistType: this.typeSearch
             },
             fetchPolicy: "no-cache"
           })
@@ -123,7 +141,8 @@ export default {
     console.log("destroyed autocomplete");
   },
   beforeCreate() {
-    this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
+    // this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
+    this.$emit("change", { playlistUid: this.$store.state.contactSearch.playlistUid, displayPlaylistUid: this.$store.state.contactSearch.displayPlaylistUid });
   }
 };
 </script>
