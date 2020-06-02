@@ -193,6 +193,7 @@ export default {
               country
               state
               creationTime
+              modificationTime
             }
           }
         }
