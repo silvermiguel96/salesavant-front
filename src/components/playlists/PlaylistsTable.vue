@@ -18,7 +18,7 @@
           </td>
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
           <td>
-            {{ item.creationTime | moment("MMMM Do YYYY")}}
+            {{ item.modificationTime | moment("MMMM Do YYYY")}}
           </td>
           <td>
             <div class="d-flex align-center justify-center" v-if="folderId || folderName ">
@@ -38,8 +38,8 @@ const defaultHeaders = [
   { text: "Name", value: "name", width: "40%", sortable: false },
   { text: "Size", value: "totalCompanies", width: "20%", sortable: true },
   {
-    text: "Creation Time",
-    value: "creationTime",
+    text: "Modification Time",
+    value: "modificationTime",
     width: "30%",
     sortable: true
   },
