@@ -32,7 +32,7 @@
                 v-if="item.user.firstName || item.user.lastName"
               >{{item.user.firstName}} {{item.user.lastName}}</td>
               <td v-else>{{item.user.email || "--"}}</td>
-              <td>{{ item.creationTime | moment(" MMMM Do YYYY")}}</td>
+              <td>{{ item.modificationTime | moment(" MMMM Do YYYY")}}</td>
               <td>
                 <div class="d-flex align-center justify-center">
                   <v-icon color="red lighten-2" small @click="deleteComment(item)">delete</v-icon>
@@ -62,7 +62,7 @@ export default {
       headers: [
         { text: "Comment", value: "firstName",  width: "40%", sortable: false },
         { text: "User", value: "email", width: "25%", sortable: false },
-        { text: "Creation Time", value: "creationTime", width: "25%", sortable: false },
+        { text: "Modification Time", value: "modificationTime", width: "25%", sortable: false },
         { text: "Remove", value: "action", width: "10%", align: "center", sortable: false }
       ],
       options: {
@@ -88,6 +88,7 @@ export default {
             companyCommentsList {
               id
               creationTime
+              modificationTime
               comments
               user {
                 email
@@ -130,9 +131,9 @@ export default {
                     description: $description
                   ) {
                     companyComment {
-                      creationTime
                       id
                       creationTime
+                      modificationTime
                       comments
                       user {
                         email

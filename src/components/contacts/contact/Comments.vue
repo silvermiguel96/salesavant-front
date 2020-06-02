@@ -35,7 +35,7 @@
             >{{item.user.firstName}} {{item.user.lastName}}</td>
             <td v-else>{{item.user.email || "--"}}</td>
             <td>
-              {{ item.creationTime | moment("MMMM Do YYYY")}}
+              {{ item.modificationTime | moment("MMMM Do YYYY")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
@@ -66,7 +66,7 @@ export default {
       headers: [
         { text: "Comment", sortable: false },
         { text: "User", sortable: false },
-        { text: "Creation Time", sortable: false },
+        { text: "Modification Time", sortable: false },
         { text: "Remove", align: "center", sortable: false }
       ],
       options: {
@@ -88,6 +88,7 @@ export default {
             contactCommentsList {
               id
               creationTime
+              modificationTime
               comments
               user {
                 email
@@ -131,6 +132,7 @@ export default {
                     contactComment {
                       id
                       creationTime
+                      modificationTime
                       comments
                       user {
                         email
