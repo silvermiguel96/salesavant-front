@@ -30,7 +30,7 @@
           {{ item.state || "--"}}
         </td> 
         <td>
-          {{ item.creationTime | moment("MMMM Do YYYY")}}
+          {{ item.modificationTime | moment("MMMM Do YYYY")}}
         </td>
       </tr>
     </template>
@@ -71,10 +71,10 @@ export default {
           width: "15%",
         },
         {
-          text: "Creation Time",
+          text: "Modification Time",
           sortable: false,
           width: "20%",
-          value: "creationTime"
+          value: "modificationTime"
         },
       ],
       options: {

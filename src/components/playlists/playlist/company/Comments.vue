@@ -28,7 +28,7 @@
                 v-if="item.user.firstName || item.user.lastName"
               >{{item.user.firstName}} {{item.user.lastName}}</td>
               <td v-else>{{item.user.email || "--"}}</td>
-              <td>{{ item.creationTime | moment(" MMMM Do YYYY")}}</td>
+              <td>{{ item.modificationTime | moment(" MMMM Do YYYY")}}</td>
               <td>
                 <add-comment-modal @onSave="addComment" :item="item" :btnIcon="'add_comment'" />
               </td>
@@ -74,8 +74,8 @@ export default {
         { text: "Comment", value: "firstName", width: "20%", sortable: false },
         { text: "User", value: "email", width: "25%", sortable: false },
         {
-          text: "Creation Time",
-          value: "creationTime",
+          text: "Modification Time",
+          value: "modificationTime",
           width: "25%",
           sortable: false
         },
@@ -116,6 +116,7 @@ export default {
                 email
               }
               creationTime
+              modificationTime
               company {
                 uid
                 name
@@ -167,6 +168,7 @@ export default {
                         email
                       }
                       creationTime
+                      modificationTime
                       company {
                         uid
                         name

@@ -77,8 +77,8 @@ export default {
           case "totalCompanies":
             this.options.sortBy = "companies";
             break;
-          case "creationTime":
-            this.options.sortBy = "creation_time";
+          case "modificationTime":
+            this.options.sortBy = "modification_time";
             break;
         }
       } else {
@@ -196,6 +196,7 @@ export default {
               uid
               name
               creationTime
+              modificationTime
               accountId
               userId
               totalCompanies

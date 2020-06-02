@@ -76,7 +76,7 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ item.creationTime | moment("MMMM Do YYYY")}}</td>
+          <td>{{ item.modificationTime | moment("MMMM Do YYYY")}}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
@@ -119,7 +119,7 @@ export default {
         { text: "Group", value: "group", align: "left", sortable: false, width: "15%"  },
         { text: "Category", value: "category", align: "left", sortable: false, width: "15%" },
         { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
-        { text: "Creation Time", value: "creationTime", align: "left", sortable: false, width: "15%"   },
+        { text: "Modification Time", value: "modificationTime", align: "left", sortable: false, width: "15%"   },
         { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
         { text: "Remove", value: "icon", align: "center", sortable: false, width: "5%"  }
       ],
