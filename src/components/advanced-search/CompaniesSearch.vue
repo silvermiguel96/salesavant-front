@@ -136,7 +136,7 @@
         <v-divider></v-divider>
         <v-row wrap>
           <v-col cols="12">
-            <playlists-autocomplete :dense="denseForm" typeSearch="company" @change="onPlaylistAutocompleteChange" />
+            <playlists-autocomplete :dense="denseForm" playlistType="company" @change="onPlaylistAutocompleteChange" />
           </v-col>
         </v-row>
         <v-row wrap>
@@ -266,9 +266,6 @@ export default {
     //   return this.$store.state.companySearch.playlistUid
     // }
   },
-  beforeCreate() {
-    this.onPlaylistAutocompleteChange({ playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid })
-  }
 };
 </script>
 

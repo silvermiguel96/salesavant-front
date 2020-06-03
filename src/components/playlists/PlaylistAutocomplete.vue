@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ typeSearch }}</h2>
+    <h2>{{ playlistType }}</h2>
     <v-autocomplete
       v-model="select"
       :loading="loading"
@@ -24,14 +24,15 @@ import gql from "graphql-tag";
 import { setTimeout } from "timers";
 export default {
   data() {
-    return {
+    return {  
       loading: false,
       search: "",
+      select:null, 
       playlists: [],
     };
   },
   props: {
-    typeSearch: {
+    playlistType: {
       type: String,
       default: ""
     }
@@ -52,30 +53,17 @@ export default {
   },
   computed: {
     globalPlaylistUid() {
-      if (this.typeSearch === "company") {
+      if (this.playlistType === "company") {
         return this.$store.state.companySearch.playlistUid;
       } else {
         return this.$store.state.contactSearch.playlistUid;
       }
     },
     globalDisplayPlaylistUid() {
-      if (this.typeSearch === "company") {
+      if (this.playlistType === "company") {
         return this.$store.state.companySearch.displayPlaylistUid;
       } else {
         return this.$store.state.contactSearch.displayPlaylistUid;
-      }
-    },
-    select: {
-      get: function() {
-        if (this.typeSearch === "company") {
-          return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
-        } else {
-          return `${this.$store.state.contactSearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
-        }
-      },
-      set: function(store) {
-        console.log("store", store);
-        return `${store}>>>${this.globalDisplayPlaylistUid}`;
       }
     }
   },
@@ -104,7 +92,7 @@ export default {
             `,
             variables: {
               playlistSearch: this.search ? this.search : "",
-              playlistType: this.typeSearch
+              playlistType: this.playlistType
             },
             fetchPolicy: "no-cache"
           })
@@ -137,12 +125,18 @@ export default {
       }
     }
   },
-  destroyed() {
-    console.log("destroyed autocomplete");
-  },
-  beforeCreate() {
-    // this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
-    this.$emit("change", { playlistUid: this.$store.state.contactSearch.playlistUid, displayPlaylistUid: this.$store.state.contactSearch.displayPlaylistUid });
+  beforeMount() {
+    if (!!this.$store.state.companySearch.playlistUid) 
+    {
+      console.log("before created company", this.$store.state.companySearch.playlistUid)
+      this.select = this.$store.state.companySearch.playlistUid+'>>>'+this.$store.state.companySearch.displayPlaylistUid;
+      this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
+    }
+    if (!!this.$store.state.contactSearch.playlistUid) {
+      console.log("before Created Contact", this.$store.state.contactSearch.playlistUid);
+      this.select = this.$store.state.contactSearch.playlistUid+'>>>'+this.$store.state.contactSearch.displayPlaylistUid;
+      this.$emit("change", { playlistUid: this.$store.state.contactSearch.playlistUid, displayPlaylistUid: this.$store.state.contactSearch.displayPlaylistUid });
+    }
   }
 };
 </script>

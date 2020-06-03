@@ -67,25 +67,17 @@ const mutations = {
     state.searchType = newSearchType;
     state.showSearchDialog = true;
   },
-  updateCompanySearch(state, playlistCompany) {
-    state.searchType = "companies";
+  updateCompanySearch(state, newCompanySearch) {
     state.companySearch = { 
       ...defaultCompanySearch,
-      playlistUid: playlistCompany.playlistUid,
-      displayPlaylistUid: playlistCompany.displayPlaylistUid
+      ...newCompanySearch
     }
-    state.showSearchDialog = true;
-    console.log("state.companySearch", state.companySearch)
   },
-  updateContactSearch(state, playlistContact) {
-    state.searchType = "contacts";
+  updateContactSearch(state, newContactSearch) {
     state.contactSearch = { 
       ...defaultContactSearch,
-      playlistUid: playlistContact.playlistUid,
-      displayPlaylistUid: playlistContact.displayPlaylistUid
+      ...newContactSearch
     }
-    state.showSearchDialog = true;
-    console.log("state.companySearch", state.companySearch)
   },
   hideSearchDialog(state) {
     state.showSearchDialog = false;
