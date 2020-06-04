@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>{{ playlistType }}</h2>
     <v-autocomplete
       v-model="select"
       :loading="loading"
