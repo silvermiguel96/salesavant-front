@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>{{ playlistType }}</h2>
     <v-autocomplete
       v-model="select"
       :loading="loading"
@@ -23,11 +24,18 @@ import gql from "graphql-tag";
 import { setTimeout } from "timers";
 export default {
   data() {
-    return {
+    return {  
       loading: false,
       search: "",
-      playlists: []
+      select:null, 
+      playlists: [],
     };
+  },
+  props: {
+    playlistType: {
+      type: String,
+      default: ""
+    }
   },
   watch: {
     search(val) {
@@ -36,25 +44,26 @@ export default {
     },
     globalPlaylistUid(val) {
       console.log("globalPlaylistUid store val change", val);
-      this.select  = val;
-      this.$emit("change", { playlistUid: val, displayPlaylistUid: this.globalDisplayPlaylistUid });
+      this.select = val;
+      this.$emit("change", {
+        playlistUid: val,
+        displayPlaylistUid: this.globalDisplayPlaylistUid
+      });
     }
   },
   computed: {
     globalPlaylistUid() {
-      return this.$store.state.companySearch.playlistUid;
+      if (this.playlistType === "company") {
+        return this.$store.state.companySearch.playlistUid;
+      } else {
+        return this.$store.state.contactSearch.playlistUid;
+      }
     },
     globalDisplayPlaylistUid() {
-      return this.$store.state.companySearch.displayPlaylistUid;
-    },
-    select: {
-      get: function () {
-        return `${this.$store.state.companySearch.playlistUid}>>>${this.globalDisplayPlaylistUid}`;
-      },
-      set: function (store) {
-        console.log("store", store)
-        return `${store}>>>${this.globalDisplayPlaylistUid}`;
-
+      if (this.playlistType === "company") {
+        return this.$store.state.companySearch.displayPlaylistUid;
+      } else {
+        return this.$store.state.contactSearch.displayPlaylistUid;
       }
     }
   },
@@ -65,8 +74,15 @@ export default {
         this.$apollo
           .query({
             query: gql`
-              query getFilteredPlaylists($playlistSearch: String) {
-                playlists(first: 1000, search: $playlistSearch) {
+              query getFilteredPlaylists(
+                $playlistSearch: String
+                $playlistType: String
+              ) {
+                playlists(
+                  first: 1000
+                  search: $playlistSearch
+                  playlistType: $playlistType
+                ) {
                   playlistsList {
                     uid
                     name
@@ -75,7 +91,8 @@ export default {
               }
             `,
             variables: {
-              playlistSearch: this.search ? this.search : ""
+              playlistSearch: this.search ? this.search : "",
+              playlistType: this.playlistType
             },
             fetchPolicy: "no-cache"
           })
@@ -108,11 +125,18 @@ export default {
       }
     }
   },
-  destroyed() {
-    console.log("destroyed autocomplete");
-  },
-  beforeCreate() {
-    this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
+  beforeMount() {
+    if (!!this.$store.state.companySearch.playlistUid) 
+    {
+      console.log("before created company", this.$store.state.companySearch.playlistUid)
+      this.select = this.$store.state.companySearch.playlistUid+'>>>'+this.$store.state.companySearch.displayPlaylistUid;
+      this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
+    }
+    if (!!this.$store.state.contactSearch.playlistUid) {
+      console.log("before Created Contact", this.$store.state.contactSearch.playlistUid);
+      this.select = this.$store.state.contactSearch.playlistUid+'>>>'+this.$store.state.contactSearch.displayPlaylistUid;
+      this.$emit("change", { playlistUid: this.$store.state.contactSearch.playlistUid, displayPlaylistUid: this.$store.state.contactSearch.displayPlaylistUid });
+    }
   }
 };
 </script>

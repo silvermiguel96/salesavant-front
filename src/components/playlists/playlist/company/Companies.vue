@@ -169,9 +169,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["resetCompanySearch", "updateCompanySearch"]),
+    ...mapMutations(["resetCompanySearch", "updateCompanySearch", "showSearchDialog"]),
     triggerSearch() {
       this.updateCompanySearch({ playlistUid: this.$route.params.playlistUid, displayPlaylistUid: this.playlist.name });
+      this.showSearchDialog("companies")
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

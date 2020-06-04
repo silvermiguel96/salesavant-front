@@ -12,6 +12,16 @@
               hide-details
             ></v-text-field>
           </v-col>
+          <v-col cols="12" sm="3" md="3" offset-sm="5" offset-lg="5" class="mt-1">
+            <v-btn
+              class="text-capitalize d-inline-block"
+              min-width="150"
+              color="primary"
+              @click="triggerSearch"
+            >
+              <v-icon class="pr-1">search</v-icon>Advanced Search
+            </v-btn>
+          </v-col>
         </v-row>
       </v-container>
       <div>
@@ -43,6 +53,7 @@
 <script>
 import gql from "graphql-tag";
 import ContactsTable from "../../../contacts/ContactsTable";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
@@ -61,6 +72,11 @@ export default {
     ContactsTable
   },
   methods: {
+    ...mapMutations(["resetContactSearch", "updateContactSearch", "showSearchDialog"]),
+    triggerSearch() {
+      this.updateContactSearch({ playlistUid: this.$route.params.playlistUid, displayPlaylistUid: this.playlist.name});
+      this.showSearchDialog("contacts")
+    },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
@@ -96,6 +112,24 @@ export default {
     }
   },
   apollo: {
+    playlist: {
+      query: gql`
+        query getPlaylist($uid: String) {
+          playlist(uid: $uid) {
+            uid
+            name
+            description
+            modificationTime
+          }
+        }
+      `,
+      variables() {
+        return {
+          uid: this.$route.params.playlistUid
+        };
+      },
+      fetchPolicy: "cache-and-network"
+    },
     playlistContacts: {
       query: gql`
         query playlistContacts(
@@ -144,7 +178,9 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       skip() {
