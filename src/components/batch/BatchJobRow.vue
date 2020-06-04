@@ -17,8 +17,7 @@
     </td>
     <td>{{ job.description || "--" }}</td>
     <td> 
-      <!-- <format-date-time :time="job.creationTime"/> -->
-    {{ job.creationTime | moment("MMMM Do YYYY")}} </td>
+    {{ job.modificationTime | moment("MMMM Do YYYY")}} </td>
     <td v-if="job.progress > 0 && job.status != 'finished'">
       <v-progress-circular
         :rotate="-90"
