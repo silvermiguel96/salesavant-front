@@ -163,7 +163,7 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
-        <v-row wrap>
+        <v-row wrap class="pt-2">
           <v-col cols="12">
             <playlists-autocomplete :dense="denseForm" playlistType="contact" @change="onPlaylistAutocompleteChange" />
           </v-col>

@@ -42,7 +42,6 @@ export default {
       this.queryPlaylists();
     },
     globalPlaylistUid(val) {
-      console.log("globalPlaylistUid store val change", val);
       this.select = val;
       this.$emit("change", {
         playlistUid: val,
