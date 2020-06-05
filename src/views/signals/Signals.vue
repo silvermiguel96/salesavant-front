@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" xs="12">
         <v-card>
-          <v-row no-gutters >
+          <v-row no-gutters>
             <v-breadcrumbs
               :large="true"
               :items="[
@@ -37,33 +37,32 @@
               </v-chip>
             </v-col>
           </v-row>
-
-          <v-row no-gutters class="pl-2 pl-sm-6">
-            <v-col cols="10" md="4">
-              <v-text-field
-                v-model="search"
-                append-icon="filter_list"
-                label="Quick Search"
-                placeholder="Type a Name, Description or Group "
-                hide-details
-              ></v-text-field>
+          <v-container fluid>
+          <v-row no-gutters>
+            <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+              <v-btn
+                class="text-capitalize"
+                color="primary"
+                min-width="150"
+                block
+                to="/signals/create"
+              >
+                <v-icon size="18" class="mr-2">add</v-icon>new signal
+              </v-btn>
             </v-col>
-            <v-col cols="12" md="8">
-              <div class="d-flex justify-md-end">
-                <div class="mt-3 mr-2">
-                  <v-btn
-                    class="text-capitalize"
-                    color="primary"
-                    min-width="150"
-                    to="/signals/create"
-                  >
-                    <v-icon size="18" class="mr-2">add</v-icon>new signal
-                  </v-btn>
-                </div>
-              </div>
-            </v-col>
+            <v-row no-gutters class="d-flex justify-end">
+              <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+                <v-text-field
+                  v-model="search"
+                  append-icon="filter_list"
+                  label="Quick Search"
+                  placeholder="Type a Name, Description or Group "
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-row>
-
+          </v-container>
           <v-row no-gutters>
             <v-col cols="12">
               <!-- Result -->

@@ -19,51 +19,51 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-
-          <v-row no-gutters>
-            <v-col cols="12" sm="3" md="3" lg="2" class="pa-1 pl-3 pl-sm-6">
-              <v-btn
-                class="text-capitalize d-inline-block pl-3 pl-sm-6"
-                min-width="150"
-                block
-                color="primary"
-                @click="triggerSearch"
-              >
-                <v-icon class="pr-1">search</v-icon>Advanced Search
-              </v-btn>
-            </v-col>
-            <v-col cols="12" sm="2" md="2" lg="1" class="pa-1">
-              <v-btn
-                class="text-capitalize d-inline-block"
-                color="normal"
-                block
-                @click="resetCompanySearch"
-                v-if="showFiltersAndActions"
-              >
-                <v-icon class="pr-1" small>replay</v-icon>Reset
-              </v-btn>
-            </v-col>
-            <v-row v-if="showFiltersAndActions" no-gutters class="d-flex justify-end">
-              <v-col cols="12" sm="5" md="3" lg="2" class="pa-1">
-                <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+          <v-container fluid>
+            <v-row no-gutters>
+              <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+                <v-btn
+                  class="text-capitalize d-inline-block"
+                  min-width="150"
+                  block
+                  color="primary"
+                  @click="triggerSearch"
+                >
+                  <v-icon class="pr-1">search</v-icon>Advanced Search
+                </v-btn>
               </v-col>
-              <v-col cols="12" sm="5" md="3" lg="2" class="pa-1">
-                <create-signal-from-results @onSave="saveResultsAsSignal" />
+              <v-col cols="12" sm="2" md="2" lg="1" class="pa-1">
+                <v-btn
+                  class="text-capitalize d-inline-block"
+                  color="normal"
+                  block
+                  @click="resetCompanySearch"
+                  v-if="showFiltersAndActions"
+                >
+                  <v-icon class="pr-1" small>replay</v-icon>Reset
+                </v-btn>
               </v-col>
+              <v-row v-if="showFiltersAndActions" no-gutters class="d-flex justify-end">
+                <v-col cols="12" sm="5" md="3" lg="2" class="pa-1">
+                  <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+                </v-col>
+                <v-col cols="12" sm="5" md="3" lg="2" class="pa-1">
+                  <create-signal-from-results @onSave="saveResultsAsSignal" />
+                </v-col>
+              </v-row>
+              <v-row v-else no-gutters class="d-flex justify-end">
+                <v-col cols="12" sm="8" md="8" lg="8" class="pa-1">
+                  <v-text-field
+                    v-model="search"
+                    append-icon="filter_list"
+                    label="Quick Search"
+                    placeholder="Type a Name"
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-row>
-            <v-row v-else no-gutters class="d-flex justify-end">
-              <v-col cols="12" sm="8" md="8" lg="8" class="pa-1">
-                <v-text-field
-                  v-model="search"
-                  append-icon="filter_list"
-                  label="Quick Search"
-                  placeholder="Type a Name"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-row>
-
+          </v-container>
           <v-row v-if="showFiltersAndActions" class="pa-1" no-gutters>
             <v-col cols="12" md="8">
               <div class="mt-2">
