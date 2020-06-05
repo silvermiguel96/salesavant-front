@@ -1,12 +1,8 @@
 <template>
   <v-container fluid>
-    <v-row no-gutters class="ml-2">
+    <v-row no-gutters>
       <v-col cols="12">
-        <div class="d-flex justify-md-end">
-          <div class="mt-3 mr-2">
-            <add-comment-modal @onSave="saveComments" />
-          </div>
-        </div>
+        <add-comment-modal @onSave="saveComments" />
       </v-col>
     </v-row>
     <v-row no-gutters v-if="companyComments">
@@ -60,10 +56,21 @@ export default {
     return {
       companyComments: null,
       headers: [
-        { text: "Comment", value: "firstName",  width: "40%", sortable: false },
+        { text: "Comment", value: "firstName", width: "40%", sortable: false },
         { text: "User", value: "email", width: "25%", sortable: false },
-        { text: "Modification Time", value: "modificationTime", width: "25%", sortable: false },
-        { text: "Remove", value: "action", width: "10%", align: "center", sortable: false }
+        {
+          text: "Modification Time",
+          value: "modificationTime",
+          width: "25%",
+          sortable: false
+        },
+        {
+          text: "Remove",
+          value: "action",
+          width: "10%",
+          align: "center",
+          sortable: false
+        }
       ],
       options: {
         page: 1,

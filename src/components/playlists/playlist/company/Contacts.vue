@@ -2,17 +2,19 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12" xs="12" class="px-0">
-        <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="10" sm="4">
-            <v-text-field
-              v-model="search"
-              append-icon="filter_list"
-              label="Quick Search"
-              placeholder="Type a Full Name"
-              hide-details
-            ></v-text-field>
-          </v-col>
-        </v-row>
+        <v-container fluid>
+          <v-row no-gutters class="pl-2 pl-sm-6 d-flex justify-end">
+            <v-col cols="10" sm="6">
+              <v-text-field
+                v-model="search"
+                append-icon="filter_list"
+                label="Quick Search"
+                placeholder="Type a Full Name"
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-row no-gutters>
           <v-col cols="12">
             <contacts-table
@@ -144,7 +146,9 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       skip() {

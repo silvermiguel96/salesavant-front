@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-container fluid>
-      <v-row no-gutters>
-        <v-col cols="10" sm="4">
+      <v-row no-gutters class="d-flex justify-end">
+        <v-col cols="12" sm="6">
           <v-text-field
             v-model="search"
             append-icon="filter_list"
