@@ -1,42 +1,32 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="12" xs="12" class="px-0">
-        <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="10" sm="4">
-            <v-text-field
-              v-model="search"
-              append-icon="filter_list"
-              label="Quick Search"
-              placeholder="Type a Full Name"
-              hide-details
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="12">
-            <companies-table
-              v-if="playlistContactCompanies"
-              :items="playlistContactCompanies.companiesList"
-              :totalResults="playlistContactCompanies.totalResults"
-              @updateOptions="updateOptions"
-            ></companies-table>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="12">
-            <v-progress-linear
-              :active="!!isLoading"
-              color="blue"
-              indeterminate
-              absolute
-              bottom
-              query
-            ></v-progress-linear>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <v-container fluid>
+      <v-row no-gutters>
+        <v-col cols="10" sm="4">
+          <v-text-field
+            v-model="search"
+            append-icon="filter_list"
+            label="Quick Search"
+            placeholder="Type a Full Name"
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
+    <div>
+      <companies-table
+        v-if="playlistContactCompanies"
+        :items="playlistContactCompanies.companiesList"
+        :totalResults="playlistContactCompanies.totalResults"
+        @updateOptions="updateOptions"
+      ></companies-table>
+
+      <v-row justify="center" no-gutters>
+        <v-col cols="12">
+          <v-progress-linear :active="!!isLoading" color="blue" indeterminate absolute bottom query></v-progress-linear>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -130,7 +120,9 @@ export default {
           sortBy: this.options.sortBy,
           sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
-          offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage
+          offset:
+            this.options.itemsPerPage * this.options.page -
+            this.options.itemsPerPage
         };
       },
       skip() {

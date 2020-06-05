@@ -1,9 +1,8 @@
 <template>
-  <v-container class="pa-0" fluid>
-    <v-card>
-      <v-container fluid class="mx-1">
-        <v-row no-gutters class="ml-2">
-          <v-col cols="10" sm="4">
+  <v-container fluid>
+      <v-container fluid >
+        <v-row no-gutters >
+          <v-col cols="12" sm="4">
             <v-text-field
               v-model="search"
               append-icon="filter_list"
@@ -12,16 +11,19 @@
               hide-details
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="3" md="3" offset-sm="5" offset-lg="5" class="mt-1">
+          <v-row no-gutters class="d-flex justify-end pa-1">
+          <v-col cols="12" sm="5" md="5" lg="4" class="mt-1">
             <v-btn
               class="text-capitalize d-inline-block"
               min-width="150"
               color="primary"
+              block
               @click="triggerSearch"
             >
               <v-icon class="pr-1">search</v-icon>Advanced Search
             </v-btn>
           </v-col>
+          </v-row>
         </v-row>
       </v-container>
       <div>
@@ -46,7 +48,6 @@
           </v-col>
         </v-row>
       </div>
-    </v-card>
   </v-container>
 </template>
 
