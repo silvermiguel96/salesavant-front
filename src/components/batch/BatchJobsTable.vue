@@ -32,8 +32,8 @@ export default {
           width: "35%",
           sortable: false
         },
-        { text: "Creation Time",
-          value: "creationTime",
+        { text: "Modification Time",
+          value: "modificationTime",
           width: "20%",
           sortable: false
         },

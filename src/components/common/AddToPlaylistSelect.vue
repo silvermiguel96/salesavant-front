@@ -44,7 +44,7 @@
             </td>
             <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
             <td>
-              {{ item.creationTime | moment("MMMM Do YYYY")}}
+              {{ item.modificationTime | moment("MMMM Do YYYY")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
@@ -76,8 +76,8 @@ export default {
         { text: "Name", value: "name", width: "30%", sortable: false },
         { text: "Size", value: "totalCompanies", width: "30%", sortable: true },
         {
-          text: "Creation Time",
-          value: "creationTime",
+          text: "Modification Time",
+          value: "modificationTime",
           width: "30%",
           sortable: false
         },
@@ -110,6 +110,7 @@ export default {
               uid
               name
               totalCompanies
+              modificationTime
               creationTime
             }
           }
@@ -180,6 +181,7 @@ export default {
                       name
                       totalCompanies
                       creationTime
+                      modificationTime
                     }
                   }
                 }
