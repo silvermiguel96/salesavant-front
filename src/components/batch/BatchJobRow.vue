@@ -68,6 +68,8 @@ export default {
           return "Playlist From File";
         case "contacts_from_file":
           return "Contacts From File";
+        case "playlist_aggs":
+          return "Playlist Statistics Refresh"
       }
       return jobType;
     }

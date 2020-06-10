@@ -1,27 +1,35 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" xs="12" class="px-0">
-        <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="12" sm="3" md="3" class="mt-1" >
-            <v-btn class="text-capitalize d-inline-block" min-width="150" color="primary" @click="triggerSearch">
+      <v-col cols="12" xs="12">
+        <v-row no-gutters>
+          <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+            <v-btn
+              class="text-capitalize d-inline-block"
+              min-width="150"
+              block
+              color="primary"
+              @click="triggerSearch"
+            >
               <v-icon class="pr-1">search</v-icon>Advanced Search
             </v-btn>
           </v-col>
-          <v-col cols="12" sm="3" md="2" offset-md="4" class="pa-1">
-            <v-btn
-              class="text-capitalize"
-              color="primary"
-              min-width="150"
-              outlined
-              @click="createJob('export_companies')"
-            >
-              <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
-            </v-btn>
-          </v-col>
-          <v-col cols="12" sm="3" md="2" class="pa-1">
-            <button-menu
-              :items="[
+          <v-row no-gutters class="d-flex justify-end">
+            <v-col cols="12" sm="4" md="3" lg="2" class="pa-1">
+              <v-btn
+                class="text-capitalize"
+                color="primary"
+                min-width="150"
+                outlined
+                block
+                @click="createJob('export_companies')"
+              >
+                <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="4" md="3" lg="2" class="pa-1">
+              <button-menu
+                :items="[
               {
                 title: 'Companies',
                 icon: 'update',
@@ -35,12 +43,20 @@
                 callback: () => {
                   this.createJob('refresh_keywords');
                 }
+              },
+              {
+                title: 'Statistics',
+                icon: 'update',
+                callback: () => {
+                  this.createJob('playlist_aggs');
+                }
               }
             ]"
-            >
-              <template v-slot:label>Refresh</template>
-            </button-menu>
-          </v-col>
+              >
+                <template v-slot:label>Refresh</template>
+              </button-menu>
+            </v-col>
+          </v-row>
         </v-row>
         <v-row no-gutters>
           <v-col cols="12">
@@ -169,10 +185,17 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["resetCompanySearch", "updateCompanySearch", "showSearchDialog"]),
+    ...mapMutations([
+      "resetCompanySearch",
+      "updateCompanySearch",
+      "showSearchDialog"
+    ]),
     triggerSearch() {
-      this.updateCompanySearch({ playlistUid: this.$route.params.playlistUid, displayPlaylistUid: this.playlist.name });
-      this.showSearchDialog("companies")
+      this.updateCompanySearch({
+        playlistUid: this.$route.params.playlistUid,
+        displayPlaylistUid: this.playlist.name
+      });
+      this.showSearchDialog("companies");
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

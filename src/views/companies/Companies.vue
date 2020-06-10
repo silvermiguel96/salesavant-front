@@ -26,7 +26,7 @@
                 <v-icon class="pr-1">search</v-icon>Advanced Search
               </v-btn>
               <v-btn
-                class="text-capitalize d-inline-block ml-1"
+                class="text-capitalize d-inline-block mx-1 ma-xs-1"
                 color="normal"
                 @click="resetCompanySearch"
                 v-if="showFiltersAndActions"
