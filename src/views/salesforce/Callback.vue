@@ -40,8 +40,9 @@ export default {
         .then(function(data) {
           if (data.status == "ok") {
             that.$router.push({
-              path: "/account"
+              path: "/account/setting"
             });
+            window.close();
             that.$eventBus.$emit(
               "showSnack",
               "Salesforce connection success",
@@ -54,10 +55,18 @@ export default {
               "Error while setup connect with Salesforce",
               "error"
             );
+            xample;
+
+            setTimeout(function() {
+              window.close();
+            }, 4000);
           }
         })
         .catch(function(error) {
           console.log("Error:" + error.message);
+          setTimeout(function() {
+            window.close();
+          }, 4000);
         });
     });
   }

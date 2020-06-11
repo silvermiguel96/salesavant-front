@@ -23,6 +23,7 @@ import SalesforceAuthorize from "./views/salesforce/Authorize.vue";
 import SalesforceCallback from "./views/salesforce/Callback.vue";
 
 import Account from "./views/account/Account.vue"
+import Setting from "./views/account/Setting.vue"
 
 import { AUTH_TOKEN } from "./util";
 
@@ -149,6 +150,14 @@ const router = new Router({
       path: "/account",
       name: "account",
       component: Account,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/account/setting",
+      name: "Setting",
+      component: Setting,
       meta: {
         requiresAuth: true
       }
