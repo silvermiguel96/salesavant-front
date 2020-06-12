@@ -46,6 +46,7 @@ export const defaultContactSearch = {
 const state = {
   userEmail: null,
   jwtToken: null,
+  steperConfig: 1,
   searchType: null,
   showSearchDialog: false,
   companySearch: {
@@ -68,13 +69,13 @@ const mutations = {
     state.showSearchDialog = true;
   },
   updateCompanySearch(state, newCompanySearch) {
-    state.companySearch = { 
+    state.companySearch = {
       ...defaultCompanySearch,
       ...newCompanySearch
     }
   },
   updateContactSearch(state, newContactSearch) {
-    state.contactSearch = { 
+    state.contactSearch = {
       ...defaultContactSearch,
       ...newContactSearch
     }
@@ -93,7 +94,7 @@ const mutations = {
     state.searchType = "companies";
     state.showSearchDialog = false;
     state.companySearch = companySearch;
-    
+
   },
   doContactSearch(state, contactSearch) {
     console.log(contactSearch);
@@ -103,6 +104,11 @@ const mutations = {
   },
   showDenseForm(state) {
     state.denseForm = false
+  },
+  nextStepper(state) {
+    console.log("state.steperConfig", state.steperConfig)
+    state.steperConfig = state.steperConfig + 1
+    console.log("state.steperConfig next to", state.steperConfig)
   }
 };
 

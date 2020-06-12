@@ -13,9 +13,16 @@
 </template>
 <script>
 import { getAuthToken } from "../../util";
+import { mapMutations } from "vuex";
 export default {
   props: {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
+  },
+  methods: {
+    ...mapMutations(["nextStepper"]),
+    changeStepper() {
+      this.nextStepper();
+    }
   },
   mounted() {
     let that = this;
@@ -42,7 +49,13 @@ export default {
             that.$router.push({
               path: "/account/setting"
             });
-            window.close();
+            that.changeStepper();
+            setTimeout(function() {
+              // window.close();
+              that.$router.push({
+                path: "/account/setting"
+              });
+            }, 4000);
             that.$eventBus.$emit(
               "showSnack",
               "Salesforce connection success",
@@ -56,16 +69,21 @@ export default {
               "error"
             );
             xample;
-
+            that.changeStepper();
             setTimeout(function() {
-              window.close();
+              that.$router.push({
+                path: "/account/setting"
+              });
             }, 4000);
           }
         })
         .catch(function(error) {
           console.log("Error:" + error.message);
+          that.changeStepper();
           setTimeout(function() {
-            window.close();
+            that.$router.push({
+              path: "/account/setting"
+            });
           }, 4000);
         });
     });
