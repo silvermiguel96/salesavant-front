@@ -6,11 +6,11 @@
 
         <v-divider></v-divider>
 
-        <v-stepper-step :complete="steperConfig > 2" step="2">Set Up</v-stepper-step>
+        <v-stepper-step :complete="steperConfig > 2" step="2">Setup</v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="3">Sync Up</v-stepper-step>
+        <v-stepper-step step="3">Sync</v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -57,22 +57,33 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card class="mb-4 d-flex flex-column align-center justify-center" height="200px" outlined>
-            <v-progress-circular
+          <v-card
+            v-if="!startSync"
+            height="150px"
+            class="d-flex align-center justify-center"
+            outlined
+          >
+            <v-card-actions class="d-flex justify-center">
+              <v-btn color="primary" @click="tostartSync">Start Sync</v-btn>
+            </v-card-actions>
+          </v-card>
+          <v-card
+            v-else
+            class="mb-4 d-flex flex-column align-center justify-center"
+            height="200px"
+            outlined
+          >
+            <v-card-text class="text-center" v-if="value === 100">Done!</v-card-text>
+            <v-progress-circular 
+              v-else
               :rotate="360"
               :size="80"
               :width="15"
               :value="value"
               color="light-blue"
             >{{ value }}%</v-progress-circular>
-            <v-card-text class="text-center">
-              <!-- <p class="caption"> -->
-              Processing Information
-              <!-- </p> -->
-            </v-card-text>
-            <v-card-actions class="d-flex justify-center">
-              <v-btn color="primary" to="/account">Back to Profile</v-btn>
-            </v-card-actions>
+            <v-card-text class="text-center">Processing Information</v-card-text>
+              <router-link color="primary" to="/account">Back to Profile</router-link>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -92,6 +103,7 @@ export default {
       checkbox: false,
       indeterminate: false,
       interval: {},
+      startSync: false,
       value: 0
     };
   },
@@ -118,6 +130,16 @@ export default {
     ...mapMutations(["updateStep"]),
     changeStepper() {
       this.updateStep(3);
+    },
+    tostartSync() {
+      this.startSync = true;
+      this.interval = setInterval(() => {
+        if (this.value === 99) {
+          // return (this.value = 0);
+          clearInterval(this.interval);
+        }
+        this.value += 1;
+      }, 1000);
     }
   },
   computed: {
@@ -131,14 +153,6 @@ export default {
   beforeDestroy() {
     clearInterval(this.interval);
   },
-  mounted() {
-    this.interval = setInterval(() => {
-      if (this.value === 99) {
-        // return (this.value = 0);
-        clearInterval(this.interval);
-      }
-      this.value += 1;
-    }, 1000);
-  }
+  mounted() {}
 };
 </script>
