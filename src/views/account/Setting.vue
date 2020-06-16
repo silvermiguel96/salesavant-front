@@ -23,7 +23,7 @@
                     <v-row class="d-md-block" no-gutters>
                       <v-col cols="12" xs="6" class="d-flex justify-center">
                         <div v-if="!myUser.oauths.length">
-                          <v-btn color="primary" to="/oauth/salesforce" >Connect</v-btn>
+                          <v-btn color="primary" to="/oauth/salesforce">Connect</v-btn>
                         </div>
                         <div v-else>
                           <v-btn
@@ -47,26 +47,32 @@
             <v-checkbox
               color="primary"
               v-model="checkbox"
-              @change="changeStepper"
               label="Accept terms and conditions of the data to be supplied"
             ></v-checkbox>
           </v-card>
+          <div class="d-flex justify-end">
+            <v-btn v-if="checkbox" @click="changeStepper" color="primary">Next</v-btn>
+            <v-btn v-else color="primary" disabled>Next</v-btn>
+          </div>
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card class="mb-8" height="150px" outlined>
-            <div class="text-center pa-6">
-              <v-progress-circular
-                :rotate="360"
-                :size="80"
-                :width="15"
-                :value="value"
-                color="light-blue"
-              >{{ value }}%</v-progress-circular>
-              <div>
-                <p class="caption" >Processing Information</p>
-              </div>
-            </div>
+          <v-card class="mb-4 d-flex flex-column align-center justify-center" height="200px" outlined>
+            <v-progress-circular
+              :rotate="360"
+              :size="80"
+              :width="15"
+              :value="value"
+              color="light-blue"
+            >{{ value }}%</v-progress-circular>
+            <v-card-text class="text-center">
+              <!-- <p class="caption"> -->
+              Processing Information
+              <!-- </p> -->
+            </v-card-text>
+            <v-card-actions class="d-flex justify-center">
+              <v-btn color="primary" to="/account">Back to Profile</v-btn>
+            </v-card-actions>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -108,15 +114,10 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  // watch: {
-  //   steperConfig() {
-  //     return this.$store.state.steperConfig
-  //   }
-  // },
   methods: {
-  ...mapMutations(["nextStepper"]),
+    ...mapMutations(["updateStep"]),
     changeStepper() {
-      this.nextStepper();
+      this.updateStep(3);
     }
   },
   computed: {
@@ -124,8 +125,8 @@ export default {
       return `${this.myUser.firstName} ${this.myUser.lastName}`;
     },
     steperConfig() {
-      return this.$store.state.steperConfig
-    } 
+      return this.$store.state.steperConfig;
+    }
   },
   beforeDestroy() {
     clearInterval(this.interval);

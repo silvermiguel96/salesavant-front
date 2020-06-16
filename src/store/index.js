@@ -105,9 +105,9 @@ const mutations = {
   showDenseForm(state) {
     state.denseForm = false
   },
-  nextStepper(state) {
+  updateStep(state, step) {
     console.log("state.steperConfig", state.steperConfig)
-    state.steperConfig = state.steperConfig + 1
+    state.steperConfig = step
     console.log("state.steperConfig next to", state.steperConfig)
   }
 };

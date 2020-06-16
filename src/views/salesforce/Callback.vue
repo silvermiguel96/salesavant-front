@@ -19,9 +19,9 @@ export default {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
   },
   methods: {
-    ...mapMutations(["nextStepper"]),
+    ...mapMutations(["updateStep"]),
     changeStepper() {
-      this.nextStepper();
+      this.updateStep(2);
     }
   },
   mounted() {
@@ -46,16 +46,10 @@ export default {
         })
         .then(function(data) {
           if (data.status == "ok") {
+            that.changeStepper();
             that.$router.push({
               path: "/account/setting"
             });
-            that.changeStepper();
-            setTimeout(function() {
-              // window.close();
-              that.$router.push({
-                path: "/account/setting"
-              });
-            }, 4000);
             that.$eventBus.$emit(
               "showSnack",
               "Salesforce connection success",
