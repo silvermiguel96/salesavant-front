@@ -28,7 +28,7 @@
                 v-if="item.user.firstName || item.user.lastName"
               >{{item.user.firstName}} {{item.user.lastName}}</td>
               <td v-else>{{item.user.email || "--"}}</td>
-              <td>{{ item.modificationTime | moment(" MMMM Do YYYY")}}</td>
+              <td>{{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}</td>
               <td>
                 <add-comment-modal @onSave="addComment" :item="item" :btnIcon="'add_comment'" />
               </td>
