@@ -19,10 +19,7 @@ export default {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
   },
   methods: {
-    ...mapMutations(["updateStep"]),
-    changeStepper() {
-      this.updateStep(2);
-    }
+    ...mapMutations(["setSalesforceSetupStep"])
   },
   mounted() {
     let that = this;
@@ -41,45 +38,31 @@ export default {
           payload: { salesforceCode }
         })
       })
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          if (data.status == "ok") {
-            that.changeStepper();
-            that.$router.push({
-              path: "/account/setting"
-            });
-            that.$eventBus.$emit(
-              "showSnack",
-              "Salesforce connection success",
-              "success"
-            );
-          } else {
-            console.log(data);
-            that.$eventBus.$emit(
-              "showSnack",
-              "Error while setup connect with Salesforce",
-              "error"
-            );
-            xample;
-            that.changeStepper();
-            setTimeout(function() {
-              that.$router.push({
-                path: "/account/setting"
-              });
-            }, 4000);
-          }
-        })
-        .catch(function(error) {
-          console.log("Error:" + error.message);
-          that.changeStepper();
-          setTimeout(function() {
-            that.$router.push({
-              path: "/account/setting"
-            });
-          }, 4000);
-        });
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        if (data.status == "ok") {
+          that.setSalesforceSetupStep(2);
+        } else {
+          console.log(data);
+          that.setSalesforceSetupStep(1);
+          that.$eventBus.$emit(
+            "showSnack",
+            "Error while setup connecting to Salesforce",
+            "error"
+          );
+        }
+      })
+      .catch(function(error) {
+        console.log("Error:" + error.message);
+        that.setSalesforceSetupStep(1);
+      });
+      setTimeout(function() {
+          that.$router.push({
+            path: "/salesforce"
+          });
+      }, 1000);
     });
   }
 };

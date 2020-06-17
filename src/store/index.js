@@ -46,7 +46,6 @@ export const defaultContactSearch = {
 const state = {
   userEmail: null,
   jwtToken: null,
-  steperConfig: 1,
   searchType: null,
   showSearchDialog: false,
   companySearch: {
@@ -55,6 +54,7 @@ const state = {
   contactSearch: {
     ...defaultContactSearch
   },
+  salesforceSetupStep: 1
 };
 
 const getters = {
@@ -105,10 +105,8 @@ const mutations = {
   showDenseForm(state) {
     state.denseForm = false
   },
-  updateStep(state, step) {
-    console.log("state.steperConfig", state.steperConfig)
-    state.steperConfig = step
-    console.log("state.steperConfig next to", state.steperConfig)
+  setSalesforceSetupStep(state, step) {
+    state.salesforceSetupStep = step
   }
 };
 

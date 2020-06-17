@@ -1,15 +1,11 @@
 <template>
-  <v-container grid-list-xs>
-    <v-stepper v-model="steperConfig">
+  <v-container fluid>
+    <v-stepper v-model="salesforceSetupStep">
       <v-stepper-header>
-        <v-stepper-step :complete="steperConfig > 1" step="1">Connect</v-stepper-step>
-
+        <v-stepper-step :complete="salesforceSetupStep > 1" step="1">Connect</v-stepper-step>
         <v-divider></v-divider>
-
-        <v-stepper-step :complete="steperConfig > 2" step="2">Setup</v-stepper-step>
-
+        <v-stepper-step :complete="salesforceSetupStep > 2" step="2">Setup</v-stepper-step>
         <v-divider></v-divider>
-
         <v-stepper-step step="3">Sync</v-stepper-step>
       </v-stepper-header>
 
@@ -51,14 +47,13 @@
             ></v-checkbox>
           </v-card>
           <div class="d-flex justify-end">
-            <v-btn v-if="checkbox" @click="changeStepper" color="primary">Next</v-btn>
+            <v-btn v-if="checkbox" @click="setSalesforceSetupStep(3)" color="primary">Next</v-btn>
             <v-btn v-else color="primary" disabled>Next</v-btn>
           </div>
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card
-            v-if="!startSync"
+          <v-card v-if="!startSync"
             height="150px"
             class="d-flex align-center justify-center"
             outlined
@@ -92,6 +87,7 @@
 </template>
 
 <script>
+import { getAuthToken } from "../../util";
 import gql from "graphql-tag";
 import { mapMutations } from "vuex";
 export default {
@@ -106,6 +102,9 @@ export default {
       startSync: false,
       value: 0
     };
+  },
+  props: {
+    salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
   },
   apollo: {
     myUser: {
@@ -127,10 +126,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["updateStep"]),
-    changeStepper() {
-      this.updateStep(3);
-    },
+    ...mapMutations(["setSalesforceSetupStep"]),
     tostartSync() {
       this.startSync = true;
       this.interval = setInterval(() => {
@@ -140,19 +136,20 @@ export default {
         }
         this.value += 1;
       }, 1000);
+
+      this.$eventBus.$emit("createJob", {
+        jobType: "salesforce_sync",
+        additionalData: {}
+      });
     }
   },
   computed: {
-    fullname() {
-      return `${this.myUser.firstName} ${this.myUser.lastName}`;
-    },
-    steperConfig() {
-      return this.$store.state.steperConfig;
+    salesforceSetupStep() {
+      return this.$store.state.salesforceSetupStep;
     }
   },
   beforeDestroy() {
     clearInterval(this.interval);
-  },
-  mounted() {}
+  }
 };
 </script>
