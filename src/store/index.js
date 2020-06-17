@@ -54,6 +54,7 @@ const state = {
   contactSearch: {
     ...defaultContactSearch
   },
+  salesforceSetupStep: 1
 };
 
 const getters = {
@@ -68,13 +69,13 @@ const mutations = {
     state.showSearchDialog = true;
   },
   updateCompanySearch(state, newCompanySearch) {
-    state.companySearch = { 
+    state.companySearch = {
       ...defaultCompanySearch,
       ...newCompanySearch
     }
   },
   updateContactSearch(state, newContactSearch) {
-    state.contactSearch = { 
+    state.contactSearch = {
       ...defaultContactSearch,
       ...newContactSearch
     }
@@ -93,7 +94,7 @@ const mutations = {
     state.searchType = "companies";
     state.showSearchDialog = false;
     state.companySearch = companySearch;
-    
+
   },
   doContactSearch(state, contactSearch) {
     console.log(contactSearch);
@@ -103,6 +104,9 @@ const mutations = {
   },
   showDenseForm(state) {
     state.denseForm = false
+  },
+  setSalesforceSetupStep(state, step) {
+    state.salesforceSetupStep = step
   }
 };
 

@@ -67,10 +67,10 @@
                     <v-row class="d-md-block" no-gutters>
                       <v-col cols="12" xs="6">
                         <div v-if="!myUser.oauths.length">
-                          <v-btn small color="primary" to="/oauth/salesforce">Connect</v-btn>
+                          <v-btn small color="primary" to="/salesforce">Connect</v-btn>
                         </div>
                         <div v-else>
-                          <v-btn small color="primary" to="/oauth/salesforce" disabled>Connect</v-btn>
+                          <v-btn small color="primary" disabled>Connect</v-btn>
                         </div>
                       </v-col>
                     </v-row>
