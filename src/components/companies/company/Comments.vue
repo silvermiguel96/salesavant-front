@@ -32,7 +32,7 @@
                 v-if="item.user.firstName || item.user.lastName"
               >{{item.user.firstName}} {{item.user.lastName}}</td>
               <td v-else>{{item.user.email || "--"}}</td>
-              <td>{{ item.modificationTime | moment(" MMMM Do YYYY")}}</td>
+              <td>{{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}</td>
               <td>
                 <div class="d-flex align-center justify-center">
                   <v-icon color="red lighten-2" small @click="deleteComment(item)">delete</v-icon>

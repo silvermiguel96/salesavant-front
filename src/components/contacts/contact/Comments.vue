@@ -35,7 +35,7 @@
             >{{item.user.firstName}} {{item.user.lastName}}</td>
             <td v-else>{{item.user.email || "--"}}</td>
             <td>
-              {{ item.modificationTime | moment("MMMM Do YYYY")}}
+              {{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">

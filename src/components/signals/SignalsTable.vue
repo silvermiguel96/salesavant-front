@@ -76,7 +76,7 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ item.modificationTime | moment("MMMM Do YYYY")}}</td>
+          <td>{{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
               <v-icon size="20">edit</v-icon>
