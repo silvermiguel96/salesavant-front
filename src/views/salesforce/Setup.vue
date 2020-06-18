@@ -53,13 +53,13 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card v-if="!startSync"
+          <v-card v-if="!syncRunning"
             height="150px"
             class="d-flex align-center justify-center"
             outlined
           >
             <v-card-actions class="d-flex justify-center">
-              <v-btn color="primary" @click="tostartSync">Start Sync</v-btn>
+              <v-btn color="primary" @click="startSync">Start Sync</v-btn>
             </v-card-actions>
           </v-card>
           <v-card
@@ -68,16 +68,17 @@
             height="200px"
             outlined
           >
-            <v-card-text class="text-center" v-if="value === 100">Done!</v-card-text>
+            <v-card-text class="text-center" v-if="progress === 100">Done!</v-card-text>
             <v-progress-circular 
               v-else
               :rotate="360"
               :size="80"
               :width="15"
-              :value="value"
+              :value="progress.toFixed(0)"
               color="light-blue"
-            >{{ value }}%</v-progress-circular>
-            <v-card-text class="text-center">Processing Information</v-card-text>
+              style="font-size: 0.9em;"
+            >{{ progress.toFixed(0) }}%</v-progress-circular>
+            <v-card-text class="text-center">{{ jobDescription }}</v-card-text>
               <router-link color="primary" to="/account">Back to Profile</router-link>
           </v-card>
         </v-stepper-content>
@@ -97,10 +98,10 @@ export default {
         oauths: {}
       },
       checkbox: false,
-      indeterminate: false,
-      interval: {},
-      startSync: false,
-      value: 0
+      interval: null,
+      syncRunning: false,
+      progress: 0,
+      jobDescription:""
     };
   },
   props: {
@@ -127,20 +128,64 @@ export default {
   },
   methods: {
     ...mapMutations(["setSalesforceSetupStep"]),
-    tostartSync() {
-      this.startSync = true;
-      this.interval = setInterval(() => {
-        if (this.value === 99) {
-          // return (this.value = 0);
-          clearInterval(this.interval);
+    startSync() {
+      this.syncRunning = true;
+      let that = this;
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation($jobType: String!) {
+            createJob(
+              jobType: $jobType
+            ) {
+              salesavantJob {
+                uid
+                creationTime
+                jobType
+                description
+                additionalData
+              }
+            }
+          }
+        `,
+        variables: {
+          jobType: "salesforce_sync",
         }
-        this.value += 1;
-      }, 1000);
-
-      this.$eventBus.$emit("createJob", {
-        jobType: "salesforce_sync",
-        additionalData: {}
+      }).then(resp => {
+          if (!!resp.data && !!resp.data.createJob && !!resp.data.createJob.salesavantJob) {
+            console.log(resp.data.createJob.salesavantJob);
+            that.monitorJobProgress(resp.data.createJob.salesavantJob.uid);
+          }
       });
+    },
+    monitorJobProgress(jobUid){
+      this.interval = setInterval(() => {
+        this.$apollo.query({
+          query: gql`
+            query getJob($jobUid: String!){
+              salesavantJob(uid: $jobUid){
+                uid
+                description
+                progress
+                status
+              }
+            }
+          `,
+          variables: {
+            jobUid: jobUid
+          },
+          fetchPolicy: "no-cache"
+        })
+        .then(resp => {
+          if (!!resp.data && !!resp.data.salesavantJob) {
+            this.progress = resp.data.salesavantJob.progress;
+            this.jobDescription = resp.data.salesavantJob.description;
+            if (resp.data.salesavantJob.description=="finished"){
+              this.syncRunning = false;
+              clearInterval(this.interval);
+            }
+          }
+        });
+      }, 2000);
     }
   },
   computed: {
