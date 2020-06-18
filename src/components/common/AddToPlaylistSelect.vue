@@ -1,25 +1,28 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-row>
-        <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
-          <playlists-autocomplete
-            @change="onPlaylistAutoCompleteChange"
-            @onSearch="onSignalAutoCompleteSearch"
-          />
-        </v-col>
-        <v-col xl="1" lg="2" md="2" xs="12" sm="3" cols="12">
-          <v-btn
-            color="primary"
-            block
-            class="text-capitalize mt-3"
-            @click="addPlaylistToCompany"
-            :disabled="!playlistUid && !currentPlaylistSearch"
-          >
-            <v-icon small>add</v-icon>Add to playlist
-          </v-btn>
-        </v-col>
-      </v-row>
+      <v-container fluid>
+        <v-row >
+          <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
+            <playlists-autocomplete
+              @change="onPlaylistAutoCompleteChange"
+              @onSearch="onSignalAutoCompleteSearch"
+              playlistType="company"
+            />
+          </v-col>
+          <v-col xl="1" lg="2" md="2" xs="12" sm="3" cols="12">
+            <v-btn
+              color="primary"
+              block
+              class="text-capitalize"
+              @click="addPlaylistToCompany"
+              :disabled="!playlistUid && !currentPlaylistSearch"
+            >
+              <v-icon small>add</v-icon>Add to playlist
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card-text>
     <v-card-text>
       <v-data-table
@@ -44,7 +47,7 @@
             </td>
             <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
             <td>
-              {{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}
+              {{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
@@ -122,7 +125,7 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage,
+            this.options.itemsPerPage
         };
       },
       fetchPolicy: "cache-and-network"
@@ -132,9 +135,7 @@ export default {
     playlistsAutocomplete
   },
   methods: {
-    updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10 }
-    }) {
+    updateOptions({ dataFromEvent: { page = 1, itemsPerPage = 10 } }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
     },

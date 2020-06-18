@@ -1,8 +1,20 @@
 <template>
   <v-container fluid>
-      <v-container fluid >
-        <v-row no-gutters >
-          <v-col cols="12" sm="4">
+    <v-container fluid>
+      <v-row no-gutters>
+        <v-col cols="12" sm="4" class="py-1">
+          <v-btn
+            class="text-capitalize d-inline-block"
+            min-width="150"
+            color="primary"
+            block
+            @click="triggerSearch"
+          >
+            <v-icon class="pr-1">search</v-icon>Advanced Search
+          </v-btn>
+        </v-col>
+        <v-row no-gutters class="d-flex justify-end ">
+          <v-col cols="12" sm="8" md="8" lg="8" >
             <v-text-field
               v-model="search"
               append-icon="filter_list"
@@ -11,43 +23,24 @@
               hide-details
             ></v-text-field>
           </v-col>
-          <v-row no-gutters class="d-flex justify-end pa-1">
-          <v-col cols="12" sm="5" md="5" lg="4" class="mt-1">
-            <v-btn
-              class="text-capitalize d-inline-block"
-              min-width="150"
-              color="primary"
-              block
-              @click="triggerSearch"
-            >
-              <v-icon class="pr-1">search</v-icon>Advanced Search
-            </v-btn>
-          </v-col>
-          </v-row>
         </v-row>
-      </v-container>
-      <div>
-        <!-- Result -->
-        <contacts-table
-          v-if="playlistContacts"
-          :items="playlistContacts.contactsList"
-          :totalResults="playlistContacts.totalResults"
-          @updateOptions="updateOptions"
-        ></contacts-table>
-        <!-- Loading -->
-        <v-row justify="center" no-gutters>
-          <v-col cols="12">
-            <v-progress-linear
-              :active="!!isLoading"
-              color="blue"
-              indeterminate
-              absolute
-              bottom
-              query
-            ></v-progress-linear>
-          </v-col>
-        </v-row>
-      </div>
+      </v-row>
+    </v-container>
+    <div>
+      <!-- Result -->
+      <contacts-table
+        v-if="playlistContacts"
+        :items="playlistContacts.contactsList"
+        :totalResults="playlistContacts.totalResults"
+        @updateOptions="updateOptions"
+      ></contacts-table>
+      <!-- Loading -->
+      <v-row justify="center" no-gutters>
+        <v-col cols="12">
+          <v-progress-linear :active="!!isLoading" color="blue" indeterminate absolute bottom query></v-progress-linear>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -73,10 +66,17 @@ export default {
     ContactsTable
   },
   methods: {
-    ...mapMutations(["resetContactSearch", "updateContactSearch", "showSearchDialog"]),
+    ...mapMutations([
+      "resetContactSearch",
+      "updateContactSearch",
+      "showSearchDialog"
+    ]),
     triggerSearch() {
-      this.updateContactSearch({ playlistUid: this.$route.params.playlistUid, displayPlaylistUid: this.playlist.name});
-      this.showSearchDialog("contacts")
+      this.updateContactSearch({
+        playlistUid: this.$route.params.playlistUid,
+        displayPlaylistUid: this.playlist.name
+      });
+      this.showSearchDialog("contacts");
     },
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }

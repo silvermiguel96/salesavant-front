@@ -19,42 +19,51 @@
               ></v-breadcrumbs>
             </v-col>
           </v-row>
-
-          <v-row class="pl-2 px-sm-6" no-gutters>
-            <v-col cols="12" md="4" class="mt-3">
-              <v-btn class="text-capitalize d-inline-block" color="primary" @click="triggerSearch">
-                <v-icon class="pr-1">search</v-icon>Advanced Search
-              </v-btn>
-              <v-btn
-                class="text-capitalize d-inline-block ml-1"
-                color="normal"
-                @click="resetContactSearch"
-                v-if="showFiltersAndActions"
-              >
-                <v-icon class="pr-1" small>replay</v-icon>Reset
-              </v-btn>
-            </v-col>
-            <v-col cols="12" md="4" offset-md="4" class="mt-3" v-if="showFiltersAndActions">
-              <div class="d-flex flex-column flex-sm-row justify-md-end">
-                <div>
+          <v-container fluid>
+            <v-row no-gutters>
+              <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+                <v-btn
+                  class="text-capitalize d-inline-block"
+                  min-width="150"
+                  block
+                  color="primary"
+                  @click="triggerSearch"
+                >
+                  <v-icon class="pr-1">search</v-icon>Advanced Search
+                </v-btn>
+              </v-col>
+              <v-col cols="12" sm="2" md="2" lg="1" class="pa-1">
+                <v-btn
+                  class="text-capitalize d-inline-block"
+                  color="normal"
+                  block
+                  @click="resetContactSearch"
+                  v-if="showFiltersAndActions"
+                >
+                  <v-icon class="pr-1" small>replay</v-icon>Reset
+                </v-btn>
+              </v-col>
+              <v-row v-if="showFiltersAndActions" no-gutters class="d-flex justify-end">
+                <v-col cols="12" sm="5" md="4" lg="3" class="pa-1">
                   <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
-                </div>
-              </div>
-            </v-col>
-            <v-col cols="12" md="4" offset-md="4" v-else>
-              <v-text-field
-                v-model="search"
-                append-icon="filter_list"
-                label="Quick Search"
-                placeholder="Type a Name"
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </v-row>
-
+                </v-col>
+              </v-row>
+              <v-row v-else no-gutters class="d-flex justify-end">
+                <v-col cols="12" sm="8" md="8" lg="8" class="pa-1">
+                  <v-text-field
+                    v-model="search"
+                    append-icon="filter_list"
+                    label="Quick Search"
+                    placeholder="Type a Name"
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-row>
+          </v-container>
           <v-row v-if="showFiltersAndActions" class="px-4" no-gutters>
             <v-col cols="12" md="8">
-              <div class="mt-6">
+              <div class="mt-2">
                 <span class="ml-2">Filtering by:</span>
                 <v-chip
                   v-for="obj in contactSearchFilters"
@@ -392,8 +401,10 @@ export default {
             state: this.contactSearch.state,
             region: this.contactSearch.region,
             country: this.contactSearch.country,
-            moreThanScaleScoreAverage: this.contactSearch.moreThanScaleScoreAverage,
-            lessThanScaleScoreAverage: this.contactSearch.lessThanScaleScoreAverage,
+            moreThanScaleScoreAverage: this.contactSearch
+              .moreThanScaleScoreAverage,
+            lessThanScaleScoreAverage: this.contactSearch
+              .lessThanScaleScoreAverage,
             moreThanCesa: this.contactSearch.moreThanCesa,
             lessThanCesa: this.contactSearch.lessThanCesa,
             moreThanWolfpackScore: this.contactSearch.moreThanWolfpackScore,
@@ -401,15 +412,19 @@ export default {
             moreThanNumberOfExits: this.contactSearch.moreThanNumberOfExits,
             lessThanNumberOfExits: this.contactSearch.lessThanNumberOfExits,
             first: this.options.itemsPerPage,
-            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+            offset:
+              this.options.itemsPerPage * this.options.page -
+              this.options.itemsPerPage,
             sortBy: this.options.sortBy,
             sortOrder: this.options.sortOrder
           };
-        }else{
+        } else {
           return {
             searchName: this.search,
             first: this.options.itemsPerPage,
-            offset: this.options.itemsPerPage * this.options.page - this.options.itemsPerPage,
+            offset:
+              this.options.itemsPerPage * this.options.page -
+              this.options.itemsPerPage,
             sortBy: this.options.sortBy,
             sortOrder: this.options.sortOrder
           };

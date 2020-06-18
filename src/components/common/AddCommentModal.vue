@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="d-flex align-center justify-center">
+  <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
         <template v-slot:activator="{ on }" v-if="btnIcon">
           <v-icon color="primary" v-on="on">{{btnIcon}}</v-icon>

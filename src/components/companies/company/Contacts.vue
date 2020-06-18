@@ -1,9 +1,9 @@
 <template>
   <v-container class="pa-0" fluid>
     <v-card>
-      <v-container fluid class="mx-1">
-        <v-row no-gutters class="ml-2">
-          <v-col cols="10" sm="4">
+      <v-container fluid>
+        <v-row no-gutters class="d-flex justify-end">
+          <v-col cols="10" sm="6">
             <v-text-field
               v-model="search"
               append-icon="filter_list"

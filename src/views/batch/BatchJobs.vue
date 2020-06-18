@@ -11,41 +11,37 @@
           ]"
         divider=">"
       ></v-breadcrumbs>
-      <v-container fluid class="mx-1">
-        <v-row no-gutters class="ml-2">
-          <v-col cols="12" md="4">
-            <v-text-field
-              v-model="search"
-              append-icon="filter_list"
-              label="Quick Search"
-              hide-details
-              placeholder="Type a Job Name or Description"
-              @change="onSearch"
-            ></v-text-field>
+      <v-container fluid>
+        <v-row no-gutters>
+          <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+            <v-btn class="text-capitalize" block color="primary" min-width="150" to="/launch-job">
+              <v-icon size="18" class="mr-2">add</v-icon>new job
+            </v-btn>
           </v-col>
-          <v-col cols="12" md="8">
-            <div class="d-flex justify-md-end">
-              <div class="mt-3 mr-2">
-                <v-btn class="text-capitalize"  color="primary"  min-width="150" to="/launch-job">
-                  <v-icon size="18" class="mr-2">add</v-icon>new job
-                </v-btn>
-              </div>
-            </div>
-          </v-col>
+          <v-row no-gutters class="d-flex justify-end">
+            <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+              <v-text-field
+                v-model="search"
+                append-icon="filter_list"
+                label="Quick Search"
+                hide-details
+                placeholder="Type a Job Name or Description"
+                @change="onSearch"
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </v-row>
       </v-container>
-      <div>
-        <!-- Result -->
-        <div v-if="items" class="result">
-          <jobs-table
-            v-if="items"
-            :items="this.items"
-            :totalResults="this.totalResults"
-            @updateOptions="updateOptions"
-          ></jobs-table>
-        </div>
-        <div v-else class="no-result">Loading...</div>
+      <!-- Result -->
+      <div v-if="items" class="result">
+        <jobs-table
+          v-if="items"
+          :items="this.items"
+          :totalResults="this.totalResults"
+          @updateOptions="updateOptions"
+        ></jobs-table>
       </div>
+      <div v-else class="no-result">Loading...</div>
     </v-card>
   </v-container>
 </template>
@@ -69,7 +65,7 @@ export default {
     updateOptions({ dataFromEvent: { page = 1, itemsPerPage = 10 } }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
-      this.loadData()
+      this.loadData();
     },
     loadData: function() {
       const salesavantJobs = gql`
@@ -108,21 +104,23 @@ export default {
           }
         });
     },
-    onSearch: function(){
-      console.log('onSearch');
+    onSearch: function() {
+      console.log("onSearch");
       this.loadData();
     }
   },
-  props: {
-  },
+  props: {},
   components: {
     JobsTable
   },
   mounted: function() {
     this.loadData();
-    this.interval = setInterval(function() {
-      this.loadData();
-    }.bind(this), 3000);
+    this.interval = setInterval(
+      function() {
+        this.loadData();
+      }.bind(this),
+      3000
+    );
   },
   beforeDestroy: function() {
     clearInterval(this.interval);
