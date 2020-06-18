@@ -13,11 +13,34 @@
 </template>
 <script>
 import getParameterByName from "../../commons";
+import gql from "graphql-tag";
 export default {
+  data() {
+    return {
+      salesforceOauthUrl: null
+    };
+  },
   methods:{
     auth() {
-      window.location.href = "https://login.salesforce.com/services/oauth2/authorize?client_id=3MVG95jctIhbyCppvyjcsk_6VmWy_4n51L3cyCqM.XralAzdHjgdF1sVoSlO.c4KtpapZ6z9Od9Keims5MDfw&redirect_uri=http://localhost:8080/oauth/salesforce/ok&response_type=code&prompt=login";
+      window.location.href = this.salesforceOauthUrl;
     }
-  }
+  },
+  mounted() {
+    const query = gql`
+        query getSalesforceOauthUrl {
+          config(key:"salesforce_oauth_url")
+        }
+      `;
+      this.$apollo
+        .query({
+          query: query,
+          fetchPolicy: "no-cache"
+        })
+        .then(resp => {
+          if (!!resp.data && !!resp.data.config) {
+            this.salesforceOauthUrl = resp.data.config;
+          }
+        });
+  },
 };
 </script>
