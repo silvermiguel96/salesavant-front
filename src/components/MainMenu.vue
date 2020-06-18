@@ -48,7 +48,7 @@
         </template>
         <v-list class="pa-0">
           <v-list-item v-for="account in accounts" :key="account.text" @click="account.click">
-            <v-list-item-title class="subtitle-1 font-weight-medium">{{ account.text }}</v-list-item-title>
+            <v-list-item-title class="subtitle-1 text-center font-weight-light">{{ account.text }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

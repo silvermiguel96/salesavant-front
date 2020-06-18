@@ -123,6 +123,8 @@ export default {
   methods: {
     submitFiles() {
       if (this.file) {
+        this.fileError = false;
+        this.fileMessages = null;
         let formData = new FormData();
         formData.append("file", this.file, this.file.name);
         formData.append("jobType", this.jobType);
@@ -156,6 +158,17 @@ export default {
           .catch(error => {
             console.error(error);
           });
+      } else if (this.jobType == "playlist_from_file") {
+        if (!this.playlistName) {
+          this.playlistError = true;
+          this.playlistMessages = ["The Name is required!"];
+        } else {
+          this.playlistError = false;
+          this.playlistMessages = null;
+        }
+        this.fileError = true;
+        this.fileMessages = ["The file is required!"];
+        return;
       } else {
         this.fileError = true;
         this.fileMessages = ["The file is required!"];
