@@ -39,7 +39,7 @@
           <v-card outlined>
             <div class="d-flex flex-row justify-space-between my-1">
               <v-row no-gutters>
-                <v-col cols="8">
+                <v-col cols="12" sm="7">
                   <v-card-text class="pr-0">
                     <v-row class="d-md-block" no-gutters>
                       <v-col cols="12" xs="6">
@@ -62,16 +62,20 @@
                     </v-row>
                   </v-card-text>
                 </v-col>
-                <v-col cols="4" class="d-flex align-end">
-                  <v-card-text class="pr-0">
-                    <v-row class="d-md-block" no-gutters>
-                      <v-col cols="12" xs="6">
-                        <div v-if="!myUser.oauths.length">
-                          <v-btn small color="primary" to="/salesforce">Connect</v-btn>
-                        </div>
-                        <div v-else>
-                          <v-btn small color="primary" disabled>Connect</v-btn>
-                        </div>
+                <v-col cols="12" sm="5">
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="6" v-if="!myUser.oauths.length" d>
+                        <v-btn small color="primary" to="/salesforce">Connect</v-btn>
+                      </v-col>
+                      <v-col cols="6" v-else>
+                        <v-btn small color="primary" disabled>Connect</v-btn>
+                      </v-col>
+                      <v-col cols="2">
+                        <v-icon>autorenew</v-icon>
+                      </v-col>
+                      <v-col cols="2">
+                        <v-icon color="red" @click="disconnectSalesforce">power_off</v-icon>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -111,6 +115,27 @@ export default {
         }
       `,
       fetchPolicy: "cache-and-network"
+    }
+  },
+  methods: {
+    async disconnectSalesforce() {
+      const res = await this.$confirm(
+        `<h1 class="subtitle-1">
+            Confirm you want to disconnect to  salesforce ?
+        </h1> `,
+        {
+          buttonTrueText: "delete",
+          buttonFalseText: "close",
+          buttonTrueColor: "red lighten-2",
+          color: "primary",
+          icon: "power_off",
+          title: "Disconnect Salesforce",
+          width: 600
+        }
+      );
+      if (res) {
+        console.log("confirm disconnect ");
+      }
     }
   },
   computed: {
