@@ -124,7 +124,7 @@ export default {
             Confirm you want to disconnect to  salesforce ?
         </h1> `,
         {
-          buttonTrueText: "delete",
+          buttonTrueText: "disconnect",
           buttonFalseText: "close",
           buttonTrueColor: "red lighten-2",
           color: "primary",
