@@ -175,12 +175,13 @@
               @click.prevent="clearAll"
               class="text-capitalize body-2"
               block
+              small
               color="primary"
             >clear all</a>
           </v-col>
           <v-col cols="12" md="6" class="d-flex justify-center align-center">
             <v-btn @click="search" class="text-capitalize" block type="submit" color="primary">
-              <v-icon class="pr-1">search</v-icon>
+              <v-icon small class="pr-1">search</v-icon>
               {{"Search"}}
             </v-btn>
           </v-col>
