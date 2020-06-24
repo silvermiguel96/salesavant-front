@@ -79,12 +79,12 @@
           <td>{{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}</td>
           <td>
             <router-link v-if="item.id" :to="`/signals/${item.id}`">
-              <v-icon size="20">edit</v-icon>
+              <v-icon size="20" small>edit</v-icon>
             </router-link>
           </td>
           <td>
             <div class="d-flex align-center justify-center">
-              <v-icon @click="deleteSignal(item)" color="red lighten-2" size="20">delete</v-icon>
+              <v-icon @click="deleteSignal(item)" color="red lighten-2" size="20" small>delete</v-icon>
             </div>
           </td>
         </tr>
