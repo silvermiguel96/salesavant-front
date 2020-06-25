@@ -15,18 +15,16 @@
     <template v-slot:item="{ item }">
       <tr>
         <td>
-          <h3 class="subtitle-2 text-capitalize">{{ item.sfName }}</h3>
-          <p class="body-2">{{ item.sfId }}</p>
-        </td>
-        <td class="caption">
-            <code>
-              {{ JSON.stringify(item.sfObject,null , 4).replace("\n","<br>") }}
-            </code>
+          <div class="d-block text-capitalize ">{{ item.sfName }}</div>
+          {{ item.sfId }}
         </td>
         <td>
-          <h3 class="subtitle-2">{{ item.mapping[0].company.name }}</h3>
+          <code class="code">{{ JSON.stringify(JSON.parse(item.sfObject),null , 4) }}</code>
+        </td>
+        <td>
+          {{ item.mapping[0].company.name }}
           <router-link :to="`/companies/${ item.mapping[0].company.uid}`">
-            <long-paragraph :text="item.mapping[0].company.uid" :maxLength="40"></long-paragraph>
+            <long-paragraph :text="item.sfName" :maxLength="40"></long-paragraph>
           </router-link>
         </td>
         <td>
@@ -94,6 +92,12 @@ export default {
 <style scoped>
 .wrapping-td {
   white-space: normal;
+}
+.code {
+  color:rgba(0,0,0,0.67);
+  background: transparent;
+  height: 0;
+  font-family: sans-serif;
 }
 </style>
 

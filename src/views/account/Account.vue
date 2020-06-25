@@ -44,7 +44,7 @@
                 </v-col>
               </v-row>
               <v-row v-if="salesforceOauth">
-                <v-col cols="10">
+                <v-col cols="7">
                   <a
                     :href="salesforceOauth.serviceUrl"
                     target="_blank"
@@ -63,30 +63,13 @@
                     <span>Disconnect from Salesforce</span>
                   </v-tooltip>
                 </v-col>
+                <v-col cols="3" class="d-flex justify-center">
+                  <v-btn color="primary" @click="salesforceObjects">View Data</v-btn>
+                </v-col>
               </v-row>
               <v-row v-else>
                 <v-col cols="12" md="12">
                   <v-btn block color="primary" to="/salesforce">Connect</v-btn>
-                <v-col cols="12" sm="5">
-                  <v-card-text>
-                    <v-row>
-                      <v-col cols="6" v-if="!myUser.oauths.length">
-                        <v-btn small color="primary" to="/salesforce">Connect</v-btn>
-                      </v-col>
-                      <v-col cols="6" v-else>
-                        <v-btn small color="primary" disabled>Connect</v-btn>
-                      </v-col>
-                      <v-col cols="2">
-                        <v-icon>autorenew</v-icon>
-                      </v-col>
-                      <v-col cols="2">
-                        <v-icon color="red" @click="disconnectSalesforce">power_off</v-icon>
-                      </v-col>
-                      <v-col cols="2">
-                        <v-icon color="primary"  @click="toSalesforceObjects">visibility</v-icon>
-                      </v-col>
-                    </v-row>
-                  </v-card-text>
                 </v-col>
               </v-row>
               <div v-if="salesforceOauth">
@@ -172,7 +155,7 @@ export default {
           })
           .then(resp => {
             if (resp.data.deleteOauth.status == "ok") {
-              this.myUser.oauths={};
+              this.myUser.oauths = {};
               this.$eventBus.$emit(
                 "showSnack",
                 "Salesforce connection removed succesfully",
@@ -188,8 +171,8 @@ export default {
           });
       }
     },
-    toSalesforceObjects() {
-      this.$router.push('salesforceObjects')
+    salesforceObjects() {
+      this.$router.push("/salesforceObjects");
     }
   },
   computed: {
