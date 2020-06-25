@@ -21,7 +21,7 @@
           <v-container fluid>
             <v-row no-gutters>
               <v-row no-gutters class="d-flex justify-end">
-                <v-col cols="12" sm="8" md="8" lg="8" class="pa-1">
+                <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
                   <v-text-field
                     v-model="search"
                     append-icon="filter_list"
@@ -36,12 +36,12 @@
           <v-row class="pt-4" no-gutters>
             <v-col cols="12">
               <!-- Result -->
-              <contacts-table
-                v-if="contacts"
-                :items="contacts.contactsList"
-                :totalResults="contacts.totalResults"
+              <!-- v-if="salesforceObjects" -->
+              <salesforce-table
+                :items="salesforceObjects.salesforceObjectList"
+                :totalResults="salesforceObjects.totalResults"
                 @updateOptions="updateOptions"
-              ></contacts-table>
+              ></salesforce-table>
             </v-col>
           </v-row>
 
@@ -67,154 +67,197 @@
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import ContactsTable from "../../components/contacts/ContactsTable.vue";
+import SalesforceTable from "../../components/salesforce/SalesforceTable.vue";
 
 export default {
   data() {
     return {
       totalResults: 0,
       search: "",
-      isLoading: true,
+      isLoading: false,
       options: {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
         sortOrder: ""
+      },
+      salesforceObjects: {
+        totalResults: 186,
+        salesforceObjectList: [
+          {
+            id: "1",
+            sfId: "0015w00002B44EkAAJ",
+            sfName: "genepoint",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EkAAJ", "name": "GenePoint", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EkAAJ", "website": "www.genepoint.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "d1ffaf1e-ee15-4ca6-b786-a774e7f860a2",
+                  name: "www.genepoint.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "2",
+            sfId: "0015w00002B44EiAAJ",
+            sfName: "uos",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EiAAJ", "name": "United Oil & Gas, UK", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EiAAJ", "website": "http://www.uos.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "c9b273b7-2eb9-4601-be11-fe61a505be04",
+                  name: "http://www.uos.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "3",
+            sfId: "0015w00002B44EjAAJ",
+            sfName: "uos",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EjAAJ", "name": "United Oil & Gas, Singapore", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EjAAJ", "website": "http://www.uos.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "c9b273b7-2eb9-4601-be11-fe61a505be04",
+                  name: "http://www.uos.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "4",
+            sfId: "0015w00002B44EaAAJ",
+            sfName: "edgecomm",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EaAAJ", "name": "Edge Communications", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EaAAJ", "website": "http://edgecomm.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "a47ea928-9e95-46e0-9302-c1ea23e14599",
+                  name: "http://edgecomm.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "5",
+            sfId: "0015w00002B44EbAAJ",
+            sfName: "burlington",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EbAAJ", "name": "Burlington Textiles Corp of America", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EbAAJ", "website": "www.burlington.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "df4f31aa-648e-4639-acd9-fe921821df12",
+                  name: "www.burlington.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "6",
+            sfId: "0015w00002B44EcAAJ",
+            sfName: "pyramid",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EcAAJ", "name": "Pyramid Construction Inc.", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EcAAJ", "website": "www.pyramid.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "e8353fde-ea7a-4955-b5a7-c2cc832fd45c",
+                  name: "www.pyramid.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "7",
+            sfId: "0015w00002B44EdAAJ",
+            sfName: "dickenson-consulting",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EdAAJ", "name": "Dickenson plc", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EdAAJ", "website": "dickenson-consulting.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "d2e26981-11e9-4601-883f-b36ce3986c1e",
+                  name: "dickenson-consulting.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "8",
+            sfId: "0015w00002B44EeAAJ",
+            sfName: "grandhotels",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EeAAJ", "name": "Grand Hotels & Resorts Ltd", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EeAAJ", "website": "www.grandhotels.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "ba5c9ea8-0f59-49bc-9103-acd0cf1fc615",
+                  name: "www.grandhotels.com"
+                }
+              }
+            ]
+          },
+          {
+            id: "9",
+            sfId: "0015w00002B44EgAAJ",
+            sfName: "expressl&t",
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EgAAJ", "name": "Express Logistics and Transport", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EgAAJ", "website": "www.expressl&t.net", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "fa6b0f4e-e84b-4182-bfff-81e9d04258ca",
+                  name: "www.expressl&t.net"
+                }
+              }
+            ]
+          },
+          {
+            id: "10",
+            sfId: "0015w00002B44EhAAJ",
+            sfName: "uofabookstores",
+
+            sfObjectType: "Account",
+            sfObject:
+              '{"id": "0015w00002B44EhAAJ", "name": "University of Arizona", "sf_url": "/services/data/v42.0/sobjects/Account/0015w00002B44EhAAJ", "website": "uofabookstores.com", "owner_id": "0055w00000C5p8eAAB", "sf_object_type": "Account"}',
+            mapping: [
+              {
+                company: {
+                  uid: "33a5636f-ee90-4d8d-9f5f-e204de03a5f8",
+                  name: "uofabookstores.com"
+                }
+              }
+            ]
+          }
+        ]
       }
     };
   },
   components: {
-    ContactsTable
+    SalesforceTable
   },
   methods: {
-
     updateOptions({
       dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
-      if (sortBy.length > 0) {
-        switch (sortBy[0]) {
-          case "scaleScoreAverage":
-            this.options.sortBy = "scale_score_average";
-            break;
-          case "capitalEfficiencyScoreAverage":
-            this.options.sortBy = "capital_efficiency_score_average";
-            break;
-          case "wolfpackScore":
-            this.options.sortBy = "wolfpack_score";
-            break;
-          case "numberOfExits":
-            this.options.sortBy = "number_of_exits";
-            break;
-        }
-      } else {
-        this.options.sortBy = "";
-      }
-      if (sortDesc.length > 0) {
-        if (sortDesc[0]) {
-          this.options.sortOrder = "desc";
-        } else {
-          this.options.sortOrder = "asc";
-        }
-      } else {
-        this.options.sortOrder = "";
-      }
-    },
-    async saveResultsAsPlaylist(newPlaylistName = null) {
-      console.log(
-        "companies ",
-        "saveResultsAsPlaylist ",
-        "newPlaylistName =",
-        newPlaylistName
-      );
-      if (!!this.searchType && !!newPlaylistName) {
-        try {
-          const result = await this.$apollo.mutate({
-            mutation: gql`
-              mutation(
-                $name: String
-                $title: String
-                $department: String
-                $rank: String
-                $city: String
-                $state: String
-                $region: String
-                $country: String
-                $status: String
-                $moreThanScaleScoreAverage: Int
-                $lessThanScaleScoreAverage: Int
-                $moreThanCesa: Int
-                $lessThanCesa: Int
-                $moreThanWolfpackScore: Int
-                $lessThanWolfpackScore: Int
-                $moreThanNumberOfExits: Int
-                $lessThanNumberOfExits: Int
-                $playlistUid: String
-                $newPlaylistName: String!
-              ) {
-                createPlaylistFromContactSearch(
-                  contactSearch: {
-                    searchName: $name
-                    searchTitle: $title
-                    searchDepartment: $department
-                    searchRank: $rank
-                    city: $city
-                    state: $state
-                    region: $region
-                    country: $country
-                    status: $status
-                    moreThanScaleScoreAverage: $moreThanScaleScoreAverage
-                    lessThanScaleScoreAverage: $lessThanScaleScoreAverage
-                    moreThanCesa: $moreThanCesa
-                    lessThanCesa: $lessThanCesa
-                    moreThanWolfpackScore: $moreThanWolfpackScore
-                    lessThanWolfpackScore: $lessThanWolfpackScore
-                    moreThanNumberOfExits: $moreThanNumberOfExits
-                    lessThanNumberOfExits: $lessThanNumberOfExits
-                    playlistUid: $playlistUid
-                  }
-                  playlistData: { name: $newPlaylistName }
-                ) {
-                  playlist {
-                    uid
-                    name
-                  }
-                }
-              }
-            `,
-            variables: {
-              ...this.contactSearch,
-              newPlaylistName: newPlaylistName
-            }
-          });
-          console.log("saving results as playlist success", result);
-          const playlist = _get(
-            result,
-            "data.createPlaylistFromContactSearch.playlist",
-            null
-          );
-          this.$router.push({
-            path: `/playlists/${playlist.uid}`
-          });
-        } catch (error) {
-          console.log("error saving simple search as a play list", error);
-        }
-      }
-    },
-    removeFilter(key) {
-      if (key.startsWith("playlist")) {
-        this.$store.commit("doContactSearch", {
-          ...this.$store.state.contactSearch,
-          playlistUid: "",
-          displayPlaylistUid: ""
-        });
-      } else {
-        this.$store.commit("doContactSearch", {
-          ...this.$store.state.contactSearch,
-          [key]: defaultContactSearch[key]
-        });
-      }
     }
   },
   computed: {
@@ -223,164 +266,34 @@ export default {
     },
     searchType() {
       return this.$store.state.searchType;
-    },
-    contactSearchFilters() {
-      let filterObjects = [];
-      Object.keys(this.contactSearch).forEach(key => {
-        let value = this.contactSearch[key];
-        if (!key.startsWith("display") && value && value.length > 0) {
-          if (key == "playlistUid") {
-            filterObjects.push({
-              key: key,
-              labelKey: "Playlist",
-              labelVal: this.contactSearch.displayPlaylistUid
-            });
-          } else {
-            filterObjects.push({
-              key: key,
-              labelKey: key,
-              labelVal: value
-            });
-          }
-        }
-      });
-      return filterObjects;
-    },
-    showFiltersAndActions() {
-      return (
-        !!this.searchType &&
-        this.searchType == "contacts" &&
-        !!this.contactSearchFilters &&
-        this.contactSearchFilters.length
-      );
     }
   },
   apollo: {
-    contacts: {
-      query: gql`
-        query contacts(
-          $searchName: String
-          $searchTitle: String
-          $searchDepartment: String
-          $searchRank: String
-          $city: String
-          $state: String
-          $region: String
-          $country: String
-          $moreThanScaleScoreAverage: Int
-          $lessThanScaleScoreAverage: Int
-          $moreThanCesa: Int
-          $lessThanCesa: Int
-          $moreThanWolfpackScore: Int
-          $lessThanWolfpackScore: Int
-          $moreThanNumberOfExits: Int
-          $lessThanNumberOfExits: Int
-          $sortBy: String
-          $sortOrder: String
-          $first: Int
-          $offset: Int
-          $totalResults: Int
-        ) {
-          contacts(
-            searchName: $searchName
-            searchTitle: $searchTitle
-            searchDepartment: $searchDepartment
-            searchRank: $searchRank
-            city: $city
-            state: $state
-            region: $region
-            country: $country
-            moreThanScaleScoreAverage: $moreThanScaleScoreAverage
-            lessThanScaleScoreAverage: $lessThanScaleScoreAverage
-            moreThanCesa: $moreThanCesa
-            lessThanCesa: $lessThanCesa
-            moreThanWolfpackScore: $moreThanWolfpackScore
-            lessThanWolfpackScore: $lessThanWolfpackScore
-            moreThanNumberOfExits: $moreThanNumberOfExits
-            lessThanNumberOfExits: $lessThanNumberOfExits
-            sortBy: $sortBy
-            sortOrder: $sortOrder
-            first: $first
-            offset: $offset
-            totalResults: $totalResults
-          ) {
-            totalResults
-            contactsList {
-              uid
-              creationTime
-              modificationTime
-              fullName
-              linkedinHandle
-              city
-              state
-              region
-              country
-              scaleScoreAverage
-              capitalEfficiencyScoreAverage
-              wolfpackScore
-              numberOfExits
-              companies {
-                company {
-                  uid
-                  name
-                }
-                title
-                department
-                rank
-                isCurrent
-              }
-            }
-          }
-        }
-      `,
-      variables() {
-        if (this.showFiltersAndActions) {
-          return {
-            searchName: this.contactSearch.name,
-            searchTitle: this.contactSearch.title,
-            searchDepartment: this.contactSearch.department,
-            searchRank: this.contactSearch.rank,
-            city: this.contactSearch.city,
-            state: this.contactSearch.state,
-            region: this.contactSearch.region,
-            country: this.contactSearch.country,
-            moreThanScaleScoreAverage: this.contactSearch
-              .moreThanScaleScoreAverage,
-            lessThanScaleScoreAverage: this.contactSearch
-              .lessThanScaleScoreAverage,
-            moreThanCesa: this.contactSearch.moreThanCesa,
-            lessThanCesa: this.contactSearch.lessThanCesa,
-            moreThanWolfpackScore: this.contactSearch.moreThanWolfpackScore,
-            lessThanWolfpackScore: this.contactSearch.lessThanWolfpackScore,
-            moreThanNumberOfExits: this.contactSearch.moreThanNumberOfExits,
-            lessThanNumberOfExits: this.contactSearch.lessThanNumberOfExits,
-            first: this.options.itemsPerPage,
-            offset:
-              this.options.itemsPerPage * this.options.page -
-              this.options.itemsPerPage,
-            sortBy: this.options.sortBy,
-            sortOrder: this.options.sortOrder
-          };
-        } else {
-          return {
-            searchName: this.search,
-            first: this.options.itemsPerPage,
-            offset:
-              this.options.itemsPerPage * this.options.page -
-              this.options.itemsPerPage,
-            sortBy: this.options.sortBy,
-            sortOrder: this.options.sortOrder
-          };
-        }
-      },
-      skip() {
-        return this.search.length > 0 && this.search.length < 2;
-      },
-      watchLoading(isLoading, countModifier) {
-        this.isLoading = isLoading;
-      },
-      fetchPolicy: "cache-and-network"
-    }
+    // salesforceObjects: {
+    //   query: gql`
+    //     query salesforceObjects {
+    //       salesforceObjects {
+    //         totalResults
+    //         salesforceObjectList {
+    //           id
+    //           sfId
+    //           sfObjectType
+    //           sfObject
+    //           mapping {
+    //             company {
+    //               uid
+    //               name
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   `,
+    //   watchLoading(isLoading, countModifier) {
+    //     this.isLoading = isLoading;
+    //   },
+    //   fetchPolicy: "cache-and-network"
+    // }
   }
 };
 </script>
