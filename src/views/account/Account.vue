@@ -67,6 +67,26 @@
               <v-row v-else>
                 <v-col cols="12" md="12">
                   <v-btn block color="primary" to="/salesforce">Connect</v-btn>
+                <v-col cols="12" sm="5">
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="6" v-if="!myUser.oauths.length">
+                        <v-btn small color="primary" to="/salesforce">Connect</v-btn>
+                      </v-col>
+                      <v-col cols="6" v-else>
+                        <v-btn small color="primary" disabled>Connect</v-btn>
+                      </v-col>
+                      <v-col cols="2">
+                        <v-icon>autorenew</v-icon>
+                      </v-col>
+                      <v-col cols="2">
+                        <v-icon color="red" @click="disconnectSalesforce">power_off</v-icon>
+                      </v-col>
+                      <v-col cols="2">
+                        <v-icon color="primary"  @click="toSalesforceObjects">visibility</v-icon>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
                 </v-col>
               </v-row>
               <div v-if="salesforceOauth">
@@ -167,6 +187,9 @@ export default {
             }
           });
       }
+    },
+    toSalesforceObjects() {
+      this.$router.push('salesforceObjects')
     }
   },
   computed: {
