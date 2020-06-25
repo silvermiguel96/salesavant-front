@@ -73,10 +73,10 @@
                   :key="obj.key"
                   class="mx-1 text-capitalize"
                   style="padding: 0 8px;"
-                  color="green darken-3"
+                  color="cyan darken-2"
                   @click:close="removeFilter(obj.key)"
-                  outlined
                   close
+                  dark
                   small
                 >
                   <strong class="text-capitalize">{{obj.labelKey}}:&nbsp;</strong>

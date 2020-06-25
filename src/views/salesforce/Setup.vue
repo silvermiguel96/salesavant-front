@@ -19,7 +19,7 @@
                     <v-row class="d-md-block" no-gutters>
                       <v-col cols="12" xs="6" class="d-flex justify-center">
                         <div v-if="!myUser.oauths.length">
-                          <v-btn color="primary" to="/oauth/salesforce">Connect</v-btn>
+                          <v-btn color="primary" to="/oauth/salesforce">Authorize</v-btn>
                         </div>
                         <div v-else>
                           <v-btn
@@ -27,7 +27,7 @@
                             to="/oauth/salesforce"
                             target="_blank"
                             disabled
-                          >Connect</v-btn>
+                          >Authorize</v-btn>
                         </div>
                       </v-col>
                     </v-row>
@@ -53,7 +53,8 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card v-if="!syncRunning"
+          <v-card
+            v-if="!syncRunning"
             height="150px"
             class="d-flex align-center justify-center"
             outlined
@@ -69,7 +70,7 @@
             outlined
           >
             <v-card-text class="text-center" v-if="progress === 100">Done!</v-card-text>
-            <v-progress-circular 
+            <v-progress-circular
               v-else
               :rotate="360"
               :size="80"
@@ -79,7 +80,7 @@
               style="font-size: 0.9em;"
             >{{ progress.toFixed(0) }}%</v-progress-circular>
             <v-card-text class="text-center">{{ jobDescription }}</v-card-text>
-              <router-link color="primary" to="/account">Back to Profile</router-link>
+            <router-link color="primary" to="/account">Back to Profile</router-link>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -101,7 +102,7 @@ export default {
       interval: null,
       syncRunning: false,
       progress: 0,
-      jobDescription:""
+      jobDescription: ""
     };
   },
   props: {
@@ -131,60 +132,65 @@ export default {
     startSync() {
       this.syncRunning = true;
       let that = this;
-      this.$apollo.mutate({
-        mutation: gql`
-          mutation($jobType: String!) {
-            createJob(
-              jobType: $jobType
-            ) {
-              salesavantJob {
-                uid
-                creationTime
-                jobType
-                description
-                additionalData
-              }
-            }
-          }
-        `,
-        variables: {
-          jobType: "salesforce_sync",
-        }
-      }).then(resp => {
-          if (!!resp.data && !!resp.data.createJob && !!resp.data.createJob.salesavantJob) {
-            console.log(resp.data.createJob.salesavantJob);
-            that.monitorJobProgress(resp.data.createJob.salesavantJob.uid);
-          }
-      });
-    },
-    monitorJobProgress(jobUid){
-      this.interval = setInterval(() => {
-        this.$apollo.query({
-          query: gql`
-            query getJob($jobUid: String!){
-              salesavantJob(uid: $jobUid){
-                uid
-                description
-                progress
-                status
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($jobType: String!) {
+              createJob(jobType: $jobType) {
+                salesavantJob {
+                  uid
+                  creationTime
+                  jobType
+                  description
+                  additionalData
+                }
               }
             }
           `,
           variables: {
-            jobUid: jobUid
-          },
-          fetchPolicy: "no-cache"
+            jobType: "salesforce_sync"
+          }
         })
         .then(resp => {
-          if (!!resp.data && !!resp.data.salesavantJob) {
-            this.progress = resp.data.salesavantJob.progress;
-            this.jobDescription = resp.data.salesavantJob.description;
-            if (resp.data.salesavantJob.description=="finished"){
-              this.syncRunning = false;
-              clearInterval(this.interval);
-            }
+          if (
+            !!resp.data &&
+            !!resp.data.createJob &&
+            !!resp.data.createJob.salesavantJob
+          ) {
+            console.log(resp.data.createJob.salesavantJob);
+            that.monitorJobProgress(resp.data.createJob.salesavantJob.uid);
           }
         });
+    },
+    monitorJobProgress(jobUid) {
+      this.interval = setInterval(() => {
+        this.$apollo
+          .query({
+            query: gql`
+              query getJob($jobUid: String!) {
+                salesavantJob(uid: $jobUid) {
+                  uid
+                  description
+                  progress
+                  status
+                }
+              }
+            `,
+            variables: {
+              jobUid: jobUid
+            },
+            fetchPolicy: "no-cache"
+          })
+          .then(resp => {
+            if (!!resp.data && !!resp.data.salesavantJob) {
+              this.progress = resp.data.salesavantJob.progress;
+              this.jobDescription = resp.data.salesavantJob.description;
+              if (resp.data.salesavantJob.description == "finished") {
+                this.syncRunning = false;
+                clearInterval(this.interval);
+              }
+            }
+          });
       }, 2000);
     }
   },
