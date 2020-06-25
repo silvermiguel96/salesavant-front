@@ -44,7 +44,7 @@
                 </v-col>
               </v-row>
               <v-row v-if="salesforceOauth">
-                <v-col cols="10">
+                <v-col cols="7">
                   <a
                     :href="salesforceOauth.serviceUrl"
                     target="_blank"
@@ -62,6 +62,9 @@
                     </template>
                     <span>Disconnect from Salesforce</span>
                   </v-tooltip>
+                </v-col>
+                <v-col cols="3" class="d-flex justify-center">
+                  <v-btn color="primary" @click="salesforceObjects">View Data</v-btn>
                 </v-col>
               </v-row>
               <v-row v-else>
@@ -152,7 +155,7 @@ export default {
           })
           .then(resp => {
             if (resp.data.deleteOauth.status == "ok") {
-              this.myUser.oauths={};
+              this.myUser.oauths = {};
               this.$eventBus.$emit(
                 "showSnack",
                 "Salesforce connection removed succesfully",
@@ -167,6 +170,9 @@ export default {
             }
           });
       }
+    },
+    salesforceObjects() {
+      this.$router.push("/salesforceObjects");
     }
   },
   computed: {
