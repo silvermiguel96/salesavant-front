@@ -1,19 +1,18 @@
 <template>
   <div style="text-align: center;">
-    <div v-if="job.jobType=='playlist_from_file'">
+    <div
+      v-if="[
+      'playlist_from_file', 
+      'refresh_companies', 
+      'refresh_orb', 
+      'contacts_from_file', 
+      'salesforce_sync', 
+      'salesforce_upload'].includes(job.jobType)"
+    >
       <div class="green--text text--lighten-1">Done</div>
     </div>
     <div v-else-if="job.jobType=='export_companies'">
       <a v-if="resultParsed" target="_blank" :href="salesavantAPI + resultParsed.fileName">Download</a>
-    </div>
-    <div v-if="job.jobType=='refresh_companies'">
-      <div class="green--text text--lighten-1">Done</div>
-    </div>
-    <div v-if="job.jobType=='refresh_orb'">
-      <div class="green--text text--lighten-1">Done</div>
-    </div>
-    <div v-if="job.jobType=='contacts_from_file'">
-      <div class="green--text text--darken-3">Done</div>
     </div>
     <div v-else-if="job.jobType=='refresh_keywords'">
       <KeywordsJobResult :job="job" />

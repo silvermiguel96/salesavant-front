@@ -44,11 +44,14 @@
                 </v-col>
               </v-row>
               <v-row v-if="salesforceOauth">
-                <v-col cols="7">
+                <v-col cols="8">
                   <a
                     :href="salesforceOauth.serviceUrl"
                     target="_blank"
                   >{{ salesforceOauth.serviceUrl || "--"}}</a>
+                </v-col>
+                <v-col cols="2">
+                  <router-link to="salesforceObjects" >View Data</router-link>
                 </v-col>
                 <v-col cols="2" class="d-flex justify-center">
                   <v-tooltip bottom>
@@ -63,9 +66,6 @@
                     <span>Disconnect from Salesforce</span>
                   </v-tooltip>
                 </v-col>
-                <v-col cols="3" class="d-flex justify-center">
-                  <v-btn color="primary" @click="salesforceObjects">View Data</v-btn>
-                </v-col>
               </v-row>
               <v-row v-else>
                 <v-col cols="12" md="12">
@@ -75,12 +75,12 @@
               <div v-if="salesforceOauth">
                 <v-row>
                   <v-col cols="12" md="6" class="d-flex justify-center">
-                    <v-btn color="cyan darken-2" block dark>
+                    <v-btn color="cyan darken-2" @click="syncSalesforceData" block dark>
                       <v-icon class="mr-2">cloud_download</v-icon>Get Data
                     </v-btn>
                   </v-col>
                   <v-col cols="12" md="6" class="d-flex justify-center">
-                    <v-btn color="cyan darken-2" block dark>
+                    <v-btn color="cyan darken-2" @click="uploadSalesforceData" block dark>
                       <v-icon class="mr-2">cloud_upload</v-icon>Upload Data
                     </v-btn>
                   </v-col>
@@ -171,8 +171,27 @@ export default {
           });
       }
     },
-    salesforceObjects() {
-      this.$router.push("/salesforceObjects");
+    syncSalesforceData() {
+      this.$eventBus.$emit("createJob", {
+        jobType: 'salesforce_sync',
+        additionalData: {}
+      });
+      this.$eventBus.$emit(
+        "showSnack",
+        `Job Salesforce Sync enqueed successfully`,
+        "success"
+      );
+    },
+    uploadSalesforceData() {
+      this.$eventBus.$emit("createJob", {
+        jobType: 'salesforce_upload',
+        additionalData: {}
+      });
+      this.$eventBus.$emit(
+        "showSnack",
+        `Job Salesforce Upload enqueed successfully`,
+        "success"
+      );
     }
   },
   computed: {

@@ -15,17 +15,18 @@
     <template v-slot:item="{ item }">
       <tr>
         <td>
-          <div class="d-block text-capitalize ">{{ item.sfName }}</div>
-          {{ item.sfId }}
+          <a
+            :href="`https://mysalesavant-dev-ed.lightning.force.com/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
+            target="_blank"
+          >{{ item.sfName }}</a>
         </td>
         <td>
           <code class="code">{{ JSON.stringify(JSON.parse(item.sfObject),null , 4) }}</code>
         </td>
         <td>
-          {{ item.mapping[0].company.name }}
-          <router-link :to="`/companies/${ item.mapping[0].company.uid}`">
-            <long-paragraph :text="item.sfName" :maxLength="40"></long-paragraph>
-          </router-link>
+          <router-link
+            :to="`/companies/${ item.mapping[0].company.uid}`"
+          >{{ item.mapping[0].company.name }}</router-link>
         </td>
         <td>
           <div class="d-flex align-center justify-center">
@@ -82,9 +83,6 @@ export default {
   props: {
     items: Array,
     totalResults: Number
-  },
-  components: {
-    LongParagraph
   }
 };
 </script>
@@ -94,7 +92,7 @@ export default {
   white-space: normal;
 }
 .code {
-  color:rgba(0,0,0,0.67);
+  color: rgba(0, 0, 0, 0.67);
   background: transparent;
   height: 0;
   font-family: sans-serif;

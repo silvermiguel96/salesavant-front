@@ -2,12 +2,20 @@
   <tr>
     <td>
       <div>
-        <div v-if="job.jobType=='playlist_from_file' || job.jobType=='export_companies' || job.jobType=='refresh_keywords'">
+        <div v-if="[
+          'playlist_from_file',
+          'export_companies',
+          'refresh_keywords',
+          'salesforce_sync'].includes(job.jobType)">
           <router-link
             :to="`/playlists/${additionalDataParsed.playlist_uid}`"
           >{{ additionalDataParsed.playlist_name || "[Empty Name]" }}</router-link>
         </div>
-        <div v-else-if="job.jobType=='contacts_from_file' || job.jobType=='export_companies' || job.jobType=='contact_finder' || job.jobType=='linkedin_finder'"  >
+        <div v-else-if="[
+          'contacts_from_file',
+          'export_companies',
+          'contact_finder',
+          'linkedin_finder'].includes(job.jobType)"  >
           <a
             :href="`${salesavantAPI}/files/download/${additionalDataParsed.storage_filename}`"
           >{{ additionalDataParsed.original_filename }}</a>
@@ -70,6 +78,10 @@ export default {
           return "Contacts From File";
         case "playlist_aggs":
           return "Playlist Statistics Refresh"
+        case "salesforce_sync":
+          return "Salesforce Sync"
+        case "salesforce_upload":
+          return "Salesforce Upload"
       }
       return jobType;
     }
@@ -82,15 +94,6 @@ export default {
     additionalDataParsed: function() {
       if (!!this.job && !!this.job.additionalData) {
         return JSON.parse(this.job.additionalData);
-      }
-      return "";
-    },
-    jobSubtitle: function() {
-      if (this.additionalDataParsed.hasOwnProperty("playlist_name")) {
-        return this.additionalDataParsed.playlist_name;
-      }
-      if (this.additionalDataParsed.hasOwnProperty("original_filename")) {
-        return this.additionalDataParsed.original_filename;
       }
       return "";
     }
