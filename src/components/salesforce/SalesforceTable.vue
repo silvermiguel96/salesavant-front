@@ -18,19 +18,25 @@
           <a
             :href="`https://mysalesavant-dev-ed.lightning.force.com/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
             target="_blank"
-          >{{ item.sfName }}</a>
-        </td>
-        <td>
-          <code class="code">{{ JSON.stringify(JSON.parse(item.sfObject),null , 4) }}</code>
+          >{{ JSON.parse(item.sfObject).name }}</a>
         </td>
         <td>
           <router-link
+            v-if="item.mapping.length"
             :to="`/companies/${ item.mapping[0].company.uid}`"
           >{{ item.mapping[0].company.name }}</router-link>
         </td>
         <td>
+          <modal-objects :title="item.sfObjectType" :item="item.sfObject" />
+        </td>
+        <td v-if="item.mapping.length">
           <div class="d-flex align-center justify-center">
             <v-icon color="red lighten-2" size="20" small>delete</v-icon>
+          </div>
+        </td>
+        <td v-else>
+          <div class="d-flex align-center justify-center">
+            <v-icon color="blue lighten-2" size="20" small>add_box</v-icon>
           </div>
         </td>
       </tr>
@@ -39,7 +45,7 @@
 </template>
 
 <script>
-import LongParagraph from "../../components/common/LongParagraph.vue";
+import ModalObjects from "./Modal.vue";
 export default {
   data() {
     return {
@@ -47,23 +53,23 @@ export default {
         {
           text: "Salesforce",
           value: "fullName",
-          width: "30%",
-          sortable: false
-        },
-        {
-          text: "Objects",
-          value: "companies.name",
-          width: "30%",
+          width: "40%",
           sortable: false
         },
         {
           text: "Company",
-          value: "companies.title",
-          width: "30%",
+          value: "companies.name",
+          width: "40%",
           sortable: false
         },
         {
-          text: "Actions",
+          text: "Details",
+          value: "companies.title",
+          width: "10%",
+          sortable: false
+        },
+        {
+          text: "Add/Remove",
           value: "companies.deparment",
           width: "10%",
           sortable: false
@@ -74,6 +80,9 @@ export default {
         itemsPerPage: 10
       }
     };
+  },
+  components: {
+    ModalObjects
   },
   methods: {
     updateOptions(dataFromEvent = {}) {
@@ -90,12 +99,6 @@ export default {
 <style scoped>
 .wrapping-td {
   white-space: normal;
-}
-.code {
-  color: rgba(0, 0, 0, 0.67);
-  background: transparent;
-  height: 0;
-  font-family: sans-serif;
 }
 </style>
 
