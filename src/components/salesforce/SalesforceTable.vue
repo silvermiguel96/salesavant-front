@@ -16,7 +16,7 @@
       <tr>
         <td>
           <a
-            :href="`https://mysalesavant-dev-ed.lightning.force.com/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
+            :href="`${salesforceOauth}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
             target="_blank"
           >{{ JSON.parse(item.sfObject).name }}</a>
         </td>
@@ -27,7 +27,9 @@
           >{{ item.mapping[0].company.name }}</router-link>
         </td>
         <td>
-          <modal-objects :title="item.sfObjectType" :item="item.sfObject" />
+          <div class="d-flex align-center justify-center">
+            <modal-objects :title="item.sfObjectType" :item="item.sfObject" />
+          </div>
         </td>
         <td v-if="item.mapping.length">
           <div class="d-flex align-center justify-center">
@@ -46,6 +48,7 @@
 
 <script>
 import ModalObjects from "./Modal.vue";
+import gql from "graphql-tag";
 export default {
   data() {
     return {
@@ -64,6 +67,7 @@ export default {
         },
         {
           text: "Details",
+          align: "center",
           value: "companies.title",
           width: "10%",
           sortable: false
@@ -78,6 +82,9 @@ export default {
       options: {
         page: 1,
         itemsPerPage: 10
+      },
+      myUser: {
+        oauths: {}
       }
     };
   },
@@ -92,6 +99,35 @@ export default {
   props: {
     items: Array,
     totalResults: Number
+  },
+  apollo: {
+    myUser: {
+      query: gql`
+        query {
+          myUser {
+            firstName
+            lastName
+            email
+            status
+            oauths {
+              serviceName
+              serviceUrl
+            }
+          }
+        }
+      `,
+      fetchPolicy: "cache-and-network"
+    }
+  },
+  computed: {
+    salesforceOauth() {
+      if (this.myUser.oauths.length > 0) {
+        return this.myUser.oauths.find(
+          oauth => oauth.serviceName.serviceUrl === "salesforce"
+        );
+      }
+      return undefined;
+    }
   }
 };
 </script>

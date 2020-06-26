@@ -127,6 +127,23 @@ export default {
         this.isLoading = isLoading;
       },
       fetchPolicy: "cache-and-network"
+    },
+    myUser: {
+      query: gql`
+        query {
+          myUser {
+            firstName
+            lastName
+            email
+            status
+            oauths {
+              serviceName
+              serviceUrl
+            }
+          }
+        }
+      `,
+      fetchPolicy: "cache-and-network"
     }
   }
 };
