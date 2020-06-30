@@ -23,8 +23,9 @@ import SalesforceAuthorize from "./views/salesforce/Authorize.vue";
 import SalesforceCallback from "./views/salesforce/Callback.vue";
 
 import Account from "./views/account/Account.vue"
+import Connections from "./views/account/Connections.vue"
 
-import SalesforceSetup from "./views/salesforce/Setup.vue"
+import SalesforceSetupWizard from "./views/salesforce/SetupWizard.vue"
 import SalesforceObject from "./views/salesforce/Objects.vue"
 
 import { AUTH_TOKEN } from "./util";
@@ -157,24 +158,24 @@ const router = new Router({
       }
     },
     {
-      path: "/salesforce",
-      name: "Salesforce",
-      component: SalesforceSetup,
+      path: "/connections",
+      name: "connections",
+      component: Connections,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: "/salesforceObjects",
-      name: "salesforceObjects",
-      component: SalesforceObject,
+      path: "/salesforce-setup",
+      name: "Salesforce Setup",
+      component: SalesforceSetupWizard,
       meta: {
         requiresAuth: true
       }
     },
     {
       path: "/oauth/salesforce",
-      name: "salesforce",
+      name: "salesforceOauth",
       component: SalesforceAuthorize,
       meta: {
         requiresAuth: true
@@ -182,12 +183,20 @@ const router = new Router({
     },
     {
       path: "/oauth/salesforce/ok",
-      name: "salesforceOk",
+      name: "salesforceOauthOk",
       component: SalesforceCallback,
       meta: {
         requiresAuth: true
       }
-    }
+    },
+    {
+      path: "/salesforce-objects",
+      name: "salesforceObjects",
+      component: SalesforceObject,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 });
 
