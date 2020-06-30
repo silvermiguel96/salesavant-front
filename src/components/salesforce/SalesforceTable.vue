@@ -16,7 +16,7 @@
       <tr>
         <td>
           <a
-            :href="`${salesforceOauth}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
+            :href="`${salesforceOauth.serviceUrl}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
             target="_blank"
           >{{ JSON.parse(item.sfObject).name }}</a>
         </td>
@@ -84,7 +84,7 @@ export default {
         itemsPerPage: 10
       },
       myUser: {
-        oauths: {}
+        oauths: []
       }
     };
   },

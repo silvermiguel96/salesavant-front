@@ -19,7 +19,7 @@ export default {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
   },
   methods: {
-    ...mapMutations(["setSalesforceSetupStep"])
+    ...mapMutations(["setSalesforceWizardStep", "setSalesforceWizardConnectionId"])
   },
   mounted() {
     let that = this;
@@ -27,41 +27,41 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const salesforceCode = urlParams.get("code");
       console.log(salesforceCode);
-      fetch(this.salesavantAPI + "/oauth?jwt=" + getAuthToken(), {
+      fetch(this.salesavantAPI + "/oauth/salesforce?jwt=" + getAuthToken(), {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          serviceName: "salesforce",
           payload: { salesforceCode }
         })
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        if (data.status == "ok") {
-          that.setSalesforceSetupStep(2);
-        } else {
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
           console.log(data);
+          if (data.status == "ok") {
+            that.setSalesforceWizardConnectionId(data.salesforceConnectionId);
+            that.setSalesforceWizardStep(2);
+          } else {
+            that.setSalesforceSetupStep(1);
+            that.$eventBus.$emit(
+              "showSnack",
+              "Error while setup connecting to Salesforce",
+              "error"
+            );
+          }
+        })
+        .catch(function(error) {
+          console.log("Error:" + error.message);
           that.setSalesforceSetupStep(1);
-          that.$eventBus.$emit(
-            "showSnack",
-            "Error while setup connecting to Salesforce",
-            "error"
-          );
-        }
-      })
-      .catch(function(error) {
-        console.log("Error:" + error.message);
-        that.setSalesforceSetupStep(1);
-      });
+        });
       setTimeout(function() {
-          that.$router.push({
-            path: "/salesforce"
-          });
+        that.$router.push({
+          path: "/salesforce-setup"
+        });
       }, 1000);
     });
   }
