@@ -5,7 +5,7 @@
         <v-card class="pb-2">
           <v-card-title>
             <v-row no-gutters>
-              <v-col cols="12" md="9"></v-col>
+              <v-col cols="12" md="9" class="title text--secondary">Connections</v-col>
               <v-col cols="12" md="3" class="md-offset-9">
                 <v-btn block color="primary" to="/salesforce-setup">
                   <v-icon size="20">add</v-icon>Setup Connection
@@ -22,20 +22,17 @@
             <v-card-text>
               <v-row no-gutters>
                 <v-col cols="12">
-                  <div class="title text-secondary">Salesforce</div>
+                  <div class="body-1 text-secondary">Salesforce</div>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="8">
+                <v-col cols="10">
                   <a
                     :href="sfConnection.salesforceUrl"
                     target="_blank"
                   >{{ sfConnection.salesforceUrl || "--"}}</a>
                 </v-col>
-                <v-col cols="2">
-                  <router-link to="salesforce-objects">View Data</router-link>
-                </v-col>
-                <v-col cols="2" class="d-flex justify-center">
+                <v-col cols="2" class="d-flex justify-end">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon
@@ -49,20 +46,66 @@
                   </v-tooltip>
                 </v-col>
               </v-row>
-              <div>
-                <v-row>
-                  <v-col cols="12" md="6" class="d-flex justify-center">
-                    <v-btn color="cyan darken-2" @click="downloadSalesforceData(sfConnection.id)" block dark>
-                      <v-icon class="mr-2">cloud_download</v-icon>Get Data
-                    </v-btn>
-                  </v-col>
-                  <v-col cols="12" md="6" class="d-flex justify-center">
-                    <v-btn color="cyan darken-2" @click="uploadSalesforceData(sfConnection.id)" block dark>
-                      <v-icon class="mr-2">cloud_upload</v-icon>Upload Data
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </div>
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-card outlined>
+                    <v-card-text class="d-flex justify-space-between">
+                      <v-row no-gutters>
+                        <v-col cols="6" class="d-flex flex-column justify-space-between">
+                          <span class="body-1 text--secondary">
+                            Download <router-link class="caption" to="salesforce-objects">View data</router-link>
+                          </span>
+                          <v-btn
+                            color="cyan darken-2"
+                            @click="downloadSalesforceData(sfConnection.id)"
+                            dark
+                            small
+                          >
+                            <v-icon class="mr-2">cloud_download</v-icon>Get Data
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="6" class="d-flex justify-end">
+                          <div class="d-flex flex-column align-center justify-space-between">
+                            <h2 class="heading-2">400</h2>
+                            <div class="d-flex flex-column align-center">
+                              <div class="caption">Records Downloaded</div>
+                              <div class="caption">Last run: 2020-06-05</div>
+                            </div>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-card outlined>
+                    <v-card-text class="d-flex justify-space-between">
+                      <v-row no-gutters>
+                        <v-col cols="6" class="d-flex flex-column justify-space-between">
+                          <span class="body-1 text--secondary">Upload</span>
+                          <v-btn
+                            color="cyan darken-2"
+                            @click="uploadSalesforceData(sfConnection.id)"
+                            dark
+                            small
+                          >
+                            <v-icon class="mr-2">cloud_upload</v-icon>Upload Data
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="6" class="d-flex justify-end">
+                          <div class="d-flex flex-column align-center justify-space-between">
+                            <h2 class="heading-2">400</h2>
+                            <div class="d-flex flex-column align-center">
+                              <div class="caption">Records Uploaded</div>
+                              <div class="caption">Last run: 2020-06-05</div>
+                            </div>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-card>
@@ -125,7 +168,9 @@ export default {
           .mutate({
             mutation: gql`
               mutation($salesforceConnectionId: Int!) {
-                deleteSalesforceConnection(salesforceConnectionId: $salesforceConnectionId) {
+                deleteSalesforceConnection(
+                  salesforceConnectionId: $salesforceConnectionId
+                ) {
                   status
                   message
                 }

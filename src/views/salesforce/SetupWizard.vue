@@ -60,7 +60,7 @@
             outlined
           >
             <v-card-actions class="d-flex justify-center">
-              <v-btn color="primary" @click="startSync">Start Sync</v-btn>
+              <v-btn color="primary" @click="startDownload">Get Salesforce data</v-btn>
             </v-card-actions>
           </v-card>
           <v-card
@@ -69,7 +69,9 @@
             height="200px"
             outlined
           >
-            <v-card-text class="text-center" v-if="progress === 100">Done!</v-card-text>
+            <v-card-text class="title text-center green--text" v-if="progress === 100">
+              Done!
+            </v-card-text>
             <v-progress-circular
               v-else
               :rotate="360"
@@ -80,7 +82,8 @@
               style="font-size: 0.9em;"
             >{{ progress.toFixed(0) }}%</v-progress-circular>
             <v-card-text class="text-center">{{ jobDescription }}</v-card-text>
-            <router-link color="primary" to="/account">Back to Profile</router-link>
+            <v-btn color="primary" @click="finishWizard">Back to Connections</v-btn>
+            
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -135,7 +138,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setSalesforceWizardStep", "resetSalesforceWizardConf"]),
-    startSync() {
+    startDownload() {
       this.syncRunning = true;
       let that = this;
       this.$apollo
@@ -166,7 +169,6 @@ export default {
             !!resp.data.createJob &&
             !!resp.data.createJob.salesavantJob
           ) {
-            console.log(resp.data.createJob.salesavantJob);
             that.monitorJobProgress(resp.data.createJob.salesavantJob.uid);
           }
         });
@@ -196,18 +198,17 @@ export default {
               this.progress = resp.data.salesavantJob.progress;
               this.jobDescription = resp.data.salesavantJob.description;
               if (resp.data.salesavantJob.status == "finished") {
-                this.syncRunning = false;
                 clearInterval(this.interval);
-                setTimeout(function() {
-                  that.resetSalesforceWizardConf();
-                  that.$router.push({
-                    path: "/connections"
-                  });
-                }, 2000);
+                setTimeout(function() {}, 2000);
               }
             }
           });
       }, 2000);
+    },
+    finishWizard() {
+      this.$router.push("/connections", () => {
+        this.resetSalesforceWizardConf();
+      });
     }
   },
   computed: {
