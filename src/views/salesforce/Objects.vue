@@ -109,6 +109,7 @@ export default {
                 salesforceUrl
               }
               mapping {
+                id
                 company {
                   uid
                   name
