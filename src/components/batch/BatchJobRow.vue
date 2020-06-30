@@ -6,7 +6,7 @@
           'playlist_from_file',
           'export_companies',
           'refresh_keywords',
-          'salesforce_sync'].includes(job.jobType)">
+          'salesforce_download'].includes(job.jobType)">
           <router-link
             :to="`/playlists/${additionalDataParsed.playlist_uid}`"
           >{{ additionalDataParsed.playlist_name || "[Empty Name]" }}</router-link>
@@ -78,8 +78,8 @@ export default {
           return "Contacts From File";
         case "playlist_aggs":
           return "Playlist Statistics Refresh"
-        case "salesforce_sync":
-          return "Salesforce Sync"
+        case "salesforce_download":
+          return "Salesforce Download"
         case "salesforce_upload":
           return "Salesforce Upload"
       }

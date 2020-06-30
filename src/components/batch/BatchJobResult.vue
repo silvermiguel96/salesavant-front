@@ -6,7 +6,7 @@
       'refresh_companies', 
       'refresh_orb', 
       'contacts_from_file', 
-      'salesforce_sync', 
+      'salesforce_download', 
       'salesforce_upload'].includes(job.jobType)"
     >
       <div class="green--text text--lighten-1">Done</div>
