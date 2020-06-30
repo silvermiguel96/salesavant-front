@@ -43,6 +43,11 @@ export const defaultContactSearch = {
   displayPlaylistUid: ""
 };
 
+export const defaultSalesforceWizard = {
+  step: 1,
+  connectionId: null
+};
+
 const state = {
   userEmail: null,
   jwtToken: null,
@@ -54,7 +59,9 @@ const state = {
   contactSearch: {
     ...defaultContactSearch
   },
-  salesforceSetupStep: 1
+  salesforceWizard:{
+    ...defaultSalesforceWizard
+  }
 };
 
 const getters = {
@@ -105,8 +112,14 @@ const mutations = {
   showDenseForm(state) {
     state.denseForm = false
   },
-  setSalesforceSetupStep(state, step) {
-    state.salesforceSetupStep = step
+  resetSalesforceWizardConf(state){
+    state.salesforceWizard = defaultSalesforceWizard;
+  },
+  setSalesforceWizardStep(state, salesforceWizardStep) {
+    state.salesforceWizard.step = salesforceWizardStep
+  },
+  setSalesforceWizardConnectionId(state, salesforceWizardConnectionId) {
+    state.salesforceWizard.connectionId = salesforceWizardConnectionId;
   }
 };
 
