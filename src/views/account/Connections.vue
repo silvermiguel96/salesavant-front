@@ -52,10 +52,12 @@
                     <v-card-text class="d-flex justify-space-between">
                       <v-row no-gutters>
                         <v-col cols="6" class="d-flex flex-column justify-space-between">
-                          <span class="body-1 text--secondary">Download
-                            <router-link class="caption" to="salesforce-objects">View data</router-link>
-                          </span>
-                          <div class="caption" v-if="sfConnection.downloadLastRun">Last run: {{ sfConnection.downloadLastRun | moment("MMMM Do YYYY, H:mm") }}</div>
+                          <div class="body-1 text--secondary">
+                            <span>Download </span><router-link class="caption" to="salesforce-objects">view data</router-link>
+                          </div>
+                          <div class="text--secondary pb-2">
+                            <span class="caption" v-if="sfConnection.downloadLastRun">Last run: {{ sfConnection.downloadLastRun | moment("MMMM Do YYYY, H:mm") }}</span>
+                          </div>
                           <v-btn
                             color="cyan darken-2"
                             @click="downloadSalesforceData(sfConnection.id)"
@@ -80,8 +82,12 @@
                     <v-card-text class="d-flex justify-space-between">
                       <v-row no-gutters>
                         <v-col cols="6" class="d-flex flex-column justify-space-between">
-                          <span class="body-1 text--secondary">Upload</span>
-                          <div class="caption" v-if="sfConnection.uploadLastRun">Last run: {{ sfConnection.uploadLastRun | moment("MMMM Do YYYY, H:mm") }}</div>
+                          <div class="body-1 text--secondary">
+                            <span>Upload</span>
+                          </div>
+                          <div class="text--secondary pb-2">
+                            <span class="caption" v-if="sfConnection.uploadLastRun">Last run: {{ sfConnection.uploadLastRun | moment("MMMM Do YYYY, H:mm") }}</span>
+                          </div>
                           <v-btn
                             color="cyan darken-2"
                             @click="uploadSalesforceData(sfConnection.id)"
