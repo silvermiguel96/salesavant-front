@@ -22,7 +22,7 @@
             <v-card-text>
               <v-row no-gutters>
                 <v-col cols="12">
-                  <div class="body-1 text-secondary">Salesforce</div>
+                  <div class="title text-secondary">Salesforce</div>
                 </v-col>
               </v-row>
               <v-row>
