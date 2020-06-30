@@ -48,7 +48,7 @@
         </template>
         <v-list class="pa-0">
           <v-list-item v-for="account in accounts" :key="account.text" @click="account.click">
-            <v-list-item-title class="subtitle-1 text-center font-weight-light">{{ account.text }}</v-list-item-title>
+            <v-list-item-title class="subtitle-1 font-weight-light">{{ account.text }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -101,6 +101,11 @@ export default {
           click: this.onAccount
         },
         {
+          text: "Connections",
+          router: "/connections",
+          click: this.onConnections
+        },
+        {
           text: "Logout",
           router: "/home",
           click: this.exitApp
@@ -130,6 +135,10 @@ export default {
     onAccount() {
       this.resetSearch();
       this.$router.push("/account").catch(err => {});
+    },
+    onConnections() {
+      this.resetSearch();
+      this.$router.push("/connections").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);
