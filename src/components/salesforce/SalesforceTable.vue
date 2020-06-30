@@ -16,7 +16,7 @@
       <tr>
         <td>
           <a
-            :href="`${salesforceOauth.serviceUrl}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
+            :href="`${item.sfConnection.salesforceUrl}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
             target="_blank"
           >{{ JSON.parse(item.sfObject).name }}</a>
         </td>
@@ -33,7 +33,7 @@
         </td>
         <td v-if="item.mapping.length">
           <div class="d-flex align-center justify-center">
-            <v-icon color="red lighten-2" size="20" small>delete</v-icon>
+            <v-icon color="red lighten-2" @click="deleteObject(item)" size="20" small>delete</v-icon>
           </div>
         </td>
         <td v-else>
@@ -83,8 +83,8 @@ export default {
         page: 1,
         itemsPerPage: 10
       },
-      myUser: {
-        oauths: []
+      item: {
+        sfConnection: null
       }
     };
   },
@@ -94,40 +94,65 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
+    },
+    async deleteObject(object) {
+      console.log("object", object);
+      const res = await this.$confirm(
+        `<h1 class="subtitle-1">
+              Confirm you want to eliminate the company
+              <span class="font-weight-bold"
+              >${JSON.parse(object.sfObject).name}</span>?
+            </h1> `,
+        {
+          buttonTrueText: "delete",
+          buttonFalseText: "close",
+          buttonTrueColor: "red lighten-2",
+          color: "primary",
+          icon: "delete",
+          title: "Delete signal",
+          width: 600
+        }
+      );
+      if (res) {
+        // try {
+        //   // const index = this.items.salesforceObjectList.indexOf(JSON.parse(object));
+        //   const result = await this.$apollo.mutate({
+        //     mutation: gql`
+        //       mutation($salesforceMappingId: Int!) {
+        //         deleteSalesforceMapping(salesforceMappingId: $salesforceMappingId) {
+        //           status
+        //           message
+        //         }
+        //       }
+        //     `,
+        //     // Parameters
+        //     variables: {
+        //       salesforceMappingId: parseInt(object.mapping.id),
+        //     }
+        //   });
+        //   console.log("result", result);
+        //   // this.items.salesforceObjectList.splice(index, 1);
+        //   this.items.totalResults -= 1;
+        //   this.$eventBus.$emit(
+        //     "showSnack",
+        //     "The signal successfully delete!!",
+        //     "success"
+        //   );
+        // } catch (error) {
+        //   console.log("error", error);
+        //   this.$eventBus.$emit(
+        //     "showSnack",
+        //     "Oops!! we did something wrong when removing the company - signal, please try again!!",
+        //     "error"
+        //   );
+        //   return;
+        // }
+      }
     }
   },
   props: {
     items: Array,
     totalResults: Number
-  },
-  apollo: {
-    myUser: {
-      query: gql`
-        query {
-          myUser {
-            firstName
-            lastName
-            email
-            status
-            oauths {
-              serviceName
-              serviceUrl
-            }
-          }
-        }
-      `,
-      fetchPolicy: "cache-and-network"
-    }
-  },
-  computed: {
-    salesforceOauth() {
-      if (this.myUser.oauths.length > 0) {
-        return this.myUser.oauths.find(
-          oauth => oauth.serviceName.serviceUrl === "salesforce"
-        );
-      }
-      return undefined;
-    }
   }
 };
 </script>
