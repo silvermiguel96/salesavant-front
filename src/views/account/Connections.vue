@@ -42,7 +42,7 @@
                         @click="deleteSalesforceConnection(sfConnection.id)"
                       >power_off</v-icon>
                     </template>
-                    <span>Disconnect from Salesforce</span>
+                    <span>Delete this connection</span>
                   </v-tooltip>
                 </v-col>
               </v-row>
@@ -52,9 +52,10 @@
                     <v-card-text class="d-flex justify-space-between">
                       <v-row no-gutters>
                         <v-col cols="6" class="d-flex flex-column justify-space-between">
-                          <span class="body-1 text--secondary">
-                            Download <router-link class="caption" to="salesforce-objects">View data</router-link>
+                          <span class="body-1 text--secondary">Download
+                            <router-link class="caption" to="salesforce-objects">View data</router-link>
                           </span>
+                          <div class="caption" v-if="sfConnection.downloadLastRun">Last run: {{ sfConnection.downloadLastRun | moment("MMMM Do YYYY, H:mm") }}</div>
                           <v-btn
                             color="cyan darken-2"
                             @click="downloadSalesforceData(sfConnection.id)"
@@ -65,12 +66,9 @@
                           </v-btn>
                         </v-col>
                         <v-col cols="6" class="d-flex justify-end">
-                          <div class="d-flex flex-column align-center justify-space-between">
-                            <h2 class="heading-2">400</h2>
-                            <div class="d-flex flex-column align-center">
-                              <div class="caption">Records Downloaded</div>
-                              <div class="caption">Last run: 2020-06-05</div>
-                            </div>
+                          <div class="d-flex flex-column align-center justify-space-around">
+                            <h1>{{ sfConnection.downloadedRecords || "-" }}</h1>
+                            <div class="caption">Records Downloaded</div>
                           </div>
                         </v-col>
                       </v-row>
@@ -83,6 +81,7 @@
                       <v-row no-gutters>
                         <v-col cols="6" class="d-flex flex-column justify-space-between">
                           <span class="body-1 text--secondary">Upload</span>
+                          <div class="caption" v-if="sfConnection.uploadLastRun">Last run: {{ sfConnection.uploadLastRun | moment("MMMM Do YYYY, H:mm") }}</div>
                           <v-btn
                             color="cyan darken-2"
                             @click="uploadSalesforceData(sfConnection.id)"
@@ -93,11 +92,10 @@
                           </v-btn>
                         </v-col>
                         <v-col cols="6" class="d-flex justify-end">
-                          <div class="d-flex flex-column align-center justify-space-between">
-                            <h2 class="heading-2">400</h2>
+                          <div class="d-flex flex-column align-center justify-space-around">
+                            <h1>{{ sfConnection.uploadedRecords || "-" }}</h1>
                             <div class="d-flex flex-column align-center">
                               <div class="caption">Records Uploaded</div>
-                              <div class="caption">Last run: 2020-06-05</div>
                             </div>
                           </div>
                         </v-col>
@@ -136,6 +134,10 @@ export default {
             sfConnections {
               id
               salesforceUrl
+              downloadLastRun
+              downloadedRecords
+              uploadLastRun
+              uploadedRecords
             }
             oauths {
               serviceName
@@ -206,7 +208,9 @@ export default {
     downloadSalesforceData(salesforceConnectionId) {
       this.$eventBus.$emit("createJob", {
         jobType: "salesforce_download",
-        additionalData: {}
+        additionalData: {
+          salesforce_connection_id: salesforceConnectionId
+        }
       });
       this.$eventBus.$emit(
         "showSnack",
@@ -217,7 +221,9 @@ export default {
     uploadSalesforceData(salesforceConnectionId) {
       this.$eventBus.$emit("createJob", {
         jobType: "salesforce_upload",
-        additionalData: { salesforceConnectionId }
+        additionalData: {
+          salesforce_connection_id: salesforceConnectionId
+        }
       });
       this.$eventBus.$emit(
         "showSnack",
