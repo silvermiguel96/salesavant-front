@@ -19,14 +19,6 @@
               <v-list-item-title class="white--text" to="/account">My perfil</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item to="/connections" @click="onConnections">
-            <v-list-item-icon>
-              <v-icon class="white--text">electrical_services</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title class="white--text" to="/connections">Connections</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
           <v-list-item to="/home" @click="exitApp">
             <v-list-item-icon>
               <v-icon class="white--text">exit_to_app</v-icon>
