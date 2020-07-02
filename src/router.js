@@ -27,6 +27,7 @@ import Connections from "./views/account/Connections.vue"
 
 import SalesforceSetupWizard from "./views/salesforce/SetupWizard.vue"
 import SalesforceObject from "./views/salesforce/Objects.vue"
+import salesforceDocumentation from "./views/documentation/Documentation.vue"
 
 import { AUTH_TOKEN } from "./util";
 
@@ -197,6 +198,14 @@ const router = new Router({
         requiresAuth: true
       }
     },
+    {
+      path: "/salesforce-documentation",
+      name: "salesforceDocumentation",
+      component: salesforceDocumentation,
+      meta: {
+        requiresAuth: true
+      }
+    }
   ]
 });
 
