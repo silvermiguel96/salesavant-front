@@ -22,6 +22,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="addObject()">Aggregate</v-btn>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog=false">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -36,7 +37,7 @@ export default {
     return {
       dialog: false,
       companyUid: "",
-
+      value: ""
     };
   },
   props: {
@@ -47,8 +48,11 @@ export default {
   },
   methods: {
     onPlaylistAutocompleteChange(value) {
-      console.log("value", value)
-      console.log("companySalesforce", this.company)
+      this.value = value;
+    },
+    addObject(){
+      this.$emit("addObjectModal", { company: this.value, objectCompany: this.company})
+      this.dialog = false
     }
   }
 };

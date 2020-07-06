@@ -38,7 +38,7 @@
         </td>
         <td v-else>
           <div class="d-flex align-center justify-center">
-            <add-company :company="item" />
+            <add-company :company="item" @addObjectModal="addObject" />
           </div>
         </td>
       </tr>
@@ -48,7 +48,7 @@
 
 <script>
 import ModalObjects from "./Modal.vue";
-import AddCompany from "./AddCompany.vue"
+import AddCompany from "./AddCompany.vue";
 import gql from "graphql-tag";
 export default {
   data() {
@@ -121,7 +121,9 @@ export default {
           const result = await this.$apollo.mutate({
             mutation: gql`
               mutation($salesforceMappingId: Int!) {
-                deleteSalesforceMapping(salesforceMappingId: $salesforceMappingId) {
+                deleteSalesforceMapping(
+                  salesforceMappingId: $salesforceMappingId
+                ) {
                   status
                   message
                 }
@@ -129,7 +131,7 @@ export default {
             `,
             // Parameters
             variables: {
-              salesforceMappingId: parseInt(object.mapping[0].id),
+              salesforceMappingId: parseInt(object.mapping[0].id)
             }
           });
           console.log("result", result);
@@ -137,7 +139,7 @@ export default {
           this.items.totalResults -= 1;
           this.$eventBus.$emit(
             "showSnack",
-            "The signal successfully delete!!",
+            "The company successfully delete!!",
             "success"
           );
         } catch (error) {
@@ -149,6 +151,47 @@ export default {
           );
           return;
         }
+      }
+    },
+    async addObject(object) {
+      try {
+        console.log("Objet", object);
+        const result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($companyUid: String!, $sfObjectId: Int!) {
+              createSalesforceMapping(
+                companyUid: $companyUid
+                sfObjectId: $sfObjectId
+              ) {
+                status
+                message
+                salesforceMapping {
+                  id
+                }
+              }
+            }
+          `,
+          // Parameters
+          variables: {
+            companyUid: object.company.companyUid,
+            sfObjectId: object.objectCompany.sfId
+          }
+        });
+        console.log("result", result);
+
+        this.$eventBus.$emit(
+          "showSnack",
+          "The company was successfully assigned!!",
+          "success"
+        );
+      } catch (error) {
+        console.log("error", error);
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops!! we did something wrong when removing the company - signal, please try again!!",
+          "error"
+        );
+        return;
       }
     }
   },
