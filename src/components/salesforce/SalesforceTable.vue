@@ -38,7 +38,7 @@
         </td>
         <td v-else>
           <div class="d-flex align-center justify-center">
-            <v-icon color="blue lighten-2" size="20" small>add_box</v-icon>
+            <add-company :company="item" />
           </div>
         </td>
       </tr>
@@ -48,6 +48,7 @@
 
 <script>
 import ModalObjects from "./Modal.vue";
+import AddCompany from "./AddCompany.vue"
 import gql from "graphql-tag";
 export default {
   data() {
@@ -89,7 +90,8 @@ export default {
     };
   },
   components: {
-    ModalObjects
+    ModalObjects,
+    AddCompany
   },
   methods: {
     updateOptions(dataFromEvent = {}) {
@@ -114,39 +116,39 @@ export default {
         }
       );
       if (res) {
-        // try {
-        //   // const index = this.items.salesforceObjectList.indexOf(JSON.parse(object));
-        //   const result = await this.$apollo.mutate({
-        //     mutation: gql`
-        //       mutation($salesforceMappingId: Int!) {
-        //         deleteSalesforceMapping(salesforceMappingId: $salesforceMappingId) {
-        //           status
-        //           message
-        //         }
-        //       }
-        //     `,
-        //     // Parameters
-        //     variables: {
-        //       salesforceMappingId: parseInt(object.mapping.id),
-        //     }
-        //   });
-        //   console.log("result", result);
-        //   // this.items.salesforceObjectList.splice(index, 1);
-        //   this.items.totalResults -= 1;
-        //   this.$eventBus.$emit(
-        //     "showSnack",
-        //     "The signal successfully delete!!",
-        //     "success"
-        //   );
-        // } catch (error) {
-        //   console.log("error", error);
-        //   this.$eventBus.$emit(
-        //     "showSnack",
-        //     "Oops!! we did something wrong when removing the company - signal, please try again!!",
-        //     "error"
-        //   );
-        //   return;
-        // }
+        try {
+          // const index = this.items.salesforceObjectList.indexOf(JSON.parse(object));
+          const result = await this.$apollo.mutate({
+            mutation: gql`
+              mutation($salesforceMappingId: Int!) {
+                deleteSalesforceMapping(salesforceMappingId: $salesforceMappingId) {
+                  status
+                  message
+                }
+              }
+            `,
+            // Parameters
+            variables: {
+              salesforceMappingId: parseInt(object.mapping[0].id),
+            }
+          });
+          console.log("result", result);
+          this.items.salesforceObjectList.splice(index, 1);
+          this.items.totalResults -= 1;
+          this.$eventBus.$emit(
+            "showSnack",
+            "The signal successfully delete!!",
+            "success"
+          );
+        } catch (error) {
+          console.log("error", error);
+          this.$eventBus.$emit(
+            "showSnack",
+            "Oops!! we did something wrong when removing the company - signal, please try again!!",
+            "error"
+          );
+          return;
+        }
       }
     }
   },
