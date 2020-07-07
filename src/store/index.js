@@ -45,7 +45,9 @@ export const defaultContactSearch = {
 
 export const defaultSalesforceWizard = {
   step: 1,
-  connectionId: null
+  connectionId: null,
+  connectionName: null,
+  salesforceCode: null
 };
 
 const state = {
@@ -59,7 +61,7 @@ const state = {
   contactSearch: {
     ...defaultContactSearch
   },
-  salesforceWizard:{
+  salesforceWizard: {
     ...defaultSalesforceWizard
   }
 };
@@ -112,15 +114,12 @@ const mutations = {
   showDenseForm(state) {
     state.denseForm = false
   },
-  resetSalesforceWizardConf(state){
+  resetSalesforceWizardConf(state) {
     state.salesforceWizard = defaultSalesforceWizard;
   },
-  setSalesforceWizardStep(state, salesforceWizardStep) {
-    state.salesforceWizard.step = salesforceWizardStep
+  updateSalesforceWizardConf(state, payload) {
+    state.salesforceWizard = { ...state.salesforceWizard, ...payload }
   },
-  setSalesforceWizardConnectionId(state, salesforceWizardConnectionId) {
-    state.salesforceWizard.connectionId = salesforceWizardConnectionId;
-  }
 };
 
 const actions = {};
