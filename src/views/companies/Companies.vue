@@ -73,7 +73,8 @@
                   :key="obj.key"
                   class="mx-1 text-capitalize"
                   style="padding: 0 8px;"
-                  color="cyan darken-2"
+                  color="light-blue darken-3"
+                  outlined
                   @click:close="removeFilter(obj.key)"
                   close
                   dark
