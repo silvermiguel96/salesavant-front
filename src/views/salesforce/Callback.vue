@@ -19,50 +19,35 @@ export default {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
   },
   methods: {
-    ...mapMutations(["setSalesforceWizardStep", "setSalesforceWizardConnectionId"])
+    ...mapMutations(["updateSalesforceWizardConf"])
+  },
+  computed: {
+    connectionName() {
+      return this.$store.state.salesforceWizard.connectionName;
+    }
   },
   mounted() {
-    let that = this;
+    const that = this;
+    const { connectionName } = this;
     this.$nextTick(() => {
       const urlParams = new URLSearchParams(window.location.search);
       const salesforceCode = urlParams.get("code");
-      console.log(salesforceCode);
-      fetch(this.salesavantAPI + "/oauth/salesforce?jwt=" + getAuthToken(), {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          payload: { salesforceCode }
-        })
-      })
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          console.log(data);
-          if (data.status == "ok") {
-            that.setSalesforceWizardConnectionId(data.salesforceConnectionId);
-            that.setSalesforceWizardStep(2);
-          } else {
-            that.setSalesforceSetupStep(1);
-            that.$eventBus.$emit(
-              "showSnack",
-              "Error while setup connecting to Salesforce",
-              "error"
-            );
-          }
-        })
-        .catch(function(error) {
-          console.log("Error:" + error.message);
-          that.setSalesforceSetupStep(1);
+      if (salesforceCode) {
+        console.log(salesforceCode);
+        this.updateSalesforceWizardConf({
+          step: 2,
+          salesforceCode: salesforceCode
         });
-      setTimeout(function() {
-        that.$router.push({
-          path: "/salesforce-setup"
+        setTimeout(function() {
+          that.$router.push({
+            path: "/salesforce-setup"
+          });
+        }, 1000);
+      } else {
+        this.updateSalesforceWizardConf({
+          step: 1
         });
-      }, 1000);
+      }
     });
   }
 };
