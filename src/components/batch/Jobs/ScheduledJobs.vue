@@ -23,12 +23,12 @@
       </v-container>
       <!-- Result -->
       <div v-if="items" class="result">
-        <jobs-table
+        <scheduled-jobs-table
           v-if="items"
           :items="this.items"
           :totalResults="this.totalResults"
           @updateOptions="updateOptions"
-        ></jobs-table>
+        ></scheduled-jobs-table>
       </div>
       <div v-else class="no-result">Loading...</div>
   </v-container>
@@ -36,7 +36,7 @@
 <script>
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
-import JobsTable from "../../batch/BatchJobsTable.vue";
+import ScheduledJobsTable from "../../batch/ScheduledJobsTable.vue";
 
 export default {
   data() {
@@ -56,19 +56,22 @@ export default {
     },
     loadData: function() {
       const salesavantScheduledJobs = gql`
-        query getAllJobs($search: String, $first: Int, $offset: Int) {
+        query salesavantScheduledJobs($search: String, $first: Int, $offset: Int) {
           salesavantScheduledJobs(search: $search, first: $first, offset: $offset) {
             totalResults
             salesavantJobsList {
-              uid
-              creationTime
               modificationTime
-              jobType
               description
-              progress
-              result
-              status
+              textDescription
+              rqJobId
               additionalData
+              scheduleTime
+              periodicity
+              cron
+              count
+              lastResult
+              accountId
+              userId
             }
           }
         }
@@ -98,7 +101,7 @@ export default {
   },
   props: {},
   components: {
-    JobsTable
+    ScheduledJobsTable
   },
   mounted: function() {
     this.loadData();
