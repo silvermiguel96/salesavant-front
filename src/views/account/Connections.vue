@@ -26,17 +26,26 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="10">
+                <v-col cols="9">
                   <a
                     :href="sfConnection.salesforceUrl"
                     target="_blank"
                   >{{ sfConnection.salesforceUrl || "--"}}</a>
                 </v-col>
-                <v-col cols="2" class="d-flex justify-end">
+                <v-col cols="3" class="d-flex justify-space-between">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon
-                        color="red"
+                        v-bind="attrs"
+                        v-on="on"
+                      >settings</v-icon>
+                    </template>
+                    <span>Configure this connection</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        color="red lighten-2"
                         v-bind="attrs"
                         v-on="on"
                         @click="deleteSalesforceConnection(sfConnection.id)"
@@ -53,10 +62,16 @@
                       <v-row no-gutters>
                         <v-col cols="6" class="d-flex flex-column justify-space-between">
                           <div class="body-1 text--secondary">
-                            <span>Download </span><router-link class="caption" to="salesforce-objects">view data</router-link>
+                            <span>Download </span>
+                            <router-link class="caption" to="salesforce-objects">view data</router-link>
                           </div>
                           <div class="text--secondary pb-2">
-                            <span class="caption" v-if="sfConnection.downloadLastRun">Last run: {{ sfConnection.downloadLastRun | moment("MMMM Do YYYY, H:mm") }}</span>
+                            <span class="caption">Last run:</span>
+                            <span
+                              class="caption"
+                              v-if="sfConnection.downloadLastRun"
+                            >{{ sfConnection.downloadLastRun | moment("MMMM Do YYYY, H:mm") }}</span>
+                            <span v-else>--</span>
                           </div>
                           <v-btn
                             color="cyan darken-2"
@@ -69,7 +84,7 @@
                         </v-col>
                         <v-col cols="6" class="d-flex justify-end">
                           <div class="d-flex flex-column align-center justify-space-around">
-                            <h1>{{ sfConnection.downloadedRecords || "-" }}</h1>
+                            <h1>{{ sfConnection.downloadedRecords || "--" }}</h1>
                             <div class="caption">Records Downloaded</div>
                           </div>
                         </v-col>
@@ -86,7 +101,12 @@
                             <span>Upload</span>
                           </div>
                           <div class="text--secondary pb-2">
-                            <span class="caption" v-if="sfConnection.uploadLastRun">Last run: {{ sfConnection.uploadLastRun | moment("MMMM Do YYYY, H:mm") }}</span>
+                            <span class="caption">Last run:</span>
+                            <span
+                              class="caption"
+                              v-if="sfConnection.uploadLastRun"
+                            >{{ sfConnection.uploadLastRun | moment("MMMM Do YYYY, H:mm") }}</span>
+                            <span v-else>--</span>
                           </div>
                           <v-btn
                             color="cyan darken-2"
@@ -99,7 +119,7 @@
                         </v-col>
                         <v-col cols="6" class="d-flex justify-end">
                           <div class="d-flex flex-column align-center justify-space-around">
-                            <h1>{{ sfConnection.uploadedRecords || "-" }}</h1>
+                            <h1>{{ sfConnection.uploadedRecords || "--" }}</h1>
                             <div class="d-flex flex-column align-center">
                               <div class="caption">Records Uploaded</div>
                             </div>
@@ -158,16 +178,16 @@ export default {
   methods: {
     async deleteSalesforceConnection(salesforceConnectionId) {
       const res = await this.$confirm(
-        `<h1 class="subtitle-1">
-            Are you sure do you want to disconnect from Salesforce?
-        </h1> `,
+        `<p class="subtitle-1 text-justify">
+            Are you sure do you want to disconnect from Salesforce, all synced data is going to be deleted from Salesavant?
+        </p> `,
         {
           buttonTrueText: "disconnect",
           buttonFalseText: "close",
           buttonTrueColor: "red lighten-2",
-          color: "primary",
+          color: "light-blue darken-1",
           icon: "power_off",
-          title: "Confirm Disconnect from Salesforce",
+          title: "Disconnect from Salesforce",
           width: 600
         }
       );
