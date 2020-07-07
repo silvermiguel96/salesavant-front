@@ -18,7 +18,7 @@
           </td>
           <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
           <td>
-            {{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}
+            {{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}
           </td>
           <td>
             <div class="d-flex align-center justify-center" v-if="folderId || folderName ">
