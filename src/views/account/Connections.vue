@@ -21,24 +21,14 @@
           >
             <v-card-text>
               <v-row no-gutters>
-                <v-col cols="12">
-                  <div class="title text-secondary">Salesforce</div>
+                <v-col md="10" cols="12">
+                  <div class="subtitle-1 text-secondary text-capitalize">{{ sfConnection.name }}&nbsp;</div>
+                  <a :href="sfConnection.salesforceUrl" target="_blank">Go to Salesforce</a>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="9">
-                  <a
-                    :href="sfConnection.salesforceUrl"
-                    target="_blank"
-                  >{{ sfConnection.salesforceUrl || "--"}}</a>
-                </v-col>
-                <v-col cols="3" class="d-flex justify-space-between">
+                <v-col md="2" cols="12" class="d-flex justify-md-end align-start">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-icon
-                        v-bind="attrs"
-                        v-on="on"
-                      >settings</v-icon>
+                      <v-icon  size="22" v-bind="attrs" v-on="on" class="mx-md-2">settings</v-icon>
                     </template>
                     <span>Configure this connection</span>
                   </v-tooltip>
@@ -46,6 +36,7 @@
                     <template v-slot:activator="{ on, attrs }">
                       <v-icon
                         color="red lighten-2"
+                        size="22"
                         v-bind="attrs"
                         v-on="on"
                         @click="deleteSalesforceConnection(sfConnection.id)"
@@ -62,11 +53,11 @@
                       <v-row no-gutters>
                         <v-col cols="6" class="d-flex flex-column justify-space-between">
                           <div class="body-1 text--secondary">
-                            <span>Download </span>
-                            <router-link class="caption" to="salesforce-objects">view data</router-link>
+                            <span>Download&nbsp;</span>
+                            <router-link class="caption" to="salesforce-objects">View data</router-link>
                           </div>
                           <div class="text--secondary pb-2">
-                            <span class="caption">Last run:</span>
+                            <span class="caption">Last run:&nbsp;</span>
                             <span
                               class="caption"
                               v-if="sfConnection.downloadLastRun"
@@ -101,7 +92,7 @@
                             <span>Upload</span>
                           </div>
                           <div class="text--secondary pb-2">
-                            <span class="caption">Last run:</span>
+                            <span class="caption">Last run:&nbsp;</span>
                             <span
                               class="caption"
                               v-if="sfConnection.uploadLastRun"
@@ -159,6 +150,7 @@ export default {
             status
             sfConnections {
               id
+              name
               salesforceUrl
               downloadLastRun
               downloadedRecords
