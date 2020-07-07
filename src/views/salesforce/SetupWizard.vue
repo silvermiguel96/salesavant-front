@@ -36,7 +36,8 @@
                   <v-text-field
                     v-model="connectionName"
                     label="Connection Name"
-                    placeholder="Defatult Salesforce-#"
+                    :rules="connectionNameRules"
+                    autocomplete="off"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -126,7 +127,11 @@ export default {
       interval: null,
       syncRunning: false,
       progress: 0,
-      jobDescription: ""
+      jobDescription: "",
+      connectionNameRules: [
+        v => !!v || "The name is required",
+        v => (v && v.length < 30) || "Name maximum length is 30"
+      ],
     };
   },
   props: {
@@ -161,6 +166,9 @@ export default {
       "resetSalesforceWizardConf"
     ]),
     setupConnection() {
+      if (!this.$refs.formStep2.validate()){
+        return;
+      }
       const that = this;
       const { connectionName, salesforceCode } = this;
       fetch(this.salesavantAPI + "/oauth/salesforce?jwt=" + getAuthToken(), {
