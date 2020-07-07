@@ -21,9 +21,8 @@
                   <v-text-field v-model="playlistDescription" label="Playlist Description"></v-text-field>
                 </v-col>
                 <v-col>
-                  <h2 class="title">Upload a (.csv) file</h2>
-                  <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
-                  <p class="caption my-1">The columns must be:</p>
+                  <h2 class="title">Upload a CSV file</h2>
+                  <h3 class="body-2">Your CVS file must use commas as delimiters and must include the following columns:</h3>
                   <ul>
                     <li>Website</li>
                     <li>Scale Score</li>
@@ -37,9 +36,8 @@
                   <v-text-field v-model="description" label="Description"></v-text-field>
                 </v-col>
                 <v-col>
-                  <h2 class="title">Upload a (.csv) file</h2>
-                  <h3 class="caption">Your CVS file must use commas as column delimiters</h3>
-                  <p class="caption my-1">The columns must be:</p>
+                  <h2 class="title">Upload a CSV file</h2>
+                  <h3 class="body-2">Your CVS file must use commas as delimiters and must include the following columns:</h3>
                   <ul>
                     <li>Full name</li>
                     <li>LinkedIn</li>
@@ -140,7 +138,7 @@ export default {
         } else {
           formData.append("description", this.description);
         }
-        fetch(this.salesavantAPI + "/launch-job?jwt=" + getAuthToken(), {
+        fetch(this.salesavantAPI + "/launch-file-job?jwt=" + getAuthToken(), {
           method: "POST",
           body: formData
         })
