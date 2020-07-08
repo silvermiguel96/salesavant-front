@@ -12,15 +12,23 @@
     @update:options="updateOptions"
   >
     <v-progress-linear v-slot:progress colror="blue" indeterminate></v-progress-linear>
-    <template v-slot:item="{ item, headers }">
-        <JobRow :job="item"/>
+    <template v-slot:item="{ item }">
+      <tr>
+        <td>{{ item.textDescription }}</td>
+        <td>{{ item.description || "--" }}</td>
+        <td>{{ item.modificationTime | moment("MMMM Do YYYY,H:mm") }}</td>
+        <td>{{ item.lastResult | moment("MMMM Do YYYY,H:mm") || "--"}}</td>
+        <td v-if="item.periodicity">{{ item.periodicity || "--"}}</td>
+        <td v-else>{{ item.scheduleTime | moment("MMMM Do YYYY,H:mm") }}</td>
+        <td>
+          <div class="d-flex align-center justify-center">{{ item.count || "0"}}</div>
+        </td>
+      </tr>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import JobRow from './BatchJobRow';
-
 export default {
   data() {
     return {
@@ -32,14 +40,31 @@ export default {
           width: "20%",
           sortable: false
         },
-        { text: "Modification Time",
+        {
+          text: "Modification Time",
           value: "modificationTime",
           width: "15%",
           sortable: false
         },
-        { text: "Last Result", value: "lastResult", width: "15%", sortable: false},
-        { text: "Periodicity/Schedule Time", value: "periodicity", width: "20%", sortable: false},
-        { text: "Count", value: "count", width: "10%", sortable: false, align:"center"}
+        {
+          text: "Last Result",
+          value: "lastResult",
+          width: "15%",
+          sortable: false
+        },
+        {
+          text: "Periodicity/Schedule Time",
+          value: "periodicity",
+          width: "20%",
+          sortable: false
+        },
+        {
+          text: "Count",
+          value: "count",
+          width: "10%",
+          sortable: false,
+          align: "center"
+        }
       ],
       options: {
         page: 1,
@@ -55,9 +80,6 @@ export default {
   props: {
     items: Array,
     totalResults: Number
-  },
-  components:{
-    JobRow
   }
 };
 </script>
