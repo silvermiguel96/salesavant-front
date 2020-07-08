@@ -30,23 +30,13 @@
 
         <v-stepper-content step="2">
           <v-card class="mb-8" height="220px" outlined>
-            <v-form ref="formStep2" class="ma-4">
-              <v-row no-gutters>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="connectionName"
-                    label="Connection Name"
-                    :rules="connectionNameRules"
-                    autocomplete="off"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+            <v-form ref="formStep2" class="ma-4 mt-8">
               <v-row no-gutters>
                 <v-col cols="12">
                   <v-select
                     v-model="periodicity"
                     :items="periodicityIntervals"
-                    label="Sync Interval"
+                    label="Syncronization Periodicity"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -100,7 +90,7 @@
               style="font-size: 0.9em;"
             >{{ progress.toFixed(0) }}%</v-progress-circular>
             <v-card-text class="text-center">{{ jobDescription }}</v-card-text>
-            <v-btn color="primary" @click="finishWizard">Back to Connections</v-btn>
+            <v-btn color="primary" @click="finishWizard">Back to Salesforce</v-btn>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -116,49 +106,17 @@ import { mapMutations } from "vuex";
 export default {
   data() {
     return {
-      myUser: {
-        sfConnections: [],
-        oauths: []
-      },
-      connectionName: "",
       periodicity: "None",
       periodicityIntervals: ["None", "Daily", "Weekly", "Monthly"],
       checkbox: false,
       interval: null,
       syncRunning: false,
       progress: 0,
-      jobDescription: "",
-      connectionNameRules: [
-        v => !!v || "The name is required",
-        v => (v && v.length < 30) || "Name maximum length is 30"
-      ],
+      jobDescription: ""
     };
   },
   props: {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
-  },
-  apollo: {
-    myUser: {
-      query: gql`
-        query {
-          myUser {
-            firstName
-            lastName
-            email
-            status
-            sfConnections {
-              id
-              salesforceUrl
-            }
-            oauths {
-              serviceName
-              serviceUrl
-            }
-          }
-        }
-      `,
-      fetchPolicy: "cache-and-network"
-    }
   },
   methods: {
     ...mapMutations([
@@ -170,7 +128,7 @@ export default {
         return;
       }
       const that = this;
-      const { connectionName, salesforceCode } = this;
+      const { salesforceCode } = this;
       fetch(this.salesavantAPI + "/oauth/salesforce?jwt=" + getAuthToken(), {
         method: "POST",
         headers: {
@@ -178,7 +136,6 @@ export default {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          connectionName,
           salesforceCode
         })
       })
@@ -327,7 +284,7 @@ export default {
       }, 2000);
     },
     finishWizard() {
-      this.$router.push("/connections", () => {
+      this.$router.push("/salesforce", () => {
         this.resetSalesforceWizardConf();
       });
     },

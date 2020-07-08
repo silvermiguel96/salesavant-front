@@ -101,9 +101,9 @@ export default {
           click: this.onAccount
         },
         {
-          text: "Connections",
-          router: "/connections",
-          click: this.onConnections
+          text: "Salesforce",
+          router: "/salesforce",
+          click: this.onSalesforce
         },
         {
           text: "Logout",
@@ -136,9 +136,9 @@ export default {
       this.resetSearch();
       this.$router.push("/account").catch(err => {});
     },
-    onConnections() {
+    onSalesforce() {
       this.resetSearch();
-      this.$router.push("/connections").catch(err => {});
+      this.$router.push("/salesforce").catch(err => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);

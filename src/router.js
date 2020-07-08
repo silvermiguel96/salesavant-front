@@ -23,7 +23,7 @@ import SalesforceAuthorize from "./views/salesforce/Authorize.vue";
 import SalesforceCallback from "./views/salesforce/Callback.vue";
 
 import Account from "./views/account/Account.vue"
-import Connections from "./views/account/Connections.vue"
+import Salesforce from "./views/account/Salesforce.vue"
 
 import SalesforceSetupWizard from "./views/salesforce/SetupWizard.vue"
 import SalesforceObject from "./views/salesforce/Objects.vue"
@@ -158,9 +158,9 @@ const router = new Router({
       }
     },
     {
-      path: "/connections",
-      name: "connections",
-      component: Connections,
+      path: "/salesforce",
+      name: "Salesforce",
+      component: Salesforce,
       meta: {
         requiresAuth: true
       }

@@ -12,7 +12,7 @@
   </v-container>
 </template>
 <script>
-import getParameterByName from "../../commons";
+import getParameterByName from "../../commons.js";
 import gql from "graphql-tag";
 export default {
   data() {
