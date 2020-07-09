@@ -109,7 +109,7 @@ export default {
           text: "Logout",
           router: "/home",
           click: this.exitApp
-        },
+        }
       ]
     };
   },
