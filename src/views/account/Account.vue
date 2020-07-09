@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="p-2">
+  <v-container fluid>
     <v-row>
-      <v-col cols="12" class="px-2 py-0 pr-sm-2 pb-sm-0">
+      <v-col cols="6" class="px-2 py-0 pr-sm-2 pb-sm-0">
         <v-card outlined style="height:100%;" class="pa-3">
           <v-card-title>
-            <div class="title text-secondary">Account</div>
+            <div class="title text-secondary">Profile</div>
           </v-card-title>
           <div class="d-flex flex-row justify-space-between my-6">
             <v-card-text>
@@ -27,6 +27,55 @@
                 dense
                 outlined
               ></v-text-field>
+              <v-text-field
+                v-model="myUser.status"
+                autocomplete="off"
+                label="Status"
+                type="status"
+                name="status"
+                disabled
+                dense
+                outlined
+              ></v-text-field>
+            </v-card-text>
+          </div>
+        </v-card>
+      </v-col>
+      <v-col cols="6" class="px-2 py-0 pr-sm-2 pb-sm-0">
+        <v-card outlined style="height:100%;" class="pa-3">
+          <v-card-title>
+            <div class="title text-secondary">New Password</div>
+          </v-card-title>
+          <div class="d-flex flex-row justify-space-between my-6">
+            <v-card-text>
+              <v-text-field
+                v-model="Password"
+                autocomplete="off"
+                label="Password"
+                type="Password"
+                name="Password"
+                dense
+                outlined
+              ></v-text-field>
+              <v-text-field
+                v-model="Password"
+                autocomplete="off"
+                label="New Password"
+                type="Password"
+                name="Password"
+                dense
+                outlined
+              ></v-text-field>
+              <v-text-field
+                v-model="Password"
+                autocomplete="off"
+                label="Confirm new Password"
+                type="Password"
+                name="Password"
+                dense
+                outlined
+              ></v-text-field>
+              <v-btn color="primary" block disabled>Change Password</v-btn>
             </v-card-text>
           </div>
         </v-card>
@@ -40,7 +89,6 @@ export default {
   data() {
     return {
       myUser: {
-        sfConnections: [],
         oauths: []
       }
     };
@@ -54,10 +102,7 @@ export default {
             lastName
             email
             status
-            sfConnections {
-              salesforceUrl
-            }
-            oauths{
+            oauths {
               serviceName
               serviceUrl
             }
@@ -67,8 +112,7 @@ export default {
       fetchPolicy: "cache-and-network"
     }
   },
-  methods: {
-  },
+  methods: {},
   computed: {
     fullname() {
       return `${this.myUser.firstName} ${this.myUser.lastName}`;

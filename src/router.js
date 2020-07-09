@@ -24,6 +24,7 @@ import SalesforceCallback from "./views/salesforce/Callback.vue";
 
 import Account from "./views/account/Account.vue"
 import Salesforce from "./views/account/Salesforce.vue"
+import Admin from "./views/account/Admin.vue"
 
 import SalesforceSetupWizard from "./views/salesforce/SetupWizard.vue"
 import SalesforceObject from "./views/salesforce/Objects.vue"
@@ -162,6 +163,14 @@ const router = new Router({
       path: "/salesforce",
       name: "Salesforce",
       component: Salesforce,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/admin",
+      name: "Admin",
+      component: Admin,
       meta: {
         requiresAuth: true
       }
