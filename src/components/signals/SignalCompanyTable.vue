@@ -30,7 +30,7 @@
           {{ item.state || "--"}}
         </td> 
         <td>
-          {{ item.modificationTime | moment("MMMM Do YYYY,H:mm")}}
+          {{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}
         </td>
       </tr>
     </template>
