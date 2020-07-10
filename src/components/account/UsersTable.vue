@@ -13,18 +13,25 @@
   >
     <template v-slot:item="{ item }">
       <tr>
+        <td>{{ item.firstName }} {{ item.lastName}}</td>
+        <td>{{ item.email }}</td>
+        <td class="text-capitalize">{{ item.status}}</td>
         <td>
-          <router-link :to="`/companies/${ item.uid}`">
-            <long-paragraph :text="item.name" :maxLength="35"></long-paragraph>
-          </router-link>
-        </td>
-        <td>{{ item.totalScore ? item.totalScore.toLocaleString() : "0"}}</td>
-        <td>{{ item.numEmployees ? item.numEmployees.toLocaleString() : "0"}}</td>
-        <td>{{ item.state || "--"}}</td>
-        <td>{{ item.country || "--"}}</td>
-        <td>{{ item.momentum || "--"}}</td>
-        <td>
-          <long-paragraph :text="item.vertical" :maxLength="35"></long-paragraph>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <div class="d-flex align-center justify-center">
+                <v-icon
+                  @click="removePlaylist(item)"
+                  color="deep-orange lighten-2"
+                  size="20"
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                >person</v-icon>
+              </div>
+            </template>
+            <span>Inactive User</span>
+          </v-tooltip>
         </td>
       </tr>
     </template>
@@ -33,18 +40,26 @@
 
 <script>
 import _get from "lodash.get";
-import LongParagraph from "../../components/common/LongParagraph.vue";
 export default {
   data() {
     return {
-      headers: [ 
-        { text: "Company", value: "name", width: "20%", sortable: false },
-        { text: "Score", value: "totalScore", width: "10%", sortable: true },
-        { text: "Employees", value: "numEmployees", width: "10%", sortable: true, divider: true },
-        { text: "State", value: "state", width: "15%", sortable: false },
-        { text: "Country", value: "country", width: "15%", sortable: false },
-        { text: "Momentum", value: "momentum", width: "12%", sortable: false },
-        { text: "Vertical", value: "vertical", width: "18%", sortable: false }
+      headers: [
+        { text: "Name", value: "name", width: "35%", sortable: false },
+        { text: "Email", value: "totalScore", width: "35%", sortable: true },
+        {
+          text: "Status",
+          value: "numEmployees",
+          width: "15%",
+          sortable: true,
+          divider: true
+        },
+        {
+          text: "Action",
+          align: "center",
+          value: "state",
+          width: "15%",
+          sortable: false
+        }
       ],
       options: {
         page: 1,
@@ -59,14 +74,30 @@ export default {
     _get: _get,
     trimText(text = "") {
       return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
+    },
+    async removePlaylist(item) {
+      const res = await this.$confirm(
+        ` <h1 class="subtitle-1">Confirm you want to Inactive User 
+        <span class="font-weight-bold">${item.firstName} ${item.lastName}</span>?</h1>`,
+        {
+          buttonTrueText: "Inactive",
+          buttonFalseText: "close",
+          buttonTrueColor: "red lighten-2",
+          color: "deep-orange lighten-2",
+          icon: "warning",
+          title: "Inactive User",
+          width: 600
+        }
+      );
+      if (res) {
+        console.log("the playlist", item);
+        this.$emit("deletePlaylist", item);
+      }
     }
   },
   props: {
     items: Array,
     totalResults: Number
-  },
-  components: {
-    LongParagraph
   }
 };
 </script>
