@@ -3,9 +3,7 @@
     <v-container fluid>
       <v-row no-gutters>
         <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-          <v-btn class="text-capitalize" block color="primary" min-width="150" to="/launch-job">
-            <v-icon size="18" class="mr-2">add</v-icon>new job
-          </v-btn>
+          <add-user />
         </v-col>
         <v-row no-gutters class="d-flex justify-end">
           <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
@@ -14,7 +12,7 @@
               append-icon="filter_list"
               label="Quick Search"
               hide-details
-              placeholder="Type a Job Name or Description"
+              placeholder="Type a Name or Email"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -36,6 +34,7 @@
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
 import UserTable from "./UsersTable.vue";
+import AddUser from "./AddUser.vue";
 
 export default {
   data() {
@@ -55,7 +54,8 @@ export default {
     }
   },
   components: {
-    UserTable
+    UserTable,
+    AddUser
   },
   apollo: {
     accounts: {
