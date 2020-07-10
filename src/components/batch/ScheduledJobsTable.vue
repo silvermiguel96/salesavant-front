@@ -16,10 +16,10 @@
       <tr>
         <td>{{ item.textDescription }}</td>
         <td>{{ item.description || "--" }}</td>
-        <td>{{ item.modificationTime | moment("MMMM Do YYYY,H:mm") }}</td>
-        <td>{{ item.lastResult | moment("MMMM Do YYYY,H:mm") || "--"}}</td>
+        <td>{{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}</td>
+        <td>{{ item.lastResult | moment("MMMM Do YYYY, H:mm") || "--"}}</td>
         <td v-if="item.periodicity">{{ item.periodicity || "--"}}</td>
-        <td v-else>{{ item.scheduleTime | moment("MMMM Do YYYY,H:mm") }}</td>
+        <td v-else>{{ item.scheduleTime | moment("MMMM Do YYYY, H:mm") }}</td>
         <td>
           <div class="d-flex align-center justify-center">{{ item.count || "0"}}</div>
         </td>
