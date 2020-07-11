@@ -61,10 +61,10 @@
                           <span v-else>--</span>
                         </div>
                         <v-btn
-                          color="cyan darken-2"
+                          color="light-blue darken-1"
                           @click="downloadSalesforceData(salesforceConnection.id)"
-                          dark
                           small
+                          dark
                         >
                           <v-icon class="mr-2">cloud_download</v-icon>Get Data
                         </v-btn>
@@ -96,10 +96,10 @@
                           <span v-else>--</span>
                         </div>
                         <v-btn
-                          color="cyan darken-2"
+                          color="light-blue darken-1"
                           @click="uploadSalesforceData(salesforceConnection.id)"
-                          dark
                           small
+                          dark
                         >
                           <v-icon class="mr-2">cloud_upload</v-icon>Upload Data
                         </v-btn>

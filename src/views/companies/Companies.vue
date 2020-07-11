@@ -71,17 +71,16 @@
                 <v-chip
                   v-for="obj in companySearchFilters"
                   :key="obj.key"
-                  class="mx-1 text-capitalize"
-                  style="padding: 0 8px;"
-                  color="light-blue darken-3"
-                  outlined
                   @click:close="removeFilter(obj.key)"
-                  close
+                  class="mx-1"
+                  style="padding: 0 8px;"
+                  color="light-blue darken-1"
                   dark
+                  close
                   small
                 >
-                  <strong class="text-capitalize">{{obj.labelKey}}:&nbsp;</strong>
-                  {{obj.labelVal}}
+                  <span class="text-capitalize font-weight-bold">{{obj.labelKey}}:&nbsp;</span>
+                  <span class="font-weight-medium">{{obj.labelVal}}</span>
                 </v-chip>
               </div>
             </v-col>
