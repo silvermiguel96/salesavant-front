@@ -25,6 +25,7 @@
         :items="this.accounts[0].users"
         :totalResults="this.accounts[0].users.length"
         @updateOptions="updateOptions"
+        @deletePlaylist="deletePlaylist"
       ></user-table>
     </div>
     <div v-else class="no-result">Loading...</div>
@@ -51,7 +52,8 @@ export default {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
       this.loadData();
-    }
+    },
+    deletePlaylist() {}
   },
   components: {
     UserTable,
