@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import _get from "lodash.get";
 export default {
   data() {
     return {
@@ -70,10 +69,6 @@ export default {
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
-    },
-    _get: _get,
-    trimText(text = "") {
-      return `${text.substring(0, 100)}${text.length > 100 ? "..." : ""}`;
     },
     async removePlaylist(item) {
       const res = await this.$confirm(

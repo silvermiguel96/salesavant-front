@@ -7,6 +7,7 @@
       width="180" 
       left
       small
+      touchless=temporary
     >
       <v-list-item>
         <v-list-item-title class="title">Admin</v-list-item-title>
@@ -39,6 +40,7 @@ export default {
   data() {
     return {
       drawer: true,
+      temporary: false,
       miniVariant: true,
       items: [
         { title: "Home", icon: "home" },
