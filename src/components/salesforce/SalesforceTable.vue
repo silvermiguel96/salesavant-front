@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="items"
+    :items="parseItem"
     :server-items-length="totalResults"
     :items-per-page="options.itemsPerPage"
     :footer-props="{
@@ -18,7 +18,7 @@
           <a
             :href="`${item.sfConnection.salesforceUrl}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
             target="_blank"
-          >{{ JSON.parse(item.sfObject).name }}</a>
+          >{{ item.sfObject.name }} </a>
         </td>
         <td>
           <router-link
@@ -93,6 +93,17 @@ export default {
     ModalObjects,
     AddCompany
   },
+  computed: {
+    parseItem() {
+      return this.items.map(item => {
+        if (typeof item.sfObject === "string") {
+          let sfObject = JSON.parse(item.sfObject);
+          item.sfObject = sfObject;
+        }
+        return item;
+      });
+    }
+  },
   methods: {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
@@ -103,7 +114,7 @@ export default {
         `<h1 class="subtitle-1">
               Confirm you want to eliminate the company
               <span class="font-weight-bold"
-              >${JSON.parse(object.sfObject).name}</span>?
+              >${object.sfObject.name}</span>?
             </h1> `,
         {
           buttonTrueText: "delete",
@@ -146,7 +157,7 @@ export default {
           console.log("error", error);
           this.$eventBus.$emit(
             "showSnack",
-            "Oops!! we did something wrong when removing the company - signal, please try again!!",
+            "Oops!! we did something wrong when removing the company, please try again!!",
             "error"
           );
           return;
@@ -178,7 +189,6 @@ export default {
           }
         });
         console.log("result", result);
-
         this.$eventBus.$emit(
           "showSnack",
           "The company was successfully assigned!!",
@@ -188,7 +198,7 @@ export default {
         console.log("error", error);
         this.$eventBus.$emit(
           "showSnack",
-          "Oops!! we did something wrong when removing the company - signal, please try again!!",
+          "Oops!! we did something wrong when adding the company , please try again!!",
           "error"
         );
         return;

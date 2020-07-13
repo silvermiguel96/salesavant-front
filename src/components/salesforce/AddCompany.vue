@@ -10,7 +10,7 @@
       <v-card>
         <v-card-title class="headline grey lighten-5" primary-title>Salesforce</v-card-title>
         <v-card-text>
-          The name of company select is <span class="font-weigth-normal">{{ JSON.parse(company.sfObject).name }}</span>
+          The name of company select is <span class="font-weigth-normal">{{company.sfObject.name }}</span>
           <v-row wrap class="pt-2">
             <v-col cols="12">
               <companies-autocomplete
@@ -22,8 +22,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" class="text-capitalize" text @click="addObject">Aggregate</v-btn>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog=false">Close</v-btn>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="addObject">Aggregate</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
