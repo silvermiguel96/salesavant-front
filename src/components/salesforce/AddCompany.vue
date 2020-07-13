@@ -22,7 +22,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey darken-1" class="text-capitalize" text @click="addObject()">Aggregate</v-btn>
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="addObject">Aggregate</v-btn>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog=false">Close</v-btn>
         </v-card-actions>
       </v-card>
@@ -57,11 +57,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-.code {
-  color: rgba(0, 0, 0, 0.67);
-  background: transparent;
-  height: 0;
-  font-family: sans-serif;
-}
-</style>
