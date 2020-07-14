@@ -128,7 +128,9 @@ export default {
       );
       if (res) {
         try {
-          // const index = this.items.salesforceObjectList.indexOf(JSON.parse(object));
+          const index = this.parseItem.indexOf(object);
+          const indexMapping = parseInt(object.mapping[0].id)
+          console.log("parseItem",object.mapping[0].id)
           const result = await this.$apollo.mutate({
             mutation: gql`
               mutation($salesforceMappingId: Int!) {
@@ -146,13 +148,24 @@ export default {
             }
           });
           console.log("result", result);
-          this.items.salesforceObjectList.splice(index, 1);
-          this.items.totalResults -= 1;
-          this.$eventBus.$emit(
-            "showSnack",
-            "The company successfully delete!!",
-            "success"
-          );
+          if(result.data.deleteSalesforceMapping.status === "ok") {
+            console.log("this.parseItem[index]", this.parseItem[index])
+            this.parseItem[index].mapping =  ""
+            this.$eventBus.$emit(
+              "showSnack",
+              "The company successfully delete!!",
+              "success"
+            );
+            return
+          }
+          if(result.data.deleteSalesforceMapping.status === "error") {
+            this.$eventBus.$emit(
+              "showSnack",
+              "The company successfully delete!!",
+              "error"
+            );
+            return
+          }
         } catch (error) {
           console.log("error", error);
           this.$eventBus.$emit(
@@ -198,7 +211,7 @@ export default {
         console.log("error", error);
         this.$eventBus.$emit(
           "showSnack",
-          "Oops!! we did something wrong when adding the company , please try again!!",
+          "Oops!! we did something wrong when delete the company , please try again!!",
           "error"
         );
         return;
