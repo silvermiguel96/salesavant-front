@@ -101,6 +101,11 @@ export default {
           click: this.onAccount
         },
         {
+          text: "Admin",
+          router: "/admin",
+          click: this.onAdmin
+        },
+        {
           text: "Salesforce",
           router: "/salesforce",
           click: this.onSalesforce
@@ -135,6 +140,10 @@ export default {
     onAccount() {
       this.resetSearch();
       this.$router.push("/account").catch(err => {});
+    },
+    onAdmin() {
+      this.resetSearch();
+      this.$router.push("/admin").catch(err => {});
     },
     onSalesforce() {
       this.resetSearch();
