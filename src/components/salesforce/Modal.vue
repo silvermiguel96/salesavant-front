@@ -10,7 +10,7 @@
       <v-card>
         <v-card-title class="headline grey lighten-5" primary-title>Salesforce {{title}}</v-card-title>
         <v-card-text>
-          <code class="code">{{ JSON.stringify(JSON.parse(item),null , 4) }}</code>
+          <code class="code">{{ item }}</code>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -29,7 +29,7 @@ export default {
     };
   },
   props: {
-    item: String,
+    item: Object,
     title: String
   }
 };
