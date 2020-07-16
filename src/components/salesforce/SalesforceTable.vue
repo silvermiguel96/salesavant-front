@@ -18,20 +18,20 @@
           <a
             :href="`${item.sfConnection.salesforceUrl}/lightning/r/${item.sfObjectType}/${item.sfId}/view`"
             target="_blank"
-          >{{ item.sfObject.name }} </a>
+          >{{ item.sfObject.name }}</a>
         </td>
         <td>
           <router-link
-            v-if="item.mapping.length"
-            :to="`/companies/${ item.mapping[0].company.uid}`"
-          >{{ item.mapping[0].company.name }}</router-link>
+            v-if="item.mapping"
+            :to="`/companies/${ item.mapping.company.uid}`"
+          >{{ item.mapping.company.name }}</router-link>
         </td>
         <td>
           <div class="d-flex align-center justify-center">
             <modal-objects :title="item.sfObjectType" :item="item.sfObject" />
           </div>
         </td>
-        <td v-if="item.mapping.length">
+        <td v-if="item.mapping">
           <div class="d-flex align-center justify-center">
             <v-icon color="red lighten-2" @click="deleteObject(item)" size="20" small>delete</v-icon>
           </div>
@@ -93,6 +93,10 @@ export default {
     ModalObjects,
     AddCompany
   },
+  props: {
+    items: Array,
+    totalResults: Number
+  },
   computed: {
     parseItem() {
       return this.items.map(item => {
@@ -108,11 +112,60 @@ export default {
     updateOptions(dataFromEvent = {}) {
       this.$emit("updateOptions", { dataFromEvent });
     },
+    async addObject(object) {
+      console.log("Objet", object);
+      const index = this.parseItem.indexOf(object.objectCompany);
+      console.log("index", index);
+      const result = await this.$apollo.mutate({
+        mutation: gql`
+          mutation($companyUid: String!, $sfObjectId: Int!) {
+            createSalesforceMapping(
+              companyUid: $companyUid
+              sfObjectId: $sfObjectId
+            ) {
+              status
+              message
+              salesforceMapping {
+                id
+                company {
+                  uid
+                  name
+                }
+              }
+            }
+          }
+        `,
+        // Parameters
+        variables: {
+          companyUid: object.company.companyUid,
+          sfObjectId: parseInt(object.objectCompany.id)
+        }
+      });
+      console.log("result", result);
+      if (result.data.createSalesforceMapping.status === "ok") {
+        console.log("this.parseItem[index]", this.parseItem[index]);
+        this.parseItem[index].mapping =
+          result.data.createSalesforceMapping.salesforceMapping;
+        this.$eventBus.$emit(
+          "showSnack",
+          "SalesForce mapping successfully created",
+          "success"
+        );
+        return;
+      } else {
+        this.$eventBus.$emit(
+          "showSnack",
+          `${result.data.createSalesforceMapping.message}!!`,
+          "error"
+        );
+        return;
+      }
+    },
     async deleteObject(object) {
       console.log("object", object);
       const res = await this.$confirm(
         `<h1 class="subtitle-1">
-              Confirm you want to eliminate the company
+              Confirm you want to eliminate the mapping for company
               <span class="font-weight-bold"
               >${object.sfObject.name}</span>?
             </h1> `,
@@ -127,100 +180,44 @@ export default {
         }
       );
       if (res) {
-        try {
-          const index = this.parseItem.indexOf(object);
-          const indexMapping = parseInt(object.mapping[0].id)
-          console.log("parseItem",object.mapping[0].id)
-          const result = await this.$apollo.mutate({
-            mutation: gql`
-              mutation($salesforceMappingId: Int!) {
-                deleteSalesforceMapping(
-                  salesforceMappingId: $salesforceMappingId
-                ) {
-                  status
-                  message
-                }
-              }
-            `,
-            // Parameters
-            variables: {
-              salesforceMappingId: parseInt(object.mapping[0].id)
-            }
-          });
-          console.log("result", result);
-          if(result.data.deleteSalesforceMapping.status === "ok") {
-            console.log("this.parseItem[index]", this.parseItem[index])
-            this.parseItem[index].mapping =  ""
-            this.$eventBus.$emit(
-              "showSnack",
-              "The company successfully delete!!",
-              "success"
-            );
-            return
-          }
-          if(result.data.deleteSalesforceMapping.status === "error") {
-            this.$eventBus.$emit(
-              "showSnack",
-              "The company successfully delete!!",
-              "error"
-            );
-            return
-          }
-        } catch (error) {
-          console.log("error", error);
-          this.$eventBus.$emit(
-            "showSnack",
-            "Oops!! we did something wrong when removing the company, please try again!!",
-            "error"
-          );
-          return;
-        }
-      }
-    },
-    async addObject(object) {
-      try {
-        console.log("Objet", object);
+        const index = this.parseItem.indexOf(object);
+        console.log("parseItem", object.mapping.id);
         const result = await this.$apollo.mutate({
           mutation: gql`
-            mutation($companyUid: String!, $sfObjectId: Int!) {
-              createSalesforceMapping(
-                companyUid: $companyUid
-                sfObjectId: $sfObjectId
+            mutation($salesforceMappingId: Int!) {
+              deleteSalesforceMapping(
+                salesforceMappingId: $salesforceMappingId
               ) {
                 status
                 message
-                salesforceMapping {
-                  id
-                }
               }
             }
           `,
           // Parameters
           variables: {
-            companyUid: object.company.companyUid,
-            sfObjectId: object.objectCompany.sfId
+            salesforceMappingId: parseInt(object.mapping.id)
           }
         });
         console.log("result", result);
-        this.$eventBus.$emit(
-          "showSnack",
-          "The company was successfully assigned!!",
-          "success"
-        );
-      } catch (error) {
-        console.log("error", error);
-        this.$eventBus.$emit(
-          "showSnack",
-          "Oops!! we did something wrong when delete the company , please try again!!",
-          "error"
-        );
-        return;
+        if (result.data.deleteSalesforceMapping.status === "ok") {
+          console.log("this.parseItem[index]", this.parseItem[index]);
+          this.parseItem[index].mapping = "";
+          this.$eventBus.$emit(
+            "showSnack",
+            "SalesForce mapping successfully deleted",
+            "success"
+          );
+          return;
+        } else {
+          this.$eventBus.$emit(
+            "showSnack",
+            `${result.data.deleteSalesforceMapping.message}!!`,
+            "error"
+          );
+          return;
+        }
       }
     }
-  },
-  props: {
-    items: Array,
-    totalResults: Number
   }
 };
 </script>
