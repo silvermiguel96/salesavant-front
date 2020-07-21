@@ -129,9 +129,10 @@ import { mapMutations } from "vuex";
 export default {
   data() {
     return {
-      totalResults: 0,
       search: "",
       isLoading: true,
+      companies: [],
+      totalResults: 0,
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -149,7 +150,7 @@ export default {
     companySearchFilters: function(val) {
       console.log("total results to zero");
       this.totalResults = 0;
-      this.page = 1;
+      this.options.page = 1;
     }
   },
   methods: {
