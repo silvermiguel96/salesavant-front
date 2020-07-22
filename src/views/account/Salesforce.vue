@@ -195,7 +195,7 @@ export default {
           })
           .then(resp => {
             if (resp.data.deleteSalesforceConnection.status == "ok") {
-              this.myUser.account.salesforceConnection = {};
+              this.myUser.account.salesforceConnection = undefined;
               this.$eventBus.$emit(
                 "showSnack",
                 `Salesforce connection removed succesfully`,
