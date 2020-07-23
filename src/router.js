@@ -25,6 +25,8 @@ import SalesforceCallback from "./views/salesforce/Callback.vue";
 import Account from "./views/account/Account.vue"
 import Salesforce from "./views/account/Salesforce.vue"
 import Admin from "./views/account/Admin.vue"
+import CompaniesAdmin from "./views/admin/company/Companies.vue"
+import CompanyAdmin from "./views/admin/company/Company.vue"
 
 import SalesforceSetupWizard from "./views/salesforce/SetupWizard.vue"
 import SalesforceObject from "./views/salesforce/Objects.vue"
@@ -171,6 +173,22 @@ const router = new Router({
       path: "/admin",
       name: "Admin",
       component: Admin,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/companies-admin",
+      name: "companies admin",
+      component: CompaniesAdmin,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/companies-admin/:companiesUid",
+      name: "company admin",
+      component: CompanyAdmin,
       meta: {
         requiresAuth: true
       }

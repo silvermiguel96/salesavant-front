@@ -1,56 +1,57 @@
 <template>
-  <v-card>
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      height="94vh"    
-      width="180" 
-      left
-      small
-      overlay-opacity
-    >
-      <v-list-item>
-        <v-list-item-title class="title">Admin</v-list-item-title>
-        <v-btn icon @click.stop="drawer = !drawer">
-          <v-icon>keyboard_arrow_left</v-icon>
-        </v-btn>
-      </v-list-item>
-      <v-divider></v-divider>
+  <v-app>
+    <v-navigation-drawer v-model="drawers" overlay-opacity clipped :permanent="permanent" app>
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title class="body-2 font-weight-regular">{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-item-group color="primary">
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-icon>
+              <v-icon v-text="item.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <router-link :to="item.router" class="text-decoration">
+                <v-list-item-title
+                  class="body-2 black--text font-weight-regular text-decoration"
+                >{{item.title}}</v-list-item-title>
+              </router-link>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-container fluid>
-          <v-app-bar-nav-icon small dense @click="drawer = !drawer"></v-app-bar-nav-icon> Admin
+    <v-card>
+      <v-toolbar dense class="elevation-0">
+        <v-app-bar-nav-icon icon @click="permanent = !permanent"></v-app-bar-nav-icon>
+        <v-toolbar-title>Administration</v-toolbar-title>
+      </v-toolbar>
+      <v-container fluid>
         <users />
-    </v-container>
-  </v-card>
+      </v-container>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
 import Users from "../../components/account/Users.vue";
+
 export default {
-  data() {
-    return {
-      drawer: true,
-      miniVariant: true,
-      items: [
-        { title: "Home", icon: "home" },
-        { title: "My Account", icon: "account_box" },
-        { title: "Users", icon: "person" }
-      ],
-      mini: true
-    };
-  },
   components: {
     Users
-  }
+  },
+  data: () => ({
+    drawers: "",
+    permanent: false,
+    items: [
+      { title: "Home", icon: "home", router: "/home" },
+      { title: "My Account", icon: "account_box", router: "/admin" },
+      { title: "Users", icon: "person", router: "/home" },
+      { title: "Data", icon: "layers", router: "/companies-admin" }
+    ]
+  })
 };
 </script>
+
+<style scoped>
+.text-decoration {
+  text-decoration: none;
+}
+</style>

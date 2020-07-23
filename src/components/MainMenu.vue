@@ -30,21 +30,21 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="primary" dark dense>
+    <v-app-bar clipped-left app color="primary" dark dense>
       <v-app-bar-nav-icon class="d-md-none" small @click="drawer = !drawer"></v-app-bar-nav-icon>
       <router-link to="/home">
         <img class="logo mt-1" :src="require('../assets/salesavant_header.png')" />
       </router-link>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down" v-for="link in links" :key="link.text">
+      <v-toolbar-title class="hidden-sm-and-down" v-for="link in links" :key="link.text">
         <v-btn v-if="!!link.click" text class="text-capitalize" @click="link.click">{{link.text}}</v-btn>
         <v-btn v-else text class="text-capitalize" :to="link.router">{{link.text}}</v-btn>
-      </v-toolbar-items>
+      </v-toolbar-title>
       <v-menu left bottom offset-y>
         <template class="hidden-sm-and-down" v-slot:activator="{ on }">
-          <v-toolbar-items class="hidden-sm-and-down">
+          <v-toolbar-title class="hidden-sm-and-down">
             <v-btn text class="text-capitalize" v-on="on">Account</v-btn>
-          </v-toolbar-items>
+          </v-toolbar-title>
         </template>
         <v-list class="pa-0">
           <v-list-item v-for="account in accounts" :key="account.text" @click="account.click">
@@ -52,7 +52,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </v-app-bar>
   </nav>
 </template>
 <script>
@@ -68,54 +68,54 @@ export default {
           icon: "playlist_play",
           text: "Playlists",
           router: "/playlists",
-          click: this.onPlaylists
+          click: this.onPlaylists,
         },
         {
           icon: "business",
           text: "Companies",
           router: "/companies",
-          click: this.onCompanies
+          click: this.onCompanies,
         },
         {
           icon: "assessment",
           text: "Contacts",
           router: "/contacts",
-          click: this.onContacts
+          click: this.onContacts,
         },
         {
           icon: "gps_fixed",
           text: "Signals",
           router: "/signals",
-          click: this.onSignals
+          click: this.onSignals,
         },
         {
           icon: "work",
           text: "Batch",
-          click: this.onBatch
-        }
+          click: this.onBatch,
+        },
       ],
       accounts: [
         {
           text: "Profile",
           router: "/account",
-          click: this.onAccount
+          click: this.onAccount,
         },
         {
           text: "Admin",
           router: "/admin",
-          click: this.onAdmin
+          click: this.onAdmin,
         },
         {
           text: "Salesforce",
           router: "/salesforce",
-          click: this.onSalesforce
+          click: this.onSalesforce,
         },
         {
           text: "Logout",
           router: "/home",
-          click: this.exitApp
-        }
-      ]
+          click: this.exitApp,
+        },
+      ],
     };
   },
   props: {},
@@ -123,31 +123,31 @@ export default {
     ...mapMutations(["resetCompanySearch", "resetContactSearch"]),
     onPlaylists() {
       this.resetSearch();
-      this.$router.push("/playlists").catch(err => {});
+      this.$router.push("/playlists").catch((err) => {});
     },
     onCompanies() {
       this.resetSearch();
-      this.$router.push("/companies").catch(err => {});
+      this.$router.push("/companies").catch((err) => {});
     },
     onContacts() {
       this.resetSearch();
-      this.$router.push("/contacts").catch(err => {});
+      this.$router.push("/contacts").catch((err) => {});
     },
     onSignals() {
       this.resetSearch();
-      this.$router.push("/signals").catch(err => {});
+      this.$router.push("/signals").catch((err) => {});
     },
     onAccount() {
       this.resetSearch();
-      this.$router.push("/account").catch(err => {});
+      this.$router.push("/account").catch((err) => {});
     },
     onAdmin() {
       this.resetSearch();
-      this.$router.push("/admin").catch(err => {});
+      this.$router.push("/admin").catch((err) => {});
     },
     onSalesforce() {
       this.resetSearch();
-      this.$router.push("/salesforce").catch(err => {});
+      this.$router.push("/salesforce").catch((err) => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);
@@ -155,13 +155,13 @@ export default {
     },
     onBatch() {
       this.resetSearch();
-      this.$router.push("/batch").catch(err => {});
+      this.$router.push("/batch").catch((err) => {});
     },
     resetSearch() {
       this.resetCompanySearch();
       this.resetContactSearch();
-    }
-  }
+    },
+  },
 };
 </script>
 

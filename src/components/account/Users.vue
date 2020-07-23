@@ -51,7 +51,6 @@ export default {
     updateOptions({ dataFromEvent: { page = 1, itemsPerPage = 10 } }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
-      this.loadData();
     },
     deletePlaylist() {}
   },
