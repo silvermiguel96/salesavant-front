@@ -1,80 +1,95 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12" xs="12" class="pt-0">
-        <v-card>
-          <v-row no-gutters>
-            <v-col cols="12" xs="12" class="pt-0">
-              <v-breadcrumbs
-                class="pl-3 pl-sm-6"
-                :large="true"
-                :items="[
-                {	          
-                text: 'Admin Companies',	            
-                disabled: true,	              
-                href: '/companies'	              
-                }
-              ]"
-                divider=">"
-              ></v-breadcrumbs>
-            </v-col>
-          </v-row>
-          <v-container fluid>
-            <v-row no-gutters>
-              <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-                <v-btn
-                  class="text-capitalize d-inline-block"
-                  min-width="150"
-                  block
-                  color="primary"
-                  @click="triggerSearch"
-                >
-                  <v-icon class="pr-1">search</v-icon>Advanced Search
-                </v-btn>
-              </v-col>
-              <v-row no-gutters class="d-flex justify-end">
-                <v-col cols="12" sm="9" md="9" lg="9" class="pa-1">
-                  <v-text-field
-                    v-model="search"
-                    append-icon="filter_list"
-                    label="Quick Search"
-                    placeholder="Type a Name"
-                    hide-details
-                  ></v-text-field>
+  <v-app>
+    <v-navigation-drawer
+      :width="190"
+      v-model="drawers"
+      overlay-opacity
+      clipped
+      :permanent="permanent"
+      app
+      color="primary"
+    >
+      <v-list dense>
+        <v-list-item-group v-model="item" color="white">
+          <v-list-item v-for="(item, i) in items" :key="i" :to="item.router">
+            <v-list-item-icon>
+              <v-icon class="white--text" v-text="item.icon" />
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title
+                class="title-2 white--text font-weight-regular text-decoration"
+                :to="item.router"
+                v-text="item.title"
+              />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+    <v-card>
+      <v-toolbar dense class="elevation-0">
+        <v-app-bar-nav-icon icon @click="permanent = !permanent"></v-app-bar-nav-icon>
+        <v-toolbar-title>Data</v-toolbar-title>
+      </v-toolbar>
+      <v-container fluid>
+        <v-row>
+          <v-col cols="12" xs="12" class="pt-0">
+            <v-container fluid>
+              <v-row no-gutters>
+                <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+                  <v-btn
+                    class="text-capitalize d-inline-block"
+                    min-width="150"
+                    block
+                    color="primary"
+                  >
+                    <v-icon class="pr-1">search</v-icon>Advanced Search
+                  </v-btn>
                 </v-col>
+                <v-row no-gutters class="d-flex justify-end">
+                  <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+                    <v-text-field
+                      v-model="search"
+                      append-icon="filter_list"
+                      label="Quick Search"
+                      placeholder="Type a Name"
+                      hide-details
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
               </v-row>
+            </v-container>
+
+            <v-row class="pt-4" no-gutters>
+              <v-col cols="12">
+                <!-- Result -->
+                <companies-admin-table
+                  v-if="companies"
+                  :items="companies.companiesList"
+                  :totalResults="companies.totalResults"
+                  @updateOptions="updateOptions"
+                ></companies-admin-table>
+              </v-col>
             </v-row>
-          </v-container>
 
-          <v-row class="pt-4" no-gutters>
-            <v-col cols="12">
-              <!-- Result -->
-              <companies-admin-table
-                v-if="companies"
-                :items="companies.companiesList"
-                :totalResults="companies.totalResults"
-                @updateOptions="updateOptions"
-              ></companies-admin-table>
-            </v-col>
-          </v-row>
-
-          <v-row no-gutters>
-            <v-col cols="12">
-              <!-- Loading -->
-              <v-progress-linear
-                :active="!!isLoading"
-                color="blue"
-                indeterminate
-                absolute
-                bottom
-                query
-              ></v-progress-linear>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+            <v-row no-gutters>
+              <v-col cols="12">
+                <!-- Loading -->
+                <v-progress-linear
+                  :active="!!isLoading"
+                  color="blue"
+                  indeterminate
+                  absolute
+                  bottom
+                  query
+                ></v-progress-linear>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
@@ -85,6 +100,14 @@ import CompaniesAdminTable from "../../../components/admin/CompaniesAdminTable.v
 export default {
   data() {
     return {
+      drawers: "",
+      permanent: false,
+      item: 2,
+      items: [
+        { title: "My Account", icon: "account_box", router: "/home" },
+        { title: "Users", icon: "person", router: "/admin" },
+        { title: "Data", icon: "layers", router: "/companies-admin" },
+      ],
       totalResults: 0,
       search: "",
       isLoading: true,
@@ -264,3 +287,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.text-decoration {
+  text-decoration: none;
+}
+</style>

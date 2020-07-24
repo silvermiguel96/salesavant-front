@@ -36,15 +36,15 @@
         <img class="logo mt-1" :src="require('../assets/salesavant_header.png')" />
       </router-link>
       <v-spacer></v-spacer>
-      <v-toolbar-title class="hidden-sm-and-down" v-for="link in links" :key="link.text">
+      <v-toolbar-items class="hidden-sm-and-down" v-for="link in links" :key="link.text">
         <v-btn v-if="!!link.click" text class="text-capitalize" @click="link.click">{{link.text}}</v-btn>
         <v-btn v-else text class="text-capitalize" :to="link.router">{{link.text}}</v-btn>
-      </v-toolbar-title>
+      </v-toolbar-items>
       <v-menu left bottom offset-y>
         <template class="hidden-sm-and-down" v-slot:activator="{ on }">
-          <v-toolbar-title class="hidden-sm-and-down">
+          <v-toolbar-items class="hidden-sm-and-down">
             <v-btn text class="text-capitalize" v-on="on">Account</v-btn>
-          </v-toolbar-title>
+          </v-toolbar-items>
         </template>
         <v-list class="pa-0">
           <v-list-item v-for="account in accounts" :key="account.text" @click="account.click">
