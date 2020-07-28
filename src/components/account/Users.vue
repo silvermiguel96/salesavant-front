@@ -1,23 +1,21 @@
 <template>
   <v-container fluid>
-    <v-container fluid>
-      <v-row no-gutters>
-        <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-          <add-user />
+    <v-row no-gutters>
+      <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+        <add-user />
+      </v-col>
+      <v-row no-gutters class="d-flex justify-end">
+        <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+          <v-text-field
+            v-model="search"
+            append-icon="filter_list"
+            label="Quick Search"
+            hide-details
+            placeholder="Type a Name or Email"
+          ></v-text-field>
         </v-col>
-        <v-row no-gutters class="d-flex justify-end">
-          <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
-            <v-text-field
-              v-model="search"
-              append-icon="filter_list"
-              label="Quick Search"
-              hide-details
-              placeholder="Type a Name or Email"
-            ></v-text-field>
-          </v-col>
-        </v-row>
       </v-row>
-    </v-container>
+    </v-row>
     <!-- Result -->
     <div v-if="accounts" class="result">
       <user-table
@@ -44,20 +42,19 @@ export default {
       totalResults: 0,
       page: 1,
       itemsPerPage: 10,
-      search: ""
+      search: "",
     };
   },
   methods: {
     updateOptions({ dataFromEvent: { page = 1, itemsPerPage = 10 } }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
-      this.loadData();
     },
-    deletePlaylist() {}
+    deletePlaylist() {},
   },
   components: {
     UserTable,
-    AddUser
+    AddUser,
   },
   apollo: {
     accounts: {
@@ -73,8 +70,8 @@ export default {
             }
           }
         }
-      `
-    }
-  }
+      `,
+    },
+  },
 };
 </script>
