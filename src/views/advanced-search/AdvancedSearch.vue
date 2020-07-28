@@ -1,28 +1,27 @@
 <template>
-    <v-dialog
-      :value="value"
-      max-width="530"
-      hide-overlay
-      transition="dialog-bottom-transition"
-      @keydown.esc="hideSearchDialog"
-      persistent
-      scrollable>
-      <v-card>
-        <v-toolbar dark color="primary" height="48px">
-          <v-toolbar-title class="text-capitalize">{{`Advanced ${searchType} Search`}}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon @click.native="hideSearchDialog" align-end>
-            <v-icon>close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-content v-if="searchType=='companies'">
-          <companies-search />
-        </v-content>
-        <v-content v-else-if="searchType=='contacts'">
-          <contacts-search />
-        </v-content>
-      </v-card>
-    </v-dialog>
+  <v-dialog
+    :value="value"
+    max-width="530"
+    hide-overlay
+    transition="dialog-bottom-transition"
+    @keydown.esc="hideSearchDialog"
+    persistent
+    scrollable
+  >
+    <v-card>
+      <v-toolbar dark color="primary" height="48px">
+        <v-toolbar-title class="text-capitalize">{{`Advanced ${searchType} Search`}}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click.native="hideSearchDialog" align-end>
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <div class="pa-3">
+        <companies-search v-if="searchType=='companies'" />
+        <contacts-search v-else-if="searchType=='contacts'" />
+      </div>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -32,26 +31,23 @@ import { mapMutations } from "vuex";
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   props: {
-    value: { type: Boolean, default: false }
+    value: { type: Boolean, default: false },
   },
   components: {
     CompaniesSearch,
-    ContactsSearch
+    ContactsSearch,
   },
   methods: {
-    ...mapMutations([
-      "hideSearchDialog"
-    ]),
+    ...mapMutations(["hideSearchDialog"]),
   },
-  computed:{
-    searchType(){
+  computed: {
+    searchType() {
       return this.$store.state.searchType;
-    }
-  }
+    },
+  },
 };
 </script>
 
