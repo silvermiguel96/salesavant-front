@@ -450,7 +450,6 @@ export default {
     companies: {
       query: gql`
         query companiesSearch(
-          $url: String
           $playlistUid: String
           $signals: [Int]
           $signalGroups: [String]
@@ -458,8 +457,6 @@ export default {
           $searchDescription: String
           $searchWebsite: String
           $searchLinks: String
-          $searchIndustry: String
-          $searchNaics: String
           $country: String
           $city: String
           $region: String
@@ -476,7 +473,6 @@ export default {
           $totalResults: Int
         ) {
           companies(
-            url: $url
             playlistUid: $playlistUid
             signals: $signals
             signalGroups: $signalGroups
@@ -484,8 +480,6 @@ export default {
             searchDescription: $searchDescription
             searchWebsite: $searchWebsite
             searchLinks: $searchLinks
-            searchIndustry: $searchIndustry
-            searchNaics: $searchNaics
             country: $country
             city: $city
             region: $region

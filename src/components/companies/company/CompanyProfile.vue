@@ -19,7 +19,62 @@
           <v-col xs="12">
             <div>
               <span class="subtitle-2 font-weight-medium">Website:</span>
-              <span class="font-weight-light float-right">{{ company.Website || "--" }}</span>
+              <span class="font-weight-light float-right">
+                <a
+                  v-if="company.url"
+                  :key="`news-external-link${company.url || ''}`"
+                  :href="httpCompany"
+                  target="_blank"
+                >{{ company.url || "--"}}</a>
+              </span>
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="6" class="pa-md-3">
+        <v-row class="d-none d-md-block" no-gutters>
+          <v-col cols="12" xs="6">
+            <div class="subtitle-2 font-weight-medium">LinkedIn</div>
+          </v-col>
+          <v-col cols="12" xs="6">
+            <a
+              v-if="company.linkedinHandle"
+              :href="`https://linkedin.com/company${company.linkedinHandle}`"
+              target="_blank"
+            >{{company.linkedinHandle}}</a>
+          </v-col>
+        </v-row>
+        <v-row class="d-block d-md-none" no-gutters>
+          <v-col xs="12">
+            <div>
+              <span class="subtitle-2 font-weight-medium">LinkedIn:</span>
+              <span class="font-weight-light float-right">
+                <a
+                  v-if="company.linkedinHandle"
+                  :href="`https://linkedin.com/company${company.linkedinHandle}`"
+                  target="_blank"
+                >{{company.linkedinHandle}}</a>
+              </span>
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col cols="12" md="6" class="pa-md-3">
+        <v-row class="d-none d-md-block" no-gutters>
+          <v-col cols="12" xs="6">
+            <div class="subtitle-2 font-weight-medium">Status</div>
+          </v-col>
+          <v-col cols="12" xs="6">
+            <span class="font-weight-light">{{ company.status || "--" }}</span>
+          </v-col>
+        </v-row>
+        <v-row class="d-block d-md-none" no-gutters>
+          <v-col xs="12">
+            <div>
+              <span class="subtitle-2 font-weight-medium">Status:</span>
+              <span class="font-weight-light float-right">{{ company.status || "--" }}</span>
             </div>
           </v-col>
         </v-row>
@@ -43,7 +98,6 @@
         </v-row>
       </v-col>
     </v-row>
-
     <v-row no-gutters>
       <v-col cols="12" md="6" class="pa-md-3">
         <v-row class="d-none d-md-block" no-gutters>
@@ -435,6 +489,8 @@ export default {
             name
             momentum
             vertical
+            linkedinHandle
+            status
             description
             url
             city
