@@ -19,49 +19,50 @@
 
           <v-row no-gutters v-if="!!isFiltered">
             <v-col cols="12" md="8">
-              <div class="mt-6">
+              <div class="mt-2">
                 <span class="ml-2">Filtering by:</span>
+                <v-chip
+                  v-if="this.$route.query.group"
+                  class="mx-1"
+                  style="padding: 0 8px;"
+                  color="light-blue darken-1"
+                  dark
+                  close
+                  small
+                  @click:close="removeFilter()"
+                  outlined
+                >
+                  <strong>Company group:</strong>
+                  {{ this.$route.query.group }}
+                </v-chip>
               </div>
-              <v-chip
-                v-if="this.$route.query.group"
-                class="mx-1 text-capitalize"
-                style="padding: 0 8px;"
-                color="blue-grey"
-                @click:close="removeFilter()"
-                outlined
-                close
-                small
-              >
-                <strong>Company group:</strong>
-                {{ this.$route.query.group }}
-              </v-chip>
             </v-col>
           </v-row>
           <v-container fluid>
-          <v-row no-gutters>
-            <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-              <v-btn
-                class="text-capitalize"
-                color="primary"
-                min-width="150"
-                block
-                to="/signals/create"
-              >
-                <v-icon size="18" class="mr-2">add</v-icon>new signal
-              </v-btn>
-            </v-col>
-            <v-row no-gutters class="d-flex justify-end">
-              <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
-                <v-text-field
-                  v-model="search"
-                  append-icon="filter_list"
-                  label="Quick Search"
-                  placeholder="Type a Name, Description or Group "
-                  hide-details
-                ></v-text-field>
+            <v-row no-gutters>
+              <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+                <v-btn
+                  class="text-capitalize"
+                  color="primary"
+                  min-width="150"
+                  block
+                  to="/signals/create"
+                >
+                  <v-icon size="18" class="mr-2">add</v-icon>new signal
+                </v-btn>
               </v-col>
+              <v-row no-gutters class="d-flex justify-end">
+                <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+                  <v-text-field
+                    v-model="search"
+                    append-icon="filter_list"
+                    label="Quick Search"
+                    placeholder="Type a Name, Description or Group "
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-row>
-          </v-row>
           </v-container>
           <v-row no-gutters>
             <v-col cols="12">
@@ -111,16 +112,21 @@ export default {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: ""
-      }
+        sortOrder: "",
+      },
     };
   },
   components: {
-    SignalsTable
+    SignalsTable,
   },
   methods: {
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
@@ -141,8 +147,8 @@ export default {
             }
           `,
           variables: {
-            signalId: singal.id
-          }
+            signalId: singal.id,
+          },
         });
 
         console.log("Result", result);
@@ -179,7 +185,7 @@ export default {
     },
     removeFilter() {
       this.$router.push({ path: "/signals", query: {} });
-    }
+    },
   },
   apollo: {
     signals: {
@@ -228,7 +234,7 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
       skip() {
@@ -237,8 +243,8 @@ export default {
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   beforeMount() {
     this.isFiltered = this.checkIfIsFiltered();
@@ -248,6 +254,6 @@ export default {
   },
   updated() {
     this.isFiltered = this.checkIfIsFiltered();
-  }
+  },
 };
 </script>
