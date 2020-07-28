@@ -1,178 +1,195 @@
 <template>
-  <div>
-    <v-form ref="simpleSearchForm" @submit.prevent class="pt-2">
-      <v-container fluid>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="name"
-              v-model="companySearch.name"
-              label="Name"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="description"
-              label="Description"
-              v-model="companySearch.description"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="country"
-              v-model="companySearch.country"
-              label="Country"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="region"
-              v-model="companySearch.region"
-              label="Region"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="city"
-              v-model="companySearch.city"
-              label="City"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="state"
-              v-model="companySearch.state"
-              label="State"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="website"
-              v-model="companySearch.website"
-              label="Website"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="status"
-              v-model="companySearch.links"
-              label="Links"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="moreThanEmployees"
-              v-model="companySearch.moreThanEmployees"
-              label="More Than Employees"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="lessThanEmployees"
-              v-model="companySearch.lessThanEmployees"
-              label="Less Than Employees"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="moreThanScore"
-              v-model="companySearch.moreThanScore"
-              label="More Than Score"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="lessThanScore"
-              v-model="companySearch.lessThanScore"
-              label="Less Than Score"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="6">
-            <v-text-field
-              :dense="denseForm"
-              name="status"
-              v-model="companySearch.status"
-              label="Status"
-              autocomplete="off"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-divider></v-divider>
-        <v-row wrap class="pt-2">
-          <v-col cols="12">
-            <playlists-autocomplete :dense="denseForm" playlistType="company" @change="onPlaylistAutocompleteChange" />
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="12">
-            <signals-autocomplete-multi :dense="denseForm" @change="onSignalsAutocompleteChange" />
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col cols="12">
-            <signals-groups-autocomplete
-              :dense="denseForm"
-              @change="onSignalsGroupAutocompleteChange"
-            />
-          </v-col>
-        </v-row>
-        <v-divider></v-divider>
-        <v-row wrap>
-          <v-col cols="12" md="6" class="d-flex justify-start align-center">
-            <a
-              @click.prevent="clearAll"
-              class="text-capitalize body-2"
-              block
-              small
-              color="primary"
-            >clear all</a>
-          </v-col>
-          <v-col cols="12" md="6" class="d-flex justify-center align-center">
-            <v-btn @click="search" class="text-capitalize" block type="submit" color="primary">
-              <v-icon small class="pr-1">search</v-icon>
-              {{"Search"}}
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
-  </div>
+  <v-form ref="simpleSearchForm" @submit.prevent >
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="name"
+          v-model="companySearch.name"
+          label="Name"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="description"
+          label="Description"
+          v-model="companySearch.description"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="country"
+          v-model="companySearch.country"
+          label="Country"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="region"
+          v-model="companySearch.region"
+          label="Region"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="city"
+          v-model="companySearch.city"
+          label="City"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="state"
+          v-model="companySearch.state"
+          label="State"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="website"
+          v-model="companySearch.website"
+          label="Website keywords"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="links"
+          v-model="companySearch.links"
+          label="Links"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="industry"
+          v-model="companySearch.industry"
+          label="Industry"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="naics"
+          v-model="companySearch.naics"
+          label="NAICS"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="moreThanEmployees"
+          v-model="companySearch.moreThanEmployees"
+          label="More Than Employees"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="lessThanEmployees"
+          v-model="companySearch.lessThanEmployees"
+          label="Less Than Employees"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="moreThanScore"
+          v-model="companySearch.moreThanScore"
+          label="More Than Score"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="lessThanScore"
+          v-model="companySearch.lessThanScore"
+          label="Less Than Score"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="6">
+        <v-text-field
+          :dense="denseForm"
+          name="status"
+          v-model="companySearch.status"
+          label="Status"
+          autocomplete="off"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-divider></v-divider>
+    <v-row wrap class="pt-2">
+      <v-col cols="12">
+        <playlists-autocomplete
+          :dense="denseForm"
+          playlistType="company"
+          @change="onPlaylistAutocompleteChange"
+        />
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="12">
+        <signals-autocomplete-multi :dense="denseForm" @change="onSignalsAutocompleteChange" />
+      </v-col>
+    </v-row>
+    <v-row wrap>
+      <v-col cols="12">
+        <signals-groups-autocomplete :dense="denseForm" @change="onSignalsGroupAutocompleteChange" />
+      </v-col>
+    </v-row>
+    <v-divider></v-divider>
+    <v-row wrap>
+      <v-col cols="12" md="6" class="d-flex justify-start align-center">
+        <a
+          @click.prevent="clearAll"
+          class="text-capitalize body-2"
+          block
+          small
+          color="primary"
+        >clear all</a>
+      </v-col>
+      <v-col cols="12" md="6" class="d-flex justify-center align-center">
+        <v-btn @click="search" class="text-capitalize" block type="submit" color="primary">
+          <v-icon small class="pr-1">search</v-icon>
+          {{"Search"}}
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-form>
 </template>
 
 <script>
@@ -190,15 +207,15 @@ export default {
   components: {
     PlaylistsAutocomplete,
     SignalsAutocompleteMulti,
-    SignalsGroupsAutocomplete
+    SignalsGroupsAutocomplete,
   },
   data() {
     return {
       companySearch: { ...defaultCompanySearch },
       window: {
         width: 0,
-        height: 0
-      }
+        height: 0,
+      },
     };
   },
 
@@ -231,26 +248,26 @@ export default {
       this.companySearch = {
         ...this.companySearch,
         playlistUid: _get(value, "playlistUid", ""),
-        displayPlaylistUid: _get(value, "displayPlaylistUid", "")
+        displayPlaylistUid: _get(value, "displayPlaylistUid", ""),
       };
     },
     onSignalsAutocompleteChange(value) {
       this.companySearch = {
         ...this.companySearch,
         signals: _get(value, "signals", []),
-        displaySignals: _get(value, "displaySignals", [])
+        displaySignals: _get(value, "displaySignals", []),
       };
     },
     onSignalsGroupAutocompleteChange(value) {
       this.companySearch = {
         ...this.companySearch,
-        signalGroups: _get(value, "signalGroups", [])
+        signalGroups: _get(value, "signalGroups", []),
       };
     },
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
-    }
+    },
   },
   created() {
     window.addEventListener("resize", this.handleResize);
@@ -262,7 +279,7 @@ export default {
   computed: {
     denseForm() {
       return this.window.width > 1440 ? false : true;
-    }
+    },
     // playlistUid() {
     //   return this.$store.state.companySearch.playlistUid
     // }

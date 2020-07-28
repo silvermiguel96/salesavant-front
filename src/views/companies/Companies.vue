@@ -10,11 +10,11 @@
                 :large="true"
                 :items="[
                 {	          
-                text: 'Companies',	            
-                disabled: true,	              
-                href: '/companies'	              
-                }
-              ]"
+                  text: 'Companies',	            
+                  disabled: true,	              
+                  href: '/companies'	              
+                  }
+                ]"
                 divider=">"
               ></v-breadcrumbs>
             </v-col>
@@ -137,21 +137,21 @@ export default {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: ""
-      }
+        sortOrder: "",
+      },
     };
   },
   components: {
     CompaniesTable,
     CreatePlaylistFromResults,
-    CreateSignalFromResults
+    CreateSignalFromResults,
   },
   watch: {
-    companySearchFilters: function(val) {
+    companySearchFilters: function (val) {
       console.log("total results to zero");
       this.totalResults = 0;
       this.options.page = 1;
-    }
+    },
   },
   methods: {
     ...mapMutations(["showSearchDialog", "resetCompanySearch"]),
@@ -159,7 +159,12 @@ export default {
       this.showSearchDialog("companies");
     },
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
@@ -245,8 +250,8 @@ export default {
             `,
             variables: {
               ...this.companySearch,
-              newPlaylistName: newPlaylistName
-            }
+              newPlaylistName: newPlaylistName,
+            },
           });
           console.log("saving results as playlist success", result);
           const playlist = _get(
@@ -255,7 +260,7 @@ export default {
             null
           );
           this.$router.push({
-            path: `/playlists/${playlist.uid}`
+            path: `/playlists/${playlist.uid}`,
           });
         } catch (error) {
           console.log("error saving simple search as a play list", error);
@@ -275,7 +280,7 @@ export default {
           newSignalName,
           newSignalDescription,
           newSignalGroup,
-          newSignalDefaultScore
+          newSignalDefaultScore,
         });
         try {
           const result = await this.$apollo.mutate({
@@ -341,8 +346,8 @@ export default {
               newSignalName: newSignalName,
               newSignalDescription: newSignalDescription,
               newSignalGroup: newSignalGroup,
-              newSignalDefaultScore: newSignalDefaultScore
-            }
+              newSignalDefaultScore: newSignalDefaultScore,
+            },
           });
           console.log("saving results as signal success", result);
           const signal = _get(
@@ -350,9 +355,8 @@ export default {
             "data.createSignalFromSearch.signal",
             null
           );
-          console.log("finish");
           this.$router.push({
-            path: `/signals/${signal.id}`
+            path: `/signals/${signal.id}`,
           });
         } catch (error) {
           console.log("error saving search results as signal", error);
@@ -370,21 +374,21 @@ export default {
         this.$store.commit("doCompanySearch", {
           ...this.$store.state.companySearch,
           signals: currentSignals,
-          displaySignals: currentDisplaySignals
+          displaySignals: currentDisplaySignals,
         });
       } else if (key.startsWith("playlist")) {
         this.$store.commit("doCompanySearch", {
           ...this.$store.state.companySearch,
           playlistUid: "",
-          displayPlaylistUid: ""
+          displayPlaylistUid: "",
         });
       } else {
         this.$store.commit("doCompanySearch", {
           ...this.$store.state.companySearch,
-          [key]: defaultCompanySearch[key]
+          [key]: defaultCompanySearch[key],
         });
       }
-    }
+    },
   },
   computed: {
     companySearch() {
@@ -395,7 +399,7 @@ export default {
     },
     companySearchFilters() {
       let filterObjects = [];
-      Object.keys(this.companySearch).forEach(key => {
+      Object.keys(this.companySearch).forEach((key) => {
         let value = this.companySearch[key];
         if (!key.startsWith("display") && value && value.length > 0) {
           if (key == "signals") {
@@ -403,20 +407,20 @@ export default {
               filterObjects.push({
                 key: "signals>>>" + index,
                 labelKey: key,
-                labelVal: this.companySearch.displaySignals[index]
+                labelVal: this.companySearch.displaySignals[index],
               });
             });
           } else if (key == "playlistUid") {
             filterObjects.push({
               key: key,
               labelKey: "Playlist",
-              labelVal: this.companySearch.displayPlaylistUid
+              labelVal: this.companySearch.displayPlaylistUid,
             });
           } else {
             filterObjects.push({
               key: key,
               labelKey: key,
-              labelVal: value
+              labelVal: value,
             });
           }
         }
@@ -430,12 +434,23 @@ export default {
         !!this.companySearchFilters &&
         this.companySearchFilters.length
       );
-    }
+    },
+    searchUrl() {
+      if (
+        !!this.search &&
+        this.search.toLowerCase().startsWith("url:") &&
+        this.search.trim().length > 4
+      ) {
+        return this.search.split(":")[1].trim();
+      }
+      return undefined;
+    },
   },
   apollo: {
     companies: {
       query: gql`
         query companiesSearch(
+          $url: String
           $playlistUid: String
           $signals: [Int]
           $signalGroups: [String]
@@ -443,6 +458,8 @@ export default {
           $searchDescription: String
           $searchWebsite: String
           $searchLinks: String
+          $searchIndustry: String
+          $searchNaics: String
           $country: String
           $city: String
           $region: String
@@ -459,6 +476,7 @@ export default {
           $totalResults: Int
         ) {
           companies(
+            url: $url
             playlistUid: $playlistUid
             signals: $signals
             signalGroups: $signalGroups
@@ -466,6 +484,8 @@ export default {
             searchDescription: $searchDescription
             searchWebsite: $searchWebsite
             searchLinks: $searchLinks
+            searchIndustry: $searchIndustry
+            searchNaics: $searchNaics
             country: $country
             city: $city
             region: $region
@@ -520,6 +540,8 @@ export default {
             searchWebsite: this.companySearch.website,
             searchLinks: this.companySearch.links,
             searchDescription: this.companySearch.description,
+            searchIndustry: this.companySearch.industry,
+            searchNaics: this.companySearch.naics,
             country: this.companySearch.country,
             city: this.companySearch.city,
             region: this.companySearch.region,
@@ -535,31 +557,34 @@ export default {
               this.options.itemsPerPage,
             sortBy: this.options.sortBy,
             sortOrder: this.options.sortOrder,
-            totalResults: this.totalResults
+            totalResults: this.totalResults,
           };
         } else {
           return {
+            url: this.searchUrl,
             searchName: this.search,
             first: this.options.itemsPerPage,
             offset:
               this.options.itemsPerPage * this.options.page -
               this.options.itemsPerPage,
             sortBy: this.options.sortBy,
-            sortOrder: this.options.sortOrder
+            sortOrder: this.options.sortOrder,
           };
         }
       },
       skip() {
-        return this.search.length > 0 && this.search.length < 2;
+        return (
+          !!this.search &&
+          this.search.toLowerCase().startsWith("url:") &&
+          this.search.length < 8
+        );
       },
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
       },
-      fetchPolicy: "cache-and-network"
-    }
+      throttle: 800,
+      fetchPolicy: "cache-and-network",
+    },
   },
-  props: {
-    showSearch: { type: Boolean, default: false }
-  }
 };
 </script>

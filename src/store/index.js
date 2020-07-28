@@ -13,6 +13,8 @@ export const defaultCompanySearch = {
   region: "",
   state: "",
   status: "",
+  industry: "",
+  naics: "",
   moreThanEmployees: 0,
   lessThanEmployees: 0,
   moreThanScore: 0,
