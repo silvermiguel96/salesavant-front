@@ -49,7 +49,7 @@
           <div class="d-flex flex-row justify-space-between my-6">
             <v-card-text>
               <v-text-field
-                v-model="Password"
+                v-model="myUser.password"
                 autocomplete="off"
                 label="Password"
                 type="Password"
@@ -58,7 +58,7 @@
                 outlined
               ></v-text-field>
               <v-text-field
-                v-model="Password"
+                v-model="myUser.password"
                 autocomplete="off"
                 label="New Password"
                 type="Password"
@@ -67,7 +67,7 @@
                 outlined
               ></v-text-field>
               <v-text-field
-                v-model="Password"
+                v-model="myUser.password"
                 autocomplete="off"
                 label="Confirm new Password"
                 type="Password"
@@ -89,8 +89,9 @@ export default {
   data() {
     return {
       myUser: {
-        oauths: []
-      }
+        oauths: [],
+        password: "",
+      },
     };
   },
   apollo: {
@@ -109,14 +110,14 @@ export default {
           }
         }
       `,
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   methods: {},
   computed: {
     fullname() {
       return `${this.myUser.firstName} ${this.myUser.lastName}`;
-    }
-  }
+    },
+  },
 };
 </script>
