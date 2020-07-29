@@ -48,7 +48,6 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ item.category || "" }}</td>
           <td>
             <v-edit-dialog
               :return-value.sync="item.defaultScore"
@@ -117,7 +116,6 @@ export default {
           width: "20%"
         },
         { text: "Group", value: "group", align: "left", sortable: false, width: "15%"  },
-        { text: "Category", value: "category", align: "left", sortable: false, width: "15%" },
         { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
         { text: "Modification Time", value: "modificationTime", align: "left", sortable: false, width: "15%"   },
         { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
