@@ -569,6 +569,7 @@ export default {
               this.options.itemsPerPage,
             sortBy: this.options.sortBy,
             sortOrder: this.options.sortOrder,
+            totalResults: this.totalResults,
           };
         }
       },
@@ -582,7 +583,13 @@ export default {
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
       },
-      throttle: 800,
+      // Optional result hook
+      result({ data, loading, networkStatus }) {
+        if (this.options.page==1 && !!data && !!data.companies){
+          this.totalResults = data.companies.totalResults;
+        }
+      },
+      debounce: 500,
       fetchPolicy: "cache-and-network",
     },
   },
