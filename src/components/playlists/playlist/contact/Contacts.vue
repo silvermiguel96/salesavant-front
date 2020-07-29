@@ -13,8 +13,8 @@
             <v-icon class="pr-1">search</v-icon>Advanced Search
           </v-btn>
         </v-col>
-        <v-row no-gutters class="d-flex justify-end ">
-          <v-col cols="12" sm="8" md="8" lg="8" >
+        <v-row no-gutters class="d-flex justify-end">
+          <v-col cols="12" sm="8" md="8" lg="8">
             <v-text-field
               v-model="search"
               append-icon="filter_list"
@@ -58,28 +58,33 @@ export default {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: ""
-      }
+        sortOrder: "",
+      },
     };
   },
   components: {
-    ContactsTable
+    ContactsTable,
   },
   methods: {
     ...mapMutations([
       "resetContactSearch",
       "updateContactSearch",
-      "showSearchDialog"
+      "showSearchDialog",
     ]),
     triggerSearch() {
       this.updateContactSearch({
         playlistUid: this.$route.params.playlistUid,
-        displayPlaylistUid: this.playlist.name
+        displayPlaylistUid: this.playlist.name,
       });
       this.showSearchDialog("contacts");
     },
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
@@ -110,7 +115,7 @@ export default {
       } else {
         this.options.sortOrder = "";
       }
-    }
+    },
   },
   apollo: {
     playlist: {
@@ -126,10 +131,10 @@ export default {
       `,
       variables() {
         return {
-          uid: this.$route.params.playlistUid
+          uid: this.$route.params.playlistUid,
         };
       },
-      fetchPolicy: "cache-and-network"
+      fetchPolicy: "cache-and-network",
     },
     playlistContacts: {
       query: gql`
@@ -181,7 +186,7 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
       skip() {
@@ -190,11 +195,11 @@ export default {
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   beforeCreate() {
     this.$apollo.queries.playlistContacts;
-  }
+  },
 };
 </script>

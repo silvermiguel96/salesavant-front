@@ -23,18 +23,18 @@ import gql from "graphql-tag";
 import { setTimeout } from "timers";
 export default {
   data() {
-    return {  
+    return {
       loading: false,
       search: "",
-      select:null, 
+      select: null,
       playlists: [],
     };
   },
   props: {
     playlistType: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   watch: {
     search(val) {
@@ -45,9 +45,9 @@ export default {
       this.select = val;
       this.$emit("change", {
         playlistUid: val,
-        displayPlaylistUid: this.globalDisplayPlaylistUid
+        displayPlaylistUid: this.globalDisplayPlaylistUid,
       });
-    }
+    },
   },
   computed: {
     globalPlaylistUid() {
@@ -63,7 +63,7 @@ export default {
       } else {
         return this.$store.state.contactSearch.displayPlaylistUid;
       }
-    }
+    },
   },
   methods: {
     queryPlaylists() {
@@ -90,17 +90,17 @@ export default {
             `,
             variables: {
               playlistSearch: this.search ? this.search : "",
-              playlistType: this.playlistType
+              playlistType: this.playlistType,
             },
-            fetchPolicy: "no-cache"
+            fetchPolicy: "no-cache",
           })
-          .then(resp => {
+          .then((resp) => {
             if (!!resp.data && !!resp.data.playlists) {
               this.playlists = resp.data.playlists.playlistsList.map(
-                playlist => {
+                (playlist) => {
                   return {
                     uid: playlist.uid + ">>>" + playlist.name,
-                    name: playlist.name
+                    name: playlist.name,
                   };
                 }
               );
@@ -116,26 +116,43 @@ export default {
         let idSplit = v.split(">>>");
         this.$emit("change", {
           playlistUid: idSplit[0],
-          displayPlaylistUid: idSplit[1]
+          displayPlaylistUid: idSplit[1],
         });
       } else {
         this.$emit("change", {});
       }
-    }
+    },
   },
   beforeMount() {
-    if (!!this.$store.state.companySearch.playlistUid) 
-    {
-      console.log("before created company", this.$store.state.companySearch.playlistUid)
-      this.select = this.$store.state.companySearch.playlistUid+'>>>'+this.$store.state.companySearch.displayPlaylistUid;
-      this.$emit("change", { playlistUid: this.$store.state.companySearch.playlistUid, displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid });
+    if (this.playlistType === "company") {
+      console.log(
+        "before created company",
+        this.$store.state.companySearch.playlistUid
+      );
+      this.select =
+        this.$store.state.companySearch.playlistUid +
+        ">>>" +
+        this.$store.state.companySearch.displayPlaylistUid;
+      this.$emit("change", {
+        playlistUid: this.$store.state.companySearch.playlistUid,
+        displayPlaylistUid: this.$store.state.companySearch.displayPlaylistUid,
+      });
     }
-    if (!!this.$store.state.contactSearch.playlistUid) {
-      console.log("before Created Contact", this.$store.state.contactSearch.playlistUid);
-      this.select = this.$store.state.contactSearch.playlistUid+'>>>'+this.$store.state.contactSearch.displayPlaylistUid;
-      this.$emit("change", { playlistUid: this.$store.state.contactSearch.playlistUid, displayPlaylistUid: this.$store.state.contactSearch.displayPlaylistUid });
+    if (this.playlistType === "contact") {
+      console.log(
+        "before Created Contact",
+        this.$store.state.contactSearch.playlistUid
+      );
+      this.select =
+        this.$store.state.contactSearch.playlistUid +
+        ">>>" +
+        this.$store.state.contactSearch.displayPlaylistUid;
+      this.$emit("change", {
+        playlistUid: this.$store.state.contactSearch.playlistUid,
+        displayPlaylistUid: this.$store.state.contactSearch.displayPlaylistUid,
+      });
     }
-  }
+  },
 };
 </script>
 
