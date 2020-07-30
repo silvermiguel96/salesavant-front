@@ -67,9 +67,9 @@
       </tr>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
-      <td class="ma-0 pa-0" :colspan="headers.length">
-        <v-card elevation="5">
-          <v-simple-table>
+      <td class="ma-0 pa-0" :style="{ height: '10px' }" :colspan="headers.length">
+        <v-card class="ma-0 pa-0" elevation="5">
+          <v-simple-table dense>
             <template v-slot:default>
               <tbody>
                 <tr v-for="job in item.otherJobs" :key="job.uid">
@@ -85,7 +85,11 @@
                     </div>
                   </td>
                   <td style="width:15%;">
-                    <div>{{ job.title || "" }}</div>
+                    <long-paragraph
+                      class="font-weight-light text-justify pa-0 ma-0"
+                      :text="job.title"
+                      :maxLength="17"
+                    ></long-paragraph>
                   </td>
                   <td style="width:10%;">
                     <div>{{ job.department || "--" }}</div>
@@ -116,6 +120,7 @@
 </template>
 
 <script>
+import LongParagraph from "../../components/common/LongParagraph.vue";
 export default {
   data() {
     return {
@@ -185,6 +190,9 @@ export default {
         itemsPerPage: 10,
       },
     };
+  },
+  components: {
+    LongParagraph,
   },
   methods: {
     updateOptions(dataFromEvent = {}) {

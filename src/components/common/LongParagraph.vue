@@ -1,5 +1,5 @@
 <template>
-  <div class="min-width-description">
+  <div :style="{ 'min-width': minWidth }">
     {{showMore ? text : trimText(text)}}
     <a
       v-show="!showMore && !!text &&text.length > this.maxLength"
@@ -13,26 +13,32 @@
 export default {
   data() {
     return {
-      showMore: false
+      showMore: false,
     };
   },
   props: {
     text: String,
     maxLength: {
       type: Number,
-      default: 30
-    }
+      default: 30,
+    },
+    minWidth: {
+      type: String,
+      default: "230px",
+    },
   },
   methods: {
     trimText(text = "") {
       if (!!text) {
-        return `${text.substring(0, this.maxLength)}${text.length > this.maxLength ? "..." : ""}`;
+        return `${text.substring(0, this.maxLength)}${
+          text.length > this.maxLength ? "..." : ""
+        }`;
       }
     },
     toggle() {
       this.showMore = !this.showMore;
-    }
-  }
+    },
+  },
 };
 </script>
 
