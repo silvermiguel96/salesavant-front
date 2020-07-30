@@ -203,13 +203,15 @@ export default {
             mutation: gql`
               mutation(
                 $name: String
-                $city: String
                 $description: String
+                $website: String
+                $links: String
+                $industry: String
+                $naics: String
+                $city: String
                 $state: String
                 $region: String
                 $country: String
-                $website: String
-                $links: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $lessThanScore: Int
@@ -223,10 +225,12 @@ export default {
                 createPlaylistFromCompanySearch(
                   companySearch: {
                     searchName: $name
-                    city: $city
                     searchDescription: $description
                     searchWebsite: $website
                     searchLinks: $links
+                    searchIndustry: $industry
+                    searchNaics: $naics
+                    city: $city
                     state: $state
                     region: $region
                     country: $country
@@ -292,12 +296,14 @@ export default {
                 $newSignalDefaultScore: Float
                 $name: String
                 $description: String
+                $website: String
+                $links: String
+                $industry: String
+                $naics: String
                 $city: String
                 $state: String
                 $region: String
                 $country: String
-                $website: String
-                $links: String
                 $lessThanEmployees: Int
                 $moreThanEmployees: Int
                 $lessThanScore: Int
@@ -319,6 +325,8 @@ export default {
                     searchDescription: $description
                     searchWebsite: $website
                     searchLinks: $links
+                    searchIndustry: $industry
+                    searchNaics: $naics
                     city: $city
                     state: $state
                     region: $region
@@ -533,9 +541,6 @@ export default {
       variables() {
         if (this.showFiltersAndActions) {
           return {
-            playlistUid: this.companySearch.playlistUid,
-            signals: this.companySearch.signals,
-            signalGroups: this.companySearch.signalGroups,
             searchName: this.companySearch.name,
             searchWebsite: this.companySearch.website,
             searchLinks: this.companySearch.links,
@@ -551,6 +556,10 @@ export default {
             moreThanEmployees: this.companySearch.moreThanEmployees,
             moreThanScore: this.companySearch.moreThanScore,
             lessThanScore: this.companySearch.lessThanScore,
+            playlistUid: this.companySearch.playlistUid,
+
+            signals: this.companySearch.signals,
+            signalGroups: this.companySearch.signalGroups,
             first: this.options.itemsPerPage,
             offset:
               this.options.itemsPerPage * this.options.page -
