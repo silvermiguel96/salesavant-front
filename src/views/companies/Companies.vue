@@ -505,7 +505,6 @@ export default {
           ) {
             totalResults
             companiesList {
-              creationTime
               modificationTime
               uid
               name
@@ -519,12 +518,9 @@ export default {
               state
               numEmployees
               momentum
-              vertical
               industry
               status
               dateFounded
-              linkedinHandle
-              stockSymbol
               naicsCode
               totalScore
               totalSignals

@@ -160,7 +160,7 @@ export default {
               momentum
               numEmployees
               url
-              vertical
+              industry
               totalScore
               totalSignals
             }
