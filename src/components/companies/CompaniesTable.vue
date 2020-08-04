@@ -24,7 +24,7 @@
         <td>{{ item.country || "--"}}</td>
         <td>{{ item.momentum || "--"}}</td>
         <td>
-          <long-paragraph :text="item.vertical" :maxLength="35"></long-paragraph>
+          <long-paragraph :text="item.industry" :maxLength="35" :capitalize="true"></long-paragraph>
         </td>
       </tr>
     </template>
@@ -44,7 +44,7 @@ export default {
         { text: "State", value: "state", width: "15%", sortable: false },
         { text: "Country", value: "country", width: "15%", sortable: false },
         { text: "Momentum", value: "momentum", width: "12%", sortable: false },
-        { text: "Vertical", value: "vertical", width: "18%", sortable: false }
+        { text: "Industry", value: "industry", width: "18%", sortable: false }
       ],
       options: {
         page: 1,

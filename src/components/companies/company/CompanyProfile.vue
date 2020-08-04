@@ -39,7 +39,7 @@
           <v-col cols="12" xs="6">
             <a
               v-if="company.linkedinHandle"
-              :href="`https://linkedin.com/company${company.linkedinHandle}`"
+              :href="companyLinkedinHandle"
               target="_blank"
             >{{company.linkedinHandle}}</a>
           </v-col>
@@ -51,7 +51,7 @@
               <span class="font-weight-light float-right">
                 <a
                   v-if="company.linkedinHandle"
-                  :href="`https://linkedin.com/company${company.linkedinHandle}`"
+                  :href="companyLinkedinHandle"
                   target="_blank"
                 >{{company.linkedinHandle}}</a>
               </span>
@@ -530,6 +530,13 @@ export default {
       return this.company.url.startsWith("http")
         ? this.company.url
         : `http://${this.company.url}`;
+    },
+    companyLinkedinHandle() {
+      if (this.company.linkedinHandle.toLowerCase().startsWith("linkedin")) {
+        return this.company.linkedinHandle;
+      } else {
+        return `https://linkedin.com/company/${this.company.linkedinHandle}`;
+      }
     },
   },
 };
