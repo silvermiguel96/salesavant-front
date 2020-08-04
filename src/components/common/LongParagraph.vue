@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ 'min-width': minWidth }">
+  <div :style="{ 'min-width': minWidth }" :class="{'text-capitalize': capitalize}">
     {{showMore ? text : trimText(text)}}
     <a
       v-show="!showMore && !!text &&text.length > this.maxLength"
@@ -25,6 +25,10 @@ export default {
     minWidth: {
       type: String,
       default: "230px",
+    },
+    capitalize: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
