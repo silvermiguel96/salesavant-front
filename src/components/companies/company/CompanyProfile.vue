@@ -39,9 +39,10 @@
           <v-col cols="12" xs="6">
             <a
               v-if="company.linkedinHandle"
-              :href="companyLinkedinHandle"
+              :href="companyLinkedinHandleUrl"
               target="_blank"
-            >{{company.linkedinHandle}}</a>
+            >{{companyLinkedinHandle}}</a>
+            <span v-else>--</span>
           </v-col>
         </v-row>
         <v-row class="d-block d-md-none" no-gutters>
@@ -51,9 +52,10 @@
               <span class="font-weight-light float-right">
                 <a
                   v-if="company.linkedinHandle"
-                  :href="companyLinkedinHandle"
+                  :href="companyLinkedinHandleUrl"
                   target="_blank"
-                >{{company.linkedinHandle}}</a>
+                >{{companyLinkedinHandle}}</a>
+                <span v-else>--</span>
               </span>
             </div>
           </v-col>
@@ -531,12 +533,24 @@ export default {
         ? this.company.url
         : `http://${this.company.url}`;
     },
-    companyLinkedinHandle() {
-      if (this.company.linkedinHandle.toLowerCase().startsWith("linkedin")) {
-        return this.company.linkedinHandle;
-      } else {
-        return `https://linkedin.com/company/${this.company.linkedinHandle}`;
+    companyLinkedinHandleUrl() {
+      if (this.company.linkedinHandle) {
+        let linkedHandleNorm = this.company.linkedinHandle.trim().toLowerCase();
+        if (linkedHandleNorm.startsWith("linkedin")) {
+          return this.company.linkedinHandle;
+        } else if (linkedHandleNorm.startsWith("company")) {
+          return `https://linkedin.com/${this.company.linkedinHandle}`;
+        } else {
+          return `https://linkedin.com/company/${this.company.linkedinHandle}`;
+        }
       }
+      return undefined;
+    },
+    companyLinkedinHandle() {
+      if (this.company.linkedinHandle) {
+        return this.company.linkedinHandle.split("/").slice(-1).pop();
+      }
+      return undefined;
     },
   },
 };
