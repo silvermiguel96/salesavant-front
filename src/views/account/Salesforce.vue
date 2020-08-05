@@ -16,9 +16,7 @@
           <v-card-text v-else>
             <v-row no-gutters>
               <v-col md="10" cols="12">
-                <div
-                  class="title text-secondary text-capitalize"
-                >Salesforce</div>
+                <div class="title text-secondary text-capitalize">Salesforce</div>
                 <a :href="salesforceConnection.salesforceUrl" target="_blank">Go to Salesforce</a>
               </v-col>
               <v-col md="2" cols="12" class="d-flex justify-md-end align-start">
@@ -118,6 +116,14 @@
               </v-col>
             </v-row>
           </v-card-text>
+          <v-dialog v-model="deleteDialog" persistent width="320">
+            <v-card >
+              <v-card-text class="pa-2 text-center">
+                Deleting all synced data ... please wait
+                <v-progress-linear indeterminate color="primary"></v-progress-linear>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-col>
     </v-row>
@@ -128,11 +134,12 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
+      deleteDialog: false,
       myUser: {
         account: {
-          salesforceConnection: undefined
-        }
-      }
+          salesforceConnection: undefined,
+        },
+      },
     };
   },
   apollo: {
@@ -157,8 +164,8 @@ export default {
           }
         }
       `,
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   methods: {
     async deleteSalesforceConnection(salesforceConnectionId) {
@@ -173,10 +180,11 @@ export default {
           color: "light-blue darken-1",
           icon: "power_off",
           title: "Disconnect from Salesforce",
-          width: 600
+          width: 600,
         }
       );
       if (res) {
+        this.deleteDialog = true;
         this.$apollo
           .mutate({
             mutation: gql`
@@ -190,11 +198,12 @@ export default {
               }
             `,
             variables: {
-              salesforceConnectionId: salesforceConnectionId
-            }
+              salesforceConnectionId: salesforceConnectionId,
+            },
           })
-          .then(resp => {
+          .then((resp) => {
             if (resp.data.deleteSalesforceConnection.status == "ok") {
+              this.deleteDialog = false;
               this.myUser.account.salesforceConnection = undefined;
               this.$eventBus.$emit(
                 "showSnack",
@@ -215,8 +224,8 @@ export default {
       this.$eventBus.$emit("createJob", {
         jobType: "salesforce_download",
         additionalData: {
-          salesforce_connection_id: salesforceConnectionId
-        }
+          salesforce_connection_id: salesforceConnectionId,
+        },
       });
       this.$eventBus.$emit(
         "showSnack",
@@ -228,20 +237,20 @@ export default {
       this.$eventBus.$emit("createJob", {
         jobType: "salesforce_upload",
         additionalData: {
-          salesforce_connection_id: salesforceConnectionId
-        }
+          salesforce_connection_id: salesforceConnectionId,
+        },
       });
       this.$eventBus.$emit(
         "showSnack",
         `Job Salesforce Upload enqueed successfully`,
         "success"
       );
-    }
+    },
   },
   computed: {
     salesforceConnection() {
       return this.myUser.account.salesforceConnection;
-    }
-  }
+    },
+  },
 };
 </script>
