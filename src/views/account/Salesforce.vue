@@ -3,16 +3,18 @@
     <v-row>
       <v-col cols="12" class="px-2 py-0 pr-sm-2 pb-24">
         <v-card class="pb-2">
-          <v-card-title v-if="!salesforceConnection">
-            <v-row no-gutters>
+          <v-card-text v-if="!salesforceConnection">
+            <v-row>
               <v-col cols="12" md="9" class="title text--secondary">Salesforce</v-col>
-              <v-col cols="12" md="3" class="md-offset-9">
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="4" offset-md="4">
                 <v-btn block color="primary" to="/salesforce-setup">
                   <v-icon size="20">add</v-icon>Setup Connection
                 </v-btn>
               </v-col>
             </v-row>
-          </v-card-title>
+          </v-card-text>
           <v-card-text v-else>
             <v-row no-gutters>
               <v-col md="10" cols="12">
@@ -117,7 +119,7 @@
             </v-row>
           </v-card-text>
           <v-dialog v-model="deleteDialog" persistent width="320">
-            <v-card >
+            <v-card>
               <v-card-text class="pa-2 text-center">
                 Deleting all synced data ... please wait
                 <v-progress-linear indeterminate color="primary"></v-progress-linear>
