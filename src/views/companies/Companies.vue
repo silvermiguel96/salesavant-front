@@ -461,10 +461,12 @@ export default {
           $playlistUid: String
           $signals: [Int]
           $signalGroups: [String]
+          $searchLinks: String
           $searchName: String
           $searchDescription: String
           $searchWebsite: String
-          $searchLinks: String
+          $searchIndustry: String,
+          $searchNaics: String,
           $country: String
           $city: String
           $region: String
@@ -484,10 +486,12 @@ export default {
             playlistUid: $playlistUid
             signals: $signals
             signalGroups: $signalGroups
+            searchLinks: $searchLinks
             searchName: $searchName
             searchDescription: $searchDescription
             searchWebsite: $searchWebsite
-            searchLinks: $searchLinks
+            searchIndustry: $searchIndustry
+            searchNaics: $searchNaics
             country: $country
             city: $city
             region: $region
@@ -531,9 +535,9 @@ export default {
       variables() {
         if (this.showFiltersAndActions) {
           return {
+            searchLinks: this.companySearch.links,
             searchName: this.companySearch.name,
             searchWebsite: this.companySearch.website,
-            searchLinks: this.companySearch.links,
             searchDescription: this.companySearch.description,
             searchIndustry: this.companySearch.industry,
             searchNaics: this.companySearch.naics,
