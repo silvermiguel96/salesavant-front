@@ -90,7 +90,7 @@
               style="font-size: 0.9em;"
             >{{ progress.toFixed(0) }}%</v-progress-circular>
             <v-card-text class="text-center">{{ jobDescription }}</v-card-text>
-            <v-btn color="primary" @click="finishWizard">Back to Salesforce</v-btn>
+            <v-btn color="primary" @click="finishWizard" :disabled="progress<100">View Results</v-btn>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
