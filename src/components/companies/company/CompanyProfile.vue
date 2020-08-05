@@ -537,7 +537,7 @@ export default {
       if (this.company.linkedinHandle) {
         let linkedHandleNorm = this.company.linkedinHandle.trim().toLowerCase();
         if (linkedHandleNorm.startsWith("linkedin")) {
-          return this.company.linkedinHandle;
+          return `https://${this.company.linkedinHandle}`;
         } else if (linkedHandleNorm.startsWith("company")) {
           return `https://linkedin.com/${this.company.linkedinHandle}`;
         } else {
