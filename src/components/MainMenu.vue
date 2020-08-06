@@ -120,47 +120,34 @@ export default {
   },
   props: {},
   methods: {
-    ...mapMutations(["resetCompanySearch", "resetContactSearch"]),
     onPlaylists() {
-      this.resetSearch();
       this.$router.push("/playlists").catch((err) => {});
     },
     onCompanies() {
-      this.resetSearch();
       this.$router.push("/companies").catch((err) => {});
     },
     onContacts() {
-      this.resetSearch();
       this.$router.push("/contacts").catch((err) => {});
     },
     onSignals() {
-      this.resetSearch();
       this.$router.push("/signals").catch((err) => {});
     },
     onAccount() {
-      this.resetSearch();
       this.$router.push("/account").catch((err) => {});
     },
     onAdmin() {
-      this.resetSearch();
       this.$router.push("/admin").catch((err) => {});
     },
     onSalesforce() {
-      this.resetSearch();
       this.$router.push("/salesforce").catch((err) => {});
+    },
+    onBatch() {
+      this.$router.push("/batch").catch((err) => {});
     },
     exitApp() {
       localStorage.removeItem(AUTH_TOKEN);
       this.$router.go("/login");
-    },
-    onBatch() {
-      this.resetSearch();
-      this.$router.push("/batch").catch((err) => {});
-    },
-    resetSearch() {
-      this.resetCompanySearch();
-      this.resetContactSearch();
-    },
+    }
   },
 };
 </script>

@@ -92,7 +92,7 @@
               <companies-table
                 v-if="companies"
                 :items="companies.companiesList"
-                :totalResults="companies.totalResults"
+                :totalResults="totalResults"
                 @updateOptions="updateOptions"
               ></companies-table>
             </v-col>
@@ -480,7 +480,6 @@ export default {
           $sortOrder: String
           $first: Int
           $offset: Int
-          $totalResults: Int
         ) {
           companies(
             playlistUid: $playlistUid
@@ -505,7 +504,6 @@ export default {
             sortOrder: $sortOrder
             first: $first
             offset: $offset
-            totalResults: $totalResults
           ) {
             totalResults
             companiesList {
@@ -560,7 +558,6 @@ export default {
               this.options.itemsPerPage,
             sortBy: this.options.sortBy,
             sortOrder: this.options.sortOrder,
-            totalResults: this.totalResults,
           };
         } else {
           return {
@@ -572,7 +569,6 @@ export default {
               this.options.itemsPerPage,
             sortBy: this.options.sortBy,
             sortOrder: this.options.sortOrder,
-            totalResults: this.totalResults,
           };
         }
       },
@@ -592,7 +588,7 @@ export default {
           this.totalResults = data.companies.totalResults;
         }
       },
-      debounce: 500,
+      debounce: 800,
       fetchPolicy: "cache-and-network",
     },
   },
