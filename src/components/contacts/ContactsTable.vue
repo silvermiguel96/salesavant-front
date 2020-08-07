@@ -27,7 +27,6 @@
         </td>
         <td>
           <router-link
-            class="subtitle-2 font-weight-medium"
             :to="`/contacts/${item.uid}`"
           >{{ item.fullName }}</router-link>
         </td>

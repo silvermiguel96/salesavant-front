@@ -50,7 +50,7 @@
                       <v-col cols="6" class="d-flex flex-column justify-space-between">
                         <div class="body-1 text--secondary">
                           <span>Download&nbsp;</span>
-                          <router-link class="caption" to="/salesforce-objects">View data</router-link>
+                          <router-link style="text-decoration:none;" class="caption" to="/salesforce-objects">View data</router-link>
                         </div>
                         <div class="text--secondary pb-2">
                           <span class="caption">Last run:&nbsp;</span>
