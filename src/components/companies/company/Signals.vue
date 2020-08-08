@@ -46,7 +46,7 @@
             </td>
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
-            <td>{{ item.score || "0" }}</td>
+            <td>{{ item.signal.score || "0" }}</td>
             <td>
               <div class="d-flex align-center justify-center">
                 <v-icon @click="deleteSingal(item)" small color="red lighten-2">delete</v-icon>
@@ -87,7 +87,7 @@ export default {
   apollo: {
     companySignals: {
       query: gql`
-        query searchCompanySignals(
+        query companySignals(
           $companyUid: String
           $first: Int
           $offset: Int
@@ -106,9 +106,8 @@ export default {
                 description
                 group
                 category
-                defaultScore
+                score
               }
-              score
             }
           }
         }
@@ -156,18 +155,17 @@ export default {
               .mutate({
                 mutation: gql`
                   mutation(
-                    $score: Float
                     $signalId: Int!
                     $companyUid: String!
                   ) {
                     createCompanySignal(
                       companySignalData: {
-                        score: $score
                         signalId: $signalId
                         companyUid: $companyUid
                       }
                     ) {
                       companySignal {
+                        id
                         company {
                           name
                           uid
@@ -178,16 +176,14 @@ export default {
                           description
                           group
                           category
-                          defaultScore
+                          score
                         }
-                        id
                       }
                     }
                   }
                 `,
                 // Parameters
                 variables: {
-                  score: 1,
                   signalId: this.signalId,
                   companyUid: this.$route.params.companiesUid
                 }
@@ -238,7 +234,7 @@ export default {
                         description: $description
                         group: $group
                         category: $category
-                        defaultScore: $score
+                        score: $score
                       }
                     ) {
                       signal {
@@ -250,7 +246,7 @@ export default {
                         accountId
                         description
                         creationTime
-                        defaultScore
+                        score
                         modificationTime
                       }
                     }
@@ -304,7 +300,7 @@ export default {
                         description
                         group
                         category
-                        defaultScore
+                        score
                       }
                       id
                     }

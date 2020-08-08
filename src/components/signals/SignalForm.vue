@@ -57,14 +57,14 @@ export default {
             mutation(
               $jobUid: String!
               $keyword: String!
-              $defaultScore: Int
+              $score: Int
               $group: String!
               $description: String!
             ) {
               createSignalFromPlaylistKeyword(
                 jobUid: $jobUid
                 keyword: $keyword
-                defaultScore: $defaultScore
+                score: $score
                 group: $group
                 description: $description
               ) {
@@ -77,7 +77,7 @@ export default {
                   accountId
                   description
                   creationTime
-                  defaultScore
+                  score
                   modificationTime
                 }
               }
@@ -87,7 +87,7 @@ export default {
           variables: {
             keyword: this.name,
             jobUid: this.$props.jobUid,
-            defaultScore: this.score,
+            score: this.score,
             group: this.group,
             description: this.description
           }

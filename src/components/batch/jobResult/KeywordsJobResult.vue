@@ -67,7 +67,7 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation($jobUid: String!, $keyword: String!) {
+            mutation($jobUid: String!, $keyword: String!, $score: Int) {
               createSignalFromPlaylistKeyword(
                 jobUid: $jobUid
                 keyword: $keyword
@@ -83,7 +83,7 @@ export default {
                   accountId
                   description
                   creationTime
-                  defaultScore
+                  score
                   modificationTime
                 }
               }
@@ -93,7 +93,7 @@ export default {
           variables: {
             jobUid: this.job.uid,
             keyword: _get(signalData, "keyword"),
-            defaultScore: parseInt(_get(signalData, "score") | 1)
+            score: parseInt(_get(signalData, "score") | 1)
           }
         })
         .then(data => {

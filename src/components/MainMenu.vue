@@ -71,6 +71,12 @@ export default {
           click: this.onPlaylists,
         },
         {
+          icon: "gps_fixed",
+          text: "Signals",
+          router: "/signals",
+          click: this.onSignals,
+        },
+        {
           icon: "business",
           text: "Companies",
           router: "/companies",
@@ -81,12 +87,6 @@ export default {
           text: "Contacts",
           router: "/contacts",
           click: this.onContacts,
-        },
-        {
-          icon: "gps_fixed",
-          text: "Signals",
-          router: "/signals",
-          click: this.onSignals,
         },
         {
           icon: "work",
@@ -123,14 +123,14 @@ export default {
     onPlaylists() {
       this.$router.push("/playlists").catch((err) => {});
     },
+    onSignals() {
+      this.$router.push("/signals").catch((err) => {});
+    },
     onCompanies() {
       this.$router.push("/companies").catch((err) => {});
     },
     onContacts() {
       this.$router.push("/contacts").catch((err) => {});
-    },
-    onSignals() {
-      this.$router.push("/signals").catch((err) => {});
     },
     onAccount() {
       this.$router.push("/account").catch((err) => {});

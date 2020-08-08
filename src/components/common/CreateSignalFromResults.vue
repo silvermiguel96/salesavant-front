@@ -20,7 +20,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
-                    v-model="signal.defaultScore"
+                    v-model="signal.score"
                     label="Score"
                     required
                     :rules="requiredRules"
@@ -50,7 +50,7 @@ export default {
     signal: {
       name: "",
       description: "",
-      defaultScore: "",
+      score: "",
       group: ""
     },
     requiredRules: [v => !!v || "this field is required"],

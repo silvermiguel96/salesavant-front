@@ -44,7 +44,6 @@
           </template>
         </v-data-table>
       </div>
-      
     </v-card-text>
   </v-card>
 </template>
@@ -57,7 +56,7 @@ export default {
     return {
       options: {
         page: 1,
-        itemsPerPage: 10
+        itemsPerPage: 10,
       },
       signalId: null,
       currentSignalSearch: null,
@@ -68,13 +67,13 @@ export default {
       headersTable1: [
         { text: "Group", value: "groupName", sortable: false },
         { text: "Total", value: "count", sortable: false },
-        { text: "Score", value: "score", sortable: true }
+        { text: "Score", value: "score", sortable: true },
       ],
       headers: [
         { text: "Group", value: "signal.group", sortable: false },
         { text: "Signal", value: "signal.name", sortable: false },
         { text: "Score", value: "score", sortable: true },
-      ]
+      ],
     };
   },
   apollo: {
@@ -96,18 +95,14 @@ export default {
       `,
       variables() {
         return {
-          uid: this.$route.params.companiesUid
+          uid: this.$route.params.companiesUid,
         };
       },
-      fetchPolicy: "no-cache"
+      fetchPolicy: "no-cache",
     },
     companySignals: {
       query: gql`
-        query searchCompanyPlaylist(
-          $companyUid: String
-          $first: Int
-          $offset: Int
-        ) {
+        query companySignals($companyUid: String, $first: Int, $offset: Int) {
           companySignals(
             companyUid: $companyUid
             first: $first
@@ -122,9 +117,8 @@ export default {
                 description
                 group
                 category
-                defaultScore
+                score
               }
-              score
             }
           }
         }
@@ -135,18 +129,23 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
-      fetchPolicy: "no-cache"
-    }
+      fetchPolicy: "no-cache",
+    },
   },
   components: {
-    LongParagraph
+    LongParagraph,
   },
   methods: {
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
@@ -179,12 +178,12 @@ export default {
                 mutation($score: Float, $signalId: Int!, $companyUid: String!) {
                   createCompanySignal(
                     companySignalData: {
-                      score: $score
                       signalId: $signalId
                       companyUid: $companyUid
                     }
                   ) {
                     companySignal {
+                      id
                       company {
                         name
                         uid
@@ -193,17 +192,15 @@ export default {
                         id
                         name
                       }
-                      id
                     }
                   }
                 }
               `,
               // Parameters
               variables: {
-                score: 1,
                 signalId: this.signalId,
-                companyUid: this.$route.params.companiesUid
-              }
+                companyUid: this.$route.params.companiesUid,
+              },
             });
             console.log("result", result);
             const newSignalId = _get(
@@ -213,11 +210,19 @@ export default {
             );
             console.log("newSignalId", newSignalId);
             if (!newSignalId) {
-              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when saving the company - signal, please try again!!", "error");
+              this.$eventBus.$emit(
+                "showSnack",
+                "Oops!! we did something wrong when saving the company - signal, please try again!!",
+                "error"
+              );
               return;
             }
             this.refreshData();
-            this.$eventBus.$emit("showSnack", "New signal successfully created!!", "success");
+            this.$eventBus.$emit(
+              "showSnack",
+              "New signal successfully created!!",
+              "success"
+            );
             return;
           } else {
             const result = await this.$apollo.mutate({
@@ -235,7 +240,7 @@ export default {
                       description: $description
                       group: $group
                       category: $category
-                      defaultScore: $score
+                      score: $score
                     }
                   ) {
                     signal {
@@ -247,7 +252,7 @@ export default {
                       accountId
                       description
                       creationTime
-                      defaultScore
+                      score
                       modificationTime
                     }
                   }
@@ -259,14 +264,18 @@ export default {
                 description: "",
                 group: "",
                 category: "",
-                score: 1
-              }
+                score: 1,
+              },
             });
             console.log("result", result);
             const newSignal = _get(result, "data.createSignal.signal", null);
             if (!newSignal) {
               console.log("hola5");
-              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when creating a new signal!!!", "error");
+              this.$eventBus.$emit(
+                "showSnack",
+                "Oops!! we did something wrong when creating a new signal!!!",
+                "error"
+              );
               return;
             }
             console.log("newSignal", newSignal);
@@ -298,8 +307,8 @@ export default {
               variables: {
                 score: 1,
                 signalId: newSignal.id,
-                companyUid: this.$route.params.companiesUid
-              }
+                companyUid: this.$route.params.companiesUid,
+              },
             });
             console.log("newCompanySignalMutation", newCompanySignalMutation);
             const newCompanySignal = _get(
@@ -308,11 +317,19 @@ export default {
               null
             );
             if (!newCompanySignal) {
-              this.$eventBus.$emit("showSnack", "Oops!! we did something wrong when creating the new CompanySignal, please try again!!", "error");
+              this.$eventBus.$emit(
+                "showSnack",
+                "Oops!! we did something wrong when creating the new CompanySignal, please try again!!",
+                "error"
+              );
               return;
             }
             this.refreshData();
-            this.$eventBus.$emit("showSnack", "New signal successfully created!!", "success");
+            this.$eventBus.$emit(
+              "showSnack",
+              "New signal successfully created!!",
+              "success"
+            );
             return;
           }
         } else {
@@ -321,15 +338,19 @@ export default {
           return;
         }
       } catch (error) {
-        this.$eventBus.$emit("showSnack", "Oops we did something wrong!!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Oops we did something wrong!!",
+          "error"
+        );
         console.log("error adding signal to company", error);
       }
-    }
+    },
   },
   beforeCreate() {
     this.$apollo.queries.company;
     this.$apollo.queries.companySignals;
-  }
+  },
 };
 </script>
 

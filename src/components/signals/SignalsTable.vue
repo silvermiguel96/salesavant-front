@@ -16,7 +16,9 @@
       <template v-slot:item="{ item }">
         <tr>
           <td>
-            <long-paragraph class="wrapping-td" :text="item.name"></long-paragraph>
+            <router-link :to="`/signals/${item.id}`">
+              <long-paragraph :text="item.name" :maxLength="35"></long-paragraph>
+            </router-link>
           </td>
           <td>
             <long-paragraph class="wrapping-td" :text="item.description"></long-paragraph>
@@ -50,7 +52,7 @@
           </td>
           <td>
             <v-edit-dialog
-              :return-value.sync="item.defaultScore"
+              :return-value.sync="item.score"
               large
               lazy
               persistent
@@ -59,13 +61,13 @@
               @open="open"
               @close="close"
             >
-              <div>{{ item.defaultScore || "--" }}</div>
+              <div>{{ item.score || "--" }}</div>
               <template v-slot:input>
                 <div class="mt-3 title">Update Score</div>
               </template>
               <template v-slot:input>
                 <v-text-field
-                  v-model="item.defaultScore"
+                  v-model="item.score"
                   label="Edit score"
                   single-line
                   counter
@@ -76,11 +78,6 @@
             </v-edit-dialog>
           </td>
           <td>{{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}</td>
-          <td>
-            <router-link v-if="item.id" :to="`/signals/${item.id}`">
-              <v-icon size="20" small>edit</v-icon>
-            </router-link>
-          </td>
           <td>
             <div class="d-flex align-center justify-center">
               <v-icon @click="deleteSignal(item)" color="red lighten-2" size="20" small>delete</v-icon>
@@ -116,9 +113,8 @@ export default {
           width: "20%"
         },
         { text: "Group", value: "group", align: "left", sortable: false, width: "15%"  },
-        { text: "Default Score", value: "defaultScore", align: "left", sortable: false, width: "10%" },
+        { text: "Score", value: "score", align: "left", sortable: false, width: "10%" },
         { text: "Modification Time", value: "modificationTime", align: "left", sortable: false, width: "15%"   },
-        { text: "Edit", value: "icon", align: "left", sortable: false, width: "5%"  },
         { text: "Remove", value: "icon", align: "center", sortable: false, width: "5%"  }
       ],
       signal: {},
@@ -171,7 +167,7 @@ export default {
         this.$eventBus.$emit("showSnack", "Description can not be empty!", "error");
         return;
       }
-      if (!this.signal.defaultScore) {
+      if (!this.signal.score) {
         this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
         return;
       }
@@ -198,7 +194,7 @@ export default {
                   description: $description
                   group: $group
                   category: $category
-                  defaultScore: $score
+                  score: $score
                 }
                 signalId: $signalId
               ) {
@@ -211,7 +207,7 @@ export default {
                   accountId
                   description
                   creationTime
-                  defaultScore
+                  score
                   modificationTime
                 }
               }
@@ -224,7 +220,7 @@ export default {
             description: this.signal.description,
             group: this.signal.group,
             category: this.signal.category,
-            score: this.signal.defaultScore
+            score: this.signal.score
           }
         });
         const signal = _get(result, "data.updateSignal.signal", null);

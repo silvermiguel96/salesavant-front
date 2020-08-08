@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="company" style="height:100%;" class="pa-3">
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Website</div>
@@ -31,7 +31,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">LinkedIn</div>
@@ -63,7 +63,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Status</div>
@@ -81,7 +81,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Momentum</div>
@@ -101,7 +101,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Vertical Groups</div>
@@ -119,20 +119,20 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Industry</div>
           </v-col>
           <v-col cols="12" xs="6">
-            <span class="font-weight-light">{{ company.industry || "--" }}</span>
+            <span class="font-weight-light text-capitalize">{{ company.industry || "--" }}</span>
           </v-col>
         </v-row>
         <v-row class="d-block d-md-none" no-gutters>
           <v-col xs="12">
             <div>
               <span class="subtitle-2 font-weight-medium">Industry:</span>
-              <span class="font-weight-light float-right">{{ company.industry || "--" }}</span>
+              <span class="font-weight-light text-capitalize float-right">{{ company.industry || "--" }}</span>
             </div>
           </v-col>
         </v-row>
@@ -140,7 +140,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Country</div>
@@ -158,7 +158,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">State</div>
@@ -179,7 +179,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">City</div>
@@ -197,7 +197,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Employees</div>
@@ -218,7 +218,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">NAICS Code:</div>
@@ -241,7 +241,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">NAICS Description:</div>
@@ -270,7 +270,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Scale Score:</div>
@@ -296,7 +296,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Capital Efficiency Score:</div>
@@ -324,7 +324,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Acquirer Name:</div>
@@ -350,7 +350,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Year Founded:</div>
@@ -379,7 +379,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Exit Date:</div>
@@ -405,7 +405,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Exit Value:</div>
@@ -431,7 +431,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" md="6" class="pa-md-3">
+      <v-col cols="12" md="6" class="pa-md-1">
         <v-row class="d-none d-md-block" no-gutters>
           <v-col cols="12" xs="6">
             <div class="subtitle-2 font-weight-medium">Status</div>
@@ -452,7 +452,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" class="pa-md-3">
+      <v-col cols="12" class="pa-md-1">
         <v-row no-gutters>
           <v-col cols="12">
             <div class="subtitle-2 font-weight-medium">Description:</div>

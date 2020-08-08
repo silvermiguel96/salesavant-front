@@ -26,14 +26,24 @@
           <v-icon v-if="isExpanded == true" @click="expand(!isExpanded)">expand_less</v-icon>
         </td>
         <td>
-          <router-link
-            :to="`/contacts/${item.uid}`"
-          >{{ item.fullName }}</router-link>
+          <router-link :to="`/contacts/${item.uid}`">{{ item.fullName }}</router-link>
         </td>
         <td>
           <div v-for="job in item.currentOrLastJobs" :key="job.uid">
             <router-link :to="`/companies/${job.company.uid}`">{{ job.company.name }}</router-link>
-            <v-icon v-if="job.isCurrent" size="12" color="green darken-1">check_circle</v-icon>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  v-if="job.isCurrent"
+                  v-bind="attrs"
+                  v-on="on"
+                  size="14"
+                  color="blue darken-1"
+                  style="margin-left:2px; margin-bottom:2px;"
+                >check_circle</v-icon>
+              </template>
+              Current Job
+            </v-tooltip>
           </div>
         </td>
         <td>

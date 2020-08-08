@@ -51,7 +51,7 @@
                       <v-text-field v-model="signal.description" label="Description" required></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field v-model="signal.defaultScore" label="Score" required></v-text-field>
+                      <v-text-field v-model="signal.score" label="Score" required></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field v-model="signal.group" label="Group" required></v-text-field>
@@ -122,7 +122,7 @@ const defaultSignal = {
   accountId: "",
   description: "",
   creationTime: "",
-  defaultScore: "",
+  score: "",
   modificationTime: ""
 };
 
@@ -157,7 +157,7 @@ export default {
             name
             description
             group
-            defaultScore
+            score
           }
         }
       `,
@@ -252,7 +252,7 @@ export default {
         this.$eventBus.$emit("showSnack", "Name can not be empty!", "error");
         return;
       }
-      if (!this.signal.defaultScore) {
+      if (!this.signal.score) {
         this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
         return;
       }
@@ -281,7 +281,7 @@ export default {
                     description: $description
                     group: $group
                     category: $category
-                    defaultScore: $score
+                    score: $score
                   }
                   signalId: $signalId
                 ) {
@@ -294,7 +294,7 @@ export default {
                     accountId
                     description
                     creationTime
-                    defaultScore
+                    score
                     modificationTime
                   }
                 }
@@ -307,7 +307,7 @@ export default {
               description: this.signal.description,
               group: this.signal.group,
               category: this.signal.category,
-              score: this.signal.defaultScore
+              score: this.signal.score
             }
           });
           this.$eventBus.$emit(
@@ -333,7 +333,7 @@ export default {
                     description: $description
                     group: $group
                     category: $category
-                    defaultScore: $score
+                    score: $score
                   }
                 ) {
                   signal {
@@ -345,7 +345,7 @@ export default {
                     accountId
                     description
                     creationTime
-                    defaultScore
+                    score
                     modificationTime
                   }
                 }
@@ -357,7 +357,7 @@ export default {
               description: this.signal.description,
               group: this.signal.group,
               category: this.signal.category,
-              score: this.signal.defaultScore
+              score: this.signal.score
             }
           });
           this.$eventBus.$emit(
@@ -414,7 +414,7 @@ export default {
         );
         return;
       }
-      if (!this.signal.defaultScore) {
+      if (!this.signal.score) {
         this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
         return;
       }
@@ -430,11 +430,11 @@ export default {
         console.log("here");
         const result = await this.$apollo.mutate({
           mutation: gql`
-            mutation($jobUid: String!, $keyword: String!, $defaultScore: Int) {
+            mutation($jobUid: String!, $keyword: String!, $score: Int) {
               createSignalFromPlaylistKeyword(
                 jobUid: $jobUid
                 keyword: $keyword
-                defaultScore: $defaultScore
+                score: $score
               ) {
                 signal {
                   id
@@ -445,7 +445,7 @@ export default {
                   accountId
                   description
                   creationTime
-                  defaultScore
+                  score
                   modificationTime
                 }
               }
@@ -455,7 +455,7 @@ export default {
           variables: {
             keyword: this.signal.name,
             jobUid: this.$props.jobUid,
-            defaultScore: this.signal.defaultScore
+            score: this.signal.score
           }
         });
         this.$eventBus.$emit(

@@ -277,14 +277,14 @@ export default {
         const newSignalName = _get(signal, "name", "");
         const newSignalDescription = _get(signal, "description", "");
         const newSignalGroup = _get(signal, "group", "");
-        const newSignalDefaultScore = parseFloat(
-          _get(signal, "defaultScore", "0")
+        const newSignalScore = parseFloat(
+          _get(signal, "score", "0")
         );
         console.log("signal after if", {
           newSignalName,
           newSignalDescription,
           newSignalGroup,
-          newSignalDefaultScore,
+          newSignalScore,
         });
         try {
           const result = await this.$apollo.mutate({
@@ -293,7 +293,7 @@ export default {
                 $newSignalName: String
                 $newSignalDescription: String
                 $newSignalGroup: String
-                $newSignalDefaultScore: Float
+                $newSignalScore: Float
                 $name: String
                 $description: String
                 $website: String
@@ -317,7 +317,7 @@ export default {
                   signalData: {
                     name: $newSignalName
                     description: $newSignalDescription
-                    defaultScore: $newSignalDefaultScore
+                    score: $newSignalScore
                     group: $newSignalGroup
                   }
                   companySearch: {
@@ -354,7 +354,7 @@ export default {
               newSignalName: newSignalName,
               newSignalDescription: newSignalDescription,
               newSignalGroup: newSignalGroup,
-              newSignalDefaultScore: newSignalDefaultScore,
+              newSignalScore: newSignalScore,
             },
           });
           console.log("saving results as signal success", result);

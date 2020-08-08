@@ -145,7 +145,6 @@ export default {
           }
         });
 
-        console.log("Result", result);
         this.signals.signalsList.splice(index, 1);
         this.signals.totalResults -= 1;
         console.log(this.$apollo.queries);
@@ -214,7 +213,7 @@ export default {
               accountId
               description
               creationTime
-              defaultScore
+              score
               modificationTime
             }
           }
