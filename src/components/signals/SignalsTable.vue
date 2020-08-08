@@ -101,7 +101,7 @@ export default {
       dialog: false,
       options: {
         page: 1,
-        itemsPerPage: 10
+        itemsPerPage: 10,
       },
       headers: [
         { text: "Name", value: "name", sortable: false, width: "15%" },
@@ -110,16 +110,40 @@ export default {
           value: "description",
           align: "left",
           sortable: false,
-          width: "20%"
+          width: "15%",
         },
-        { text: "Group", value: "group", align: "left", sortable: false, width: "15%"  },
-        { text: "Score", value: "score", align: "left", sortable: false, width: "10%" },
-        { text: "Modification Time", value: "modificationTime", align: "left", sortable: false, width: "15%"   },
-        { text: "Remove", value: "icon", align: "center", sortable: false, width: "5%"  }
+        {
+          text: "Group",
+          value: "group",
+          align: "left",
+          sortable: false,
+          width: "15%",
+        },
+        {
+          text: "Score",
+          value: "score",
+          align: "left",
+          sortable: false,
+          width: "15%",
+        },
+        {
+          text: "Modification Time",
+          value: "modificationTime",
+          align: "left",
+          sortable: false,
+          width: "15%",
+        },
+        {
+          text: "Remove",
+          value: "icon",
+          align: "center",
+          sortable: false,
+          width: "10%",
+        },
       ],
       signal: {},
       selectedSignalId: "",
-      selectedItem: {}
+      selectedItem: {},
     };
   },
   components: {
@@ -150,13 +174,17 @@ export default {
         }
       );
       if (res) {
-        console.log("the signal", item)
+        console.log("the signal", item);
         this.$emit("deleteSignal", item);
       }
     },
     async save() {
       if (!this.signal) {
-        this.$eventBus.$emit("showSnack", "There's something wrong with the signal saving!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "There's something wrong with the signal saving!",
+          "error"
+        );
         return;
       }
       if (!this.signal.name) {
@@ -164,7 +192,11 @@ export default {
         return;
       }
       if (!this.signal.description) {
-        this.$eventBus.$emit("showSnack", "Description can not be empty!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Description can not be empty!",
+          "error"
+        );
         return;
       }
       if (!this.signal.score) {
@@ -220,18 +252,30 @@ export default {
             description: this.signal.description,
             group: this.signal.group,
             category: this.signal.category,
-            score: this.signal.score
-          }
+            score: this.signal.score,
+          },
         });
         const signal = _get(result, "data.updateSignal.signal", null);
         if (!signal) {
-          this.$eventBus.$emit("showSnack", "it seems that we created/updated the signal but couldn't check it, please check manually", "error");
+          this.$eventBus.$emit(
+            "showSnack",
+            "it seems that we created/updated the signal but couldn't check it, please check manually",
+            "error"
+          );
           return;
         }
         this.signal = signal;
-        this.$eventBus.$emit("showSnack", "Signal successfully updated", "success");
+        this.$eventBus.$emit(
+          "showSnack",
+          "Signal successfully updated",
+          "success"
+        );
       } catch (error) {
-        this.$eventBus.$emit("showSnack", "oops we did something wrong!", "error");
+        this.$eventBus.$emit(
+          "showSnack",
+          "oops we did something wrong!",
+          "error"
+        );
         console.log("error saving signal", error);
       }
     },
@@ -248,12 +292,12 @@ export default {
     },
     changeData(signal = {}) {
       this.signal = signal;
-    }
+    },
   },
   props: {
     items: Array,
-    totalResults: Number
-  }
+    totalResults: Number,
+  },
 };
 </script>
 <style scoped>
