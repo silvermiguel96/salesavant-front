@@ -39,7 +39,7 @@
               <td>
                 <long-paragraph :text="item.signal.name " :maxLength="35"></long-paragraph>
               </td>
-              <td>{{ item.score || "--" }}</td>
+              <td>{{ item.signal.score || "--" }}</td>
             </tr>
           </template>
         </v-data-table>
