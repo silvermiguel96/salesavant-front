@@ -3,88 +3,81 @@
     <v-card-title>
       <div class="display-1">Dashboard</div>
     </v-card-title>
-    <v-layout wrap>
-      <v-flex xs12 sm6 md3 lg3>
-        <v-card-text>
-          <v-sheet color="light-blue darken-2">
-            <v-sparkline
-              :value="value"
-              color="rgba(255, 255, 255, .7)"
-              height="100"
-              padding="24"
-              stroke-linecap="round"
-              smooth
-            >
-              <template v-slot:label="item">${{ item.value }}</template>
-            </v-sparkline>
-          </v-sheet>
-        </v-card-text>
-        <v-card-text>
-          <div class="headline font-weight-thin">Mgmt changes</div>
-        </v-card-text>
-      </v-flex>
-      <v-flex xs12 sm6 md3 lg3>
-        <v-card-text>
-          <v-sheet color="blue lighten-2">
-            <v-sparkline
-              :value="value"
-              color="rgba(255, 255, 255, .7)"
-              height="100"
-              padding="24"
-              stroke-linecap="round"
-              smooth
-            >
-              <template v-slot:label="item">${{ item.value }}</template>
-            </v-sparkline>
-          </v-sheet>
-        </v-card-text>
-        <v-card-text>
-          <div class="headline font-weight-thin">Funding event</div>
-        </v-card-text>
-      </v-flex>
-      <v-flex xs12 sm6 md3 lg3>
-        <v-card-text>
-          <v-sheet color="amber lighten-2">
-            <v-sparkline
-              :value="value"
-              color="rgba(255, 255, 255, .7)"
-              height="100"
-              padding="24"
-              stroke-linecap="round"
-              smooth
-            >
-              <template v-slot:label="item">${{ item.value }}</template>
-            </v-sparkline>
-          </v-sheet>
-        </v-card-text>
-        <v-card-text>
-          <div class="headline font-weight-thin">Acquisitions</div>
-        </v-card-text>
-      </v-flex>
-      <v-flex xs12 sm6 md3 lg3>
-        <v-card-text>
-          <v-sheet color="deep-orange lighten-2">
-            <v-sparkline
-              :value="value"
-              color="rgba(255, 255, 255, .7)"
-              height="100"
-              padding="24"
-              stroke-linecap="round"
-              smooth
-            >
-              <template v-slot:label="item">${{ item.value }}</template>
-            </v-sparkline>
-          </v-sheet>
-        </v-card-text>
-        <v-card-text>
-          <div class="headline font-weight-thin">Partnerships</div>
-        </v-card-text>
-      </v-flex>
-    </v-layout>
-    <!-- Custom Signal Groups -->
-    <custom-signal-groups />
+    <v-row>
+      <v-col cols="12" sm="4"
+        ><v-card max-width="450" class="elevation-1">
+          <v-list class="pa-0">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  class="text-center d-flex justify-center overline"
+                  ><v-icon medium class="mx-1">{{ companies.icon }}</v-icon>
+                  <p class="textItem">
+                    {{ (companies.subtitle).toLocaleString() }}
+                  </p></v-list-item-title
+                >
+                <v-list-item-subtitle class="text-center overline "
+                  >{{ companies.title }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4"
+        ><v-card max-width="450" class="elevation-1">
+          <v-list class="pa-0">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  class="text-center d-flex justify-center overline"
+                  ><v-icon medium class="mx-1">{{ contacts.icon }}</v-icon>
+                  <p class="textItem">
+                    {{ (contacts.subtitle).toLocaleString() }}
+                  </p></v-list-item-title
+                >
+                <v-list-item-subtitle class="text-center overline "
+                  >{{ contacts.title }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4"
+        ><v-card max-width="450" class="elevation-1">
+          <v-list class="pa-0">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  class="text-center d-flex justify-center overline"
+                  ><v-icon medium class="mx-1">{{ signals.icon }}</v-icon>
+                  <p class="textItem">
+                    {{ (signals.subtitle).toLocaleString() }}
+                  </p></v-list-item-title
+                >
+                <v-list-item-subtitle class="text-center overline "
+                  >{{ signals.title }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-tabs grow background-color="grey lighten-5" color="primary">
+      <v-tab class="text-capitalize"> Sales Signals </v-tab>
+      <v-tab-item>
+        <!-- Custom Signal Groups -->
+        <custom-signal-groups />
+      </v-tab-item>
+      <v-tab class="text-capitalize"> Custom Sales Signals </v-tab>
+      <v-tab-item>
+        <!-- Custom Sales Signals -->
+        <custom-sales-signals />
+      </v-tab-item>
+    </v-tabs>
     <!-- Custom Sales Signals -->
-    <custom-sales-signals/>
   </v-card>
 </template>
 
@@ -94,24 +87,34 @@ import customSignalGroups from "../../components/dashboard/CustomSignalGroups";
 export default {
   components: {
     customSalesSignals,
-    customSignalGroups
+    customSignalGroups,
   },
   data() {
     return {
-      items: [],
-      value: [423, 446, 675, 510, 590, 610, 760],
-      headers: [
-        { text: "Groups (All)", value: "groups" },
-        { text: "All", value: "all" },
-        { text: "Count", value: "count" }
-      ],
-      headersSignals: [
-        { text: "Custom Signal", value: "customsignal" },
-        { text: "Count", value: "count" },
-        { text: "Score", value: "score" },
-        { text: "Group", value: "signalgropup" }
-      ]
+      signals: {
+        icon: "graphic_eq",
+        title: "Signals",
+        subtitle: 7004666,
+      },
+      contacts: {
+        icon: "contacts",
+        title: "Contacts",
+        subtitle: 152350,
+      },
+      companies: {
+        icon: "business",
+        title: "Companies",
+        subtitle: 6293906,
+      },
     };
-  }
+  },
 };
 </script>
+
+<style scoped>
+.textItem {
+  font-size: 24px;
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+</style>
