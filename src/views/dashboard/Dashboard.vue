@@ -1,8 +1,6 @@
 <template>
   <v-card class="ma-3">
-    <v-card-title>
-      <div class="display-1">Dashboard</div>
-    </v-card-title>
+    <v-card-title class="subtitle-1">Dashboard</v-card-title>
     <v-row class="mx-md-3 mb-md-3">
       <v-col cols="12" sm="4">
         <v-card max-width="450" class="elevation-1">
