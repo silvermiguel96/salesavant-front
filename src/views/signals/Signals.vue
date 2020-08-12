@@ -201,11 +201,7 @@ export default {
             signalsList {
               id
               name
-              user {
-                id
-              }
               group
-              userId
               account {
                 id
               }
