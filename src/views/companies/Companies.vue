@@ -44,10 +44,10 @@
                 </v-btn>
               </v-col>
               <v-row v-if="showFiltersAndActions" no-gutters class="d-flex justify-end">
-                <v-col cols="12" sm="5" md="3" lg="2" class="pa-1">
+                <v-col cols="12" md="3" class="pt-1">
                   <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
                 </v-col>
-                <v-col cols="12" sm="5" md="3" lg="2" class="pa-1">
+                <v-col cols="12" md="3" class="pt-1 ml-2">
                   <create-signal-from-results @onSave="saveResultsAsSignal" />
                 </v-col>
               </v-row>
@@ -114,6 +114,14 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="waitDialog" persistent width="320">
+      <v-card>
+        <v-card-text class="pa-2 text-center">
+          {{ waitDialogMessage }}
+          <v-progress-linear indeterminate color="primary"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -131,6 +139,8 @@ export default {
     return {
       search: "",
       isLoading: true,
+      waitDialog: false,
+      waitDialogMessage: "",
       companies: [],
       totalResults: 0,
       options: {
@@ -198,176 +208,171 @@ export default {
         newPlaylistName
       );
       if (!!this.searchType && !!newPlaylistName) {
-        try {
-          const result = await this.$apollo.mutate({
-            mutation: gql`
-              mutation(
-                $name: String
-                $description: String
-                $website: String
-                $links: String
-                $industry: String
-                $naics: String
-                $city: String
-                $state: String
-                $region: String
-                $country: String
-                $lessThanEmployees: Int
-                $moreThanEmployees: Int
-                $lessThanScore: Int
-                $moreThanScore: Int
-                $status: String
-                $playlistUid: String
-                $signals: [Int]
-                $signalGroups: [String]
-                $newPlaylistName: String!
+        this.waitDialogMessage = "Creating Playlist please wait...";
+        this.waitDialog = true;
+        const result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation(
+              $name: String
+              $description: String
+              $website: String
+              $links: String
+              $industry: String
+              $naics: String
+              $city: String
+              $state: String
+              $region: String
+              $country: String
+              $lessThanEmployees: Int
+              $moreThanEmployees: Int
+              $lessThanScore: Int
+              $moreThanScore: Int
+              $status: String
+              $playlistUid: String
+              $signals: [Int]
+              $signalGroups: [String]
+              $newPlaylistName: String!
+            ) {
+              createPlaylistFromCompanySearch(
+                companySearch: {
+                  searchName: $name
+                  searchDescription: $description
+                  searchWebsite: $website
+                  searchLinks: $links
+                  searchIndustry: $industry
+                  searchNaics: $naics
+                  city: $city
+                  state: $state
+                  region: $region
+                  country: $country
+                  lessThanEmployees: $lessThanEmployees
+                  moreThanEmployees: $moreThanEmployees
+                  lessThanScore: $lessThanScore
+                  moreThanScore: $moreThanScore
+                  status: $status
+                  playlistUid: $playlistUid
+                  signals: $signals
+                  signalGroups: $signalGroups
+                }
+                playlistData: { name: $newPlaylistName }
               ) {
-                createPlaylistFromCompanySearch(
-                  companySearch: {
-                    searchName: $name
-                    searchDescription: $description
-                    searchWebsite: $website
-                    searchLinks: $links
-                    searchIndustry: $industry
-                    searchNaics: $naics
-                    city: $city
-                    state: $state
-                    region: $region
-                    country: $country
-                    lessThanEmployees: $lessThanEmployees
-                    moreThanEmployees: $moreThanEmployees
-                    lessThanScore: $lessThanScore
-                    moreThanScore: $moreThanScore
-                    status: $status
-                    playlistUid: $playlistUid
-                    signals: $signals
-                    signalGroups: $signalGroups
-                  }
-                  playlistData: { name: $newPlaylistName }
-                ) {
-                  playlist {
-                    uid
-                    name
-                  }
+                playlist {
+                  uid
+                  name
                 }
               }
-            `,
-            variables: {
-              ...this.companySearch,
-              newPlaylistName: newPlaylistName,
-            },
-          });
-          console.log("saving results as playlist success", result);
-          const playlist = _get(
-            result,
-            "data.createPlaylistFromCompanySearch.playlist",
-            null
-          );
-          this.$router.push({
-            path: `/playlists/${playlist.uid}`,
-          });
-        } catch (error) {
-          console.log("error saving simple search as a play list", error);
-        }
+            }
+          `,
+          variables: {
+            ...this.companySearch,
+            newPlaylistName: newPlaylistName,
+          },
+        });
+        this.waitDialog = false;
+        console.log("saving results as playlist success", result);
+        const playlist = _get(
+          result,
+          "data.createPlaylistFromCompanySearch.playlist",
+          null
+        );
+        this.$router.push({
+          path: `/playlists/${playlist.uid}`,
+        });
       }
     },
     async saveResultsAsSignal(signal = null) {
-      console.log("signal", signal);
       if (!!this.searchType && !!signal) {
         const newSignalName = _get(signal, "name", "");
         const newSignalDescription = _get(signal, "description", "");
         const newSignalGroup = _get(signal, "group", "");
-        const newSignalScore = parseFloat(
-          _get(signal, "score", "0")
-        );
-        console.log("signal after if", {
-          newSignalName,
-          newSignalDescription,
-          newSignalGroup,
-          newSignalScore,
-        });
-        try {
-          const result = await this.$apollo.mutate({
-            mutation: gql`
-              mutation(
-                $newSignalName: String
-                $newSignalDescription: String
-                $newSignalGroup: String
-                $newSignalScore: Float
-                $name: String
-                $description: String
-                $website: String
-                $links: String
-                $industry: String
-                $naics: String
-                $city: String
-                $state: String
-                $region: String
-                $country: String
-                $lessThanEmployees: Int
-                $moreThanEmployees: Int
-                $lessThanScore: Int
-                $moreThanScore: Int
-                $status: String
-                $playlistUid: String
-                $signals: [Int]
-                $signalGroups: [String]
+        const newSignalScore = parseFloat(_get(signal, "score", "0"));
+        this.waitDialogMessage = "Creating Signal please wait...";
+        this.waitDialog = true;
+        const result = await this.$apollo.mutate({
+          mutation: gql`
+            mutation(
+              $newSignalName: String
+              $newSignalDescription: String
+              $newSignalGroup: String
+              $newSignalScore: Float
+              $name: String
+              $description: String
+              $website: String
+              $links: String
+              $industry: String
+              $naics: String
+              $city: String
+              $state: String
+              $region: String
+              $country: String
+              $lessThanEmployees: Int
+              $moreThanEmployees: Int
+              $lessThanScore: Int
+              $moreThanScore: Int
+              $status: String
+              $playlistUid: String
+              $signals: [Int]
+              $signalGroups: [String]
+            ) {
+              createSignalFromSearch(
+                signalData: {
+                  name: $newSignalName
+                  description: $newSignalDescription
+                  score: $newSignalScore
+                  group: $newSignalGroup
+                }
+                companySearch: {
+                  searchName: $name
+                  searchDescription: $description
+                  searchWebsite: $website
+                  searchLinks: $links
+                  searchIndustry: $industry
+                  searchNaics: $naics
+                  city: $city
+                  state: $state
+                  region: $region
+                  country: $country
+                  lessThanEmployees: $lessThanEmployees
+                  moreThanEmployees: $moreThanEmployees
+                  lessThanScore: $lessThanScore
+                  moreThanScore: $moreThanScore
+                  status: $status
+                  playlistUid: $playlistUid
+                  signals: $signals
+                  signalGroups: $signalGroups
+                }
               ) {
-                createSignalFromSearch(
-                  signalData: {
-                    name: $newSignalName
-                    description: $newSignalDescription
-                    score: $newSignalScore
-                    group: $newSignalGroup
-                  }
-                  companySearch: {
-                    searchName: $name
-                    searchDescription: $description
-                    searchWebsite: $website
-                    searchLinks: $links
-                    searchIndustry: $industry
-                    searchNaics: $naics
-                    city: $city
-                    state: $state
-                    region: $region
-                    country: $country
-                    lessThanEmployees: $lessThanEmployees
-                    moreThanEmployees: $moreThanEmployees
-                    lessThanScore: $lessThanScore
-                    moreThanScore: $moreThanScore
-                    status: $status
-                    playlistUid: $playlistUid
-                    signals: $signals
-                    signalGroups: $signalGroups
-                  }
-                ) {
-                  signal {
-                    id
-                    name
-                  }
+                status
+                signal {
+                  id
+                  name
                 }
               }
-            `,
-            // Parameters
-            variables: {
-              ...this.companySearch,
-              newSignalName: newSignalName,
-              newSignalDescription: newSignalDescription,
-              newSignalGroup: newSignalGroup,
-              newSignalScore: newSignalScore,
-            },
-          });
-          console.log("saving results as signal success", result);
-          const signal = _get(
-            result,
-            "data.createSignalFromSearch.signal",
-            null
-          );
-          this.$router.push({
-            path: `/signals/${signal.id}`,
-          });
-        } catch (error) {
-          console.log("error saving search results as signal", error);
+            }
+          `,
+          // Parameters
+          variables: {
+            ...this.companySearch,
+            newSignalName: newSignalName,
+            newSignalDescription: newSignalDescription,
+            newSignalGroup: newSignalGroup,
+            newSignalScore: newSignalScore,
+          },
+        });
+        this.waitDialog = false;
+        console.log("saving results as signal success", result);
+        if (result.data.createSignalFromSearch.status == "ok") {
+          if (!!result.data.createSignalFromSearch.signal) {
+            this.$router.push({
+              path: `/signals/${result.data.createSignalFromSearch.signal.id}`,
+            });
+          } else {
+            this.$router.push({
+              path: "/batch",
+            });
+          }
+        } else {
+          console.log("Error creating signal");
         }
       }
     },
@@ -458,6 +463,7 @@ export default {
     companies: {
       query: gql`
         query companiesSearch(
+          $url: String
           $playlistUid: String
           $signals: [Int]
           $signalGroups: [String]
@@ -465,8 +471,8 @@ export default {
           $searchName: String
           $searchDescription: String
           $searchWebsite: String
-          $searchIndustry: String,
-          $searchNaics: String,
+          $searchIndustry: String
+          $searchNaics: String
           $country: String
           $city: String
           $region: String
@@ -482,6 +488,7 @@ export default {
           $offset: Int
         ) {
           companies(
+            url: $url
             playlistUid: $playlistUid
             signals: $signals
             signalGroups: $signalGroups
@@ -584,11 +591,10 @@ export default {
       },
       // Optional result hook
       result({ data, loading, networkStatus }) {
-        if (this.options.page==1 && !!data && !!data.companies){
+        if (this.options.page == 1 && !!data && !!data.companies) {
           this.totalResults = data.companies.totalResults;
         }
       },
-      debounce: 800,
       fetchPolicy: "cache-and-network",
     },
   },

@@ -2,30 +2,38 @@
   <tr>
     <td>
       <div>
-        <div v-if="[
+        <div
+          v-if="[
           'playlist_from_file',
           'export_companies',
           'refresh_keywords',
-          'salesforce_download'].includes(job.jobType)">
+          'salesforce_download'].includes(job.jobType)"
+        >
           <router-link
             :to="`/playlists/${additionalDataParsed.playlist_uid}`"
           >{{ additionalDataParsed.playlist_name || "[Empty Name]" }}</router-link>
         </div>
-        <div v-else-if="[
+        <div v-if="['signal_from_search'].includes(job.jobType)">
+          <router-link
+            :to="`/signals/${additionalDataParsed.signal_id}`"
+          >{{ additionalDataParsed.signal_name || "[Empty Name]" }}</router-link>
+        </div>
+        <div
+          v-else-if="[
           'contacts_from_file',
           'export_companies',
           'contact_finder',
-          'linkedin_finder'].includes(job.jobType)"  >
+          'linkedin_finder'].includes(job.jobType)"
+        >
           <a
             :href="`${salesavantAPI}/files/download/${additionalDataParsed.storage_filename}`"
           >{{ additionalDataParsed.original_filename }}</a>
         </div>
       </div>
-      <div class="font-weight-light">{{ getJobName(job.jobType) }}</div>
+      <div class="font-weight-light text-capitalize">{{ getJobName(job.jobType) }}</div>
     </td>
     <td>{{ job.description || "--" }}</td>
-    <td> 
-    {{ job.modificationTime | moment("MMMM Do YYYY, H:mm")}} </td>
+    <td>{{ job.modificationTime | moment("MMMM Do YYYY, H:mm")}}</td>
     <td v-if="job.progress > 0 && job.status != 'finished'">
       <v-progress-circular
         :rotate="-90"
@@ -46,7 +54,6 @@
 </template>
 
 <script>
-
 import JobResult from "./BatchJobResult";
 
 export default {
@@ -77,29 +84,31 @@ export default {
         case "contacts_from_file":
           return "Contacts From File";
         case "playlist_aggs":
-          return "Playlist Statistics Refresh"
+          return "Playlist Statistics Refresh";
         case "salesforce_download":
-          return "Salesforce Download"
+          return "Salesforce Download";
         case "salesforce_upload":
-          return "Salesforce Upload"
+          return "Salesforce Upload";
+        case "signal_from_search":
+          return "Signal From Search";
       }
       return jobType;
-    }
+    },
   },
   props: {
     salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL },
-    job: Object
+    job: Object,
   },
   computed: {
-    additionalDataParsed: function() {
+    additionalDataParsed: function () {
       if (!!this.job && !!this.job.additionalData) {
         return JSON.parse(this.job.additionalData);
       }
       return "";
-    }
+    },
   },
   components: {
     JobResult,
-  }
+  },
 };
 </script>

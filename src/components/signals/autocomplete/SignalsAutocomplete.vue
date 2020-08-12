@@ -8,6 +8,7 @@
       :item-text="'name'"
       :search-input.sync="search"
       label="Select Signal"
+      autocomplete="off"
       @change="change"
       cache-items
       hide-no-data
