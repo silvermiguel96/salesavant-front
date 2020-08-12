@@ -19,7 +19,7 @@
         :server-items-length="contactComments.totalResults"
         :items-per-page="options.itemsPerPage"
         :footer-props="{
-          'items-per-page-options': [10, 20, 50]
+          'items-per-page-options': [10, 20, 50],
         }"
         :options.sync="options"
         class="mx-2"
@@ -28,18 +28,33 @@
         <template v-slot:item="{ item }">
           <tr>
             <td>
-              <long-paragraph :text="item.comments" :maxLength="45"></long-paragraph>
+              <long-paragraph
+                :text="item.comments"
+                :maxLength="45"
+              ></long-paragraph>
             </td>
-            <td
-              v-if="item.user.firstName || item.user.lastName"
-            >{{item.user.firstName}} {{item.user.lastName}}</td>
-            <td v-else>{{item.user.email || "--"}}</td>
+            <td v-if="item.user.firstName || item.user.lastName">
+              {{ item.user.firstName }} {{ item.user.lastName }}
+            </td>
+            <td v-else>{{ item.user.email || "--" }}</td>
             <td>
-              {{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}
+              {{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
-                <v-icon color="red lighten-2" small @click="deleteComment(item)">delete</v-icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon
+                        color="red lighten-2"
+                        small
+                        @click="deleteComment(item)"
+                        >delete</v-icon
+                      >
+                    </v-btn>
+                  </template>
+                  <span>Remove Comment</span>
+                </v-tooltip>
               </div>
             </td>
           </tr>
@@ -57,7 +72,7 @@ import gql from "graphql-tag";
 export default {
   components: {
     LongParagraph,
-    AddCommentModal
+    AddCommentModal,
   },
   data() {
     return {
@@ -67,12 +82,12 @@ export default {
         { text: "Comment", sortable: false },
         { text: "User", sortable: false },
         { text: "Modification Time", sortable: false },
-        { text: "Remove", align: "center", sortable: false }
+        { text: "Remove", align: "center", sortable: false },
       ],
       options: {
         page: 1,
-        itemsPerPage: 10
-      }
+        itemsPerPage: 10,
+      },
     };
   },
   apollo: {
@@ -105,15 +120,20 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   methods: {
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
@@ -146,11 +166,11 @@ export default {
               // Parameters
               variables: {
                 contactUid: this.$route.params.contactUid,
-                description: description
+                description: description,
               },
-              fetchPolicy: "no-cache"
+              fetchPolicy: "no-cache",
             })
-            .then(result => {
+            .then((result) => {
               console.log("result", result);
               if (!!result && !!result.data.createContactComment) {
                 this.contactComments.totalResults += 1;
@@ -198,7 +218,7 @@ export default {
           color: "primary",
           icon: "delete",
           title: "Delete Comment",
-          width: 600
+          width: 600,
         }
       );
       if (res) {
@@ -219,8 +239,8 @@ export default {
             `,
             // Parameters
             variables: {
-              commentId: parseInt(comment.id)
-            }
+              commentId: parseInt(comment.id),
+            },
           });
           console.log("result", result);
           this.contactComments.contactCommentsList.splice(index, 1);
@@ -240,8 +260,8 @@ export default {
           );
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style></style>

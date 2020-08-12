@@ -29,7 +29,7 @@
         :server-items-length="companySignals.totalResults"
         :items-per-page="options.itemsPerPage"
         :footer-props="{
-          'items-per-page-options': [10, 20, 50]
+          'items-per-page-options': [10, 20, 50],
         }"
         :options.sync="options"
         @updateOptions="updateOptions"
@@ -38,18 +38,36 @@
           <tr>
             <td>
               <router-link :to="`/signals/${item.signal.id}`">
-                <long-paragraph :text="item.signal.name" :maxLength="45"></long-paragraph>
+                <long-paragraph
+                  :text="item.signal.name"
+                  :maxLength="45"
+                ></long-paragraph>
               </router-link>
             </td>
             <td>
-              <long-paragraph :text="item.signal.description" :maxLength="45"></long-paragraph>
+              <long-paragraph
+                :text="item.signal.description"
+                :maxLength="45"
+              ></long-paragraph>
             </td>
             <td>{{ item.signal.group || "--" }}</td>
             <td>{{ item.signal.category || "--" }}</td>
             <td>{{ item.signal.score || "0" }}</td>
             <td>
               <div class="d-flex align-center justify-center">
-                <v-icon @click="deleteSingal(item)" small color="red lighten-2">delete</v-icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon
+                        @click="deleteSingal(item)"
+                        small
+                        color="red lighten-2"
+                        >delete</v-icon
+                      >
+                    </v-btn>
+                  </template>
+                  <span>Remove signal</span>
+                </v-tooltip>
               </div>
             </td>
           </tr>
@@ -76,22 +94,18 @@ export default {
         { text: "Group", sortable: false, width: "20%" },
         { text: "Category", sortable: false, width: "20%" },
         { text: "Score", sortable: false, width: "10%" },
-        { text: "Remove", sortable: false, align: "center", width: "10%" }
+        { text: "Remove", sortable: false, align: "center", width: "10%" },
       ],
       options: {
         page: 1,
-        itemsPerPage: 10
-      }
+        itemsPerPage: 10,
+      },
     };
   },
   apollo: {
     companySignals: {
       query: gql`
-        query companySignals(
-          $companyUid: String
-          $first: Int
-          $offset: Int
-        ) {
+        query companySignals($companyUid: String, $first: Int, $offset: Int) {
           companySignals(
             companyUid: $companyUid
             first: $first
@@ -118,15 +132,20 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   methods: {
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = options.page;
       this.options.itemsPerPage = options.itemsPerPage;
@@ -154,10 +173,7 @@ export default {
             this.$apollo
               .mutate({
                 mutation: gql`
-                  mutation(
-                    $signalId: Int!
-                    $companyUid: String!
-                  ) {
+                  mutation($signalId: Int!, $companyUid: String!) {
                     createCompanySignal(
                       companySignalData: {
                         signalId: $signalId
@@ -185,10 +201,10 @@ export default {
                 // Parameters
                 variables: {
                   signalId: this.signalId,
-                  companyUid: this.$route.params.companiesUid
-                }
+                  companyUid: this.$route.params.companiesUid,
+                },
               })
-              .then(result => {
+              .then((result) => {
                 console.log("result", result);
                 if (!!result && !!result.data.createCompanySignal) {
                   this.companySignals.totalResults += 1;
@@ -258,10 +274,10 @@ export default {
                   description: "",
                   group: "",
                   category: "",
-                  score: 1
-                }
+                  score: 1,
+                },
               })
-              .then(result => {
+              .then((result) => {
                 console.log("result", result);
                 const newSignal = _get(
                   result,
@@ -311,10 +327,10 @@ export default {
               variables: {
                 score: 1,
                 signalId: parceInt(newSignal.id),
-                companyUid: this.$route.params.companiesUid
-              }
+                companyUid: this.$route.params.companiesUid,
+              },
             });
-            then(result => {
+            then((result) => {
               console.log("result", result);
               if (!!result && !!result.data.createCompanySignal) {
                 this.companySignals.totalResults += 1;
@@ -371,7 +387,7 @@ export default {
           color: "primary",
           icon: "delete",
           title: "Delete signal",
-          width: 600
+          width: 600,
         }
       );
       if (res) {
@@ -393,8 +409,8 @@ export default {
             // Parameters
             variables: {
               signalId: parseInt(signal.signal.id),
-              companyUid: this.$route.params.companiesUid
-            }
+              companyUid: this.$route.params.companiesUid,
+            },
           });
           console.log("result", result);
           const companySignalId = _get(
@@ -419,15 +435,15 @@ export default {
           return;
         }
       }
-    }
+    },
   },
   components: {
     LongParagraph,
-    SignalsAutocomplete
+    SignalsAutocomplete,
   },
   beforeUpdate() {
     this.$apollo.queries.companySignals;
-  }
+  },
 };
 </script>
 <style></style>
