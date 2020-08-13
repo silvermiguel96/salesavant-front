@@ -158,7 +158,6 @@ export default {
   },
   watch: {
     companySearchFilters: function (val) {
-      console.log("total results to zero");
       this.totalResults = 0;
       this.options.page = 1;
     },
