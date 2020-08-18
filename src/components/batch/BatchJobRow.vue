@@ -5,6 +5,7 @@
         <div
           v-if="[
           'playlist_from_file',
+          'playlist_from_search',
           'export_companies',
           'refresh_keywords',
           'salesforce_download'].includes(job.jobType)"
@@ -89,6 +90,8 @@ export default {
           return "Salesforce Download";
         case "salesforce_upload":
           return "Salesforce Upload";
+        case "playlist_from_search":
+          return "Playlist From Search";
         case "signal_from_search":
           return "Signal From Search";
       }

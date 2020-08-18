@@ -255,6 +255,7 @@ export default {
                 }
                 playlistData: { name: $newPlaylistName }
               ) {
+                status
                 playlist {
                   uid
                   name
@@ -269,14 +270,19 @@ export default {
         });
         this.waitDialog = false;
         console.log("saving results as playlist success", result);
-        const playlist = _get(
-          result,
-          "data.createPlaylistFromCompanySearch.playlist",
-          null
-        );
-        this.$router.push({
-          path: `/playlists/${playlist.uid}`,
-        });
+        if (result.data.createPlaylistFromCompanySearch.status == "ok") {
+          if (!!result.data.createPlaylistFromCompanySearch.playlist) {
+            this.$router.push({
+              path: `/playlists/${result.data.createPlaylistFromCompanySearch.playlist.uid}`,
+            });
+          } else {
+            this.$router.push({
+              path: "/batch",
+            });
+          }
+        } else {
+          console.log("Error creating signal");
+        }
       }
     },
     async saveResultsAsSignal(signal = null) {
@@ -590,7 +596,7 @@ export default {
       },
       // Optional result hook
       result({ data, loading, networkStatus }) {
-        if (this.options.page == 1 && !!data && !!data.companies) {
+        if (!!data && !!data.companies) {
           this.totalResults = data.companies.totalResults;
         }
       },

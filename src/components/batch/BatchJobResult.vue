@@ -8,6 +8,7 @@
       'contacts_from_file', 
       'salesforce_download', 
       'salesforce_upload',
+      'playlist_from_search',
       'signal_from_search'].includes(job.jobType)"
     >
       <div class="green--text text--lighten-1">Done</div>
