@@ -43,10 +43,10 @@
       <v-menu left bottom offset-y>
         <template class="hidden-sm-and-down" v-slot:activator="{ on }">
           <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn text class="text-capitalize" v-on="on">Account</v-btn>
+            <v-btn text class="text-capitalize Account" v-on="on">Account</v-btn>
           </v-toolbar-items>
         </template>
-        <v-list class="pa-0">
+        <v-list class="mainMenu pa-0">
           <v-list-item v-for="account in accounts" :key="account.text" @click="account.click">
             <v-list-item-title class="subtitle-1 font-weight-light">{{ account.text }}</v-list-item-title>
           </v-list-item>

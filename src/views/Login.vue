@@ -33,7 +33,7 @@
                 ></v-text-field>
               </v-card-text>
               <v-card-actions class="ma-2">
-                <v-btn block color="primary" v-on:click="login()">Login</v-btn>
+                <v-btn class="btn-primary" block color="primary" v-on:click="login()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
