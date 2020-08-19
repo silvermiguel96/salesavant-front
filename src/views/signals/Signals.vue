@@ -19,22 +19,23 @@
 
           <v-row no-gutters v-if="!!isFiltered">
             <v-col cols="12" md="8">
-              <div class="mt-6">
+              <div class="mt-2">
                 <span class="ml-2">Filtering by:</span>
+                <v-chip
+                  v-if="this.$route.query.group"
+                  class="mx-1"
+                  style="padding: 0 8px;"
+                  color="light-blue darken-1"
+                  dark
+                  close
+                  small
+                  @click:close="removeFilter()"
+                  outlined
+                >
+                  <strong>Company group:</strong>
+                  {{ this.$route.query.group }}
+                </v-chip>
               </div>
-              <v-chip
-                v-if="this.$route.query.group"
-                class="mx-1 text-capitalize"
-                style="padding: 0 8px;"
-                color="blue-grey"
-                @click:close="removeFilter()"
-                outlined
-                close
-                small
-              >
-                <strong>Company group:</strong>
-                {{ this.$route.query.group }}
-              </v-chip>
             </v-col>
           </v-row>
           <v-container fluid>
@@ -255,7 +256,7 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
       skip() {
