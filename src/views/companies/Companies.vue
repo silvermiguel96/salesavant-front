@@ -561,15 +561,14 @@ export default {
             moreThanScore: this.companySearch.moreThanScore,
             lessThanScore: this.companySearch.lessThanScore,
             playlistUid: this.companySearch.playlistUid,
-
             signals: this.companySearch.signals,
             signalGroups: this.companySearch.signalGroups,
+            sortBy: this.options.sortBy,
+            sortOrder: this.options.sortOrder,
             first: this.options.itemsPerPage,
             offset:
               this.options.itemsPerPage * this.options.page -
               this.options.itemsPerPage,
-            sortBy: this.options.sortBy,
-            sortOrder: this.options.sortOrder,
           };
         } else {
           return {

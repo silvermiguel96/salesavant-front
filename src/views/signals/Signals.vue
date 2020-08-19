@@ -38,30 +38,30 @@
             </v-col>
           </v-row>
           <v-container fluid>
-          <v-row no-gutters>
-            <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-              <v-btn
-                class="text-capitalize"
-                color="primary"
-                min-width="150"
-                block
-                to="/signals/create"
-              >
-                <v-icon size="18" class="mr-2">add</v-icon>new signal
-              </v-btn>
-            </v-col>
-            <v-row no-gutters class="d-flex justify-end">
-              <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
-                <v-text-field
-                  v-model="search"
-                  append-icon="filter_list"
-                  label="Quick Search"
-                  placeholder="Type a Name, Description or Group "
-                  hide-details
-                ></v-text-field>
+            <v-row no-gutters>
+              <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+                <v-btn
+                  class="text-capitalize"
+                  color="primary"
+                  min-width="150"
+                  block
+                  to="/signals/create"
+                >
+                  <v-icon size="18" class="mr-2">add</v-icon>new signal
+                </v-btn>
               </v-col>
+              <v-row no-gutters class="d-flex justify-end">
+                <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+                  <v-text-field
+                    v-model="search"
+                    append-icon="filter_list"
+                    label="Quick Search"
+                    placeholder="Type a Name, Description or Group "
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-row>
-          </v-row>
           </v-container>
           <v-row no-gutters>
             <v-col cols="12">
@@ -111,19 +111,45 @@ export default {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: ""
-      }
+        sortOrder: "",
+      },
     };
   },
   components: {
-    SignalsTable
+    SignalsTable,
   },
   methods: {
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
+      if (sortBy.length > 0) {
+        switch (sortBy[0]) {
+          case "score":
+            this.options.sortBy = "score";
+            break;
+          case "modificationTime":
+            this.options.sortBy = "modification_time";
+            break;
+        }
+      } else {
+        this.options.sortBy = "";
+      }
+      if (sortDesc.length > 0) {
+        if (sortDesc[0]) {
+          this.options.sortOrder = "desc";
+        } else {
+          this.options.sortOrder = "asc";
+        }
+      } else {
+        this.options.sortOrder = "";
+      }
     },
     async deleteSignal(singal) {
       try {
@@ -141,8 +167,8 @@ export default {
             }
           `,
           variables: {
-            signalId: singal.id
-          }
+            signalId: singal.id,
+          },
         });
 
         this.signals.signalsList.splice(index, 1);
@@ -178,7 +204,7 @@ export default {
     },
     removeFilter() {
       this.$router.push({ path: "/signals", query: {} });
-    }
+    },
   },
   apollo: {
     signals: {
@@ -187,11 +213,15 @@ export default {
           $search: String
           $group: String
           $category: String
+          $sortBy: String
+          $sortOrder: String
           $first: Int
           $offset: Int
         ) {
           signals(
             search: $search
+            sortBy: $sortBy
+            sortOrder: $sortOrder
             first: $first
             offset: $offset
             group: $group
@@ -220,6 +250,8 @@ export default {
           search: this.search,
           group: this.$route.query.group,
           category: this.$route.query.category,
+          sortBy: this.options.sortBy,
+          sortOrder: this.options.sortOrder,
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
@@ -232,8 +264,8 @@ export default {
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   beforeMount() {
     this.isFiltered = this.checkIfIsFiltered();
@@ -243,6 +275,6 @@ export default {
   },
   updated() {
     this.isFiltered = this.checkIfIsFiltered();
-  }
+  },
 };
 </script>

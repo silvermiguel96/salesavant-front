@@ -12,7 +12,7 @@
       class="mx-2"
       @update:options="updateOptions"
     >
-      <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
+      <v-progress-linear color="blue" indeterminate></v-progress-linear>
       <template v-slot:item="{ item }">
         <tr>
           <td>
@@ -123,14 +123,14 @@ export default {
           text: "Score",
           value: "score",
           align: "left",
-          sortable: false,
+          sortable: true,
           width: "15%",
         },
         {
           text: "Modification Time",
           value: "modificationTime",
           align: "left",
-          sortable: false,
+          sortable: true,
           width: "15%",
         },
         {
