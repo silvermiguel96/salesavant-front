@@ -31,10 +31,10 @@
     <v-col cols="2">
       <div class="d-flex flex-row justify-space-around align-center">
         <v-btn icon>
-          <v-icon v-show="!edit" v-on:click="toggleEdit($event)" small>edit</v-icon>
+          <v-icon color="grey lighten-1" v-show="!edit" v-on:click="toggleEdit($event)" small>edit</v-icon>
         </v-btn>
         <v-btn icon>
-          <v-icon color="red lighten-2" v-on:click="deleteFolder($event)" small>delete</v-icon>
+          <v-icon color="red lighten-3" v-on:click="deleteFolder($event)" small>delete</v-icon>
         </v-btn>
       </div>
     </v-col>
