@@ -53,6 +53,7 @@ export default {
       { title: "My Account", icon: "account_box", router: "/home" },
       { title: "Users", icon: "person", router: "/admin" },
       { title: "Data", icon: "layers", router: "/companies-admin" },
+      { title: "Scores", icon: "score", router: "/companies-score" },
     ],
   }),
 };
