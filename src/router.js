@@ -25,6 +25,7 @@ import SalesforceCallback from "./views/salesforce/Callback.vue";
 import Account from "./views/account/Account.vue"
 import Salesforce from "./views/account/Salesforce.vue"
 import Admin from "./views/account/Admin.vue"
+import CompaniesScore from "./views/companies/CompaniesScore.vue";
 import CompaniesAdmin from "./views/admin/company/Companies.vue"
 import CompanyAdmin from "./views/admin/company/Company.vue"
 
@@ -173,6 +174,14 @@ const router = new Router({
       path: "/admin",
       name: "Admin",
       component: Admin,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/companies-score",
+      name: "Companies Score",
+      component: CompaniesScore,
       meta: {
         requiresAuth: true
       }
