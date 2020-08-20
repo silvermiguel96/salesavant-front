@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="simpleSearchForm" @submit.prevent >
+  <v-form ref="simpleSearchForm" @submit.prevent>
     <v-row wrap>
       <v-col cols="6">
         <v-text-field
@@ -222,7 +222,7 @@ export default {
   methods: {
     ...mapMutations(["resetCompanySearch", "doCompanySearch"]),
     search() {
-      if (this.$route.path !== "/companies") {
+      if (!this.$route.path.startsWith("/companies")) {
         this.$router.push("/companies");
       }
       if (!this.companySearch.moreThanEmployees) {
