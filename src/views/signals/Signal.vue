@@ -54,7 +54,7 @@
                       <v-text-field v-model="signal.score" label="Score" required></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field v-model="signal.group" label="Group" required></v-text-field>
+                      <v-text-field v-model="signal.group" label="Group"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="4" md="2" lg="2">
                       <v-btn
@@ -256,12 +256,7 @@ export default {
         this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
         return;
       }
-      if (!this.signal.group) {
-        this.$eventBus.$emit("showSnack", "Group can not be empty!", "error");
-        return;
-      }
       try {
-        console.log("here");
         let result = null;
         if (!!this.signal.id) {
           // update signal
