@@ -6,7 +6,5 @@ describe("Login Test", () => {
     cy.get("#input-23").type("qweqwe");
     cy.get("#btn-primary").click();
     cy.url().should('include', '/home');
-    cy.visit("http://localhost:8080/companies");
-
   });
 });

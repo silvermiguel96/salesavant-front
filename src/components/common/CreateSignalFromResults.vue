@@ -2,7 +2,7 @@
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" class="text-capitalize" block v-on="on">
+        <v-btn id="openSignal" color="primary" class="text-capitalize" block v-on="on">
           <v-icon small>add</v-icon>save as signal
         </v-btn>
       </template>
@@ -36,7 +36,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn color="green darken-1" class="text-capitalize" :disabled="!isReady" text @click="save">Save</v-btn>
+          <v-btn id="saveSignal"  color="green darken-1" class="text-capitalize" :disabled="!isReady" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
