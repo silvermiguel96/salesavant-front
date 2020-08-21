@@ -23,6 +23,7 @@
             <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
               <v-btn
                 class="text-capitalize d-inline-block"
+                id="btnAdvancedSearch"
                 min-width="150"
                 block
                 color="primary"
