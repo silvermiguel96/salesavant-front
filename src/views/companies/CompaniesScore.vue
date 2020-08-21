@@ -133,13 +133,13 @@ export default {
           text: "Total Score",
           value: "totalScore",
           width: "10%",
-          sortable: false,
+          sortable: true,
         },
         {
           text: "Total Signals",
           value: "numEmployees",
           width: "10%",
-          sortable: false,
+          sortable: true,
         },
       ],
       reloadDialog: false,
@@ -152,8 +152,8 @@ export default {
       options: {
         page: 1,
         itemsPerPage: 10,
-        sortBy: "",
-        sortOrder: "",
+        sortBy: [],
+        sortOrder: [],
       },
     };
   },
