@@ -8,29 +8,29 @@
               :large="true"
               v-if="!!this.$route.params.signalId"
               :items="[
-          {
-            text: 'Signals',
-            disabled: false,
-            href: '/signals'
-          },
-          {
-            text: signal.name || this.$route.params.signalId,
-            disabled: true,
-            href: `/signals/${this.$route.params.signalId}`
-          }
-        ]"
+                {
+                  text: 'Signals',
+                  disabled: false,
+                  href: '/signals',
+                },
+                {
+                  text: signal.name || this.$route.params.signalId,
+                  disabled: true,
+                  href: `/signals/${this.$route.params.signalId}`,
+                },
+              ]"
               divider=">"
             ></v-breadcrumbs>
             <v-breadcrumbs
               :large="true"
               v-else
               :items="[
-          {
-            text: 'Signals',
-            disabled: false,
-            href: '/signals'
-          }
-        ]"
+                {
+                  text: 'Signals',
+                  disabled: false,
+                  href: '/signals',
+                },
+              ]"
               divider=">"
             ></v-breadcrumbs>
           </v-row>
@@ -43,18 +43,32 @@
                       <v-text-field
                         v-model="signal.name"
                         label="Name"
-                        required
                         :disabled="!canModifySignalName"
+                        :error="nameError"
+                        :error-messages="nameMessages"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field v-model="signal.description" label="Description" required></v-text-field>
+                      <v-text-field
+                        v-model="signal.description"
+                        label="Description"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field v-model="signal.score" label="Score" required></v-text-field>
+                      <v-text-field
+                        v-model="signal.score"
+                        label="Score"
+                        :error="scoreError"
+                        :error-messages="scoreMessages"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field v-model="signal.group" label="Group"></v-text-field>
+                      <v-text-field
+                        v-model="signal.group"
+                        label="Group"
+                        :error="groupError"
+                        :error-messages="groupMessages"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="4" md="2" lg="2">
                       <v-btn
@@ -66,9 +80,7 @@
                         block
                       >
                         <v-icon small class="pr-1">
-                          {{
-                          !!signal.id ? "save" : "add"
-                          }}
+                          {{ !!signal.id ? "save" : "add" }}
                         </v-icon>
                         {{ !!signal.id ? "Update" : "Create" }}
                       </v-btn>
@@ -77,7 +89,8 @@
                         type="submit"
                         color="primary"
                         @click="saveKeyWordsAsSignal"
-                      >Save from playlist keywords</v-btn>
+                        >Save from playlist keywords</v-btn
+                      >
                     </v-col>
                   </v-row>
                 </v-container>
@@ -88,9 +101,9 @@
             <v-col
               cols="12"
               v-if="
-                  !!this.$route.params.signalId &&
-                    this.$route.params.signalId !== 'create'
-                "
+                !!this.$route.params.signalId &&
+                  this.$route.params.signalId !== 'create'
+              "
             >
               <!-- Result -->
               <company-signals
@@ -123,7 +136,7 @@ const defaultSignal = {
   description: "",
   creationTime: "",
   score: "",
-  modificationTime: ""
+  modificationTime: "",
 };
 
 export default {
@@ -133,20 +146,26 @@ export default {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: ""
+        sortOrder: "",
       },
       signal: { ...defaultSignal },
-      companySignals: []
+      companySignals: [],
+      nameError: false,
+      nameMessages: undefined,
+      scoreError: false,
+      scoreMessages: undefined,
+      groupError: false,
+      groupMessages: undefined,
     };
   },
   components: {
-    companySignals
+    companySignals,
   },
   props: {
     score: { type: Number, default: 0 },
     name: { type: String, default: "" },
     jobUid: { type: String, default: "" },
-    canModifySignalName: { type: Boolean, default: true }
+    canModifySignalName: { type: Boolean, default: true },
   },
   apollo: {
     signal: {
@@ -163,10 +182,10 @@ export default {
       `,
       variables() {
         return {
-          signalId: this.$route.params.signalId
+          signalId: this.$route.params.signalId,
         };
       },
-      fetchPolicy: "cache-and-network"
+      fetchPolicy: "cache-and-network",
     },
     signalCompanies: {
       query: gql`
@@ -206,14 +225,19 @@ export default {
             this.options.itemsPerPage * this.options.page -
             this.options.itemsPerPage,
           sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder
+          sortOrder: this.options.sortOrder,
         };
       },
-    }
+    },
   },
   methods: {
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
@@ -248,12 +272,25 @@ export default {
         );
         return;
       }
+      this.nameError = false;
+      this.nameMessages = undefined;
+      this.scoreError = false;
+      this.scoreMessages = undefined;
+      this.groupError = false;
+      this.groupMessages = undefined;
       if (!this.signal.name) {
-        this.$eventBus.$emit("showSnack", "Name can not be empty!", "error");
-        return;
+        this.nameError = true;
+        this.nameMessages = ["The Name is required!"];
       }
       if (!this.signal.score) {
-        this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
+        this.scoreError = true;
+        this.scoreMessages = ["The score is required!"];
+      }
+      if (!this.signal.group) {
+        this.groupError = true;
+        this.groupMessages = ["The group is required!"];
+      }
+      if (this.nameError || this.scoreError || this.groupError) {
         return;
       }
       try {
@@ -302,8 +339,8 @@ export default {
               description: this.signal.description,
               group: this.signal.group,
               category: this.signal.category,
-              score: this.signal.score
-            }
+              score: this.signal.score,
+            },
           });
           this.$eventBus.$emit(
             "showSnack",
@@ -352,8 +389,8 @@ export default {
               description: this.signal.description,
               group: this.signal.group,
               category: this.signal.category,
-              score: this.signal.score
-            }
+              score: this.signal.score,
+            },
           });
           this.$eventBus.$emit(
             "showSnack",
@@ -375,7 +412,7 @@ export default {
         }
         this.signal = signal;
         this.$router.push({
-          path: `/signals`
+          path: `/signals`,
         });
         this.$apollo.queries.signal;
         this.$apollo.queries.companySignals;
@@ -397,24 +434,25 @@ export default {
         );
         return;
       }
+      this.nameError = false;
+      this.nameMessages = undefined;
+      this.scoreError = false;
+      this.scoreMessages = undefined;
+      this.groupError = false;
+      this.groupMessages = undefined;
       if (!this.signal.name) {
-        this.$eventBus.$emit("showSnack", "Name can not be empty!", "error");
-        return;
-      }
-      if (!this.signal.description) {
-        this.$eventBus.$emit(
-          "showSnack",
-          "Description can not be empty!",
-          "error"
-        );
-        return;
+        this.nameError = true;
+        this.nameMessages = ["The Name is required!"];
       }
       if (!this.signal.score) {
-        this.$eventBus.$emit("showSnack", "Score can not be empty!", "error");
-        return;
+        this.scoreError = true;
+        this.scoreMessages = ["The score is required!"];
       }
       if (!this.signal.group) {
-        this.$eventBus.$emit("showSnack", "Group can not be empty!", "error");
+        this.groupError = true;
+        this.groupMessages = ["The group is required!"];
+      }
+      if (this.nameError || this.scoreError || this.groupError) {
         return;
       }
       if (!this.$props.jobUid) {
@@ -450,8 +488,8 @@ export default {
           variables: {
             keyword: this.signal.name,
             jobUid: this.$props.jobUid,
-            score: this.signal.score
-          }
+            score: this.signal.score,
+          },
         });
         this.$eventBus.$emit(
           "showSnack",
@@ -477,7 +515,7 @@ export default {
         }
         this.signal = signal;
         this.$router.push({
-          path: `/signals/${signal.id}`
+          path: `/signals/${signal.id}`,
         });
       } catch (error) {
         this.$eventBus.$emit(
@@ -488,7 +526,7 @@ export default {
         console.log("error saving signal", error);
       }
     },
-    _get: _get
+    _get: _get,
   },
   beforeCreate() {
     if (
@@ -501,6 +539,6 @@ export default {
     if (!this.signal && this.$route.params.signalId !== "create") {
       this.signal = { ...defaultSignal };
     }
-  }
+  },
 };
 </script>
