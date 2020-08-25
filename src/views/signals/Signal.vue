@@ -36,16 +36,20 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-form @submit.prevent>
-                <v-container fluid>
+              <v-container fluid>
+                <v-form
+                  ref="form"
+                  v-model="valid"
+                  lazy-validation
+                  @submit.prevent
+                >
                   <v-row class="px-3" dense>
                     <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="signal.name"
                         label="Name"
                         :disabled="!canModifySignalName"
-                        :error="nameError"
-                        :error-messages="nameMessages"
+                        :rules="nameRules"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -58,16 +62,13 @@
                       <v-text-field
                         v-model="signal.score"
                         label="Score"
-                        :error="scoreError"
-                        :error-messages="scoreMessages"
+                        :rules="scoreRules"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="signal.group"
-                        label="Group"
-                        :error="groupError"
-                        :error-messages="groupMessages"
+                        label="Group"                        
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="4" md="2" lg="2">
@@ -77,6 +78,7 @@
                         @click="save"
                         class="text-capitalize"
                         color="primary"
+                        :disabled="!valid"
                         block
                       >
                         <v-icon small class="pr-1">
@@ -93,8 +95,8 @@
                       >
                     </v-col>
                   </v-row>
-                </v-container>
-              </v-form>
+                </v-form>
+              </v-container>
             </v-col>
           </v-row>
           <v-row no-gutters v-if="canModifySignalName">
@@ -142,6 +144,7 @@ const defaultSignal = {
 export default {
   data() {
     return {
+      valid: true,
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -149,13 +152,9 @@ export default {
         sortOrder: "",
       },
       signal: { ...defaultSignal },
+      scoreRules: [(v) => !!v || "Score is required"],
+      nameRules: [(v) => !!v || "Name is required"],
       companySignals: [],
-      nameError: false,
-      nameMessages: undefined,
-      scoreError: false,
-      scoreMessages: undefined,
-      groupError: false,
-      groupMessages: undefined,
     };
   },
   components: {
@@ -264,34 +263,8 @@ export default {
       }
     },
     async save() {
-      if (!this.signal) {
-        this.$eventBus.$emit(
-          "showSnack",
-          "There's something wrong with the signal saving!",
-          "error"
-        );
-        return;
-      }
-      this.nameError = false;
-      this.nameMessages = undefined;
-      this.scoreError = false;
-      this.scoreMessages = undefined;
-      this.groupError = false;
-      this.groupMessages = undefined;
-      if (!this.signal.name) {
-        this.nameError = true;
-        this.nameMessages = ["The Name is required!"];
-      }
-      if (!this.signal.score) {
-        this.scoreError = true;
-        this.scoreMessages = ["The score is required!"];
-      }
-      if (!this.signal.group) {
-        this.groupError = true;
-        this.groupMessages = ["The group is required!"];
-      }
-      if (this.nameError || this.scoreError || this.groupError) {
-        return;
+      if(!this.$refs.form.validate()){
+        return
       }
       try {
         let result = null;
@@ -426,38 +399,8 @@ export default {
       }
     },
     async saveKeyWordsAsSignal() {
-      if (!this.signal) {
-        this.$eventBus.$emit(
-          "showSnack",
-          "There's something wrong with the signal saving!",
-          "error"
-        );
-        return;
-      }
-      this.nameError = false;
-      this.nameMessages = undefined;
-      this.scoreError = false;
-      this.scoreMessages = undefined;
-      this.groupError = false;
-      this.groupMessages = undefined;
-      if (!this.signal.name) {
-        this.nameError = true;
-        this.nameMessages = ["The Name is required!"];
-      }
-      if (!this.signal.score) {
-        this.scoreError = true;
-        this.scoreMessages = ["The score is required!"];
-      }
-      if (!this.signal.group) {
-        this.groupError = true;
-        this.groupMessages = ["The group is required!"];
-      }
-      if (this.nameError || this.scoreError || this.groupError) {
-        return;
-      }
-      if (!this.$props.jobUid) {
-        this.$eventBus.$emit("showSnack", "JobUid can not be empty!", "error");
-        return;
+      if(!this.$refs.form.validate()){
+        return
       }
       try {
         console.log("here");
