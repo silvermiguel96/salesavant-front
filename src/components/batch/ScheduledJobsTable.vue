@@ -11,7 +11,6 @@
     class="mx-2"
     @update:options="updateOptions"
   >
-    <v-progress-linear v-slot:progress colror="blue" indeterminate></v-progress-linear>
     <template v-slot:item="{ item }">
       <tr>
         <td>{{ item.textDescription }}</td>
