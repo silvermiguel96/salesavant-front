@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" xs="12" class="px-0">
         <v-row no-gutters class="pl-2 pl-sm-6">
-          <v-col cols="10" sm="4">
+          <v-col cols="11" md="6">
             <v-text-field
               v-model="search"
               append-icon="filter_list"

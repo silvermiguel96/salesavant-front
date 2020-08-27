@@ -1,85 +1,68 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="12" xs="12">
-        <v-row no-gutters>
-          <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-            <v-btn
-              class="text-capitalize d-inline-block"
-              min-width="150"
-              block
-              color="primary"
-              @click="triggerSearch"
+    <v-row no-gutters>
+      <v-col cols="12" md="2" class="pa-1">
+        <div class="mt-md-4">
+          <button-menu
+            :items="[
+                  {
+                    title: 'Export as CSV',
+                    icon: 'cloud_download',
+                    callback: () => {
+                      this.createJob('export_companies');
+                    }
+                  },
+                  {
+                    title: 'Update Statistics',
+                    icon: 'functions',
+                    callback: () => {
+                      this.createJob('playlist_aggs');
+                    }
+                  },
+                  {
+                    title: 'Refresh Companies',
+                    icon: 'update',
+                    callback: () => {
+                      this.createJob('refresh_companies');
+                    }
+                  },
+                  {
+                    title: 'Refresh Keywords',
+                    icon: 'update',
+                    callback: () => {
+                      this.createJob('refresh_keywords');
+                    }
+                  },
+                ]"
             >
-              <v-icon class="pr-1">search</v-icon>Advanced Search
-            </v-btn>
-          </v-col>
-          <v-row no-gutters class="d-flex justify-end">
-            <v-col cols="12" sm="4" md="3" lg="2" class="pa-1">
-              <v-btn
-                class="text-capitalize"
-                color="primary"
-                min-width="150"
-                outlined
-                block
-                @click="createJob('export_companies')"
-              >
-                <v-icon size="18" class="mr-2">cloud_download</v-icon>Export
-              </v-btn>
-            </v-col>
-            <v-col cols="12" sm="4" md="3" lg="2" class="pa-1">
-              <button-menu
-                :items="[
-              {
-                title: 'Companies',
-                icon: 'update',
-                callback: () => {
-                  this.createJob('refresh_companies');
-                }
-              },
-              {
-                title: 'Keywords',
-                icon: 'update',
-                callback: () => {
-                  this.createJob('refresh_keywords');
-                }
-              },
-              {
-                title: 'Statistics',
-                icon: 'update',
-                callback: () => {
-                  this.createJob('playlist_aggs');
-                }
-              }
-            ]"
-              >
-                <template v-slot:label>Refresh</template>
-              </button-menu>
-            </v-col>
-          </v-row>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="12">
-            <companies-table
-              v-if="playlistCompanies"
-              :items="playlistCompanies.companiesList"
-              :totalResults="playlistCompanies.totalResults"
-              @updateOptions="updateOptions"
-            ></companies-table>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="12">
-            <v-progress-linear
-              :active="!!isLoading"
-              color="blue"
-              indeterminate
-              absolute
-              bottom
-              query
-            ></v-progress-linear>
-          </v-col>
-        </v-row>
+            <template v-slot:label>Actions</template>
+          </button-menu>
+        </div>
+      </v-col>
+      <v-col cols="12" md="6"  offset-md="4" class="pa-1">
+        <v-text-field
+          v-model="search"
+          append-icon="filter_list"
+          label="Quick Search"
+          placeholder="Type a Name"
+          hide-details
+        ></v-text-field>
+        <a @click.prevent="triggerSearch" class="body-2" color="gray--text">Advanced Search</a>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col cols="12">
+        <companies-table
+          v-if="playlistCompanies"
+          :items="playlistCompanies.companiesList"
+          :totalResults="playlistCompanies.totalResults"
+          @updateOptions="updateOptions"
+        ></companies-table>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col cols="12">
+        <v-progress-linear :active="!!isLoading" color="blue" indeterminate absolute bottom query></v-progress-linear>
       </v-col>
     </v-row>
   </v-container>
@@ -95,23 +78,24 @@ import gql from "graphql-tag";
 export default {
   components: {
     CompaniesTable,
-    ButtonMenu
+    ButtonMenu,
   },
   data() {
     return {
       isLoading: false,
+      search: "",
       options: {
         page: 1,
         itemsPerPage: 10,
         sortBy: "",
-        sortOrder: ""
+        sortOrder: "",
       },
       playlist: {
         uid: "",
         name: "",
-        description: null
+        description: null,
       },
-      playlistCompanies: []
+      playlistCompanies: [],
     };
   },
   apollo: {
@@ -128,15 +112,16 @@ export default {
       `,
       variables() {
         return {
-          uid: this.$route.params.playlistUid
+          uid: this.$route.params.playlistUid,
         };
       },
-      fetchPolicy: "cache-and-network"
+      fetchPolicy: "cache-and-network",
     },
     playlistCompanies: {
       query: gql`
         query playlistCompanies(
-          $playlistUid: String
+          $playlistUid: String!
+          $searchName: String
           $first: Int
           $offset: Int
           $sortBy: String
@@ -144,6 +129,7 @@ export default {
         ) {
           playlistCompanies(
             playlistUid: $playlistUid
+            searchName: $searchName
             first: $first
             offset: $offset
             sortBy: $sortBy
@@ -170,35 +156,41 @@ export default {
       variables() {
         return {
           playlistUid: this.$route.params.playlistUid,
+          searchName: this.search,
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
             this.options.itemsPerPage,
           sortBy: this.options.sortBy,
-          sortOrder: this.options.sortOrder
+          sortOrder: this.options.sortOrder,
         };
       },
       watchLoading(isLoading, countModifier) {
         this.isLoading = isLoading;
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   methods: {
     ...mapMutations([
       "resetCompanySearch",
       "updateCompanySearch",
-      "showSearchDialog"
+      "showSearchDialog",
     ]),
     triggerSearch() {
       this.updateCompanySearch({
         playlistUid: this.$route.params.playlistUid,
-        displayPlaylistUid: this.playlist.name
+        displayPlaylistUid: this.playlist.name,
       });
       this.showSearchDialog("companies");
     },
     updateOptions({
-      dataFromEvent: { page = 1, itemsPerPage = 10, sortBy = [], sortDesc = [] }
+      dataFromEvent: {
+        page = 1,
+        itemsPerPage = 10,
+        sortBy = [],
+        sortDesc = [],
+      },
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
@@ -229,15 +221,15 @@ export default {
         jobType: jobType,
         additionalData: {
           playlist_uid: this.playlist.uid,
-          playlist_name: this.playlist.name
-        }
+          playlist_name: this.playlist.name,
+        },
       });
       this.$eventBus.$emit(
         "showSnack",
         `Job ${jobType} enqueed successfully`,
         "success"
       );
-    }
+    },
   },
   beforeCreate() {
     this.$apollo.queries.playlist;
@@ -248,6 +240,6 @@ export default {
       "playlist-companies update state ",
       this.$route.params.playlistUid
     );
-  }
+  },
 };
 </script>
