@@ -2,7 +2,7 @@
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn id="openPlaylist" color="primary" class="text-capitalize" block v-on="on">
+        <v-btn id="button-open-playlist" color="primary" class="text-capitalize" block v-on="on">
           <v-icon small>add</v-icon>save as playlist
         </v-btn>
       </template>
@@ -12,7 +12,7 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field v-model="playlistName" label="Playlist name" required></v-text-field>
+                <v-text-field v-model="playlistName" id="field-playlist-name" label="Playlist name" required></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -20,7 +20,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn id="savePlaylist" color="green darken-1" class="text-capitalize" :disabled="!playlistName" text @click="save">Save</v-btn>
+          <v-btn id="save-playlist" color="green darken-1" class="text-capitalize" :disabled="!playlistName" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

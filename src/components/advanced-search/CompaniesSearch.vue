@@ -5,6 +5,7 @@
         <v-text-field
           :dense="denseForm"
           name="name"
+          id="field-company-name"
           v-model="companySearch.name"
           label="Name"
           autocomplete="off"
@@ -14,8 +15,9 @@
         <v-text-field
           :dense="denseForm"
           name="description"
-          label="Description"
+          id="field-company-description"
           v-model="companySearch.description"
+          label="Description"
           autocomplete="off"
         ></v-text-field>
       </v-col>
@@ -25,6 +27,7 @@
         <v-text-field
           :dense="denseForm"
           name="country"
+          id="field-company-country"
           v-model="companySearch.country"
           label="Country"
           autocomplete="off"
@@ -34,6 +37,7 @@
         <v-text-field
           :dense="denseForm"
           name="region"
+          id="field-company-region"
           v-model="companySearch.region"
           label="Region"
           autocomplete="off"
@@ -45,6 +49,7 @@
         <v-text-field
           :dense="denseForm"
           name="city"
+          id="field-company-city"
           v-model="companySearch.city"
           label="City"
           autocomplete="off"
@@ -54,6 +59,7 @@
         <v-text-field
           :dense="denseForm"
           name="state"
+          id="field-company-state"
           v-model="companySearch.state"
           label="State"
           autocomplete="off"
@@ -65,6 +71,7 @@
         <v-text-field
           :dense="denseForm"
           name="website"
+          id="field-company-website"
           v-model="companySearch.website"
           label="Website keywords"
           autocomplete="off"
@@ -74,6 +81,7 @@
         <v-text-field
           :dense="denseForm"
           name="links"
+          id="field-company-links"
           v-model="companySearch.links"
           label="Links"
           autocomplete="off"
@@ -85,6 +93,7 @@
         <v-text-field
           :dense="denseForm"
           name="industry"
+          id="field-company-industry"
           v-model="companySearch.industry"
           label="Industry"
           autocomplete="off"
@@ -94,6 +103,7 @@
         <v-text-field
           :dense="denseForm"
           name="naics"
+          id="field-company-naics"
           v-model="companySearch.naics"
           label="NAICS"
           autocomplete="off"
@@ -105,6 +115,7 @@
         <v-text-field
           :dense="denseForm"
           name="moreThanEmployees"
+          id="field-company-moreThanEmployees"
           v-model="companySearch.moreThanEmployees"
           label="More Than Employees"
           autocomplete="off"
@@ -114,6 +125,7 @@
         <v-text-field
           :dense="denseForm"
           name="lessThanEmployees"
+          id="field-company-lessThanEmployees"
           v-model="companySearch.lessThanEmployees"
           label="Less Than Employees"
           autocomplete="off"
@@ -125,6 +137,7 @@
         <v-text-field
           :dense="denseForm"
           name="moreThanScore"
+          id="field-company-moreThanScore"
           v-model="companySearch.moreThanScore"
           label="More Than Score"
           autocomplete="off"
@@ -134,6 +147,7 @@
         <v-text-field
           :dense="denseForm"
           name="lessThanScore"
+          id="field-company-lessThanScore"
           v-model="companySearch.lessThanScore"
           label="Less Than Score"
           autocomplete="off"
@@ -145,6 +159,7 @@
         <v-text-field
           :dense="denseForm"
           name="status"
+          id="field-company-status"
           v-model="companySearch.status"
           label="Status"
           autocomplete="off"
@@ -183,7 +198,7 @@
         >clear all</a>
       </v-col>
       <v-col cols="12" md="6" class="d-flex justify-center align-center">
-        <v-btn id="btnSearch" @click="search" class="text-capitalize" block type="submit" color="primary">
+        <v-btn id="button-search-company" @click="search" class="text-capitalize" block type="submit" color="primary">
           <v-icon small class="pr-1">search</v-icon>
           {{"Search"}}
         </v-btn>
