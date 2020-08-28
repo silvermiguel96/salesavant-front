@@ -1,10 +1,8 @@
-describe("Created playlist", () => {
+beforeEach(() => {
+  cy.login();
+});
+describe("Created playlist search Country", () => {
   it("Advanced Search", () => {
-    cy.visit("/");
-    cy.get("#field-login-email").type("alejandro@salesavant.com");
-    cy.get("#field-login-password").type("qweqwe");
-    cy.get("#button-login").click();
-    cy.url().should("include", "/home");
     cy.visit("/companies");
     cy.get("#button-advanced-search").click();
     cy.get("#field-company-country").type("Colombia");
@@ -12,7 +10,7 @@ describe("Created playlist", () => {
     cy.get("#country").should("have.text", "Colombia");
     cy.get("#button-open-playlist").click();
     cy.get("#field-playlist-name").type("Test cypress salesavant Playlist country");
-    cy.get("#save-playlist").click();
+    cy.get("#button-save-playlist").click();
     cy.url().should("include", "playlists/");
     cy.contains("Test cypress salesavant Playlist country")
       .should(($div) => {

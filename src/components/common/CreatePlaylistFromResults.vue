@@ -20,7 +20,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn id="save-playlist" color="green darken-1" class="text-capitalize" :disabled="!playlistName" text @click="save">Save</v-btn>
+          <v-btn id="button-save-playlist" color="green darken-1" class="text-capitalize" :disabled="!playlistName" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
