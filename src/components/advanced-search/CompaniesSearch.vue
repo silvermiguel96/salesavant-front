@@ -148,7 +148,7 @@
           :dense="denseForm"
           name="lessThanScore"
           id="field-company-lessThanScore"
-          v-model="companySearch.lessThanScore"
+          v-model="companySearch.moreThanScore"
           label="Less Than Score"
           autocomplete="off"
         ></v-text-field>
