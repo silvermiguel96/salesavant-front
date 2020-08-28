@@ -23,7 +23,7 @@
             <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
               <v-btn
                 class="text-capitalize d-inline-block"
-                id="btnAdvancedSearch"
+                id="button-advanced-search"
                 min-width="150"
                 block
                 color="primary"
@@ -79,7 +79,7 @@
                   small
                 >
                   <span class="text-capitalize font-weight-bold">{{obj.labelKey}}:&nbsp;</span>
-                  <span class="font-weight-medium">{{obj.labelVal}}</span>
+                  <span :id="obj.labelKey" class="font-weight-medium">{{obj.labelVal}}</span>
                 </v-chip>
               </div>
             </v-col>

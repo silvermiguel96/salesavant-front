@@ -23,7 +23,7 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-
+import { AUTH_TOKEN } from "../../../src/util.js";
 Cypress.Commands.add("login", () => {
   cy.request({
     method: "POST", 
@@ -37,6 +37,6 @@ Cypress.Commands.add("login", () => {
     .its('body')
     .then((resp) => {
       console.log(resp);
-      window.localStorage.setItem("AUTH_TOKEN", resp.access_token);
+      window.localStorage.setItem(AUTH_TOKEN, resp.access_token);
     });
 });

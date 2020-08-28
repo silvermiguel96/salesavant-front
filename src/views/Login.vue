@@ -22,6 +22,7 @@
                 label="Email" 
                 type="email" 
                 name="email" 
+                id="field-login-email"
                 append-icon="mail"></v-text-field>
                 <v-text-field
                   v-model="userlogin.password"
@@ -29,11 +30,12 @@
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
+                  id="field-login-password"
                   @click:append="show1 = !show1"
                 ></v-text-field>
               </v-card-text>
               <v-card-actions class="ma-2">
-                <v-btn id="btn-primary" block color="primary" v-on:click="login()">Login</v-btn>
+                <v-btn id="button-login" block color="primary" v-on:click="login()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
