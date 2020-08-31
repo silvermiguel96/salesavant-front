@@ -59,6 +59,8 @@
                     label="Quick Search"
                     placeholder="Type a Name, Description or Group "
                     hide-details
+                    autocomplete="off"
+                    clearable
                   ></v-text-field>
                 </v-col>
               </v-row>

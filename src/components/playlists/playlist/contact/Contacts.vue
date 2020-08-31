@@ -2,28 +2,20 @@
   <v-container fluid>
     <v-container fluid>
       <v-row no-gutters>
-        <v-col cols="12" sm="4" class="py-1">
-          <v-btn
-            class="text-capitalize d-inline-block"
-            min-width="150"
-            color="primary"
-            block
-            @click="triggerSearch"
+        <v-col cols="12" md="6" offset-md="6" class="pa-1">
+          <v-text-field
+            v-model="search"
+            append-icon="filter_list"
+            label="Quick Search"
+            placeholder="Type a Full Name"
+            hide-details
+            autocomplete="off"
+            clearable
+          ></v-text-field>
+          <a @click.prevent="triggerSearch" class="body-2" color="gray--text"
+            >Advanced Search</a
           >
-            <v-icon class="pr-1">search</v-icon>Advanced Search
-          </v-btn>
         </v-col>
-        <v-row no-gutters class="d-flex justify-end">
-          <v-col cols="12" sm="8" md="8" lg="8">
-            <v-text-field
-              v-model="search"
-              append-icon="filter_list"
-              label="Quick Search"
-              placeholder="Type a Full Name"
-              hide-details
-            ></v-text-field>
-          </v-col>
-        </v-row>
       </v-row>
     </v-container>
     <div>
@@ -37,7 +29,14 @@
       <!-- Loading -->
       <v-row justify="center" no-gutters>
         <v-col cols="12">
-          <v-progress-linear :active="!!isLoading" color="blue" indeterminate absolute bottom query></v-progress-linear>
+          <v-progress-linear
+            :active="!!isLoading"
+            color="blue"
+            indeterminate
+            absolute
+            bottom
+            query
+          ></v-progress-linear>
         </v-col>
       </v-row>
     </div>

@@ -15,6 +15,8 @@
               label="Quick Search"
               hide-details
               placeholder="Type a Job Name or Description"
+              autocomplete="off"
+              clearable
             ></v-text-field>
           </v-col>
         </v-row>

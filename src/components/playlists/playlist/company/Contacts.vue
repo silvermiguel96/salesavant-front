@@ -11,6 +11,8 @@
                 label="Quick Search"
                 placeholder="Type a Full Name"
                 hide-details
+                autocomplete="off"
+                clearable
               ></v-text-field>
             </v-col>
           </v-row>

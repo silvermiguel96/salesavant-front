@@ -46,6 +46,8 @@
           label="Quick Search"
           placeholder="Type a Name"
           hide-details
+          autocomplete="off"
+          clearable
         ></v-text-field>
         <a @click.prevent="triggerSearch" class="body-2" color="gray--text">Advanced Search</a>
       </v-col>
