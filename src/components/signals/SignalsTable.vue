@@ -6,22 +6,33 @@
       :server-items-length="totalResults"
       :items-per-page="options.itemsPerPage"
       :footer-props="{
-        'items-per-page-options': [10, 20, 50]
+        'items-per-page-options': [10, 20, 50],
       }"
       :options.sync="options"
       class="mx-2"
       @update:options="updateOptions"
     >
-      <v-progress-linear color="blue" indeterminate></v-progress-linear>
+      <!-- <v-progress-linear color="blue" indeterminate></v-progress-linear> -->
+        <!-- v-slot:progress -->
+      <v-progress-linear
+        color="blue"
+        indeterminate
+      ></v-progress-linear>
       <template v-slot:item="{ item }">
         <tr>
           <td>
             <router-link :to="`/signals/${item.id}`">
-              <long-paragraph :text="item.name" :maxLength="35"></long-paragraph>
+              <long-paragraph
+                :text="item.name"
+                :maxLength="35"
+              ></long-paragraph>
             </router-link>
           </td>
           <td>
-            <long-paragraph class="wrapping-td" :text="item.description"></long-paragraph>
+            <long-paragraph
+              class="wrapping-td"
+              :text="item.description"
+            ></long-paragraph>
           </td>
           <td>
             <v-edit-dialog
@@ -77,10 +88,23 @@
               </template>
             </v-edit-dialog>
           </td>
-          <td>{{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}</td>
+          <td>{{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}</td>
           <td>
             <div class="d-flex align-center justify-center">
-              <v-icon @click="deleteSignal(item)" color="red lighten-2" size="20" small>delete</v-icon>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon
+                      @click="deleteSignal(item)"
+                      color="red lighten-2"
+                      size="20"
+                      small
+                      >delete</v-icon
+                    >
+                  </v-btn>
+                </template>
+                <span>Remove Signal</span>
+              </v-tooltip>
             </div>
           </td>
         </tr>
@@ -162,7 +186,9 @@ export default {
     async deleteSignal(item) {
       const res = await this.$confirm(
         ` <h1 class="subtitle-1"
-            >Confirm you want to eliminate the signal <span class="font-weight-bold">${item.name}</span>?</h1>`,
+            >Confirm you want to eliminate the signal <span class="font-weight-bold">${
+              item.name
+            }</span>?</h1>`,
         {
           buttonTrueText: "delete",
           buttonFalseText: "close",

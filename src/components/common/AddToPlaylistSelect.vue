@@ -2,7 +2,7 @@
   <v-card>
     <v-card-text>
       <v-container fluid>
-        <v-row >
+        <v-row>
           <v-col xl="11" lg="10" md="10" xs="12" sm="9" cols="12">
             <playlists-autocomplete
               @change="onPlaylistAutoCompleteChange"
@@ -31,7 +31,7 @@
         :server-items-length="companyPlaylists.totalResults"
         :items-per-page="options.itemsPerPage"
         :footer-props="{
-          'items-per-page-options': [10, 20, 50]
+          'items-per-page-options': [10, 20, 50],
         }"
         :options.sync="options"
         @updateOptions="updateOptions"
@@ -40,18 +40,32 @@
           <tr>
             <td>
               <router-link :to="`/playlists/${item.uid}`">
-                {{
-                item.name || "--"
-                }}
+                {{ item.name || "--" }}
               </router-link>
             </td>
-            <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"}}</td>
             <td>
-              {{ item.modificationTime | moment("MMMM Do YYYY, H:mm")}}
+              {{
+                item.totalCompanies ? item.totalCompanies.toLocaleString() : "0"
+              }}
+            </td>
+            <td>
+              {{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}
             </td>
             <td>
               <div class="d-flex align-center justify-center">
-                <v-icon color="red lighten-2" small @click="deleteCompanyPlaylist(item)">delete</v-icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon
+                        color="red lighten-2"
+                        small
+                        @click="deleteCompanyPlaylist(item)"
+                        >delete</v-icon
+                      >
+                    </v-btn>
+                  </template>
+                  <span>Remove Playlist</span>
+                </v-tooltip>
               </div>
             </td>
           </tr>
@@ -73,7 +87,7 @@ export default {
       currentPlaylistSearch: null,
       options: {
         page: 1,
-        itemsPerPage: 10
+        itemsPerPage: 10,
       },
       headers: [
         { text: "Name", value: "name", width: "30%", sortable: false },
@@ -82,16 +96,16 @@ export default {
           text: "Modification Time",
           value: "modificationTime",
           width: "30%",
-          sortable: false
+          sortable: false,
         },
         {
           text: "Remove",
           value: "action",
           width: "10%",
           sortable: false,
-          align: "center"
-        }
-      ]
+          align: "center",
+        },
+      ],
     };
   },
 
@@ -125,14 +139,14 @@ export default {
           first: this.options.itemsPerPage,
           offset:
             this.options.itemsPerPage * this.options.page -
-            this.options.itemsPerPage
+            this.options.itemsPerPage,
         };
       },
-      fetchPolicy: "cache-and-network"
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   components: {
-    playlistsAutocomplete
+    playlistsAutocomplete,
   },
   methods: {
     updateOptions({ dataFromEvent: { page = 1, itemsPerPage = 10 } }) {
@@ -158,7 +172,7 @@ export default {
       try {
         console.log("playlistUid", this.playlistUid);
         const equalPlaylist = this.companyPlaylists.companyPlaylistsList.find(
-          playlist => {
+          (playlist) => {
             if (playlist.uid == this.playlistUid) {
               return true;
             }
@@ -190,10 +204,10 @@ export default {
               // Parameters
               variables: {
                 playlistUid: this.playlistUid,
-                companyUid: this.$route.params.companiesUid
-              }
+                companyUid: this.$route.params.companiesUid,
+              },
             })
-            .then(result => {
+            .then((result) => {
               console.log("result", result);
               if (!!result && !!result.data.addCompanyToPlaylist) {
                 this.companyPlaylists.totalResults += 1;
@@ -253,7 +267,7 @@ export default {
           color: "primary",
           icon: "delete",
           title: "Delete Comment",
-          width: 600
+          width: 600,
         }
       );
       if (res) {
@@ -278,8 +292,8 @@ export default {
             // Parameters
             variables: {
               playlistUid: playlist.uid,
-              companyUid: this.$route.params.companiesUid
-            }
+              companyUid: this.$route.params.companiesUid,
+            },
           });
           console.log("result", result);
           this.companyPlaylists.companyPlaylistsList.splice(index, 1);
@@ -298,10 +312,10 @@ export default {
           );
         }
       }
-    }
+    },
   },
   beforeCreate() {
     this.$apollo.queries.companyPlaylists;
-  }
+  },
 };
 </script>
