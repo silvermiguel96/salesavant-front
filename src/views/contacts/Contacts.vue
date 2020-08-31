@@ -56,6 +56,8 @@
                     label="Quick Search"
                     placeholder="Type a Name"
                     hide-details
+                    autocomplete="off"
+                    clearable
                   ></v-text-field>
                 </v-col>
               </v-row>

@@ -24,6 +24,8 @@
                 placeholder="Type a Keyword"
                 class="pt-3"
                 hide-details
+                autocomplete="off"
+                clearable
               ></v-text-field>
               <v-row justify="center" no-gutters>
                 <v-col cols="12">
