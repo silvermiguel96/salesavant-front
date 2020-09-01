@@ -64,7 +64,7 @@
                       >
                     </v-btn>
                   </template>
-                  <span>Remove Playlist</span>
+                  <span>Delete Playlist</span>
                 </v-tooltip>
               </div>
             </td>

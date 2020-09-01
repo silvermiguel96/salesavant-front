@@ -37,7 +37,7 @@
               <td>
                 <div class="d-flex align-center justify-center">
                   <v-tooltip bottom>
-                    <template v-slot:activator="{ on , attrs }">
+                    <template v-slot:activator="{ on, attrs }">
                       <v-btn icon v-bind="attrs" v-on="on">
                         <v-icon
                           color="red lighten-2"
@@ -47,7 +47,7 @@
                         >
                       </v-btn>
                     </template>
-                    <span>Remove  Comment</span>
+                    <span>Delete Comment</span>
                   </v-tooltip>
                 </div>
               </td>
