@@ -225,7 +225,6 @@ export default {
           buttonFalseText: "close",
           buttonTrueColor: "red lighten-2",
           color: "primary",
-          icon: "delete",
           title: "Delete Comment",
           width: 600,
         }

@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
           <v-btn class="text-capitalize" block color="primary" min-width="150" to="/launch-job">
-            <v-icon size="18" class="mr-2">add</v-icon>new job
+            <v-icon size="18" class="mr-2">add</v-icon>new scheduled job
           </v-btn>
         </v-col>
         <v-row no-gutters class="d-flex justify-end">
@@ -29,6 +29,7 @@
         :items="this.salesavantScheduledJobs.salesavantJobsList"
         :totalResults="this.salesavantScheduledJobs.totalResults"
         @updateOptions="updateOptions"
+        @delete-scheduled-job="deleteScheduledJob"
       ></scheduled-jobs-table>
     </div>
     <div v-else class="no-result">Loading...</div>
@@ -45,7 +46,11 @@ export default {
       totalResults: 0,
       page: 1,
       itemsPerPage: 10,
-      search: ""
+      search: "",
+      salesavantScheduledJobs: {
+        salesavantJobsList: [],
+        totalResults: 0,
+      },
     };
   },
   apollo: {
@@ -63,9 +68,10 @@ export default {
           ) {
             totalResults
             salesavantJobsList {
+              uid
+              jobType
               modificationTime
               description
-              textDescription
               rqJobId
               additionalData
               scheduleTime
@@ -83,22 +89,42 @@ export default {
         return {
           search: this.search.length >= 3 ? this.search : "",
           first: this.itemsPerPage,
-          offset: this.itemsPerPage * this.page - this.itemsPerPage
+          offset: this.itemsPerPage * this.page - this.itemsPerPage,
         };
       },
       skip() {
         return this.search.length > 0 && this.search.length < 2;
-      }
-    }
+      },
+    },
   },
   methods: {
     updateOptions({ dataFromEvent: { page = 1, itemsPerPage = 10 } }) {
       this.page = page;
       this.itemsPerPage = itemsPerPage;
-    }
+    },
+    async deleteScheduledJob(item, index) {
+      const result = await this.$apollo.mutate({
+        mutation: gql`
+          mutation($jobUid: String!) {
+            deleteScheduledJob(jobUid: $jobUid) {
+              status
+              message
+            }
+          }
+        `,
+        variables: {
+          jobUid: item.uid,
+        },
+      });
+      if (!!result && result.data.status == "ok") {
+        this.salesavantScheduledJobs.salesavantJobsList.splice(index, 1);
+        this.salesavantScheduledJobs.totalResults =
+          this.salesavantScheduledJobs.totalResults - 1;
+      }
+    },
   },
   components: {
-    ScheduledJobsTable
-  }
+    ScheduledJobsTable,
+  },
 };
 </script>

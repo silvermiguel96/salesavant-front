@@ -31,11 +31,13 @@
           >{{ additionalDataParsed.original_filename }}</a>
         </div>
       </div>
-      <div class="font-weight-light text-capitalize">{{ getJobName(job.jobType) }}</div>
+      <div class="font-weight-light text-capitalize">{{ getJobNameLocal(job.jobType) }}</div>
     </td>
     <td>{{ job.description || "--" }}</td>
     <td>{{ job.modificationTime | moment("MMMM Do YYYY, H:mm")}}</td>
-    <td v-if="job.progress > 0 && job.status != 'finished'">
+    
+    <td v-if="job.status=='created'">Waiting...</td>
+    <td v-else-if="job.status=='running'">
       <v-progress-circular
         :rotate="-90"
         :size="38"
@@ -45,57 +47,28 @@
         style="font-size: 0.9em;"
       >{{ job.progress.toFixed(0) }}%</v-progress-circular>
     </td>
-    <td v-else-if="job.status == 'finished'">100%</td>
-    <td v-else>Waiting...</td>
-    <td v-if="job.status == 'finished'">
+    <td v-else-if="job.status=='failed'">--</td>
+    <td v-else-if="job.status=='finished'">100%</td>
+
+    <td v-if="job.status=='finished'">
       <JobResult :job="job" />
     </td>
+    <td v-else-if="job.status=='failed'" class="red--text text--lighten-1" style="text-align: center;">Failed</td>
     <td v-else>Loading...</td>
+    <td>--</td>
   </tr>
 </template>
 
 <script>
-import JobResult from "./BatchJobResult";
-
+import JobResult from "./BatchJobResult.vue";
+import { getJobName } from "../../commons.js";
 export default {
   data() {
     return {};
   },
   methods: {
-    getJobName(jobType) {
-      switch (jobType) {
-        case "refresh_keywords":
-          return "Refresh Keywords";
-        case "refresh_companies":
-          return "Refresh Companies";
-        case "refresh_orb":
-          return "Refresh ORB";
-        case "export_companies":
-          return "Export Companies";
-        case "refresh_news":
-          return "Refresh News";
-        case "refresh_news":
-          return "Refresh News";
-        case "contact_finder":
-          return "Contact Finder";
-        case "linkedin_finder":
-          return "LinkedIn Finder";
-        case "playlist_from_file":
-          return "Playlist From File";
-        case "contacts_from_file":
-          return "Contacts From File";
-        case "playlist_aggs":
-          return "Playlist Statistics Refresh";
-        case "salesforce_download":
-          return "Salesforce Download";
-        case "salesforce_upload":
-          return "Salesforce Upload";
-        case "playlist_from_search":
-          return "Playlist From Search";
-        case "signal_from_search":
-          return "Signal From Search";
-      }
-      return jobType;
+    getJobNameLocal(jobType) {
+      return getJobName(jobType);
     },
   },
   props: {
