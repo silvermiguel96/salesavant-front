@@ -40,3 +40,8 @@ Cypress.Commands.add("login", () => {
       window.localStorage.setItem(AUTH_TOKEN, resp.access_token);
     });
 });
+
+Cypress.Commands.add("advancedCompanies", () => {
+  cy.visit("/companies");
+  cy.get("#button-advanced-search").click();
+})
