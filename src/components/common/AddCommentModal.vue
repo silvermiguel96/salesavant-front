@@ -1,28 +1,28 @@
 <template>
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
-      <template v-slot:activator="{ on: dialog }" v-if="btnIcon">
+      <template v-slot:activator="{ on: dialog, attrs }" v-if="btnIcon">
         <v-tooltip bottom>
           <template v-slot:activator="{ on: tooltip }">
             <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...dialog }">
               <v-icon color="primary">{{ btnIcon }}</v-icon>
             </v-btn>
           </template>
-          <span>Add New Comment</span>
+          <span>New Comment</span>
         </v-tooltip>
       </template>
-      <template v-slot:activator="{ on: dialog }" v-else>
+      <template v-slot:activator="{ on: dialog, attrs }" v-else>
         <v-tooltip bottom>
           <template v-slot:activator="{ on: tooltip }">
             <v-btn
               color="primary"
-              v-bind="attrs"
               v-on="{ ...tooltip, ...dialog }"
               class="text-capitalize ma-2"
             >
               <v-icon size="18" class="mr-2">add</v-icon>Add comment
             </v-btn>
           </template>
+          <span>New Comment</span>
         </v-tooltip>
       </template>
       <v-card>

@@ -31,7 +31,7 @@
     <v-col cols="2">
       <div class="d-flex flex-row justify-space-around align-center">
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+          <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
               <v-icon v-show="!edit" v-on:click="toggleEdit($event)" small
                 >edit</v-icon
@@ -41,7 +41,7 @@
           <span>Edit Folder</span>
         </v-tooltip>
         <v-tooltip  bottom>
-          <template v-slot:activator="{ on }">
+          <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
               <v-icon
                 color="red lighten-2"

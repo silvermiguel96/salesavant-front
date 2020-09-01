@@ -92,7 +92,7 @@
           <td>
             <div class="d-flex align-center justify-center">
               <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator="{ on, attrs }">
                   <v-btn icon v-bind="attrs" v-on="on">
                     <v-icon
                       @click="deleteSignal(item)"

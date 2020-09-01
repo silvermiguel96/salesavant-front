@@ -31,7 +31,7 @@
             v-if="folderId || folderName"
           >
             <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
+              <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
                   <v-icon
                     @click="removePlaylist(item)"
@@ -47,7 +47,7 @@
           </div>
           <div class="d-flex align-center justify-center" v-else>
             <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
+              <template v-slot:activator="{ on , attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
                   <v-icon
                     @click="deletePlaylist(item)"
