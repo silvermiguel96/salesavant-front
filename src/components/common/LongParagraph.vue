@@ -1,6 +1,6 @@
 <template>
   <div :style="{ 'min-width': minWidth }" :class="{'text-capitalize': capitalize}">
-    {{showMore ? text : trimText(text)}}
+    <span>{{showMore ? text : trimText(text)}}</span> 
     <a
       v-show="!showMore && !!text &&text.length > this.maxLength"
       @click.prevent="toggle"
