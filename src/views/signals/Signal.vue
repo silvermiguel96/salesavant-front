@@ -46,6 +46,7 @@
                   <v-row class="px-3" dense>
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        id="field-name"
                         v-model="signal.name"
                         label="Name"
                         :disabled="!canModifySignalName"
@@ -54,12 +55,14 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        id="field-description"
                         v-model="signal.description"
                         label="Description"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        id="field-score"
                         v-model="signal.score"
                         label="Score"
                         :rules="scoreRules"
@@ -67,6 +70,7 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
+                        id="field-group"
                         v-model="signal.group"
                         label="Group"                        
                       ></v-text-field>

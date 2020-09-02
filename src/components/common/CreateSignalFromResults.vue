@@ -2,7 +2,7 @@
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn id="openSignal" color="primary" class="text-capitalize" block v-on="on">
+        <v-btn id="button-open-signal" color="primary" class="text-capitalize" block v-on="on">
           <v-icon small>add</v-icon>save as signal
         </v-btn>
       </template>
@@ -13,13 +13,14 @@
             <v-container grid-list-xs>
               <v-layout column>
                 <v-flex xs12>
-                  <v-text-field v-model="signal.name" label="Name" required :rules="requiredRules"></v-text-field>
+                  <v-text-field id="field-signal-name" v-model="signal.name" label="Name" required :rules="requiredRules"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="signal.description" label="Description"></v-text-field>
+                  <v-text-field id="field-signal-description" v-model="signal.description" label="Description"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field
+                    id="field-signal-score"
                     v-model="signal.score"
                     label="Score"
                     required
@@ -27,7 +28,7 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="signal.group" label="Group"></v-text-field>
+                  <v-text-field id="field-signal-group"  v-model="signal.group" label="Group"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -36,7 +37,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
-          <v-btn id="saveSignal"  color="green darken-1" class="text-capitalize" :disabled="!isReady" text @click="save">Save</v-btn>
+          <v-btn id="save-signal"  color="green darken-1" class="text-capitalize" :disabled="!isReady" text @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
