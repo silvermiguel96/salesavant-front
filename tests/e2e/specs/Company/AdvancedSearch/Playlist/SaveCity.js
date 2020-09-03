@@ -3,8 +3,7 @@ beforeEach(() => {
 });
 describe("Created playlist search city", () => {
   it("Advanced Search", () => {
-    cy.visit("/companies");
-    cy.get("#button-advanced-search").click();
+    cy.advancedCompanies();
     cy.get("#field-company-city").type("Medellin");
     cy.get("#button-search-company").click();
     cy.get("#city").should("have.text", "Medellin");
