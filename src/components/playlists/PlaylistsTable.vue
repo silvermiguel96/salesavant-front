@@ -14,32 +14,16 @@
     <template v-slot:item="{ item }">
       <tr>
         <td draggable="true" v-on:dragstart="dragstart(item, $event)">
-          <router-link :to="`playlists/${item.uid}`">{{
-            item.name
-          }}</router-link>
+          <router-link :to="`playlists/${item.uid}`">{{item.name}}</router-link>
         </td>
+        <td>{{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0" }}</td>
+        <td>{{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}</td>
         <td>
-          {{ item.totalCompanies ? item.totalCompanies.toLocaleString() : "0" }}
-        </td>
-        <td>
-          {{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}
-        </td>
-
-        <td>
-          <div
-            class="d-flex align-center justify-center"
-            v-if="folderId || folderName"
-          >
+          <div class="d-flex align-center justify-center" v-if="folderId || folderName">
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon
-                    @click="removePlaylist(item)"
-                    color="red lighten-2"
-                    size="20"
-                    small
-                    >delete</v-icon
-                  >
+                  <v-icon @click="removePlaylist(item)" color="red lighten-2" size="20" small>delete</v-icon>
                 </v-btn>
               </template>
               <span>Remove Playlist</span>
@@ -47,19 +31,9 @@
           </div>
           <div class="d-flex align-center justify-center" v-else>
             <v-tooltip bottom>
-<<<<<<< HEAD
-              <template v-slot:activator="{ on , attrs }">
-=======
               <template v-slot:activator="{ on, attrs }">
->>>>>>> a141815... fix tooltips error
                 <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon
-                    @click="deletePlaylist(item)"
-                    color="red lighten-2"
-                    size="20"
-                    small
-                    >delete</v-icon
-                  >
+                  <v-icon @click="deletePlaylist(item)" color="red lighten-2" size="20" small>delete</v-icon>
                 </v-btn>
               </template>
               <span>Delete Playlist</span>
@@ -113,9 +87,7 @@ export default {
     },
     async deletePlaylist(item) {
       const res = await this.$confirm(
-        ` <h1 class="subtitle-1">Confirm you want to eliminate the playlist <span class="font-weight-bold">${
-          item.name
-        }</span>?</h1>`,
+        ` <h1 class="subtitle-1">Confirm you want to eliminate the playlist <span class="font-weight-bold">${item.name}</span>?</h1>`,
         {
           buttonTrueText: "delete",
           buttonFalseText: "close",
@@ -133,11 +105,7 @@ export default {
     },
     async removePlaylist(item) {
       const res = await this.$confirm(
-        ` <h1 class="subtitle-1">Confirm you want to remove playlist <span class="font-weight-bold">${
-          item.name
-        }</span> the folder <span class="font-weight-bold">${
-          this.folderName
-        }</span>  ?</h1>`,
+        ` <h1 class="subtitle-1">Confirm you want to remove playlist <span class="font-weight-bold">${item.name}</span> the folder <span class="font-weight-bold">${this.folderName}</span>?</h1>`,
         {
           buttonTrueText: "delete",
           buttonFalseText: "close",
