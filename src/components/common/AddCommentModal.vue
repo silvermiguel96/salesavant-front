@@ -1,29 +1,14 @@
 <template>
   <v-layout>
     <v-dialog v-model="dialog" max-width="600px">
-      <template v-slot:activator="{ on: dialog, attrs }" v-if="btnIcon">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on: tooltip }">
-            <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...dialog }">
-              <v-icon color="primary">{{ btnIcon }}</v-icon>
-            </v-btn>
-          </template>
-          <span>New Comment</span>
-        </v-tooltip>
-      </template>
-      <template v-slot:activator="{ on: dialog, attrs }" v-else>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on: tooltip }">
-            <v-btn
-              color="primary"
-              v-on="{ ...tooltip, ...dialog }"
-              class="text-capitalize ma-2"
-            >
-              <v-icon size="18" class="mr-2">add</v-icon>Add comment
-            </v-btn>
-          </template>
-          <span>New Comment</span>
-        </v-tooltip>
+      <template v-slot:activator="{ on: dialog }">
+        <v-btn
+          color="primary"
+          v-on="dialog"
+          class="text-capitalize ma-2"
+        >
+          <v-icon size="18" class="mr-2">add</v-icon>Add comment
+        </v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">Add comment</v-card-title>
@@ -31,32 +16,21 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field
-                  v-model="description"
-                  label="description"
-                  required
-                ></v-text-field>
+                <v-text-field v-model="description" label="description" required></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="grey darken-1"
-            class="text-capitalize"
-            text
-            @click="dialog = false"
-            >Close</v-btn
-          >
+          <v-btn color="grey darken-1" class="text-capitalize" text @click="dialog = false">Close</v-btn>
           <v-btn
             color="green darken-1"
             class="text-capitalize"
             :disabled="!description"
             text
             @click="save"
-            >Save</v-btn
-          >
+          >Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

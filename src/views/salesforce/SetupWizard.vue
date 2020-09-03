@@ -112,19 +112,19 @@ export default {
       interval: null,
       syncRunning: false,
       progress: 0,
-      jobDescription: ""
+      jobDescription: "",
     };
   },
   props: {
-    salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL }
+    salesavantAPI: { type: String, default: process.env.VUE_APP_REST_API_URL },
   },
   methods: {
     ...mapMutations([
       "updateSalesforceWizardConf",
-      "resetSalesforceWizardConf"
+      "resetSalesforceWizardConf",
     ]),
     setupConnection() {
-      if (!this.$refs.formStep2.validate()){
+      if (!this.$refs.formStep2.validate()) {
         return;
       }
       const that = this;
@@ -133,26 +133,26 @@ export default {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          salesforceCode
-        })
+          salesforceCode,
+        }),
       })
-        .then(function(response) {
+        .then(function (response) {
           return response.json();
         })
-        .then(function(data) {
+        .then(function (data) {
           console.log(data);
           if (data.status == "ok") {
             that.setupScheduledJob(data.salesforceConnectionId);
             that.updateSalesforceWizardConf({
               step: 3,
-              connectionId: data.salesforceConnectionId
+              connectionId: data.salesforceConnectionId,
             });
           } else {
             that.updateSalesforceWizardConf({
-              step: 1
+              step: 1,
             });
             that.$eventBus.$emit(
               "showSnack",
@@ -161,95 +161,42 @@ export default {
             );
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Error:" + error.message);
           that.updateSalesforceWizardConf({
-            step: 1
+            step: 1,
           });
         });
     },
     async setupScheduledJob(salesforceConnectionId) {
       if (this.periodicity !== "None") {
-        const createScheduledJob = this.$apollo.mutate({
-          mutation: gql`
-            mutation(
-              $jobType: String!
-              $periodicity: String!
-              $additionalData: JSONString
-            ) {
-              createScheduledJob(
-                jobType: $jobType
-                periodicity: $periodicity
-                additionalData: $additionalData
-              ) {
-                salesavantScheduledJob {
-                  uid
-                  creationTime
-                  jobType
-                  description
-                  additionalData
-                }
-              }
-            }
-          `,
-          variables: {
-            jobType: "salesforce_download",
-            periodicity: this.periodicity,
-            additionalData: JSON.stringify({
-              salesforce_connection_id: salesforceConnectionId
-            })
-          }
+        this.$eventBus.$emit("createScheduledJob", {
+          jobType: "salesforce_download_nodb",
+          periodicity: this.periodicity,
+          additionalData: {
+            salesforce_connection_id: salesforceConnectionId,
+          },
         });
-        const createScheduledJobResponse = await createScheduledJob;
-        console.log(createScheduledJobResponse);
-        if (
-          !!createScheduledJobResponse &&
-          !!createScheduledJobResponse.data.createScheduledJob &&
-          !!createScheduledJobResponse.data.createScheduledJob
-            .salesavantScheduledJob
-        ) {
-          console.log(
-            "scheduledJob created",
-            createScheduledJobResponse.data.createScheduledJob
-              .salesavantScheduledJob
-          );
-        }
+        this.$eventBus.$emit("createScheduledJob", {
+          jobType: "salesforce_upload_nodb",
+          periodicity: this.periodicity,
+          additionalData: {
+            salesforce_connection_id: salesforceConnectionId,
+          },
+        });
       }
     },
     async startDownload() {
       this.syncRunning = true;
-      const that = this;
-      const createJob = this.$apollo.mutate({
-        mutation: gql`
-          mutation($jobType: String!, $additionalData: JSONString) {
-            createJob(jobType: $jobType, additionalData: $additionalData) {
-              salesavantJob {
-                uid
-                creationTime
-                jobType
-                description
-                additionalData
-              }
-            }
-          }
-        `,
-        variables: {
-          jobType: "salesforce_download",
-          additionalData: JSON.stringify({
-            salesforce_connection_id: this.salesforceWizardConnectionId
-          })
-        }
+      this.$eventBus.$emit("createJob", {
+        jobType: "salesforce_download",
+        additionalData: {
+          salesforce_connection_id: this.salesforceWizardConnectionId,
+        },
+        onSuccess: (salesavantJob) => {
+          this.monitorJobProgress(salesavantJob.uid);
+        },
       });
-      const createJobResponse = await createJob;
-      if (
-        !!createJobResponse &&
-        !!createJobResponse.data.createJob &&
-        !!createJobResponse.data.createJob.salesavantJob
-      ) {
-        that.monitorJobProgress(
-          createJobResponse.data.createJob.salesavantJob.uid
-        );
-      }
     },
     monitorJobProgress(jobUid) {
       let that = this;
@@ -267,17 +214,17 @@ export default {
               }
             `,
             variables: {
-              jobUid: jobUid
+              jobUid: jobUid,
             },
-            fetchPolicy: "no-cache"
+            fetchPolicy: "no-cache",
           })
-          .then(resp => {
+          .then((resp) => {
             if (!!resp.data && !!resp.data.salesavantJob) {
               this.progress = resp.data.salesavantJob.progress;
               this.jobDescription = resp.data.salesavantJob.description;
               if (resp.data.salesavantJob.status == "finished") {
                 clearInterval(this.interval);
-                setTimeout(function() {}, 2000);
+                setTimeout(function () {}, 2000);
               }
             }
           });
@@ -293,7 +240,7 @@ export default {
       this.syncInterval = null;
       this.checkbox = false;
       this.resetSalesforceWizardConf();
-    }
+    },
   },
   computed: {
     salesforceWizardStep() {
@@ -304,10 +251,10 @@ export default {
     },
     salesforceWizardConnectionId() {
       return this.$store.state.salesforceWizard.connectionId;
-    }
+    },
   },
   beforeDestroy() {
     clearInterval(this.interval);
-  }
+  },
 };
 </script>

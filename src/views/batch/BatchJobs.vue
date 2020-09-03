@@ -15,7 +15,7 @@
       ></v-breadcrumbs>
           <v-tabs grow background-color="grey lighten-5" color="primary">
             <!-- Tab Home -->
-            <v-tab class="text-capitalize">Jobs</v-tab>
+            <v-tab class="text-capitalize">Jobs Queue</v-tab>
             <v-tab-item>
                 <jobs />
             </v-tab-item>

@@ -20,7 +20,7 @@
           </v-row>
           <v-tabs grow background-color="grey lighten-5" color="primary">
             <!-- Tab Home -->
-            <v-tab class="text-capitalize">Matched Companies</v-tab>
+            <v-tab class="text-capitalize">Companies</v-tab>
             <v-tab-item>
               <v-container fluid>
                 <v-row no-gutters>
@@ -64,7 +64,7 @@
               </v-row>
             </v-tab-item>
             <!-- tab comments -->
-            <v-tab class="text-capitalize">Not Matched Companies</v-tab>
+            <v-tab class="text-capitalize">Not Matched</v-tab>
             <v-tab-item>
               <v-container fluid>
                 <v-row no-gutters>
