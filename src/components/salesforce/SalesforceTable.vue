@@ -74,8 +74,9 @@ export default {
           sortable: false
         },
         {
-          text: "Add/Remove",
+          text: this.headerText,
           value: "companies.deparment",
+          align: "center",
           width: "10%",
           sortable: false
         }
@@ -95,7 +96,8 @@ export default {
   },
   props: {
     items: Array,
-    totalResults: Number
+    totalResults: Number,
+    headerText: String
   },
   computed: {
     parseItem() {
@@ -144,8 +146,10 @@ export default {
       console.log("result", result);
       if (result.data.createSalesforceMapping.status === "ok") {
         console.log("this.parseItem[index]", this.parseItem[index]);
-        this.parseItem[index].mapping =
-          result.data.createSalesforceMapping.salesforceMapping;
+        this.parseItem[index].mapping = result.data.createSalesforceMapping.salesforceMapping;
+        this.items.splice(index, 1);
+        // this.options.itemsPerPage -= 1;
+        this.$emit("matchedCompanies", object);
         this.$eventBus.$emit(
           "showSnack",
           "SalesForce mapping successfully created",
@@ -202,6 +206,10 @@ export default {
         if (result.data.deleteSalesforceMapping.status === "ok") {
           console.log("this.parseItem[index]", this.parseItem[index]);
           this.parseItem[index].mapping = "";
+          this.items.splice(index, 1);
+          // this.options.itemsPerPage -= 1;
+          console.log("object", object)
+          this.$emit("matchedNotCompanies", object);
           this.$eventBus.$emit(
             "showSnack",
             "SalesForce mapping successfully deleted",
