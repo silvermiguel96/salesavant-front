@@ -171,14 +171,14 @@ export default {
     async setupScheduledJob(salesforceConnectionId) {
       if (this.periodicity !== "None") {
         this.$eventBus.$emit("createScheduledJob", {
-          jobType: "salesforce_download",
+          jobType: "salesforce_download_nodb",
           periodicity: this.periodicity,
           additionalData: {
             salesforce_connection_id: salesforceConnectionId,
           },
         });
         this.$eventBus.$emit("createScheduledJob", {
-          jobType: "salesforce_upload",
+          jobType: "salesforce_upload_nodb",
           periodicity: this.periodicity,
           additionalData: {
             salesforce_connection_id: salesforceConnectionId,
@@ -188,38 +188,15 @@ export default {
     },
     async startDownload() {
       this.syncRunning = true;
-      const that = this;
-      const createJob = this.$apollo.mutate({
-        mutation: gql`
-          mutation($jobType: String!, $additionalData: JSONString) {
-            createJob(jobType: $jobType, additionalData: $additionalData) {
-              salesavantJob {
-                uid
-                creationTime
-                jobType
-                description
-                additionalData
-              }
-            }
-          }
-        `,
-        variables: {
-          jobType: "salesforce_download",
-          additionalData: JSON.stringify({
-            salesforce_connection_id: this.salesforceWizardConnectionId,
-          }),
+      this.$eventBus.$emit("createJob", {
+        jobType: "salesforce_download",
+        additionalData: {
+          salesforce_connection_id: this.salesforceWizardConnectionId,
+        },
+        onSuccess: (salesavantJob) => {
+          this.monitorJobProgress(salesavantJob.uid);
         },
       });
-      const createJobResponse = await createJob;
-      if (
-        !!createJobResponse &&
-        !!createJobResponse.data.createJob &&
-        !!createJobResponse.data.createJob.salesavantJob
-      ) {
-        that.monitorJobProgress(
-          createJobResponse.data.createJob.salesavantJob.uid
-        );
-      }
     },
     monitorJobProgress(jobUid) {
       let that = this;

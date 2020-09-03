@@ -98,6 +98,24 @@ export default {
         !!response.data.createJob.salesavantJob
       ) {
         console.log("Job created");
+        let onSuccess = _get(jobData, "onSuccess");
+        if (onSuccess) {
+          if (typeof onSuccess === "function") {
+            onSuccess(response.data.createJob.salesavantJob);
+          } else {
+            console.log("onSuccess must be a function");
+          }
+        }
+      } else {
+        console.log("Job error");
+        let onError = _get(jobData, "onError");
+        if (onError) {
+          if (typeof onError === "function") {
+            onError(response);
+          } else {
+            console.log("onError must be a function");
+          }
+        }
       }
     },
     async createScheduledJob(jobData) {
