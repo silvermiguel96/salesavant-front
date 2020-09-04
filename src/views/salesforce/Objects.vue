@@ -152,18 +152,14 @@ export default {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
     },
-    addMatchedCompanies(newMatchedCompanies) {
-      console.log("newMatchedCompanies", newMatchedCompanies)
-      this.salesforceObjectsMapped.salesforceObjectList.push({ ...newMatchedCompanies.objectCompany})
-      this.salesforceObjectsMapped.totalResults += 1
-      this.salesforceObjectsNotMapped.totalResults -= 1
+    addMatchedCompanies() {
+      this.$apollo.queries.salesforceObjectsMapped.refresh();
+      this.$apollo.queries.salesforceObjectsNotMapped.refresh();
     },
-    deleteMatchedCompanies(newNotMatchedCompanies){
-      console.log("newNotMatchedCompanies", newNotMatchedCompanies)
-      this.salesforceObjectsNotMapped.salesforceObjectList.push({ ...newNotMatchedCompanies})
-      this.salesforceObjectsNotMapped.totalResults += 1
-      this.salesforceObjectsMapped.totalResults -= 1
-    }
+    deleteMatchedCompanies() {
+      this.$apollo.queries.salesforceObjectsMapped.refresh();
+      this.$apollo.queries.salesforceObjectsNotMapped.refresh();
+    },
   },
   apollo: {
     salesforceObjectsMapped: {
