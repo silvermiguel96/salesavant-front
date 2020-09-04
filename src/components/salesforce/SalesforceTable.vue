@@ -115,9 +115,6 @@ export default {
       this.$emit("updateOptions", { dataFromEvent });
     },
     async addObject(object) {
-      console.log("Objet", object);
-      const index = this.parseItem.indexOf(object.objectCompany);
-      console.log("index", index);
       const result = await this.$apollo.mutate({
         mutation: gql`
           mutation($companyUid: String!, $sfObjectId: Int!) {
@@ -143,9 +140,7 @@ export default {
           sfObjectId: parseInt(object.objectCompany.id)
         }
       });
-      console.log("result", result);
       if (result.data.createSalesforceMapping.status === "ok") {
-        console.log("this.parseItem[index]", this.parseItem[index]);
         this.$emit("matchedCompanies");
         this.$eventBus.$emit(
           "showSnack",
@@ -163,7 +158,6 @@ export default {
       }
     },
     async deleteObject(object) {
-      console.log("object", object);
       const res = await this.$confirm(
         `<h1 class="subtitle-1">
               Confirm you want to eliminate the mapping for company
@@ -181,8 +175,6 @@ export default {
         }
       );
       if (res) {
-        const index = this.parseItem.indexOf(object);
-        console.log("parseItem", object.mapping.id);
         const result = await this.$apollo.mutate({
           mutation: gql`
             mutation($salesforceMappingId: Int!) {
@@ -201,7 +193,6 @@ export default {
         });
         console.log("result", result);
         if (result.data.deleteSalesforceMapping.status === "ok") {
-          console.log("this.parseItem[index]", this.parseItem[index]);
           this.$emit("matchedNotCompanies");
           this.$eventBus.$emit(
             "showSnack",
