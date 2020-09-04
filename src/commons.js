@@ -23,10 +23,10 @@ export const getJobName = function (jobType) {
     case "playlist_aggs":
       return "Playlist Statistics Refresh";
     case "salesforce_download":
-    case "salesforce_download_nodb":
+    case "salesforce_download_scheduled":
       return "Salesforce Download";
     case "salesforce_upload":
-    case "salesforce_upload_nodb":
+    case "salesforce_upload_scheduled":
       return "Salesforce Upload";
     case "playlist_from_search":
       return "Playlist From Search";

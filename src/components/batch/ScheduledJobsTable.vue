@@ -15,7 +15,7 @@
       <tr>
         <td>{{ getJobNameLocal(item.jobType) }}</td>
         <td>{{ item.description || "--" }}</td>
-        <td>{{ item.lastResult || "--"}}</td>
+        <td class="text-capitalize">{{ item.lastResult || "--"}}</td>
         <td v-if="item.periodicity">{{ item.periodicity || "--"}}</td>
         <td v-else>{{ item.scheduleTime | moment("MMMM Do YYYY, H:mm") }}</td>
         <td>{{ item.modificationTime | moment("MMMM Do YYYY, H:mm") }}</td>

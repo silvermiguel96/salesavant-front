@@ -171,14 +171,14 @@ export default {
     async setupScheduledJob(salesforceConnectionId) {
       if (this.periodicity !== "None") {
         this.$eventBus.$emit("createScheduledJob", {
-          jobType: "salesforce_download_nodb",
+          jobType: "salesforce_download_scheduled",
           periodicity: this.periodicity,
           additionalData: {
             salesforce_connection_id: salesforceConnectionId,
           },
         });
         this.$eventBus.$emit("createScheduledJob", {
-          jobType: "salesforce_upload_nodb",
+          jobType: "salesforce_upload_scheduled",
           periodicity: this.periodicity,
           additionalData: {
             salesforce_connection_id: salesforceConnectionId,
