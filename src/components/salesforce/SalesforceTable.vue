@@ -202,11 +202,7 @@ export default {
         console.log("result", result);
         if (result.data.deleteSalesforceMapping.status === "ok") {
           console.log("this.parseItem[index]", this.parseItem[index]);
-          this.parseItem[index].mapping = "";
-          // this.items.splice(index, 1);
-          // this.options.itemsPerPage -= 1;
-          console.log("object", object)
-          this.$emit("matchedNotCompanies", object);
+          this.$emit("matchedNotCompanies");
           this.$eventBus.$emit(
             "showSnack",
             "SalesForce mapping successfully deleted",
