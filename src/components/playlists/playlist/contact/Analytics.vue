@@ -5,7 +5,6 @@
         <div class="headline">Top Signals</div>
       </v-card-subtitle>
       <v-card-text>
-        <c3-chart :type="'bar'" :config="aggs_top_signals_config" :data="aggs_top_signals" />
       </v-card-text>
     </v-card>
 
@@ -14,7 +13,6 @@
         <div class="headline">Top NAICS Descriptions</div>
       </v-card-subtitle>
       <v-card-text>
-        <c3-chart :type="'bar'" :config="config" :data="aggs_top_naics_code" />
       </v-card-text>
     </v-card>
 
@@ -23,7 +21,6 @@
         <div class="headline">Employees Distribution</div>
       </v-card-subtitle>
       <v-card-text>
-        <c3-chart :type="'bar'" :config="aggs_employees_dist_config" :data="aggs_employees_dist" />
       </v-card-text>
     </v-card>
 
@@ -32,14 +29,12 @@
         <div class="headline">Revenue per Category</div>
       </v-card-subtitle>
       <v-card-text>
-        <c3-chart :type="'pie'" :config="revenue_per_category_config" :data="revenue_per_category" />
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
-import C3Chart from "../../../C3Chart.vue";
 export default {
   props: {
     aggs_data: { type: Object, default: () => {} }
@@ -170,7 +165,6 @@ export default {
     }
   },
   components: {
-    C3Chart
   }
 };
 </script>
