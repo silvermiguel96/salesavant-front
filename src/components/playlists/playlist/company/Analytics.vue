@@ -1,9 +1,9 @@
 <template>
-  <v-row>
+  <v-row class="ma-md-1">
     <v-col v-if="aggs_top_signals" cols="12" md="6">
       <v-card>
         <v-card-subtitle>
-          <div class="headline">Top Signals</div>
+          <div class="subtitle-1">Top Signals</div>
         </v-card-subtitle>
         <v-card-text>
           <apexchart
@@ -19,7 +19,7 @@
     <v-col v-if="aggs_top_naics_code" cols="12" md="6">
       <v-card>
         <v-card-subtitle>
-          <div class="headline">Top NAICS Descriptions</div>
+          <div class="subtitle-1">Top NAICS Descriptions</div>
         </v-card-subtitle>
         <v-card-text></v-card-text>
       </v-card>
@@ -28,7 +28,7 @@
     <v-col v-if="aggs_employees_dist" cols="12" md="6">
       <v-card>
         <v-card-subtitle>
-          <div class="headline">Employees Distribution</div>
+          <div class="subtitle-1">Employees Distribution</div>
         </v-card-subtitle>
         <v-card-text>
           <apexchart
@@ -44,7 +44,7 @@
     <v-col v-if="revenue_per_category" cols="12" md="6">
       <v-card>
         <v-card-subtitle>
-          <div class="headline">Revenue per Category</div>
+          <div class="subtitle-1">Revenue per Category</div>
         </v-card-subtitle>
         <v-card-text></v-card-text>
       </v-card>
@@ -53,7 +53,7 @@
     <v-col cols="12" md="6">
       <v-card>
         <v-card-subtitle>
-          <div class="headline">Map</div>
+          <div class="subtitle-1">Map</div>
         </v-card-subtitle>
         <v-card-text>
           <div class="map-wrapper" style="height:200px">
@@ -68,7 +68,9 @@
 <script>
 window.jQuery = require("jquery");
 require("jvectormap");
-require("../../../../../lib/jquery-jvectormap-world-mill-en.js");
+require("@/lib/jquery-jvectormap-world-mill-en.js");
+
+import { find_country_code } from "@/commons.js";
 
 export default {
   props: {
@@ -80,11 +82,12 @@ export default {
   methods: {
     initMap() {
       console.log("initMap");
+      let countries = this.aggs_top_countries;
+      console.log(countries);
       const map = jQuery("#map");
       map.empty();
       map.vectorMap({
         map: "world_mill_en",
-
         backgroundColor: "transparent",
         zoomOnScroll: false,
         zoomOnButtons: false,
@@ -100,11 +103,18 @@ export default {
         series: {
           regions: [
             {
-              values: {US: 10.63, CO: 11.58, GB: 13},
-              scale: ["#C8EEFF", "#0071A4"],
+              values: countries,
+              scale: ["#C8EEFF", "#008ffb"],
               normalizeFunction: "polynomial",
             },
           ],
+        },
+        onRegionTipShow: function (e, el, code) {
+          if (code in countries){
+            el.html(el.html() + " - " + countries[code]);
+          }else{
+            el.html(el.html() + " - 0");
+          }
         },
       });
     },
@@ -214,6 +224,23 @@ export default {
       }
       return null;
     },
+    aggs_top_countries: function () {
+      if (this.aggs_data.hasOwnProperty("aggs_top_countries")) {
+        let agg_string_parsed = this.parse_agg_string(
+          this.aggs_data.aggs_top_countries
+        );
+        let countries = {};
+        agg_string_parsed.forEach((entry) => {
+          console.log(entry);
+          let country_code = find_country_code(entry[0]);
+          if (country_code) {
+            countries[country_code] = parseInt(entry[1]);
+          }
+        });
+        return countries;
+      }
+      return [];
+    },
     revenue_per_category: function () {
       if (this.aggs_data.hasOwnProperty("revenue_per_category")) {
         return {
@@ -223,7 +250,6 @@ export default {
       return null;
     },
   },
-  components: {},
 };
 </script>
 
@@ -234,5 +260,17 @@ export default {
   position: relative;
   overflow: hidden;
   touch-action: none;
+}
+
+.jvectormap-tip {
+  position: absolute;
+  display: none;
+  border: solid 1px #CDCDCD;
+  border-radius: 3px;
+  background: #FFF;
+  color: #888;
+  font-family: sans-serif, Verdana;
+  font-size: smaller;
+  padding: 3px;
 }
 </style>

@@ -17,6 +17,7 @@
   "dependencies": {
     "apexcharts": "^3.20.0",
     "auth0-js": "^9.12.2",
+    "babel-plugin-root-import": "^6.5.0",
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^2.6.11",
     "express": "^4.17.1",
