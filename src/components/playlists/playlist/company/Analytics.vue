@@ -56,8 +56,8 @@
           <div class="subtitle-1">Map</div>
         </v-card-subtitle>
         <v-card-text>
-          <div class="map-wrapper" style="height:200px">
-            <div id="map" class="jvectormap-container" style="width:100%"></div>
+          <div class="map-wrapper" style="height:240px">
+            <div id="map" class="jvectormap-container"></div>
           </div>
         </v-card-text>
       </v-card>
@@ -110,9 +110,9 @@ export default {
           ],
         },
         onRegionTipShow: function (e, el, code) {
-          if (code in countries){
+          if (code in countries) {
             el.html(el.html() + " - " + countries[code]);
-          }else{
+          } else {
             el.html(el.html() + " - 0");
           }
         },
