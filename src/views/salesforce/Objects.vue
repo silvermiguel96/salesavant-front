@@ -44,7 +44,9 @@
                     v-if="salesforceObjectsMapped"
                     :items="salesforceObjectsMapped.salesforceObjectList"
                     :totalResults="salesforceObjectsMapped.totalResults"
+                    :headerText="'Remove'"
                     @updateOptions="updateOptions"
+                    @matchedNotCompanies="deleteMatchedCompanies"
                   ></salesforce-table>
                 </v-col>
               </v-row>
@@ -88,7 +90,9 @@
                     v-if="salesforceObjectsNotMapped"
                     :items="salesforceObjectsNotMapped.salesforceObjectList"
                     :totalResults="salesforceObjectsNotMapped.totalResults"
+                    :headerText="'Add'"
                     @updateOptions="updateOptions"
+                    @matchedCompanies="addMatchedCompanies"
                   ></salesforce-table>
                 </v-col>
               </v-row>
@@ -147,6 +151,14 @@ export default {
     }) {
       this.options.page = page;
       this.options.itemsPerPage = itemsPerPage;
+    },
+    addMatchedCompanies() {
+      this.$apollo.queries.salesforceObjectsMapped.refresh();
+      this.$apollo.queries.salesforceObjectsNotMapped.refresh();
+    },
+    deleteMatchedCompanies() {
+      this.$apollo.queries.salesforceObjectsMapped.refresh();
+      this.$apollo.queries.salesforceObjectsNotMapped.refresh();
     },
   },
   apollo: {

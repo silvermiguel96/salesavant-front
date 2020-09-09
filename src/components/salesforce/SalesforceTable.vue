@@ -74,8 +74,9 @@ export default {
           sortable: false
         },
         {
-          text: "Add/Remove",
+          text: this.headerText,
           value: "companies.deparment",
+          align: "center",
           width: "10%",
           sortable: false
         }
@@ -95,7 +96,8 @@ export default {
   },
   props: {
     items: Array,
-    totalResults: Number
+    totalResults: Number,
+    headerText: String
   },
   computed: {
     parseItem() {
@@ -113,9 +115,6 @@ export default {
       this.$emit("updateOptions", { dataFromEvent });
     },
     async addObject(object) {
-      console.log("Objet", object);
-      const index = this.parseItem.indexOf(object.objectCompany);
-      console.log("index", index);
       const result = await this.$apollo.mutate({
         mutation: gql`
           mutation($companyUid: String!, $sfObjectId: Int!) {
@@ -141,11 +140,8 @@ export default {
           sfObjectId: parseInt(object.objectCompany.id)
         }
       });
-      console.log("result", result);
       if (result.data.createSalesforceMapping.status === "ok") {
-        console.log("this.parseItem[index]", this.parseItem[index]);
-        this.parseItem[index].mapping =
-          result.data.createSalesforceMapping.salesforceMapping;
+        this.$emit("matchedCompanies");
         this.$eventBus.$emit(
           "showSnack",
           "SalesForce mapping successfully created",
@@ -162,7 +158,6 @@ export default {
       }
     },
     async deleteObject(object) {
-      console.log("object", object);
       const res = await this.$confirm(
         `<h1 class="subtitle-1">
               Confirm you want to eliminate the mapping for company
@@ -180,8 +175,6 @@ export default {
         }
       );
       if (res) {
-        const index = this.parseItem.indexOf(object);
-        console.log("parseItem", object.mapping.id);
         const result = await this.$apollo.mutate({
           mutation: gql`
             mutation($salesforceMappingId: Int!) {
@@ -200,8 +193,7 @@ export default {
         });
         console.log("result", result);
         if (result.data.deleteSalesforceMapping.status === "ok") {
-          console.log("this.parseItem[index]", this.parseItem[index]);
-          this.parseItem[index].mapping = "";
+          this.$emit("matchedNotCompanies");
           this.$eventBus.$emit(
             "showSnack",
             "SalesForce mapping successfully deleted",
