@@ -163,9 +163,16 @@ export default {
               categories: categories,
               tickPlacement: "on",
             },
+            yaxis: {
+              reversed: true,
+              axisTicks: {
+                show: true,
+              },
+            },
             plotOptions: {
               bar: {
                 columnWidth: "50%",
+                horizontal: true,
               },
             },
           },
