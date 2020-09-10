@@ -50,7 +50,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="12" md="6">
+    <v-col v-if="aggs_top_countries" cols="12" md="6">
       <v-card>
         <v-card-subtitle>
           <div class="subtitle-1">Map</div>
@@ -83,40 +83,41 @@ export default {
     initMap() {
       console.log("initMap");
       let countries = this.aggs_top_countries;
-      console.log(countries);
-      const map = jQuery("#map");
-      map.empty();
-      map.vectorMap({
-        map: "world_mill_en",
-        backgroundColor: "transparent",
-        zoomOnScroll: false,
-        zoomOnButtons: false,
-        regionStyle: {
-          initial: {
-            fill: "#e4e4e4",
-            "fill-opacity": 0.9,
-            stroke: "none",
-            "stroke-width": 0,
-            "stroke-opacity": 0,
-          },
-        },
-        series: {
-          regions: [
-            {
-              values: countries,
-              scale: ["#C8EEFF", "#008ffb"],
-              normalizeFunction: "polynomial",
+      if (countries) {
+        const map = jQuery("#map");
+        map.empty();
+        map.vectorMap({
+          map: "world_mill_en",
+          backgroundColor: "transparent",
+          zoomOnScroll: false,
+          zoomOnButtons: false,
+          regionStyle: {
+            initial: {
+              fill: "#e4e4e4",
+              "fill-opacity": 0.9,
+              stroke: "none",
+              "stroke-width": 0,
+              "stroke-opacity": 0,
             },
-          ],
-        },
-        onRegionTipShow: function (e, el, code) {
-          if (code in countries) {
-            el.html(el.html() + " - " + countries[code]);
-          } else {
-            el.html(el.html() + " - 0");
-          }
-        },
-      });
+          },
+          series: {
+            regions: [
+              {
+                values: countries,
+                scale: ["#C8EEFF", "#008ffb"],
+                normalizeFunction: "polynomial",
+              },
+            ],
+          },
+          onRegionTipShow: function (e, el, code) {
+            if (code in countries) {
+              el.html(el.html() + " - " + countries[code]);
+            } else {
+              el.html(el.html() + " - 0");
+            }
+          },
+        });
+      }
     },
     parse_agg_string: function (agg_string) {
       return agg_string.split("||").map((entry) => {
@@ -239,7 +240,7 @@ export default {
         });
         return countries;
       }
-      return [];
+      return null;
     },
     revenue_per_category: function () {
       if (this.aggs_data.hasOwnProperty("revenue_per_category")) {
