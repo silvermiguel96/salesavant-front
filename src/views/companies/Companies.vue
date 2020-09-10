@@ -67,7 +67,7 @@
           </v-row>
           <v-row v-if="showFiltersAndActions" class="pa-1" no-gutters>
             <v-col cols="12" md="8">
-              <div class="mt-2">
+              <div class="mt-2" id="filters">
                 <span class="ml-2">Filtering by:</span>
                 <v-chip
                   v-for="obj in companySearchFilters"
@@ -81,7 +81,7 @@
                   small
                 >
                   <span class="text-capitalize font-weight-bold">{{obj.labelKey}}:&nbsp;</span>
-                  <span :id="obj.labelKey" class="font-weight-medium">{{obj.labelVal}}</span>
+                  <span class="font-weight-medium">{{obj.labelVal}}</span>
                 </v-chip>
               </div>
             </v-col>
