@@ -68,13 +68,14 @@
 </template>
 
 <script>
-import MainMenu from "./components/MainMenu.vue";
-import AdvancedSearch from "./views/advanced-search/AdvancedSearch";
 import { json } from "body-parser";
-import { AUTH_TOKEN } from "./util";
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import { mapMutations } from "vuex";
+
+import MainMenu from "@/components/MainMenu.vue";
+import { AUTH_TOKEN } from "@/util.js";
+import AdvancedSearch from "@/views/advanced-search/AdvancedSearch";
 
 export default {
   name: "App",
