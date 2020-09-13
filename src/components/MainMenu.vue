@@ -30,10 +30,10 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left app color="primary" dark dense>
+    <v-app-bar color="primary" clipped-left app  dark dense>
       <v-app-bar-nav-icon class="d-md-none" small @click="drawer = !drawer"></v-app-bar-nav-icon>
       <router-link to="/home">
-        <img class="logo mt-1" :src="require('../assets/salesavant_header.png')" />
+        <img class="mt-2" :src="require('../assets/salesavant_header.png')" width="135" alt="SaleSavant"/>
       </router-link>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down" v-for="link in links" :key="link.text">
