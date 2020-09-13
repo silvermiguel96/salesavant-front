@@ -49,7 +49,6 @@
           autocomplete="off"
           clearable
         ></v-text-field>
-        <a @click.prevent="triggerSearch" class="body-2" color="gray--text">Advanced Search</a>
       </v-col>
     </v-row>
     <v-row no-gutters>
