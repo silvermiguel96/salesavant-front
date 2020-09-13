@@ -56,6 +56,7 @@ const state = {
   userEmail: null,
   jwtToken: null,
   searchType: null,
+  showSearch: false,
   showSearchDialog: false,
   companySearch: {
     ...defaultCompanySearch
@@ -75,9 +76,19 @@ const getters = {
 };
 
 const mutations = {
+  showSearch(state) {
+    state.showSearch = true;
+  },
+  hideSearch(state) {
+    state.showSearch = false;
+  },
   showSearchDialog(state, newSearchType) {
     state.searchType = newSearchType;
+    state.showSearch = true;
     state.showSearchDialog = true;
+  },
+  hideSearchDialog(state) {
+    state.showSearchDialog = false;
   },
   updateCompanySearch(state, newCompanySearch) {
     state.companySearch = {
@@ -90,9 +101,6 @@ const mutations = {
       ...defaultContactSearch,
       ...newContactSearch
     }
-  },
-  hideSearchDialog(state) {
-    state.showSearchDialog = false;
   },
   resetCompanySearch(state) {
     state.companySearch = { ...defaultCompanySearch };
