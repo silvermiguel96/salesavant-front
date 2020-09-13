@@ -92,6 +92,8 @@ export default {
         text: "",
         color: "",
       },
+      waitDialog: false,
+      waitDialogMessage: "",
     };
   },
   created() {
@@ -103,9 +105,10 @@ export default {
     this.$eventBus.$on("createScheduledJob", this.createScheduledJob);
     this.$eventBus.$on("showSnack", this.showSnack);
     this.$eventBus.$on("hideSnack", this.hideSnack);
+    this.$eventBus.$on("showWaitDialog", this.showWaitDialog);
+    this.$eventBus.$on("hideWaitDialog", this.hideWaitDialog);
   },
   methods: {
-    ...mapMutations(["showSearchDialog", "hideSearchDialog"]),
     showSnack(text, color) {
       this.snack.show = true;
       this.snack.text = text;
@@ -115,6 +118,17 @@ export default {
       this.snack.show = false;
       this.snack.text = "";
       this.snack.color = "";
+    },
+    showWaitDialog(waitDialogMessage) {
+      this.waitDialog = true;
+      this.waitDialogMessage = waitDialogMessage;
+    },
+    hideWaitDialog() {
+      this.waitDialog = false;
+      this.waitDialogMessage = "";
+    },
+    showSearchDialog(searchType) {
+      this.$store.commit("showSearchDialog", searchType);
     },
     async createJob(jobData) {
       const response = await this.$apollo.mutate({
@@ -230,6 +244,9 @@ export default {
           return this.$store.commit("hideSearchDialog");
         }
       },
+    },
+    computedShowSearchButton() {
+      return !this.$store.state.showSearchDialog;
     },
   },
 };
