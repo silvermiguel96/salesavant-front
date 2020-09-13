@@ -29,16 +29,15 @@
           </v-breadcrumbs>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12">
-          <div class="title text--secondary pl-3 pl-sm-6">{{playlist.name}}</div>
           <div class="caption text--secondary pl-3 pl-sm-6">
             Last Updated:
             <span>{{ playlist.modificationTime | moment("from", "now") }}</span>
           </div>
         </v-col>
       </v-row>
-      <v-row no-gutters>
+      <v-row no-gutters class="mt-md-2"> 
         <v-col cols="12" xs="12" class="pt-0" v-if="playlist">
           <v-tabs grow background-color="grey lighten-5" color="primary" v-if="playlist.playlistType=='company'">
             <!-- Tab Companies -->
