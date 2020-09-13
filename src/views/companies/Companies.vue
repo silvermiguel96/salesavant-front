@@ -1,138 +1,90 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="12" xs="12" class="pt-0">
-        <v-card>
-          <v-row no-gutters>
-            <v-col cols="12" xs="12" class="pt-0">
-              <v-breadcrumbs
-                class="pl-3 pl-sm-6"
-                :large="true"
-                :items="[
+    <v-card>
+      <v-row no-gutters>
+        <v-col cols="12" xs="12" class="pt-0">
+          <v-breadcrumbs
+            class="pl-3 pl-sm-6"
+            :large="true"
+            :items="[
                 {	          
                   text: 'Companies',	            
                   disabled: true,	              
                   href: '/companies'	              
                   }
                 ]"
-                divider=">"
-              ></v-breadcrumbs>
-            </v-col>
-          </v-row>
-          <v-row no-gutters class="mx-md-4 mx-2">
-            <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-              <v-btn
-                class="text-capitalize d-inline-block"
-                id="button-advanced-search"
-                min-width="150"
-                block
-                color="primary"
-                @click="triggerSearch"
-              >
-                <v-icon class="pr-1">search</v-icon>Advanced Search
-              </v-btn>
-            </v-col>
-            <v-col cols="12" sm="2" md="2" lg="1" class="pa-1">
-              <v-btn
-                class="text-capitalize d-inline-block"
-                color="normal"
-                block
-                @click="resetCompanySearch"
-                v-if="showFiltersAndActions"
-              >
-                <v-icon class="pr-1" small>replay</v-icon>Reset
-              </v-btn>
-            </v-col>
-            <v-row v-if="showFiltersAndActions" no-gutters class="d-flex justify-end">
-              <v-col cols="12" md="3" class="pt-1">
-                <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
-              </v-col>
-              <v-col cols="12" md="3" class="pt-1 ml-2">
-                <create-signal-from-results @onSave="saveResultsAsSignal" />
-              </v-col>
-            </v-row>
-            <v-row v-else no-gutters class="d-flex justify-end">
-              <v-col cols="12" sm="8" md="8" lg="8" class="pa-1">
-                <v-text-field
-                  v-model="search"
-                  append-icon="filter_list"
-                  label="Quick Search"
-                  placeholder="Type a Name"
-                  hide-details
-                  autocomplete="off"
-                  clearable
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-row>
-          <v-row v-if="showFiltersAndActions" class="pa-1" no-gutters>
-            <v-col cols="12" md="8">
-              <div class="mt-2" id="filters">
-                <span class="ml-2">Filtering by:</span>
-                <v-chip
-                  v-for="obj in companySearchFilters"
-                  :key="obj.key"
-                  @click:close="removeFilter(obj.key)"
-                  class="mx-1"
-                  style="padding: 0 8px;"
-                  color="light-blue darken-1"
-                  dark
-                  close
-                  small
-                >
-                  <span class="text-capitalize font-weight-bold">{{obj.labelKey}}:&nbsp;</span>
-                  <span class="font-weight-medium">{{obj.labelVal}}</span>
-                </v-chip>
-              </div>
-            </v-col>
-          </v-row>
+            divider=">"
+          ></v-breadcrumbs>
+        </v-col>
+      </v-row>
+      <v-row v-if="showFiltersAndActions" class="mx-2" no-gutters>
+        <v-col id="filters" cols="12" md="8" class="d-flex flex-row align-center">
+          <span class="ml-2">Filtering by:</span>
+          <v-chip
+            v-for="obj in companySearchFilters"
+            :key="obj.key"
+            @click:close="removeFilter(obj.key)"
+            class="mx-1"
+            style="padding: 0 8px;"
+            color="light-blue darken-1"
+            dark
+            close
+            small
+          >
+            <span class="text-capitalize font-weight-bold">{{obj.labelKey}}:&nbsp;</span>
+            <span class="font-weight-medium">{{obj.labelVal}}</span>
+          </v-chip>
+        </v-col>
+        <v-col cols="12" md="2">
+          <create-playlist-from-results @onSave="saveResultsAsPlaylist" />
+        </v-col>
+        <v-col cols="12" md="2">
+          <create-signal-from-results @onSave="saveResultsAsSignal" />
+        </v-col>
+      </v-row>
+      <v-row v-else class="mx-2" no-gutters>
+        <v-col cols="12" md="6" offset-md="6" class="px-2">
+          <v-text-field
+            v-model="search"
+            append-icon="filter_list"
+            label="Quick Search"
+            placeholder="Type a Name"
+            hide-details
+            autocomplete="off"
+            clearable
+          ></v-text-field>
+          <!-- <a @click.prevent="triggerSearch" class="body-2" color="gray--text">Advanced Search</a> -->
+        </v-col>
+      </v-row>
 
-          <v-row class="pt-4" no-gutters>
-            <v-col cols="12">
-              <!-- Result -->
-              <companies-table
-                v-if="companies"
-                :items="companies.companiesList"
-                :totalResults="totalResults"
-                @updateOptions="updateOptions"
-              ></companies-table>
-            </v-col>
-          </v-row>
+      <v-row class="pt-4" no-gutters>
+        <v-col cols="12">
+          <!-- Result -->
+          <companies-table
+            v-if="companies"
+            :items="companies.companiesList"
+            :totalResults="totalResults"
+            @updateOptions="updateOptions"
+          ></companies-table>
+        </v-col>
+      </v-row>
 
-          <v-row no-gutters>
-            <v-col cols="12">
-              <!-- Loading -->
-              <v-progress-linear
-                :active="!!isLoading"
-                color="blue"
-                indeterminate
-                absolute
-                bottom
-                query
-              ></v-progress-linear>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-dialog v-model="waitDialog" persistent width="320">
-      <v-card>
-        <v-card-text class="pa-2 text-center">
-          {{ waitDialogMessage }}
-          <v-progress-linear indeterminate color="primary"></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+      <v-row no-gutters>
+        <v-col cols="12">
+          <v-progress-linear :active="!!isLoading" color="blue" indeterminate absolute bottom query></v-progress-linear>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 import gql from "graphql-tag";
 import _get from "lodash.get";
-import CompaniesTable from "../../components/companies/CompaniesTable.vue";
-import CreatePlaylistFromResults from "../../components/common/CreatePlaylistFromResults.vue";
-import CreateSignalFromResults from "../../components/common/CreateSignalFromResults.vue";
-import { defaultCompanySearch } from "../../store";
+import CompaniesTable from "@/components/companies/CompaniesTable.vue";
+import CreatePlaylistFromResults from "@/components/common/CreatePlaylistFromResults.vue";
+import CreateSignalFromResults from "@/components/common/CreateSignalFromResults.vue";
+import { defaultCompanySearch } from "@/store";
 import { mapMutations } from "vuex";
 
 export default {
@@ -140,8 +92,6 @@ export default {
     return {
       search: "",
       isLoading: true,
-      waitDialog: false,
-      waitDialogMessage: "",
       companies: [],
       totalResults: 0,
       options: {
@@ -164,7 +114,12 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["showSearchDialog", "resetCompanySearch"]),
+    ...mapMutations([
+      "showSearchDialog",
+      "showSearchDialog",
+      "showSearchButton",
+      "resetCompanySearch",
+    ]),
     triggerSearch() {
       this.showSearchDialog("companies");
     },
@@ -200,16 +155,12 @@ export default {
         this.options.sortOrder = "";
       }
     },
-    async saveResultsAsPlaylist(newPlaylistName = null) {
-      console.log(
-        "companies ",
-        "saveResultsAsPlaylist ",
-        "newPlaylistName =",
-        newPlaylistName
-      );
+    async saveResultsAsPlaylist({ newPlaylistName, newPlaylistAutoUpdate }) {
       if (!!this.searchType && !!newPlaylistName) {
-        this.waitDialogMessage = "Creating Playlist please wait...";
-        this.waitDialog = true;
+        this.$eventBus.$emit(
+          "showWaitDialog",
+          "Creating Playlist please wait..."
+        );
         const result = await this.$apollo.mutate({
           mutation: gql`
             mutation(
@@ -269,7 +220,7 @@ export default {
             newPlaylistName: newPlaylistName,
           },
         });
-        this.waitDialog = false;
+        this.$eventBus.$emit("hideWaitDialog");
         console.log("saving results as playlist success", result);
         if (result.data.createPlaylistFromCompanySearch.status == "ok") {
           if (!!result.data.createPlaylistFromCompanySearch.playlist) {
@@ -292,8 +243,10 @@ export default {
         const newSignalDescription = _get(signal, "description", "");
         const newSignalGroup = _get(signal, "group", "");
         const newSignalScore = parseFloat(_get(signal, "score", "0"));
-        this.waitDialogMessage = "Creating Signal please wait...";
-        this.waitDialog = true;
+        this.$eventBus.$emit(
+          "showWaitDialog",
+          "Creating Signal please wait..."
+        );
         const result = await this.$apollo.mutate({
           mutation: gql`
             mutation(
@@ -365,7 +318,7 @@ export default {
             newSignalScore: newSignalScore,
           },
         });
-        this.waitDialog = false;
+        this.$eventBus.$emit("hideWaitDialog");
         console.log("saving results as signal success", result);
         if (result.data.createSignalFromSearch.status == "ok") {
           if (!!result.data.createSignalFromSearch.signal) {
