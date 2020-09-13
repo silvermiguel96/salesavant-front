@@ -1,108 +1,88 @@
 <template>
-  <v-container fluid class="py-0">
-    <v-row>
-      <v-col cols="12" xs="12">
-        <v-card>
-          <v-row no-gutters>
-            <v-breadcrumbs
-              :large="true"
-              :items="[
+  <v-container fluid>
+    <v-card>
+      <v-row no-gutters>
+        <v-col cols="12" xs="12" class="pt-0">
+          <v-breadcrumbs
+            :large="true"
+            :items="[
                 {
                   text: 'Signals',
                   disabled: true,
                   href: '/signals'
                 }
               ]"
-              divider=">"
-            ></v-breadcrumbs>
-          </v-row>
+            divider=">"
+          ></v-breadcrumbs>
+        </v-col>
+      </v-row>
+      <v-row v-if="!!isFiltered" class="mx-2" no-gutters>
+        <v-col cols="12" md="8" class="d-flex flex-row align-center">
+          <span class="ml-2">Filtering by:</span>
+          <v-chip
+            v-if="this.$route.query.group"
+            class="mx-1"
+            style="padding: 0 8px;"
+            color="light-blue darken-1"
+            dark
+            close
+            small
+            @click:close="removeFilter()"
+            outlined
+          >
+            <strong>Company group:</strong>
+            {{ this.$route.query.group }}
+          </v-chip>
+        </v-col>
+      </v-row>
+      <v-row class="mx-2" no-gutters>
+        <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
+          <v-btn class="text-capitalize" color="primary" min-width="150" block to="/signals/create">
+            <v-icon size="18" class="mr-2">add</v-icon>new signal
+          </v-btn>
+        </v-col>
+        <v-row no-gutters class="d-flex justify-end">
+          <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
+            <v-text-field
+              v-model="search"
+              append-icon="filter_list"
+              label="Quick Search"
+              placeholder="Type a Name, Description or Group "
+              hide-details
+              autocomplete="off"
+              clearable
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="12">
+          <!-- Result -->
+          <signals-table
+            v-if="signals"
+            :items="signals.signalsList"
+            :totalResults="signals.totalResults"
+            @updateOptions="updateOptions"
+            @deleteSignal="deleteSignal"
+          ></signals-table>
+        </v-col>
+      </v-row>
 
-          <v-row no-gutters v-if="!!isFiltered">
-            <v-col cols="12" md="8">
-              <div class="mt-2">
-                <span class="ml-2">Filtering by:</span>
-                <v-chip
-                  v-if="this.$route.query.group"
-                  class="mx-1"
-                  style="padding: 0 8px;"
-                  color="light-blue darken-1"
-                  dark
-                  close
-                  small
-                  @click:close="removeFilter()"
-                  outlined
-                >
-                  <strong>Company group:</strong>
-                  {{ this.$route.query.group }}
-                </v-chip>
-              </div>
-            </v-col>
-          </v-row>
-          <v-container fluid>
-            <v-row no-gutters>
-              <v-col cols="12" sm="3" md="3" lg="2" class="pa-1">
-                <v-btn
-                  class="text-capitalize"
-                  color="primary"
-                  min-width="150"
-                  block
-                  to="/signals/create"
-                >
-                  <v-icon size="18" class="mr-2">add</v-icon>new signal
-                </v-btn>
-              </v-col>
-              <v-row no-gutters class="d-flex justify-end">
-                <v-col cols="12" sm="6" md="6" lg="6" class="pa-1">
-                  <v-text-field
-                    v-model="search"
-                    append-icon="filter_list"
-                    label="Quick Search"
-                    placeholder="Type a Name, Description or Group "
-                    hide-details
-                    autocomplete="off"
-                    clearable
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-row>
-          </v-container>
-          <v-row no-gutters>
-            <v-col cols="12">
-              <!-- Result -->
-              <signals-table
-                v-if="signals"
-                :items="signals.signalsList"
-                :totalResults="signals.totalResults"
-                @updateOptions="updateOptions"
-                @deleteSignal="deleteSignal"
-              ></signals-table>
-            </v-col>
-          </v-row>
-
-          <v-row no-gutters>
-            <v-col cols="12">
-              <!-- Loading -->
-              <v-progress-linear
-                :active="!!isLoading"
-                color="blue"
-                indeterminate
-                absolute
-                bottom
-                query
-              ></v-progress-linear>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+      <v-row no-gutters>
+        <v-col cols="12">
+          <!-- Loading -->
+          <v-progress-linear :active="!!isLoading" color="blue" indeterminate absolute bottom query></v-progress-linear>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script>
-import SignalsTable from "../../components/signals/SignalsTable.vue";
+import SignalsTable from "@/components/signals/SignalsTable.vue";
 import gql from "graphql-tag";
 import { setTimeout } from "timers";
-import { mapMutations } from "../../store";
+import { mapMutations } from "@/store";
 
 export default {
   data() {
