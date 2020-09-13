@@ -8,6 +8,61 @@
       <main-menu v-if="isAuthenticated"></main-menu>
       <advanced-search v-model="computedShowSearchDialog" v-if="isAuthenticated"></advanced-search>
       <router-view></router-view>
+      <v-dialog v-model="waitDialog" persistent width="320">
+        <v-card>
+          <v-card-text class="pa-2 text-center">
+            {{ waitDialogMessage }}
+            <v-progress-linear indeterminate color="primary"></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-speed-dial
+        v-show="computedShowSearchButton"
+        color
+        direction="top"
+        transition="slide-y-transition"
+        absolute
+        bottom
+        right
+      >
+        <template v-slot:activator>
+          <v-btn color="primary" dark fab large>
+            <v-icon>search</v-icon>
+          </v-btn>
+        </template>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              @click.prevent="showSearchDialog('companies')"
+              v-bind="attrs"
+              v-on="on"
+              fab
+              dark
+              small
+            >
+              <v-icon>business</v-icon>
+            </v-btn>
+          </template>
+          <span>Search Companies</span>
+        </v-tooltip>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              @click.prevent="showSearchDialog('contacts')"
+              v-bind="attrs"
+              v-on="on"
+              fab
+              dark
+              small
+            >
+              <v-icon>contacts</v-icon>
+            </v-btn>
+          </template>
+          <span>Search Contacts</span>
+        </v-tooltip>
+      </v-speed-dial>
     </v-content>
   </v-app>
 </template>
