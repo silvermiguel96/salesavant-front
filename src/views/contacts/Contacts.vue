@@ -70,11 +70,11 @@
                 <v-chip
                   v-for="obj in contactSearchFilters"
                   :key="obj.key"
+                  @click:close="removeFilter(obj.key)"
                   class="mx-1"
                   style="padding: 0 8px;"
-                  color="green darken-3"
-                  @click:close="removeFilter(obj.key)"
-                  outlined
+                  color="#ebebeb"
+                  text-color="#444"
                   close
                   small
                 >

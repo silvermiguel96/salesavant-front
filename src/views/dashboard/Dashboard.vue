@@ -49,18 +49,15 @@
       </v-col>
     </v-row>
     <v-tabs grow background-color="grey lighten-5" color="primary">
-      <v-tab class="text-capitalize">Sales Signals</v-tab>
+      <v-tab class="text-capitalize">Signals Groups</v-tab>
       <v-tab-item>
-        <!-- Custom Signal Groups -->
         <custom-signal-groups />
       </v-tab-item>
-      <v-tab class="text-capitalize">Custom Sales Signals</v-tab>
+      <v-tab class="text-capitalize">Custom Signals</v-tab>
       <v-tab-item>
-        <!-- Custom Sales Signals -->
         <custom-sales-signals />
       </v-tab-item>
     </v-tabs>
-    <!-- Custom Sales Signals -->
   </v-card>
 </template>
 
