@@ -23,6 +23,7 @@
               v-model="playlistName"
               id="field-playlist-name"
               label="Playlist name"
+              autocomplete="off"
               required
             ></v-text-field>
             <v-checkbox v-model="autoUpdate" label="Auto Update"></v-checkbox>

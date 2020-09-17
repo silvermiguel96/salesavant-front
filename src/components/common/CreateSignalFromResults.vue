@@ -22,13 +22,15 @@
               id="field-signal-name"
               v-model="signal.name"
               label="Name"
-              required
+              autocomplete="off"
               :rules="requiredRules"
+              required
             ></v-text-field>
             <v-text-field
               id="field-signal-description"
               v-model="signal.description"
               label="Description"
+              autocomplete="off"
             ></v-text-field>
             <v-text-field
               id="field-signal-score"
@@ -37,8 +39,8 @@
               required
               :rules="requiredRules"
             ></v-text-field>
-            <v-text-field id="field-signal-group" v-model="signal.group" label="Group"></v-text-field>
-            <v-checkbox v-model="autoUpdate" label="Auto Update"></v-checkbox>
+            <v-text-field id="field-signal-group" v-model="signal.group" label="Group" autocomplete="off"></v-text-field>
+            <v-checkbox v-model="signal.autoUpdate" label="Auto Update"></v-checkbox>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -58,8 +60,9 @@ export default {
     signal: {
       name: "",
       description: "",
-      score: "",
+      score: 0,
       group: "",
+      autoUpdate: false
     },
     requiredRules: [(v) => !!v || "this field is required"],
   }),

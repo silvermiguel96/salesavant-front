@@ -26,7 +26,7 @@
         right
       >
         <template v-slot:activator>
-          <v-btn color="primary" dark fab large>
+          <v-btn color="primary" dark fab medium>
             <v-icon>search</v-icon>
           </v-btn>
         </template>
