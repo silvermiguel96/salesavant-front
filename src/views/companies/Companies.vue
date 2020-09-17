@@ -26,8 +26,8 @@
             @click:close="removeFilter(obj.key)"
             class="mx-1"
             style="padding: 0 8px;"
-            color="light-blue darken-1"
-            dark
+            color="#ebebeb"
+            text-color="#444"
             close
             small
           >
@@ -183,6 +183,7 @@ export default {
               $signals: [Int]
               $signalGroups: [String]
               $newPlaylistName: String!
+              $newPlaylistAutoUpdate: Boolean!
             ) {
               createPlaylistFromCompanySearch(
                 companySearch: {
@@ -205,7 +206,7 @@ export default {
                   signals: $signals
                   signalGroups: $signalGroups
                 }
-                playlistData: { name: $newPlaylistName }
+                playlistData: { name: $newPlaylistName, autoUpdate: $newPlaylistAutoUpdate}
               ) {
                 status
                 playlist {
@@ -218,6 +219,7 @@ export default {
           variables: {
             ...this.companySearch,
             newPlaylistName: newPlaylistName,
+            newPlaylistAutoUpdate: newPlaylistAutoUpdate
           },
         });
         this.$eventBus.$emit("hideWaitDialog");
@@ -239,10 +241,8 @@ export default {
     },
     async saveResultsAsSignal(signal = null) {
       if (!!this.searchType && !!signal) {
-        const newSignalName = _get(signal, "name", "");
-        const newSignalDescription = _get(signal, "description", "");
-        const newSignalGroup = _get(signal, "group", "");
-        const newSignalScore = parseFloat(_get(signal, "score", "0"));
+        
+
         this.$eventBus.$emit(
           "showWaitDialog",
           "Creating Signal please wait..."
@@ -250,10 +250,6 @@ export default {
         const result = await this.$apollo.mutate({
           mutation: gql`
             mutation(
-              $newSignalName: String
-              $newSignalDescription: String
-              $newSignalGroup: String
-              $newSignalScore: Float
               $name: String
               $description: String
               $website: String
@@ -272,14 +268,13 @@ export default {
               $playlistUid: String
               $signals: [Int]
               $signalGroups: [String]
+              $newSignalName: String
+              $newSignalDescription: String
+              $newSignalGroup: String
+              $newSignalScore: Float
+              $newSignalAutoUpdate: Boolean
             ) {
               createSignalFromSearch(
-                signalData: {
-                  name: $newSignalName
-                  description: $newSignalDescription
-                  score: $newSignalScore
-                  group: $newSignalGroup
-                }
                 companySearch: {
                   searchName: $name
                   searchDescription: $description
@@ -300,6 +295,13 @@ export default {
                   signals: $signals
                   signalGroups: $signalGroups
                 }
+                signalData: {
+                  name: $newSignalName
+                  description: $newSignalDescription
+                  score: $newSignalScore
+                  group: $newSignalGroup
+                  autoUpdate: $newSignalAutoUpdate
+                }
               ) {
                 status
                 signal {
@@ -312,10 +314,11 @@ export default {
           // Parameters
           variables: {
             ...this.companySearch,
-            newSignalName: newSignalName,
-            newSignalDescription: newSignalDescription,
-            newSignalGroup: newSignalGroup,
-            newSignalScore: newSignalScore,
+            newSignalName: signal.name,
+            newSignalDescription: signal.description,
+            newSignalGroup: signal.group,
+            newSignalScore: signal.score,
+            newSignalAutoUpdate: signal.autoUpdate
           },
         });
         this.$eventBus.$emit("hideWaitDialog");
