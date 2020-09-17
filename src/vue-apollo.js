@@ -54,6 +54,10 @@ export function createProvider(options = {}) {
       if (error.networkError.statusCode === 401){
         localStorage.removeItem(AUTH_TOKEN);
       }
+      if (error.networkError.statusCode === 422){
+        console.log("%cError", "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;", "Bad Token");
+        localStorage.removeItem(AUTH_TOKEN);
+      }
     }
   });
 
