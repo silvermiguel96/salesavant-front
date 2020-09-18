@@ -8,7 +8,7 @@
       <main-menu v-if="isAuthenticated"></main-menu>
       <advanced-search v-model="computedShowSearchDialog" v-if="isAuthenticated"></advanced-search>
       <router-view></router-view>
-      <v-dialog v-model="waitDialog" persistent width="320">
+      <v-dialog v-if="isAuthenticated" v-model="waitDialog" persistent width="320">
         <v-card>
           <v-card-text class="pa-2 text-center">
             {{ waitDialogMessage }}
@@ -17,6 +17,7 @@
         </v-card>
       </v-dialog>
       <v-speed-dial
+        v-if="isAuthenticated"
         v-show="computedShowSearchButton"
         color
         direction="top"
@@ -74,7 +75,6 @@ import _get from "lodash.get";
 import { mapMutations } from "vuex";
 
 import MainMenu from "@/components/MainMenu.vue";
-import { AUTH_TOKEN } from "@/util.js";
 import AdvancedSearch from "@/views/advanced-search/AdvancedSearch";
 
 export default {
@@ -85,7 +85,6 @@ export default {
   },
   data() {
     return {
-      isAuthenticated: false,
       expand: 0,
       snack: {
         show: false,
@@ -97,10 +96,7 @@ export default {
     };
   },
   created() {
-    if (!!localStorage.getItem(AUTH_TOKEN)) {
-      this.isAuthenticated = true;
-      this.$store.commit("hideSearchDialog");
-    }
+    this.$store.commit("hideSearchDialog");
     this.$eventBus.$on("createJob", this.createJob);
     this.$eventBus.$on("createScheduledJob", this.createScheduledJob);
     this.$eventBus.$on("showSnack", this.showSnack);
@@ -233,6 +229,9 @@ export default {
     },
   },
   computed: {
+    isAuthenticated (){
+      return this.$store.state.userToken ? true : false;
+    },
     computedShowSearchDialog: {
       get() {
         return this.$store.state.showSearchDialog;

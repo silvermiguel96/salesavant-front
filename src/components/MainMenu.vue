@@ -56,7 +56,6 @@
   </nav>
 </template>
 <script>
-import { AUTH_TOKEN } from "../util";
 import { mapMutations } from "vuex";
 
 export default {
@@ -118,7 +117,6 @@ export default {
       ],
     };
   },
-  props: {},
   methods: {
     onPlaylists() {
       this.$router.push("/playlists").catch((err) => {});
@@ -145,8 +143,8 @@ export default {
       this.$router.push("/batch").catch((err) => {});
     },
     exitApp() {
-      localStorage.removeItem(AUTH_TOKEN);
-      this.$router.go("/login");
+      this.$store.commit("resetSession")
+      this.$router.push("/login");
     }
   },
 };
