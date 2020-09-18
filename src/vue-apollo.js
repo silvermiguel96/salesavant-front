@@ -4,7 +4,8 @@ import {
   createApolloClient,
   restartWebsockets
 } from "vue-cli-plugin-apollo/graphql-client";
-import { AUTH_TOKEN, getAuthHeader } from "./util";
+import store from "./store";
+import router from "./router"
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -26,8 +27,8 @@ const defaultOptions = {
   },
   wsEndpoint: null,
   $loadingKey: "loading",
-  tokenName: AUTH_TOKEN,
-  getAuth: getAuthHeader,
+  tokenName: "jwt-token",
+  getAuth: () => `Bearer ${store.state.userToken}`,
   persisting: false,
   websocketsOnly: false,
   ssr: false
@@ -51,12 +52,16 @@ export function createProvider(options = {}) {
     },
     errorHandler(error) {
       console.log("%cError", "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;", error.message);
-      if (error.networkError.statusCode === 401){
-        localStorage.removeItem(AUTH_TOKEN);
+      if (error.networkError.statusCode === 401) {
+        store.commit("resetSession");
+        router.push({ path: "login" });
+
       }
-      if (error.networkError.statusCode === 422){
+      if (error.networkError.statusCode === 422) {
         console.log("%cError", "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;", "Bad Token");
-        localStorage.removeItem(AUTH_TOKEN);
+        store.commit("resetSession");
+        router.push({ path: "login" });
+
       }
     }
   });
@@ -67,7 +72,7 @@ export function createProvider(options = {}) {
 // Manually call this when user log in
 export async function onLogin(apolloClient, token) {
   if (typeof localStorage !== "undefined" && token) {
-    localStorage.setItem(AUTH_TOKEN, token);
+    store.commit("resetSession");
   }
   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
@@ -81,7 +86,7 @@ export async function onLogin(apolloClient, token) {
 // Manually call this when user log out
 export async function onLogout(apolloClient) {
   if (typeof localStorage !== "undefined") {
-    localStorage.removeItem(AUTH_TOKEN);
+    store.commit("resetSession");
   }
   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
