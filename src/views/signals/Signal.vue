@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid class="py-0">
-    <v-row>
-      <v-col cols="12" xs="12">
-        <v-card>
+  <v-container fluid>
+    <v-card>
+      <v-row no-gutters>
+        <v-col cols="12" xs="12" class="pt-0">
           <v-row no-gutters>
             <v-breadcrumbs
               :large="true"
@@ -22,8 +22,9 @@
               divider=">"
             ></v-breadcrumbs>
             <v-breadcrumbs
-              :large="true"
               v-else
+              class="pl-3 pl-sm-6"
+              :large="true"
               :items="[
                 {
                   text: 'Signals',
@@ -34,76 +35,59 @@
               divider=">"
             ></v-breadcrumbs>
           </v-row>
-          <v-row>
+          <v-row class="mx-4" no-gutters>
             <v-col cols="12">
-              <v-container fluid>
-                <v-form
-                  ref="form"
-                  v-model="valid"
-                  lazy-validation
-                  @submit.prevent
-                >
-                  <v-row class="px-3" dense>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        id="field-name"
-                        v-model="signal.name"
-                        label="Name"
-                        :disabled="!canModifySignalName"
-                        :rules="nameRules"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        id="field-description"
-                        v-model="signal.description"
-                        label="Description"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        id="field-score"
-                        v-model="signal.score"
-                        label="Score"
-                        :rules="scoreRules"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        id="field-group"
-                        v-model="signal.group"
-                        label="Group"                        
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="2" lg="2">
-                      <v-btn
-                        v-if="canModifySignalName"
-                        type="submit"
-                        @click="save"
-                        class="text-capitalize"
-                        color="primary"
-                        :disabled="!valid"
-                        block
-                      >
-                        <v-icon small class="pr-1">
-                          {{ !!signal.id ? "save" : "add" }}
-                        </v-icon>
-                        {{ !!signal.id ? "Update" : "Create" }}
-                      </v-btn>
-                      <v-btn
-                        v-else
-                        type="submit"
-                        color="primary"
-                        @click="saveKeyWordsAsSignal"
-                        >Save from playlist keywords</v-btn
-                      >
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </v-container>
+              <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
+                <v-row dense>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      id="field-name"
+                      v-model="signal.name"
+                      label="Name"
+                      :rules="nameRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      id="field-description"
+                      v-model="signal.description"
+                      label="Description"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      id="field-score"
+                      v-model="signal.score"
+                      label="Score"
+                      :rules="scoreRules"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field id="field-group" v-model="signal.group" label="Group"></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-checkbox v-model="signal.autoUpdate" label="Auto Update"></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="3">
+                    <v-btn
+                      type="submit"
+                      @click="save"
+                      class="text-capitalize"
+                      color="primary"
+                      block
+                      :disabled="!valid"
+                    >
+                      <v-icon small class="pr-1">{{ !!signal.id ? "save" : "add" }}</v-icon>
+                      {{ !!signal.id ? "Update" : "Create" }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
             </v-col>
           </v-row>
-          <v-row no-gutters v-if="canModifySignalName">
+          <v-row class="mx-2" no-gutters>
             <v-col
               cols="12"
               v-if="
@@ -121,9 +105,9 @@
               ></company-signals>
             </v-col>
           </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
@@ -131,19 +115,6 @@
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import companySignals from "../../components/signals/SignalCompanyTable.vue";
-
-const defaultSignal = {
-  id: "",
-  name: "",
-  group: "",
-  userId: "",
-  category: "",
-  accountId: "",
-  description: "",
-  creationTime: "",
-  score: "",
-  modificationTime: "",
-};
 
 export default {
   data() {
@@ -155,7 +126,14 @@ export default {
         sortBy: "",
         sortOrder: "",
       },
-      signal: { ...defaultSignal },
+      signal: {
+        name: "",
+        group: "",
+        category: "",
+        description: "",
+        score: "",
+        autoUpdate: false,
+      },
       scoreRules: [(v) => !!v || "Score is required"],
       nameRules: [(v) => !!v || "Name is required"],
       companySignals: [],
@@ -168,7 +146,6 @@ export default {
     score: { type: Number, default: 0 },
     name: { type: String, default: "" },
     jobUid: { type: String, default: "" },
-    canModifySignalName: { type: Boolean, default: true },
   },
   apollo: {
     signal: {
@@ -180,6 +157,7 @@ export default {
             description
             group
             score
+            autoUpdate
           }
         }
       `,
@@ -267,8 +245,8 @@ export default {
       }
     },
     async save() {
-      if(!this.$refs.form.validate()){
-        return
+      if (!this.$refs.form.validate()) {
+        return;
       }
       try {
         let result = null;
@@ -283,6 +261,7 @@ export default {
                 $group: String
                 $category: String
                 $score: Float
+                $autoUpdate: Boolean
               ) {
                 updateSignal(
                   signalData: {
@@ -291,6 +270,7 @@ export default {
                     group: $group
                     category: $category
                     score: $score
+                    autoUpdate: $autoUpdate
                   }
                   signalId: $signalId
                 ) {
@@ -302,8 +282,8 @@ export default {
                     category
                     accountId
                     description
-                    creationTime
                     score
+                    creationTime
                     modificationTime
                   }
                 }
@@ -317,6 +297,7 @@ export default {
               group: this.signal.group,
               category: this.signal.category,
               score: this.signal.score,
+              autoUpdate: this.signal.autoUpdate,
             },
           });
           this.$eventBus.$emit(
@@ -335,6 +316,7 @@ export default {
                 $group: String
                 $category: String
                 $score: Float
+                $autoUpdate: Boolean
               ) {
                 createSignal(
                   signalData: {
@@ -343,6 +325,7 @@ export default {
                     group: $group
                     category: $category
                     score: $score
+                    autoUpdate: $autoUpdate
                   }
                 ) {
                   signal {
@@ -367,6 +350,7 @@ export default {
               group: this.signal.group,
               category: this.signal.category,
               score: this.signal.score,
+              autoUpdate: this.signal.autoUpdate,
             },
           });
           this.$eventBus.$emit(
@@ -403,8 +387,8 @@ export default {
       }
     },
     async saveKeyWordsAsSignal() {
-      if(!this.$refs.form.validate()){
-        return
+      if (!this.$refs.form.validate()) {
+        return;
       }
       try {
         console.log("here");

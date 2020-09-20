@@ -118,14 +118,6 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-dialog v-model="deleteDialog" persistent width="320">
-            <v-card>
-              <v-card-text class="pa-2 text-center">
-                Deleting all synced data ... please wait
-                <v-progress-linear indeterminate color="primary"></v-progress-linear>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
         </v-card>
       </v-col>
     </v-row>
@@ -136,7 +128,6 @@ import gql from "graphql-tag";
 export default {
   data() {
     return {
-      deleteDialog: false,
       myUser: {
         account: {
           salesforceConnection: undefined,
@@ -186,7 +177,10 @@ export default {
         }
       );
       if (res) {
-        this.deleteDialog = true;
+        this.$eventBus.$emit(
+          "showWaitDialog",
+          "Deleting all synced data ... please wait"
+        );
         this.$apollo
           .mutate({
             mutation: gql`
@@ -205,7 +199,7 @@ export default {
           })
           .then((resp) => {
             if (resp.data.deleteSalesforceConnection.status == "ok") {
-              this.deleteDialog = false;
+              this.$eventBus.$emit("hideWaitDialog");
               this.myUser.account.salesforceConnection = undefined;
               this.$eventBus.$emit(
                 "showSnack",

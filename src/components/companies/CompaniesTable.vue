@@ -8,8 +8,8 @@
       'items-per-page-options': [10, 20, 50]
     }"
     :options.sync="options"
-    class="mx-2"
     @update:options="updateOptions"
+    class="mx-2"
   >
     <template v-slot:item="{ item }">
       <tr>

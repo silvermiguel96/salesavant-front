@@ -32,8 +32,7 @@ import CompanyAdmin from "./views/admin/company/Company.vue"
 import SalesforceSetupWizard from "./views/salesforce/SetupWizard.vue"
 import SalesforceObject from "./views/salesforce/Objects.vue"
 import salesforceDocumentation from "./views/documentation/Documentation.vue"
-
-import { AUTH_TOKEN } from "./util";
+import store from "./store";
 
 Vue.use(Router);
 
@@ -247,7 +246,8 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!localStorage.getItem(AUTH_TOKEN)) {
+    if (!store.state.userToken) {
+      console.log("redirect to login");
       next({
         path: "/login"
       });

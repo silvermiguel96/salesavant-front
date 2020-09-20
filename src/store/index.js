@@ -1,6 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+
+
+const USER_EMAIL = "user-email";
+const USER_TOKEN = "user-token";
+
 Vue.use(Vuex);
 
 export const defaultCompanySearch = {
@@ -53,9 +58,10 @@ export const defaultSalesforceWizard = {
 };
 
 const state = {
-  userEmail: null,
-  jwtToken: null,
+  userEmail: localStorage.getItem(USER_EMAIL) || "",
+  userToken: localStorage.getItem(USER_TOKEN) || "",
   searchType: null,
+  showSearch: false,
   showSearchDialog: false,
   companySearch: {
     ...defaultCompanySearch
@@ -69,15 +75,39 @@ const state = {
 };
 
 const getters = {
-  isLoggedIn: state => {
-    return state.jwtToken ? true : false;
+  isAuthenticated: state => {
+    return state.userToken ? true : false;
   }
 };
 
 const mutations = {
+  createSession(state, {userEmail, userToken}) {
+    localStorage.setItem(USER_EMAIL, userEmail);
+    localStorage.setItem(USER_TOKEN, userToken);
+    state.userEmail = userEmail;
+    state.userToken = userToken;
+  },
+  resetSession(state) {
+    console.log("resetSession");
+    localStorage.removeItem(USER_EMAIL);
+    localStorage.removeItem(USER_TOKEN);
+    state.userEmail = null;
+    state.userToken = null;
+  },
+
+  showSearch(state) {
+    state.showSearch = true;
+  },
+  hideSearch(state) {
+    state.showSearch = false;
+  },
   showSearchDialog(state, newSearchType) {
     state.searchType = newSearchType;
+    state.showSearch = true;
     state.showSearchDialog = true;
+  },
+  hideSearchDialog(state) {
+    state.showSearchDialog = false;
   },
   updateCompanySearch(state, newCompanySearch) {
     state.companySearch = {
@@ -90,9 +120,6 @@ const mutations = {
       ...defaultContactSearch,
       ...newContactSearch
     }
-  },
-  hideSearchDialog(state) {
-    state.showSearchDialog = false;
   },
   resetCompanySearch(state) {
     state.companySearch = { ...defaultCompanySearch };
@@ -124,7 +151,10 @@ const mutations = {
   },
 };
 
-const actions = {};
+const actions = {
+
+
+};
 
 const debug = process.env.NODE_ENV !== "production";
 

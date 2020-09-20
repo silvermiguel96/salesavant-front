@@ -7,7 +7,11 @@
             <v-card class="elevation-12" v-if="!isAuthenticated">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>
-                  <v-img :src="require('../assets/salesavant_logo.jpg')" width="240" alt="SaleSavant"></v-img>
+                  <v-img
+                    :src="require('../assets/salesavant_header.png')"
+                    width="180"
+                    alt="SaleSavant"
+                  ></v-img>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -17,19 +21,23 @@
                 </v-toolbar-items>
               </v-toolbar>
               <v-card-text>
-                <v-text-field v-model="userlogin.username" 
-                autocomplete="off"
-                label="Email" 
-                type="email" 
-                name="email" 
-                id="field-login-email"
-                append-icon="mail"></v-text-field>
+                <v-text-field
+                  v-model="userlogin.username"
+                  autocomplete="off"
+                  label="Email"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  id="field-login-email"
+                  append-icon="mail"
+                ></v-text-field>
                 <v-text-field
                   v-model="userlogin.password"
                   autocomplete="off"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
+                  placeholder="Password"
                   id="field-login-password"
                   @click:append="show1 = !show1"
                 ></v-text-field>
@@ -46,47 +54,53 @@
 </template>
 
 <script>
-import { AUTH_TOKEN } from '../util';
 export default {
   name: "login",
   data() {
     return {
       userlogin: {
         username: "",
-        password: ""
+        password: "",
       },
-      isAuthenticated: false,
-      show1: false
+      show1: false,
     };
+  },
+  created() {
+    if (this.isAuthenticated) {
+      console.log("User isAuthenticated redirect to home");
+      this.$router.push("/home");
+    }
   },
   methods: {
     async login() {
-      const dataUser = this.userlogin;
-      const Body = JSON.stringify(dataUser);
-      console.log("Body", Body);
       const fecthDetails = {
         method: "POST",
-        body: Body,
+        body: JSON.stringify(this.userlogin),
         headers: new Headers({
-          "Content-Type": "application/json"
-        })
+          "Content-Type": "application/json",
+        }),
       };
-      const result = await fetch(`${process.env.VUE_APP_REST_API_URL}/auth`, fecthDetails)
-        .then(res => res.json())
-        .catch(error => console.error("Error:", error))
-      console.log('access_token', result)
-
-      if(!!result.access_token){
-        localStorage.setItem(AUTH_TOKEN, result.access_token)
-        this.$router.go("/home")
+      const result = await fetch(
+        `${process.env.VUE_APP_REST_API_URL}/auth`,
+        fecthDetails
+      )
+        .then((res) => res.json())
+        .catch((error) => console.error("Error:", error));
+      console.log("access_token", result);
+      if (!!result.access_token) {
+        this.$store.commit("createSession", {
+          userEmail: this.userlogin.username,
+          userToken: result.access_token,
+        });
+        this.$router.push("/home");
       }
-    }
+    },
   },
-  created() {
-    if (!!localStorage.getItem(AUTH_TOKEN)) {
-      this.$router.push("/home");
-    }
-  }
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.userToken ? true : false;
+    },
+  },
 };
 </script>
 

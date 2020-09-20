@@ -99,7 +99,6 @@
 </template>
 
 <script>
-/* import PLAYLISTS from "./Playlists.gql"; */
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import LongParagraph from "../common/LongParagraph.vue";
@@ -133,7 +132,7 @@ export default {
           value: "score",
           align: "left",
           sortable: true,
-          width: "15%",
+          width: "8%",
         },
         {
           text: "Modification Time",
@@ -219,7 +218,6 @@ export default {
       try {
         console.log("here");
         const result = await this.$apollo.mutate({
-          //////////////////
           mutation: gql`
             mutation(
               $signalId: Int!

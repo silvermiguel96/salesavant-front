@@ -8,18 +8,74 @@
       <main-menu v-if="isAuthenticated"></main-menu>
       <advanced-search v-model="computedShowSearchDialog" v-if="isAuthenticated"></advanced-search>
       <router-view></router-view>
+      <v-dialog v-if="isAuthenticated" v-model="waitDialog" persistent width="320">
+        <v-card>
+          <v-card-text class="pa-2 text-center">
+            {{ waitDialogMessage }}
+            <v-progress-linear indeterminate color="primary"></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-speed-dial
+        v-if="isAuthenticated"
+        v-show="computedShowSearchButton"
+        color
+        direction="top"
+        transition="slide-y-transition"
+        absolute
+        bottom
+        right
+      >
+        <template v-slot:activator>
+          <v-btn color="primary" dark fab medium>
+            <v-icon>search</v-icon>
+          </v-btn>
+        </template>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              @click.prevent="showSearchDialog('companies')"
+              v-bind="attrs"
+              v-on="on"
+              fab
+              dark
+              small
+            >
+              <v-icon>business</v-icon>
+            </v-btn>
+          </template>
+          <span>Search Companies</span>
+        </v-tooltip>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              @click.prevent="showSearchDialog('contacts')"
+              v-bind="attrs"
+              v-on="on"
+              fab
+              dark
+              small
+            >
+              <v-icon>contacts</v-icon>
+            </v-btn>
+          </template>
+          <span>Search Contacts</span>
+        </v-tooltip>
+      </v-speed-dial>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import MainMenu from "./components/MainMenu.vue";
-import AdvancedSearch from "./views/advanced-search/AdvancedSearch";
 import { json } from "body-parser";
-import { AUTH_TOKEN } from "./util";
 import gql from "graphql-tag";
 import _get from "lodash.get";
 import { mapMutations } from "vuex";
+
+import MainMenu from "@/components/MainMenu.vue";
+import AdvancedSearch from "@/views/advanced-search/AdvancedSearch";
 
 export default {
   name: "App",
@@ -29,27 +85,26 @@ export default {
   },
   data() {
     return {
-      isAuthenticated: false,
       expand: 0,
       snack: {
         show: false,
         text: "",
         color: "",
       },
+      waitDialog: false,
+      waitDialogMessage: "",
     };
   },
   created() {
-    if (!!localStorage.getItem(AUTH_TOKEN)) {
-      this.isAuthenticated = true;
-      this.$store.commit("hideSearchDialog");
-    }
+    this.$store.commit("hideSearchDialog");
     this.$eventBus.$on("createJob", this.createJob);
     this.$eventBus.$on("createScheduledJob", this.createScheduledJob);
     this.$eventBus.$on("showSnack", this.showSnack);
     this.$eventBus.$on("hideSnack", this.hideSnack);
+    this.$eventBus.$on("showWaitDialog", this.showWaitDialog);
+    this.$eventBus.$on("hideWaitDialog", this.hideWaitDialog);
   },
   methods: {
-    ...mapMutations(["showSearchDialog", "hideSearchDialog"]),
     showSnack(text, color) {
       this.snack.show = true;
       this.snack.text = text;
@@ -59,6 +114,17 @@ export default {
       this.snack.show = false;
       this.snack.text = "";
       this.snack.color = "";
+    },
+    showWaitDialog(waitDialogMessage) {
+      this.waitDialog = true;
+      this.waitDialogMessage = waitDialogMessage;
+    },
+    hideWaitDialog() {
+      this.waitDialog = false;
+      this.waitDialogMessage = "";
+    },
+    showSearchDialog(searchType) {
+      this.$store.commit("showSearchDialog", searchType);
     },
     async createJob(jobData) {
       const response = await this.$apollo.mutate({
@@ -163,6 +229,9 @@ export default {
     },
   },
   computed: {
+    isAuthenticated (){
+      return this.$store.state.userToken ? true : false;
+    },
     computedShowSearchDialog: {
       get() {
         return this.$store.state.showSearchDialog;
@@ -174,6 +243,9 @@ export default {
           return this.$store.commit("hideSearchDialog");
         }
       },
+    },
+    computedShowSearchButton() {
+      return !this.$store.state.showSearchDialog;
     },
   },
 };
