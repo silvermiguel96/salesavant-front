@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import { getAuthToken } from "../../util";
 import gql from "graphql-tag";
 import { mapMutations } from "vuex";
 
@@ -129,7 +128,7 @@ export default {
       }
       const that = this;
       const { salesforceCode } = this;
-      fetch(this.salesavantAPI + "/oauth/salesforce?jwt=" + getAuthToken(), {
+      fetch(this.salesavantAPI + "/oauth/salesforce?jwt=" + this.getUserToken, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -252,6 +251,9 @@ export default {
     salesforceWizardConnectionId() {
       return this.$store.state.salesforceWizard.connectionId;
     },
+    getUserToken(){
+      return this.$store.state.userToken;
+    }
   },
   beforeDestroy() {
     clearInterval(this.interval);

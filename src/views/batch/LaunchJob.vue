@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import { getAuthToken } from "../../util";
 export default {
   data() {
     return {
@@ -138,7 +137,7 @@ export default {
         } else {
           formData.append("description", this.description);
         }
-        fetch(this.salesavantAPI + "/launch-file-job?jwt=" + getAuthToken(), {
+        fetch(this.salesavantAPI + "/launch-file-job?jwt=" + this.getUserToken, {
           method: "POST",
           body: formData
         })
@@ -172,6 +171,11 @@ export default {
         this.fileMessages = ["The file is required!"];
         return;
       }
+    }
+  },
+  computed:{
+    getUserToken(){
+      return this.$store.state.userToken;
     }
   }
 };

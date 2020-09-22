@@ -12,7 +12,6 @@
   </v-container>
 </template>
 <script>
-import { getAuthToken } from "../../util";
 import { mapMutations } from "vuex";
 export default {
   props: {
