@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import customSalesSignals from "../../components/dashboard/CustomSalesSignals";
-import customSignalGroups from "../../components/dashboard/CustomSignalGroups";
+import customSalesSignals from "@/components/dashboard/CustomSalesSignals";
+import customSignalGroups from "@/components/dashboard/CustomSignalGroups";
 export default {
   components: {
     customSalesSignals,
